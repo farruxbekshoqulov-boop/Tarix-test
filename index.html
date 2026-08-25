@@ -2,102 +2,79 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>6-sinf Tarix — Interaktiv Testlar Portali</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>6-sinf Qadimgi Dunyo Tarixi — Interaktiv Testlar</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
-      --primary: #1e3a8a;
-      --primary-hover: #1d4ed8;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --accent: #10b981;
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --card-bg: rgba(30, 41, 59, 0.92);
+      --card-border: rgba(255, 255, 255, 0.16);
+      --text: #ffffff;
+      --text-muted: #94a3b8;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--bg);
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
       color: var(--text);
-      line-height: 1.5;
-      padding: 16px;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
+      padding: 16px 12px;
     }
 
-    .container {
+    .app-card {
       width: 100%;
-      max-width: 650px;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 26px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
     }
 
-    header {
+    .header-box {
       text-align: center;
-      padding: 24px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .badge {
-      display: inline-block;
-      background: #dbeafe;
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 9999px;
-      margin-bottom: 8px;
+    .title {
+      font-size: 20px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: #93c5fd;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-    }
-
-    h1 {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    p.subtitle {
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    /* Qidiruv */
-    .search-box {
-      margin: 16px 0 20px;
-      position: relative;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 15px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      outline: none;
-      background-color: var(--card-bg);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      transition: border-color 0.2s;
-    }
-
-    .search-box input:focus {
-      border-color: var(--primary);
-    }
-
-    /* Bo'lim nomi */
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin: 20px 0 12px;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      margin-top: 4px;
     }
 
     .topics-list {
@@ -106,128 +83,129 @@
       gap: 10px;
     }
 
-    /* Mavzu kartochkasi */
     .topic-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
       padding: 14px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       text-decoration: none;
-      color: inherit;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      color: var(--text);
       transition: all 0.2s ease;
     }
 
     .topic-card:hover {
-      border-color: var(--primary-hover);
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--primary);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.08);
     }
 
     .topic-info {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
+      padding-right: 10px;
     }
 
     .topic-number {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      color: #38bdf8;
       text-transform: uppercase;
     }
 
     .topic-title {
       font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
+      font-weight: 700;
+      line-height: 1.35;
+      color: #f8fafc;
     }
 
     .action-btn {
-      background-color: #eff6ff;
-      color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
       padding: 8px 14px;
       border-radius: 10px;
       font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      font-weight: 800;
       white-space: nowrap;
-    }
-
-    .topic-card:hover .action-btn {
-      background-color: var(--primary);
-      color: #ffffff;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 32px;
-      padding-bottom: 24px;
-      font-size: 13px;
-      color: var(--text-muted);
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <header>
-      <span class="badge">6-sinf Tarix</span>
-      <h1>Qadimgi Dunyo Tarixi</h1>
-      <p class="subtitle">Mavzuni tanlang va interaktiv test orqali bilimingizni sinang</p>
-    </header>
+  <div class="app-card">
 
-    <!-- Qidiruv paneli -->
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Mavzuni qidirish (masalan: Misr, madaniyat...)" onkeyup="filterTopics()">
+    <div class="header-box">
+      <div class="title">6-SINF TARIX TESTLARI</div>
+      <div class="subtitle">Interaktiv Moslash, Trenajyor va Testlar portali</div>
     </div>
 
-    <!-- Mavzular ro'yxati -->
-    <div class="section-title">
-      📖 Darslik mavzulari
-    </div>
-    
-    <div class="topics-list" id="topicsContainer">
+    <div class="section-label">I Bo‘lim: Eng qadimgi tuzumdan sivilizatsiya sari</div>
 
-      <!-- 10-mavzu -->
-      <a href="10-mavzu%20test.html" class="topic-card">
+    <div class="topics-list">
+
+      <!-- 1-mavzu -->
+      <a href="1-mavzu.html" class="topic-card">
         <div class="topic-info">
-          <span class="topic-number">10-Mavzu</span>
-          <span class="topic-title">Qadimgi Misr madaniyati</span>
+          <span class="topic-number">1-Mavzu</span>
+          <span class="topic-title">Qadimgi tarix ildizlari</span>
         </div>
-        <div class="action-btn">Testni boshlash ➔</div>
+        <div class="action-btn">Boshlash ➔</div>
       </a>
 
-      <!-- Keyingi mavzular tayyor bo'lganda shu yerga qator qo'shiladi -->
+      <!-- 2-mavzu -->
+      <a href="2-mavzu.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">2-Mavzu</span>
+          <span class="topic-title">Eng qadimgi odamlarning rivojlanish bosqichlari</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
+
+      <!-- 3-mavzu -->
+      <a href="3-mavzu.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">3-Mavzu</span>
+          <span class="topic-title">Urug‘chilik jamiyati</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
+
+      <!-- 4-mavzu -->
+      <a href="4-mavzu.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">4-Mavzu</span>
+          <span class="topic-title">Eneolit va bronza davri</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
+
+      <!-- 5-mavzu -->
+      <a href="5-mavzu.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">5-Mavzu</span>
+          <span class="topic-title">O‘rta Osiyo temir asriga o‘tish davrida</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
+
+      <!-- I Bo'lim Takrorlash -->
+      <a href="1-bolim-takrorlash.html" class="topic-card" style="border-color: #38bdf8; background: rgba(56, 189, 248, 0.15);">
+        <div class="topic-info">
+          <span class="topic-number" style="color: #fbbf24;">Umumiy Nazorat</span>
+          <span class="topic-title" style="font-weight: 800; color: #ffffff;">I BO‘LIM: Umumiy takrorlash va mustahkamlash</span>
+        </div>
+        <div class="action-btn" style="background: #fbbf24; color: #0f172a;">Sinov ➔</div>
+      </a>
 
     </div>
 
-    <footer>
-      © Tarix fani interaktiv onlayn ta'lim platformasi
-    </footer>
   </div>
-
-  <script>
-    function filterTopics() {
-      const input = document.getElementById('searchInput').value.toLowerCase();
-      const cards = document.querySelectorAll('.topic-card');
-
-      cards.forEach(card => {
-        const title = card.querySelector('.topic-title').innerText.toLowerCase();
-        const number = card.querySelector('.topic-number').innerText.toLowerCase();
-        if (title.includes(input) || number.includes(input)) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-  </script>
 
 </body>
 </html>

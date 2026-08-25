@@ -25,22 +25,25 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
+      min-height: 100%;
       background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
       color: var(--text);
-      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 10px;
-      overflow: hidden;
+      align-items: flex-start;
+      padding: 10px 10px 120px 10px;
     }
 
     .app-card {
       width: 100%;
       max-width: 540px;
-      height: 96vh;
-      max-height: 880px;
+      min-height: 90vh;
       background: var(--card-bg);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
@@ -51,6 +54,7 @@
       flex-direction: column;
       justify-content: space-between;
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+      gap: 12px;
     }
 
     .tab-nav {
@@ -85,9 +89,10 @@
     .tab-content {
       display: none;
       flex-direction: column;
-      height: 100%;
+      flex: 1;
       justify-content: space-between;
       margin-top: 6px;
+      gap: 12px;
     }
 
     .tab-content.active { display: flex; }
@@ -233,8 +238,15 @@
     }
 
     /* TEST */
-    .test-scroll-area { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
-    .q-title { font-size: 18px; font-weight: 800; text-align: center; color: #f8fafc; line-height: 1.4; }
+    .test-scroll-area { 
+      flex: 1; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      gap: 10px;
+      margin: 8px 0;
+    }
+    .q-title { font-size: 17px; font-weight: 800; text-align: center; color: #f8fafc; line-height: 1.4; }
     .options-grid { display: flex; flex-direction: column; gap: 8px; }
     
     .opt-btn {
@@ -242,7 +254,7 @@
       border: 2px solid rgba(255, 255, 255, 0.14);
       border-radius: 14px;
       padding: 12px 16px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: #f1f5f9;
       cursor: pointer;
@@ -264,6 +276,7 @@
       color: #bfdbfe;
       line-height: 1.4;
       display: none;
+      margin-top: 4px;
     }
 
     .action-btn {
@@ -277,6 +290,7 @@
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
     }
 
     .finish-state {
@@ -421,6 +435,11 @@
   </div>
 
   <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
     function switchTab(tab) {
       ['match', 'cards', 'quiz'].forEach(t => {
         document.getElementById(`tab-btn-${t}`).classList.remove('active');
@@ -428,6 +447,7 @@
       });
       document.getElementById(`tab-btn-${tab}`).classList.add('active');
       document.getElementById(`tab-${tab}`).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // --- 1. MOSLASH (5 BOSQICH) ---
@@ -603,10 +623,14 @@
     function toggleAnswer() {
       document.getElementById('fc-answer').style.display = 'block';
       document.getElementById('fc-toggle-btn').style.display = 'none';
-      document.getElementById('fc-next-btn').style.display = 'block';
+      const btn = document.getElementById('fc-next-btn');
+      btn.style.display = 'block';
       document.getElementById('fc-avatar').className = 'avatar-bubble happy';
       document.getElementById('fc-avatar').innerText = '💡';
       document.getElementById('fc-status').innerText = 'Javobni eslab qoldingizmi?';
+      setTimeout(() => {
+        btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     }
 
     function nextFlashcard() {
@@ -616,6 +640,7 @@
         document.getElementById('fc-play-box').style.display = 'none';
         document.getElementById('fc-finish-box').style.display = 'flex';
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartCards() {
@@ -623,6 +648,7 @@
       document.getElementById('fc-play-box').style.display = 'flex';
       document.getElementById('fc-finish-box').style.display = 'none';
       loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST) ---
@@ -899,13 +925,23 @@
       const exp = document.getElementById('q-explanation');
       exp.innerText = "💡 Izoh: " + q.exp;
       exp.style.display = 'block';
-      document.getElementById('q-next-btn').style.display = 'block';
+      
+      const nextBtn = document.getElementById('q-next-btn');
+      nextBtn.style.display = 'block';
+
+      setTimeout(() => {
+        nextBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     }
 
     function nextTestQuestion() {
       tIdx++;
-      if (tIdx < testQuestions.length) loadTestQuestion();
-      else showQuizResult();
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
     }
 
     function showQuizResult() {
@@ -916,6 +952,7 @@
       if(score >= 23) fb.innerText = "Mukammal natija! 1-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
       else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
       else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartTest() {
@@ -923,6 +960,7 @@
       document.getElementById('quiz-body').style.display = 'flex';
       document.getElementById('quiz-result').style.display = 'none';
       loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // Dastlabki ishga tushirish

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarix Fani — Interaktiv Testlar Portali</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+    }
+
+    header {
+      text-align: center;
+      padding: 24px 0 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    p.subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Qidiruv */
+    .search-box {
+      margin: 16px 0 20px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 15px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      background-color: var(--card-bg);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+
+    /* Bo'limlar */
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 20px 0 12px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .topics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Mavzu kartochkasi */
+    .topic-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      transition: all 0.2s ease;
+    }
+
+    .topic-card:hover {
+      border-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.08);
+    }
+
+    .topic-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .topic-number {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .topic-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .action-btn {
+      background-color: #eff6ff;
+      color: var(--primary);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .topic-card:hover .action-btn {
+      background-color: var(--primary);
+      color: #ffffff;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 32px;
+      padding-bottom: 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge">Online Trenajyor</span>
+      <h1>Tarix Fani Testlar Portali</h1>
+      <p class="subtitle">O‘zingizga kerakli mavzuni tanlang va bilimingizni sinab ko‘ring</p>
+    </header>
+
+    <!-- Tezkor qidiruv -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Mavzuni qidirish (masalan: Misr, Bobil...)" onkeyup="filterTopics()">
+    </div>
+
+    <!-- 6-sinf Tarix -->
+    <div class="section-title">
+      📚 6-sinf: Qadimgi Dunyo Tarixi
+    </div>
+    
+    <div class="topics-list" id="topicsContainer">
+
+      <!-- 10-mavzu -->
+      <a href="10-mavzu%20test.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">10-Mavzu</span>
+          <span class="topic-title">Qadimgi Misr madaniyati</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
+
+      <!-- Keyingi mavzular tayyor bo'lgach, shunchaki nusxa ko'chirib pastiga qo'shib borasiz:
+      <a href="11-mavzu.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">11-Mavzu</span>
+          <span class="topic-title">Qadimgi Bobil davlati</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
+      -->
+
+    </div>
+
+    <footer>
+      © Tarix fani interaktiv darslik tizimi
+    </footer>
+  </div>
+
+  <script>
+    function filterTopics() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.topic-card');
+
+      cards.forEach(card => {
+        const title = card.querySelector('.topic-title').innerText.toLowerCase();
+        const number = card.querySelector('.topic-number').innerText.toLowerCase();
+        if (title.includes(input) || number.includes(input)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

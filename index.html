@@ -29,17 +29,17 @@
         }
 
         html, body {
-            height: 100%;
+            min-height: 100%;
             background-color: var(--bg);
             color: var(--text-dark);
+            overflow-x: hidden;
             overflow-y: auto !important;
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Sahifaning pastki qismi tugma ko'rinishi uchun kengaytirilgan */
+        /* Sahifaning pastki qismi tugma bemalol ko'rinishi uchun kengaytirilgan */
         body {
-            padding-bottom: 120px !important;
-            min-height: 100vh;
+            padding-bottom: 140px !important;
         }
 
         .container {
@@ -356,7 +356,12 @@
                 matchedCount++;
 
                 if (matchedCount === stages[currentStageIdx].pairs.length) {
-                    document.getElementById('next-btn').style.display = 'block';
+                    const nextBtn = document.getElementById('next-btn');
+                    nextBtn.style.display = 'block';
+                    // Tugma chiqqanda avtomatik ravishda tugmaga qarab pastga siljiydi
+                    setTimeout(() => {
+                        nextBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 150);
                 }
             } else {
                 // Noto'g'ri
@@ -383,6 +388,7 @@
             } else {
                 document.getElementById('game-box').style.display = 'none';
                 document.getElementById('result-box').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 

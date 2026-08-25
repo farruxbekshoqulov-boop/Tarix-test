@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>5-§. O‘rta Osiyo temir asriga o‘tish davrida</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.92);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      overflow: hidden;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      height: 96vh;
+      max-height: 880px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 26px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 5px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 4px;
+      border: none;
+      background: transparent;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0;
+      flex-shrink: 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* Avatar */
+    .avatar-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 2px 0;
+      flex-shrink: 0;
+    }
+
+    .avatar-bubble {
+      font-size: 54px;
+      line-height: 1;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.3));
+    }
+
+    .avatar-bubble.thinking { animation: thinkBounce 2s infinite ease-in-out; }
+    .avatar-bubble.happy { animation: happyJump 0.5s ease; }
+    .avatar-bubble.sad { animation: sadShake 0.5s ease; }
+
+    @keyframes thinkBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @keyframes happyJump { 0% { transform: scale(1); } 50% { transform: scale(1.2) translateY(-6px); } 100% { transform: scale(1); } }
+    @keyframes sadShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+    .avatar-status {
+      font-size: 14px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-top: 4px;
+      background: rgba(15, 23, 42, 0.5);
+      padding: 3px 14px;
+      border-radius: 20px;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 6px 0;
+      flex: 1;
+      align-content: center;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 14px;
+      padding: 12px 10px;
+      color: #ffffff;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+      animation: sadShake 0.4s ease;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 20px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+    }
+
+    .fc-q { font-size: 19px; font-weight: 800; line-height: 1.45; color: #f8fafc; }
+    .fc-a {
+      font-size: 17px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 14px; padding: 14px; margin-top: 14px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .test-scroll-area { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    .q-title { font-size: 17.5px; font-weight: 800; text-align: center; color: #f8fafc; line-height: 1.4; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.3) !important; border-color: var(--success) !important; color: #a7f3d0 !important; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.3) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 16px;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+    }
+
+    .finish-state {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .finish-badge {
+      width: 85px; height: 85px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (20)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (20)</button>
+    </div>
+
+    <!-- 1. MOSLASH (3 BOSQICHLI MATCHING) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
+        <div>
+          <div class="header-bar">
+            <span class="badge" id="match-stage-badge">Bosqich: 1 / 3</span>
+            <span id="match-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        </div>
+
+        <div class="avatar-area">
+          <div class="avatar-bubble thinking" id="match-avatar">🧩</div>
+          <div class="avatar-status" id="match-status">Atama va uning to‘g‘ri ma’nosini bosing!</div>
+        </div>
+
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 60px;">🏆</div>
+        <h2 style="font-size: 23px; font-weight: 800;">3 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 16px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalarni muvaffaqiyatli mosladingiz. Endi 20 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (20 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
+        <div>
+          <div class="header-bar">
+            <span class="badge">5-§ Trenajyor</span>
+            <span id="fc-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 20</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+        </div>
+
+        <div class="avatar-area">
+          <div class="avatar-bubble thinking" id="fc-avatar">🧐</div>
+          <div class="avatar-status" id="fc-status">O‘ylab ko‘ring-chi!</div>
+        </div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 60px;">🎉</div>
+        <h2 style="font-size: 23px; font-weight: 800;">20 ta savol tugadi!</h2>
+        <p style="font-size: 16px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni takrorlab oldingiz. Endi 20 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (20 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
+        <div>
+          <div class="header-bar">
+            <span class="badge">5-§ Test Sinovi</span>
+            <span id="q-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 20</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+        </div>
+
+        <div class="avatar-area">
+          <div class="avatar-bubble thinking" id="q-avatar">🤔</div>
+          <div class="avatar-status" id="q-status">To‘g‘ri javobni tanlang...</div>
+        </div>
+
+        <div class="test-scroll-area">
+          <div class="q-title" id="q-title">Yuklanmoqda...</div>
+          <div class="options-grid" id="q-options"></div>
+          <div class="exp-box" id="q-explanation"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="q-next-btn" style="display:none;" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 60px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/20</div>
+        <h2 style="font-size: 23px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 16px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+    }
+
+    // --- 1. MOSLASH (3 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Temir asrining boshlanishi va xronologiyasi
+      [
+        { id: 1, left: "Xettlar (Kichik Osiyo)", right: "Temirdan ilk bor foydalangan (mil. avv. XIV–XIII asrlar)" },
+        { id: 2, left: "O‘rta Osiyoda temir qurollar", right: "Miloddan avvalgi IX–VIII asrlarda paydo bo‘ldi" },
+        { id: 3, left: "1500°C", right: "Temirning erish harorati" },
+        { id: 4, left: "Tutanxamon maqbarasi", right: "Dastlabki temir bezak buyumlari topilgan joy" }
+      ],
+      // 2-bosqich: Ijtimoiy guruhlar va tabaqalar
+      [
+        { id: 5, left: "Kohinlar", right: "Diniy marosimlar va e’tiqod rahbarlari" },
+        { id: 6, left: "Jangchilar", right: "Qabilani va hududni himoya qiluvchi tabaqa" },
+        { id: 7, left: "Dehqonlar va chorvadorlar", right: "Qishloq xo‘jalik mahsulotlarini yetishtiruvchilar" },
+        { id: 8, left: "Hunarmandlar", right: "Temir qurollar va buyumlar yasovchilar" }
+      ],
+      // 3-bosqich: Jamiyat tuzilishi va manbalar
+      [
+        { id: 9, left: "Katta patriarxal oila", right: "O‘rta Osiyoda jamiyat asosini tashkil etgan tuzum" },
+        { id: 10, left: "«Avesto» kitobi", right: "Patriarxal oila tuzilishi haqida ma’lumot beruvchi manba" },
+        { id: 11, left: "Hududiy qo‘shnichilik jamoasi", right: "Bir necha katta oilalarning hududiy birlashmasi" },
+        { id: 12, left: "Temir uchli omoch va bolta", right: "Katta maydonlarda ziroatchilikni rivojlantirdi" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'flex';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+
+      document.getElementById('match-avatar').className = 'avatar-bubble thinking';
+      document.getElementById('match-avatar').innerText = '🧩';
+      document.getElementById('match-status').innerText = 'Atama va ma’nosini bosing!';
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+        document.getElementById('match-avatar').innerText = '🤔';
+        document.getElementById('match-status').innerText = 'Juftini toping...';
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+          
+          document.getElementById('match-avatar').className = 'avatar-bubble happy';
+          document.getElementById('match-avatar').innerText = '🎉👍';
+          document.getElementById('match-status').innerText = 'To‘g‘ri topdingiz!';
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 600);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          document.getElementById('match-avatar').className = 'avatar-bubble sad';
+          document.getElementById('match-avatar').innerText = '😢';
+          document.getElementById('match-status').innerText = 'Mos kelmadi, qayta urining!';
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 500);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (20 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Temirdan mehnat qurollari yasash nega ko‘p mehnat va mahorat talab qilgan?", a: "Chunki temir misga nisbatan ancha yuqori haroratda (1500°C) eriydi va juda qattiq metall hisoblanadi." },
+      { q: "2. Jahon tarixida birinchi bo‘lib temirdan qaysi xalq va qachon foydalana boshlagan?", a: "Kichik Osiyodagi xettlar miloddan avvalgi XIV–XIII asrlarda foydalana boshlagan." },
+      { q: "3. Nima sababdan sof temirdan dastlab faqat bezak buyumlari tayyorlangan?", a: "Chunki sof temir tabiatda juda kamyob va qimmatbaho metall bo‘lgan." },
+      { q: "4. Qadimgi dunyoda ilk temir bezak buyumlari qayerdan topilgan?", a: "Misr fir’avni Tutanxamon maqbarasidan topilgan." },
+      { q: "5. O‘rta Osiyoda temirdan yasalgan ilk mehnat qurollari qaysi asrlarga to‘g‘ri keladi?", a: "Miloddan avvalgi IX–VIII asrlarga to‘g‘ri keladi." },
+      { q: "6. Temir mehnat qurollarining paydo bo‘lishi birinchi navbatda qaysi sohaga katta ta’sir ko‘rsatdi?", a: "Eng avvalo dehqonchilik (ziroatchilik)ning rivojiga ulkan ta’sir ko‘rsatdi." },
+      { q: "7. Qaysi temir qurollar ziroatchilik maydonlarini kengaytirishga imkon berdi?", a: "Temir uchli omochlar va temir boltalar." },
+      { q: "8. Temir qurollarning tarqalishi ishlab chiqarishda qanday o‘zgarish yasadi?", a: "Mehnat unumdorligini keskin oshirdi va ishlab chiqarishning yanada ilg‘or usuliga o‘tishga sharoit yaratdi." },
+      { q: "9. Temir asri boshlarida O‘rta Osiyoda aholi qanday ijtimoiy guruhlarga (tabaqalarga) bo‘lindi?", a: "Kohinlar, jangchilar, chorvadorlar, dehqonlar va hunarmandlar guruhlariga." },
+      { q: "10. Kohinlar qanday vazifani bajargan?", a: "Diniy marosimlarni o‘tkazgan, odamlarning ruhiy va ma’naviy e’tiqodiga rahbarlik qilgan." },
+      { q: "11. Jangchilar tabaqasining vazifasi nima edi?", a: "Qabiladoshlarni dushmandan himoya qilish va harbiy yurishlarda ishtirok etish." },
+      { q: "12. Dehqon va chorvadorlarning jamiyatdagi o‘rni qanday bo‘lgan?", a: "Jamiyatni qishloq xo‘jaligi, don-dun va chorva mahsulotlari bilan ta’minlash." },
+      { q: "13. Hunarmandlar qanday mahsulotlar tayyorlashgan?", a: "Temir mehnat qurollari, qurol-yarog‘lar, sopol va ro‘zg‘or buyumlari yasashgan." },
+      { q: "14. O‘rta Osiyoda temir asrida jamiyatning asosini qanday oila tashkil etgan?", a: "Katta patriarxal oila tashkil etgan." },
+      { q: "15. Jamiyatning asosini katta patriarxal oila tashkil etganini qaysi muqaddas manbadan bilamiz?", a: "«Avesto» kitobidan bilamiz." },
+      { q: "16. Hududiy qo‘shnichilik jamoasi qanday shakllangan?", a: "Bir necha katta patriarxal oilalarning qo‘shnichilik asosida birlashishi natijasida." },
+      { q: "17. Katta patriarxal oila a’zolari qanday yashagan?", a: "Alohida turarjoyga ega bo‘lib, xo‘jalik ishlarini birgalikda bajarganlar." },
+      { q: "18. Katta oilaning umumiy mulkiga nimalar kirgan?", a: "Mehnat qurollari, qishloq xo‘jalik mahsulotlari zaxirasi va chorva podalari." },
+      { q: "19. Temir asrida mehnat qurollari ashyosi sifatida mis va bronza nima uchun chekindi?", a: "Chunki temir ularga qaraganda ancha pishiq, qattiq va xomashyo jihatdan ko‘proq topiladigan metall edi." },
+      { q: "20. O‘rta Osiyoda temir asriga o‘tish davrida qanday ijtimoiy birlik vujudga keldi?", a: "Urug‘doshlik jamoasi o‘rnini hududiy qo‘shnichilik jamoasi egalladi." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+
+      document.getElementById('fc-avatar').className = 'avatar-bubble thinking';
+      document.getElementById('fc-avatar').innerText = '🧐';
+      document.getElementById('fc-status').innerText = 'O‘ylab ko‘ring-chi!';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+      document.getElementById('fc-avatar').className = 'avatar-bubble happy';
+      document.getElementById('fc-avatar').innerText = '💡';
+      document.getElementById('fc-status').innerText = 'Javobni eslab qoldingizmi?';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'flex';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+    }
+
+    // --- 3. TEST SINOVI (20 TA MATN ASOSIDAGI TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Temir qanday haroratda eriydi?",
+        options: [
+          "800°C da",
+          "1000°C da",
+          "1500°C da",
+          "2000°C da"
+        ],
+        correct: 2,
+        exp: "Temir misga nisbatan ancha yuqori haroratda — 1500°C da eriydi."
+      },
+      {
+        q: "2. Jahonda birinchi bo‘lib temirdan qaysi xalq foydalana boshlagan?",
+        options: [
+          "Qadimgi misrliklar",
+          "Kichik Osiyodagi xettlar",
+          "Shumerlar",
+          "Qadimgi xitoyliklar"
+        ],
+        correct: 1,
+        exp: "Temirdan birinchi bo‘lib Kichik Osiyodagi xettlar foydalanishgan."
+      },
+      {
+        q: "3. Kichik Osiyodagi xettlar temirdan qaysi asrlarda foydalana boshlaganlar?",
+        options: [
+          "Mil. avv. XX–XIX asrlarda",
+          "Mil. avv. XIV–XIII asrlarda",
+          "Mil. avv. IX–VIII asrlarda",
+          "Mil. avv. VI–V asrlarda"
+        ],
+        correct: 1,
+        exp: "Xettlar miloddan avvalgi XIV–XIII asrlarda temirdan foydalanishni o‘rgandilar."
+      },
+      {
+        q: "4. Nima sababdan temirdan dastlab faqat bezak buyumlari tayyorlangan?",
+        options: [
+          "Chunki undan qurol yasash taqiqlangan edi",
+          "Sof temir tabiatda juda kamyob bo‘lgani sababli",
+          "Temir juda yumshoq bo‘lgani sababli",
+          "Faqat ayollar ishlatgani sababli"
+        ],
+        correct: 1,
+        exp: "Sof temir tabiatda kamyob bo‘lgani uchun dastlab undan qimmatbaho bezak buyumlari tayyorlangan."
+      },
+      {
+        q: "5. Qadimgi dunyoda ilk temir bezaklar qaysi mashhur tarixiy obidadan topilgan?",
+        options: [
+          "Bobil minorasidan",
+          "Misr fir’avni Tutanxamon maqbarasidan",
+          "Hammurapi saroyidan",
+          "Doro I saroyidan"
+        ],
+        correct: 1,
+        exp: "Dastlabki temir bezak buyumlari Misr fir’avni Tutanxamon maqbarasidan topilgan."
+      },
+      {
+        q: "6. O‘rta Osiyoda temirdan yasalgan ilk mehnat qurollari qaysi asrlarga to‘g‘ri keladi?",
+        options: [
+          "Mil. avv. XIV–XIII asrlarga",
+          "Mil. avv. IX–VIII asrlarga",
+          "Mil. avv. IV–III asrlarga",
+          "Milodiy I–II asrlarga"
+        ],
+        correct: 1,
+        exp: "O‘rta Osiyoda temirdan yasalgan ilk mehnat qurollari miloddan avvalgi IX–VIII asrlarga oiddir."
+      },
+      {
+        q: "7. Mehnat qurollarining temirdan yasalishi eng avvalo qaysi sohaning jadal rivojiga olib keldi?",
+        options: [
+          "Baliqchilik",
+          "Dehqonchilik (ziroatchilik)",
+          "To‘quvchilik",
+          "Kulolchilik"
+        ],
+        correct: 1,
+        exp: "Temir qurollar eng avvalo dehqonchilikning tez sur’atlarda rivojiga sabab bo‘ldi."
+      },
+      {
+        q: "8. Katta maydonlarda ziroatchilikni kengaytirishga imkon bergan temir qurollar qaysilar edi?",
+        options: [
+          "Temir o‘roq va pichoqlar",
+          "Temir uchli omochlar va boltalar",
+          "Temir nayza va qalqonlar",
+          "Temir ketmon va mixlar"
+        ],
+        correct: 1,
+        exp: "Temir uchli omochlar va temir boltalar katta maydonlarni o‘zlashtirish imkonini berdi."
+      },
+      {
+        q: "9. Temir qurollarning tarqalishi ishlab chiqarishda qanday asosiy natija berdi?",
+        options: [
+          "Odamlar shaharlardan qochib ketdi",
+          "Mehnat unumdorligi oshdi va ilg‘or usullarga o‘tildi",
+          "Ziroatchilik butunlay to‘xtadi",
+          "Urug‘chilik tizimi qayta tiklandi"
+        ],
+        correct: 1,
+        exp: "Temir mehnat samaradorligini oshirib, ilg‘or ishlab chiqarish usuliga sharoit yaratdi."
+      },
+      {
+        q: "10. Temir asri boshlarida O‘rta Osiyoda aholi qanday ijtimoiy guruhlarga ajraldi?",
+        options: [
+          "Qullar va quldorlar",
+          "Kohinlar, jangchilar, chorvadorlar, dehqonlar va hunarmandlar",
+          "Boylar va kambag‘allar",
+          "Faqat oqsoqollar va navkarlar"
+        ],
+        correct: 1,
+        exp: "Aholi kohinlar, jangchilar, chorvadorlar, dehqonlar va hunarmandlarga bo‘lindi."
+      },
+      {
+        q: "11. Temir asrida diniy marosimlarni boshqargan tabaqa vakillari kimlar edi?",
+        options: [
+          "Jangchilar",
+          "Kohinlar",
+          "Oqsoqollar",
+          "Hunarmandlar"
+        ],
+        correct: 1,
+        exp: "Diniy e’tiqod va marosimlarni kohinlar boshqarishgan."
+      },
+      {
+        q: "12. O‘rta Osiyoda temir asrida jamiyat asosini qanday ijtimoiy tuzilma tashkil etgan?",
+        options: [
+          "Matriarxal kichik oila",
+          "Katta patriarxal oila",
+          "Ibtidoiy to‘da",
+          "Xonadonlar ittifoqi"
+        ],
+        correct: 1,
+        exp: "O‘rta Osiyoda jamiyat asosini katta patriarxal oila tashkil etgan."
+      },
+      {
+        q: "13. O‘rta Osiyoda jamiyat asosini katta patriarxal oila tashkil etganligi qaysi manbada bayon etilgan?",
+        options: [
+          "«Tarix» asarida",
+          "«Avesto» kitobida",
+          "«Geografiya» kitobida",
+          "Behistun bitiklarida"
+        ],
+        correct: 1,
+        exp: "Jamiyatning asosini katta patriarxal oila tashkil etganini «Avesto» kitobidan bilamiz."
+      },
+      {
+        q: "14. Bir necha katta patriarxal oilalarning birgalikda yashashi natijasida qanday jamoa vujudga kelgan?",
+        options: [
+          "Urug‘ jamoasi",
+          "Hududiy qo‘shnichilik jamoasi",
+          "Harbiy to‘da",
+          "Shahar hokimiyati"
+        ],
+        correct: 1,
+        exp: "Bir necha katta oilalar hududiy qo‘shnichilik jamoasini tashkil etgan."
+      },
+      {
+        q: "15. Katta patriarxal oilaning umumiy birgalikdagi mulkiga nimalar kirgan?",
+        options: [
+          "Faqat kiyim-kechaklar",
+          "Mehnat qurollari, qishloq xo‘jalik mahsulotlari zaxirasi va chorva podalari",
+          "Faqat turarjoy devori",
+          "Faqat omoch va bolta"
+        ],
+        correct: 1,
+        exp: "Mehnat qurollari, don-dun zaxiralari va chorva podalari katta oilaning umumiy mulki bo‘lgan."
+      },
+      {
+        q: "16. Temirning mis va bronzadan asosiy afzalligi nimada edi?",
+        options: [
+          "Chiroyli va yaltiroq rangida",
+          "Ancha qattiq, pishiq va o‘tkirligi uzoq saqlanishida",
+          "Oson va past haroratda erishida",
+          "Oltindan qimmatligida"
+        ],
+        correct: 1,
+        exp: "Temir mis va bronzaga qaraganda ancha qattiq va chidamli bo‘lgan."
+      },
+      {
+        q: "17. Qadimgi O‘rta Osiyoda mudofaa va harbiy ishlarni olib boruvchi tabaqa qaysi edi?",
+        options: [
+          "Kohinlar",
+          "Jangchilar",
+          "Dehqonlar",
+          "Chorvadorlar"
+        ],
+        correct: 1,
+        exp: "Harbiy himoyani jangchilar tabaqasi amalga oshirgan."
+      },
+      {
+        q: "18. Temir asriga o‘tish bilan urug‘chilik munosabatlarida qanday tub burilish sodir bo‘ldi?",
+        options: [
+          "Qon-qarindoshlik jamoasidan hududiy qo‘shnichilik jamoasiga o‘tildi",
+          "Odamlar yana to‘dalarga bo‘linib ketdi",
+          "Matriarxat qayta tiklandi",
+          "Oila butunlay tugatildi"
+        ],
+        correct: 0,
+        exp: "Qon-qarindoshlik asosidagi jamoalar o‘rnini hududiy qo‘shnichilik jamoasi egalladi."
+      },
+      {
+        q: "19. Temir asrida hunarmandlarning asosiy vazifasi nimalardan iborat bo‘lgan?",
+        options: [
+          "Diniy dafn marosimlarini o‘tkazish",
+          "Temirdan mehnat qurollari, qurol-yarog‘ va ro‘zg‘or buyumlari tayyorlash",
+          "Faqat ekin ekish",
+          "Qo‘riqchilik qilish"
+        ],
+        correct: 1,
+        exp: "Hunarmandlar temir qurollar, aslahalar va maishiy buyumlar ishlab chiqarishgan."
+      },
+      {
+        q: "20. Katta oila a’zolarining kundalik turmushi qanday tashkil etilgan edi?",
+        options: [
+          "Alohida turarjoyga ega bo‘lib, xo‘jalik ishlarini birgalikda bajarganlar",
+          "Bir-biri bilan umuman muloqot qilmaganlar",
+          "Faqat sardorning uyida yashaganlar",
+          "Har yili yangi manzilgohga ko‘chib yurganlar"
+        ],
+        correct: 0,
+        exp: "Katta oila a’zolari alohida turarjoyga ega bo‘lib, xo‘jalik ishlarini birgalikda amalga oshirganlar."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const av = document.getElementById('q-avatar');
+      av.className = 'avatar-bubble thinking';
+      av.innerText = '🤔';
+      document.getElementById('q-status').innerText = 'To‘g‘ri javobni tanlang...';
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('q-next-btn').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+      const av = document.getElementById('q-avatar');
+      const st = document.getElementById('q-status');
+
+      buttons.forEach((btn, idx) => {
+        btn.classList.add('disabled');
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+        av.className = 'avatar-bubble happy';
+        av.innerText = '🎉👍';
+        st.innerText = 'Ajoyib! To‘ppa-to‘g‘ri!';
+      } else {
+        av.className = 'avatar-bubble sad';
+        av.innerText = '😢🤦‍♂️';
+        st.innerText = 'Afsus, xato bo‘ldi...';
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      document.getElementById('q-next-btn').style.display = 'block';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) loadTestQuestion();
+      else showQuizResult();
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 18) fb.innerText = "Mukammal natija! 5-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 12) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'flex';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

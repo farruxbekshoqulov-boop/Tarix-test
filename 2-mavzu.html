@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>2-§. Eng qadimgi odamlarning rivojlanish bosqichlari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.92);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      overflow: hidden;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      height: 96vh;
+      max-height: 880px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 26px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 5px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 4px;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0;
+      flex-shrink: 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* Avatar */
+    .avatar-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 2px 0;
+      flex-shrink: 0;
+    }
+
+    .avatar-bubble {
+      font-size: 54px;
+      line-height: 1;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.3));
+    }
+
+    .avatar-bubble.thinking { animation: thinkBounce 2s infinite ease-in-out; }
+    .avatar-bubble.happy { animation: happyJump 0.5s ease; }
+    .avatar-bubble.sad { animation: sadShake 0.5s ease; }
+
+    @keyframes thinkBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @keyframes happyJump { 0% { transform: scale(1); } 50% { transform: scale(1.2) translateY(-6px); } 100% { transform: scale(1); } }
+    @keyframes sadShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+    .avatar-status {
+      font-size: 14px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-top: 4px;
+      background: rgba(15, 23, 42, 0.5);
+      padding: 3px 14px;
+      border-radius: 20px;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 6px 0;
+      flex: 1;
+      align-content: center;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 14px;
+      padding: 12px 10px;
+      color: #ffffff;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+      animation: sadShake 0.4s ease;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 20px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+    }
+
+    .fc-q { font-size: 19px; font-weight: 800; line-height: 1.45; color: #f8fafc; }
+    .fc-a {
+      font-size: 17px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 14px; padding: 14px; margin-top: 14px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .test-scroll-area { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    .q-title { font-size: 17.5px; font-weight: 800; text-align: center; color: #f8fafc; line-height: 1.4; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.3) !important; border-color: var(--success) !important; color: #a7f3d0 !important; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.3) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 16px;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+    }
+
+    .finish-state {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .finish-badge {
+      width: 85px; height: 85px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (25)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (25)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
+        <div>
+          <div class="header-bar">
+            <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+            <span id="match-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        </div>
+
+        <div class="avatar-area">
+          <div class="avatar-bubble thinking" id="match-avatar">🧩</div>
+          <div class="avatar-status" id="match-status">Atama va uning ma’nosini bosing!</div>
+        </div>
+
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 60px;">🏆</div>
+        <h2 style="font-size: 23px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 16px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalarni muvaffaqiyatli mosladingiz. Endi 25 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (25 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
+        <div>
+          <div class="header-bar">
+            <span class="badge">2-§ Trenajyor</span>
+            <span id="fc-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+        </div>
+
+        <div class="avatar-area">
+          <div class="avatar-bubble thinking" id="fc-avatar">🧐</div>
+          <div class="avatar-status" id="fc-status">O‘ylab ko‘ring-chi!</div>
+        </div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 60px;">🎉</div>
+        <h2 style="font-size: 23px; font-weight: 800;">25 ta savol tugadi!</h2>
+        <p style="font-size: 16px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni takrorlab oldingiz. Endi 25 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (25 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
+        <div>
+          <div class="header-bar">
+            <span class="badge">2-§ Test Sinovi</span>
+            <span id="q-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+        </div>
+
+        <div class="avatar-area">
+          <div class="avatar-bubble thinking" id="q-avatar">🤔</div>
+          <div class="avatar-status" id="q-status">To‘g‘ri javobni tanlang...</div>
+        </div>
+
+        <div class="test-scroll-area">
+          <div class="q-title" id="q-title">Yuklanmoqda...</div>
+          <div class="options-grid" id="q-options"></div>
+          <div class="exp-box" id="q-explanation"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="q-next-btn" style="display:none;" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 60px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/25</div>
+        <h2 style="font-size: 23px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 16px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Dastlabki odamlar turlari
+      [
+        { id: 1, left: "Ishbilarmon odam", right: "Sharqiy Afrikadan topilgan (2 mln yildan oshiq)" },
+        { id: 2, left: "Tik yuruvchi odam", right: "Tabiiy olovdan foydalanishni bilgan" },
+        { id: 3, left: "Neandertal odam", right: "Teshiktosh g‘oridan bolaning jasadi topilgan" },
+        { id: 4, left: "Chopper", right: "Bir tomoni urib o‘tkirlangan tosh qurol" }
+      ],
+      // 2-bosqich: Manzilgohlar va hududlar
+      [
+        { id: 5, left: "Selungur makoni", right: "Farg‘ona vodiysida joylashgan" },
+        { id: 6, left: "Ko‘lbuloq makoni", right: "Toshkent viloyatida joylashgan" },
+        { id: 7, left: "Teshiktosh g‘ori", right: "Boysun tog‘larida joylashgan" },
+        { id: 8, left: "O‘zlashtiruvchi xo‘jalik", right: "Terimchilik va ovchilik" }
+      ],
+      // 3-bosqich: Diniy e'tiqod shakllari
+      [
+        { id: 9, left: "Totemizm", right: "Hayvon yoki o‘simlik bilan qarindoshlikka ishonish" },
+        { id: 10, left: "Animizm", right: "Tabiat va narsalarning joni, ruhi borligiga ishonish" },
+        { id: 11, left: "Fetishizm", right: "Buyumlarning omad keltirishi yoki baloni qaytarishiga ishonish" },
+        { id: 12, left: "Sehrgarlik (Magik)", right: "Tabiat hodisalariga g‘ayritabiiy ta’sir o‘tkazishga ishonish" }
+      ],
+      // 4-bosqich: Qadimgi qoyatosh tasvirlari joylashgan g‘orlar
+      [
+        { id: 13, left: "Altamira g‘ori", right: "Ispaniyada joylashgan qadimiy g‘or" },
+        { id: 14, left: "Lasko g‘ori", right: "Fransiyada joylashgan qadimiy g‘or" },
+        { id: 15, left: "Kapova g‘ori", right: "Boshqirdistonda (Rossiya) joylashgan g‘or" },
+        { id: 16, left: "Buyuk muzlik davri", right: "Ilk paleolitning oxirlarida boshlangan" }
+      ],
+      // 5-bosqich: Xronologiya va muhim faktlar
+      [
+        { id: 17, left: "Mil. avv. 100–40-mingyilliklar", right: "O‘rta paleolit (Teshiktosh madaniyati) davri" },
+        { id: 18, left: "8–9 yashar bola", right: "Teshiktoshdan topilgan neandertal qiyofasi" },
+        { id: 19, left: "Tog‘ echkisi shoxlari", right: "Teshiktoshdagi qabr atrofiga qadab chiqilgan" },
+        { id: 20, left: "So‘nggi paleolit", right: "G‘orlar devorlariga ilk rasmlar chizilgan davr" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'flex';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+
+      document.getElementById('match-avatar').className = 'avatar-bubble thinking';
+      document.getElementById('match-avatar').innerText = '🧩';
+      document.getElementById('match-status').innerText = 'Atama va ma’nosini bosing!';
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+        document.getElementById('match-avatar').innerText = '🤔';
+        document.getElementById('match-status').innerText = 'Juftini toping...';
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+          
+          document.getElementById('match-avatar').className = 'avatar-bubble happy';
+          document.getElementById('match-avatar').innerText = '🎉👍';
+          document.getElementById('match-status').innerText = 'To‘g‘ri topdingiz!';
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 600);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          document.getElementById('match-avatar').className = 'avatar-bubble sad';
+          document.getElementById('match-avatar').innerText = '😢';
+          document.getElementById('match-status').innerText = 'Mos kelmadi, qayta urining!';
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 500);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (25 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Odamning paydo bo‘lishi qaysi fanlarning ma’lumotlariga tayanib o‘rganiladi?", a: "Antropologiya va arxeologiya fanlari ma’lumotlariga tayanib o‘rganiladi." },
+      { q: "2. Tarix fanida eng qadimgi odamlar qanday ataladi?", a: "Ibtidoiy odamlar deb ataladi." },
+      { q: "3. «Ishbilarmon odam» qoldiqlarining yoshi qancha va ular qayerdan topilgan?", a: "Sharqiy Afrikadan topilgan bo‘lib, uning yoshi 2 million yildan oshadi." },
+      { q: "4. Nega olimlar dastlabki odamni «ishbilarmon odam» deb atashgan?", a: "Chunki u toshdan o‘ta sodda mehnat qurollari yasashni bilgan." },
+      { q: "5. «Tik yuruvchi odam»ning asosiy yutug‘i va ko‘nikmasi nima edi?", a: "Tosh qurollar yasagan va chaqmoq zarbidan hosil bo‘lgan tabiiy olovdan foydalanishni bilgan." },
+      { q: "6. «Tik yuruvchi odam» qoldiqlari qaysi qit’alardan topilgan?", a: "Afrika, Yevropa va Osiyoning ko‘p joylaridan topilgan." },
+      { q: "7. Buyuk muzlik davri qachon boshlangan?", a: "Ilk paleolit davrining oxirlarida boshlangan." },
+      { q: "8. Muzlik davri ibtidoiy odamlar hayotiga qanday ta’sir ko‘rsatdi?", a: "Odamlarni yangicha iqlim va turmush sharoitlariga moslashishga majbur qildi, faqat kuchlilar yashab qoldi." },
+      { q: "9. O‘rta Osiyoda ilk tosh qurollar topilgan qaysi qadimgi makonlar ma’lum?", a: "Selungur (Farg‘ona vodiysi) va Ko‘lbuloq (Toshkent viloyati)." },
+      { q: "10. Chopper qanday tosh qurol hisoblanadi?", a: "Bir tomoni urib o‘tkirlangan qo‘pol tosh qurol." },
+      { q: "11. O‘zlashtiruvchi xo‘jalik nima degani?", a: "Tabiat nimani in’om etsa, shuni olish: meva-ildizlarni terish (terimchilik) va hayvonlarni ovlash." },
+      { q: "12. Teshiktosh g‘ori qayerda joylashgan va qaysi davrga oid?", a: "Boysun tog‘larida joylashgan bo‘lib, o‘rta paleolit davriga (mil. avv. 100–40-mingyilliklar) oiddir." },
+      { q: "13. Teshiktosh g‘oridan topilgan eng mashhur topilma nima?", a: "8–9 yashar neandertal bolaning suyak qoldiqlari." },
+      { q: "14. Teshiktoshdagi neandertal bola qabri atrofida qanday odat ko‘rilgan?", a: "Jasad atrofida tog‘ echkisi shoxlari qadab chiqilgan." },
+      { q: "15. Qadimgi odamlarda dastlabki diniy e’tiqodlar nima sababdan paydo bo‘lgan?", a: "Tushunarsiz tabiat hodisalari (momaqaldiroq, vulqon, chaqmoq, yomg‘ir) oldidagi ojizlik sababli tabiatni jonli deb hisoblashgan." },
+      { q: "16. Totemizm nima?", a: "Odamlar guruhining biror hayvon yoki o‘simlik turi bilan qarindoshlik aloqasiga ishonishi." },
+      { q: "17. Animizm nima?", a: "Odamni o‘rab turgan muhitdagi har bir narsa va tabiatning joni, ruhi borligiga ishonish." },
+      { q: "18. Fetishizm nima?", a: "Qadimgi buyumlarning omad keltirishiga yoki balo-qazoni daf qilishiga ishonish." },
+      { q: "19. So‘nggi paleolitga oid qadimgi g‘or rasmlari qaysi mamlakatlardan topilgan?", a: "Altamira (Ispaniya), Lasko (Fransiya) va Kapova (Boshqirdiston, Rossiya)." },
+      { q: "20. Ispaniyadagi Altamira g‘ori rasmlarini birinchi bo‘lib kim payqab qolgan?", a: "Arxeologning qizalog‘i g‘or shiftiga qarab kashf qilgan." },
+      { q: "21. Qadimgi qoyatosh rasmlarida asosan qanday hayvonlar tasvirlangan?", a: "Yovvoyi buqa, to‘ng‘iz, bug‘u, mamont, tog‘ echkisi, kiyik kabi ov hayvonlari." },
+      { q: "22. Odamlar g‘or devorlariga nima maqsadda rasm chizishgan?", a: "Bo‘lajak ovda omad keltirishiga ishonishgan, tasvirlar qarshisida taqlid qilib ovni mashq qilishgan." },
+      { q: "23. Qadimgi odamlarning tasviriy san’ati rivojlanishiga nima asos bo‘ldi?", a: "Odamning o‘zini qurshab turgan tevarak-dunyo sirlarini bilishga intilishi." },
+      { q: "24. Neandertal odam qaysi davrda yashagan?", a: "O‘rta paleolit davrida yashagan." },
+      { q: "25. Yirtqich hayvonlarga qarshi kurashda qadimgi odamlarga nima yordam bergan?", a: "Guruh-guruh bo‘lib, jamoa tarzida yashash va birgalikda harakat qilish." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+
+      document.getElementById('fc-avatar').className = 'avatar-bubble thinking';
+      document.getElementById('fc-avatar').innerText = '🧐';
+      document.getElementById('fc-status').innerText = 'O‘ylab ko‘ring-chi!';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+      document.getElementById('fc-avatar').className = 'avatar-bubble happy';
+      document.getElementById('fc-avatar').innerText = '💡';
+      document.getElementById('fc-status').innerText = 'Javobni eslab qoldingizmi?';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'flex';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+    }
+
+    // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Odamning paydo bo‘lishi ilmiy asosda qaysi fanlarning ma’lumotlariga tayanib o‘rganiladi?",
+        options: [
+          "Falsafa va geologiya",
+          "Antropologiya va arxeologiya",
+          "Etnografiya va toponimika",
+          "Numizmatika va sfragistika"
+        ],
+        correct: 1,
+        exp: "Odamning paydo bo‘lishi antropologiya va arxeologiya ma’lumotlariga tayanib o‘rganiladi."
+      },
+      {
+        q: "2. Sharqiy Afrikadan topilgan, yoshi 2 million yildan oshgan odam qoldiqlari qanday nomlangan?",
+        options: [
+          "«Aqliy odam»",
+          "«Tik yuruvchi odam»",
+          "«Ishbilarmon odam»",
+          "«Neandertal odam»"
+        ],
+        correct: 2,
+        exp: "Sharqiy Afrikadan topilgan 2 mln yillik odam toshdan sodda qurol yasagani uchun «ishbilarmon odam» deb atalgan."
+      },
+      {
+        q: "3. Qadimgi odamlarning qaysi turi tabiiy olovdan foydalanishni o‘rgangan?",
+        options: [
+          "«Ishbilarmon odam»",
+          "«Tik yuruvchi odam»",
+          "Avstralopitek",
+          "Kromanon odam"
+        ],
+        correct: 1,
+        exp: "«Tik yuruvchi odam» chaqmoq zarbidan chiqqan o‘rmon olovidan foydalanishni bilgan."
+      },
+      {
+        q: "4. «Tik yuruvchi odam» suyak qoldiqlari qaysi hududlardan topilgan?",
+        options: [
+          "Faqat Janubiy Amerikadan",
+          "Afrika, Yevropa va Osiyodan",
+          "Faqat Avstraliya qit’asidan",
+          "Faqat Sharqiy Afrikadan"
+        ],
+        correct: 1,
+        exp: "«Tik yuruvchi odamlar» Afrika, Yevropa va Osiyoning ko‘p joylariga tarqalgan."
+      },
+      {
+        q: "5. Buyuk muzlik davri qaysi bosqichning oxirlarida boshlangan?",
+        options: [
+          "O‘rta paleolit",
+          "Ilk paleolit",
+          "So‘nggi paleolit",
+          "Mezolit"
+        ],
+        correct: 1,
+        exp: "Ilk paleolit davrining oxirlariga kelib Yer yuzida Buyuk muzlik davri boshlangan."
+      },
+      {
+        q: "6. Farg‘ona vodiysida joylashgan eng qadimgi tosh davri makoni qaysi?",
+        options: [
+          "Ko‘lbuloq",
+          "Selungur",
+          "Teshiktosh",
+          "Zarautsoy"
+        ],
+        correct: 1,
+        exp: "Selungur makoni Farg‘ona vodiysida joylashgan."
+      },
+      {
+        q: "7. Toshkent viloyati hududida joylashgan mashhur qadimgi tosh davri makoni qaysi?",
+        options: [
+          "Ko‘lbuloq",
+          "Selungur",
+          "Obirahmat",
+          "Machay"
+        ],
+        correct: 0,
+        exp: "Ko‘lbuloq makoni Toshkent viloyati hududida joylashgan."
+      },
+      {
+        q: "8. Arxeologiya fanida bir tomoni urib o‘tkirlangan qo‘pol tosh qurollar nima deb ataladi?",
+        options: [
+          "Chopper",
+          "Mikrolit",
+          "Nayza",
+          "Qirg‘ich"
+        ],
+        correct: 0,
+        exp: "Bir tomoni urib o‘tkirlangan tosh qurollar «chopperlar» deb nomlanadi."
+      },
+      {
+        q: "9. Qadimgi odamlarning tabiat bergan tayyor meva-ildizlarni terishi va hayvonlarni ovlashi qanday xo‘jalik deyiladi?",
+        options: [
+          "Ishlab chiqaruvchi xo‘jalik",
+          "O‘zlashtiruvchi xo‘jalik",
+          "Dehqonchilik xo‘jaligi",
+          "Hunarmandchilik xo‘jaligi"
+        ],
+        correct: 1,
+        exp: "Tabiat ne’matlarini yig‘ish va ov qilish «o‘zlashtiruvchi xo‘jalik» deb ataladi."
+      },
+      {
+        q: "10. Boysun tog‘larida joylashgan jahonga mashhur O‘rta paleolit yodgorligi qaysi?",
+        options: [
+          "Selungur g‘ori",
+          "Teshiktosh g‘ori",
+          "Altamira g‘ori",
+          "Kapova g‘ori"
+        ],
+        correct: 1,
+        exp: "Boysun tog‘laridagi Teshiktosh g‘ori o‘rta paleolit davriga oiddir."
+      },
+      {
+        q: "11. O‘rta paleolit davri qaysi mingyilliklarni qamrab oladi?",
+        options: [
+          "Mil. avv. 2 mln – 100-mingyillik",
+          "Mil. avv. 100–40-mingyilliklar",
+          "Mil. avv. 40–12-mingyilliklar",
+          "Mil. avv. 12–7-mingyilliklar"
+        ],
+        correct: 1,
+        exp: "Teshiktosh g‘ori madaniyati mansub bo‘lgan O‘rta paleolit davri mil. avv. 100–40-mingyilliklarni o‘z ichiga oladi."
+      },
+      {
+        q: "12. Teshiktosh g‘oridan necha yashar neandertal bolaning suyak qoldiqlari topilgan?",
+        options: [
+          "4–5 yashar",
+          "8–9 yashar",
+          "12–13 yashar",
+          "15–16 yashar"
+        ],
+        correct: 1,
+        exp: "Teshiktoshdan 8–9 yashar neandertal bolaning suyak qoldiqlari topilgan."
+      },
+      {
+        q: "13. Teshiktoshdagi bolaning jasadi atrofida qaysi hayvonning shoxlari qadab chiqilgan edi?",
+        options: [
+          "Yovvoyi kiyik",
+          "Tog‘ echkisi",
+          "Yovvoyi buqa",
+          "Qoplon"
+        ],
+        correct: 1,
+        exp: "Bola jasadi atrofiga tog‘ echkisi shoxlari qadab chiqilgan."
+      },
+      {
+        q: "14. Odamlar guruhining biror hayvon yoki o‘simlik bilan qarindoshlik aloqasiga ishonishi nima deb ataladi?",
+        options: [
+          "Animizm",
+          "Totemizm",
+          "Fetishizm",
+          "Sehrgarlik"
+        ],
+        correct: 1,
+        exp: "Hayvon yoki o‘simlik bilan qarindoshlikka ishonish Totemizm deyiladi."
+      },
+      {
+        q: "15. Har bir narsaning joni va ruhi borligiga ishonish qaysi diniy tasavvurga xos?",
+        options: [
+          "Totemizm",
+          "Animizm",
+          "Fetishizm",
+          "Politeizm"
+        ],
+        correct: 1,
+        exp: "Tabiat va narsalarning joni, ruhi bor deb hisoblash Animizmdir."
+      },
+      {
+        q: "16. Buyumlarning omad keltirishi yoki balo-qazoni daf qilishiga ishonish qanday nomlanadi?",
+        options: [
+          "Fetishizm",
+          "Animizm",
+          "Totemizm",
+          "Panteizm"
+        ],
+        correct: 0,
+        exp: "Buyumlar kuchiga sig‘inish Fetishizm deb ataladi."
+      },
+      {
+        q: "17. Qadimgi odamlarda diniy e’tiqodlarning shakllanishiga asosiy sabab nima bo‘lgan?",
+        options: [
+          "Tabiat hodisalari oldidagi ojizlik va ularni jonli deb tushunish",
+          "Yozuvning ixtiro qilinishi",
+          "Boshqa qabilalar bilan savdo qilish",
+          "Shaharlarning vujudga kelishi"
+        ],
+        correct: 0,
+        exp: "Odamlar tushunarsiz tabiat hodisalarini (chaqmoq, zilzila) jonli deb bilib, ularga sig‘ina boshlaganlar."
+      },
+      {
+        q: "18. G‘orlar devorlariga ilk rangli tasvirlar chizish qaysi davrda paydo bo‘lgan?",
+        options: [
+          "Ilk paleolitda",
+          "O‘rta paleolitda",
+          "So‘nggi paleolitda",
+          "Neolitda"
+        ],
+        correct: 2,
+        exp: "So‘nggi paleolitga oid g‘or devorlarida qadimgi san’at va diniy e’tiqod namunalari topilgan."
+      },
+      {
+        q: "19. Ispaniya hududida joylashgan mashhur qadimgi qoyatosh tasvirlari g‘ori qaysi?",
+        options: [
+          "Lasko",
+          "Altamira",
+          "Kapova",
+          "Teshiktosh"
+        ],
+        correct: 1,
+        exp: "Altamira g‘ori Ispaniyada joylashgan."
+      },
+      {
+        q: "20. Fransiya hududida joylashgan ilk qoyatosh tasvirlari bor g‘or qaysi?",
+        options: [
+          "Altamira",
+          "Lasko",
+          "Kapova",
+          "Kromanon"
+        ],
+        correct: 1,
+        exp: "Lasko g‘ori Fransiyada joylashgan."
+      },
+      {
+        q: "21. Rossiyaning Boshqirdiston hududidan topilgan qadimgi tasvirlar joylashgan g‘or qaysi?",
+        options: [
+          "Lasko",
+          "Kapova",
+          "Altamira",
+          "Selungur"
+        ],
+        correct: 1,
+        exp: "Kapova g‘ori Boshqirdistonda (Rossiya) joylashgan."
+      },
+      {
+        q: "22. Qadimgi odamlar g‘or devorlaridagi hayvonlar tasvirlari oldida nima qilishgan?",
+        options: [
+          "U yerda ovqat pishirishgan",
+          "Bo‘lajak ovda omad tilab, nayza uloqtirishni mashq qilganlar",
+          "Rasmlarni o‘chirib yangisini chizganlar",
+          "Ularni boshqa qabilalarga sotganlar"
+        ],
+        correct: 1,
+        exp: "Rasmlar oldida hayvonlar harakatiga taqlid qilib, ov manzaralarini mashq qilishgan."
+      },
+      {
+        q: "23. Qadimgi tasviriy san’atning rivojlanishiga asosiy turtki nima bo‘lgan?",
+        options: [
+          "Mehnat qurollari sonining ko‘payishi",
+          "Odamning tevarak-dunyo sirlarini bilishga intilishi",
+          "Muzlikning butunlay erib ketishi",
+          "Qabilalar o‘rtasidagi urushlar"
+        ],
+        correct: 1,
+        exp: "Odamning o‘zini qurshab turgan dunyoni anglashga intilishi tasviriy san’atga asos bo‘ldi."
+      },
+      {
+        q: "24. Dastlabki odamlarning birinchi qurollari nimalardan yasalgan edi?",
+        options: [
+          "Temir va bronzadan",
+          "Mis va loydan",
+          "Tosh, suyak va tayoqdan",
+          "Faqat yog‘ochdan"
+        ],
+        correct: 2,
+        exp: "Dastlabki qurollar uchi o‘tkirlangan tosh, tayoq va suyaklardan yasalgan."
+      },
+      {
+        q: "25. Qadimgi odamlar xavfli yirtqich hayvonlarga qarshi kurashda qanday qilib omon qolishgan?",
+        options: [
+          "Yolg‘iz yashab, yashirinish orqali",
+          "Guruh-guruh bo‘lib, birgalikda himoyalanish orqali",
+          "Baland daraxtlarga chiqib ketish orqali",
+          "Faqat g‘or ichidan chiqmaslik orqali"
+        ],
+        correct: 1,
+        exp: "Odamlar guruh-guruh bo‘lib, yelkama-yelka turib harakat qilganlari tufayli xavfni yenga olganlar."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const av = document.getElementById('q-avatar');
+      av.className = 'avatar-bubble thinking';
+      av.innerText = '🤔';
+      document.getElementById('q-status').innerText = 'To‘g‘ri javobni tanlang...';
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('q-next-btn').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+      const av = document.getElementById('q-avatar');
+      const st = document.getElementById('q-status');
+
+      buttons.forEach((btn, idx) => {
+        btn.classList.add('disabled');
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+        av.className = 'avatar-bubble happy';
+        av.innerText = '🎉👍';
+        st.innerText = 'Ajoyib! To‘ppa-to‘g‘ri!';
+      } else {
+        av.className = 'avatar-bubble sad';
+        av.innerText = '😢🤦‍♂️';
+        st.innerText = 'Afsus, xato bo‘ldi...';
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      document.getElementById('q-next-btn').style.display = 'block';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) loadTestQuestion();
+      else showQuizResult();
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 23) fb.innerText = "Mukammal natija! 2-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'flex';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

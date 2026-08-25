@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>3-§. Urug‘chilik jamiyati</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.92);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      overflow: hidden;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      height: 96vh;
+      max-height: 880px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 26px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 5px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 4px;
+      border: none;
+      background: transparent;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0;
+      flex-shrink: 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* Avatar */
+    .avatar-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 2px 0;
+      flex-shrink: 0;
+    }
+
+    .avatar-bubble {
+      font-size: 54px;
+      line-height: 1;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.3));
+    }
+
+    .avatar-bubble.thinking { animation: thinkBounce 2s infinite ease-in-out; }
+    .avatar-bubble.happy { animation: happyJump 0.5s ease; }
+    .avatar-bubble.sad { animation: sadShake 0.5s ease; }
+
+    @keyframes thinkBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @keyframes happyJump { 0% { transform: scale(1); } 50% { transform: scale(1.2) translateY(-6px); } 100% { transform: scale(1); } }
+    @keyframes sadShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+    .avatar-status {
+      font-size: 14px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-top: 4px;
+      background: rgba(15, 23, 42, 0.5);
+      padding: 3px 14px;
+      border-radius: 20px;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 6px 0;
+      flex: 1;
+      align-content: center;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 14px;
+      padding: 12px 10px;
+      color: #ffffff;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+      animation: sadShake 0.4s ease;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 20px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+    }
+
+    .fc-q { font-size: 19px; font-weight: 800; line-height: 1.45; color: #f8fafc; }
+    .fc-a {
+      font-size: 17px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 14px; padding: 14px; margin-top: 14px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .test-scroll-area { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    .q-title { font-size: 17.5px; font-weight: 800; text-align: center; color: #f8fafc; line-height: 1.4; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.3) !important; border-color: var(--success) !important; color: #a7f3d0 !important; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.3) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 16px;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+    }
+
+    .finish-state {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .finish-badge {
+      width: 85px; height: 85px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (30)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICHLI MATCHING) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
+        <div>
+          <div class="header-bar">
+            <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+            <span id="match-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        </div>
+
+        <div class="avatar-area">
+          <div class="avatar-bubble thinking" id="match-avatar">🧩</div>
+          <div class="avatar-status" id="match-status">Atama va uning to‘g‘ri ma’nosini bosing!</div>
+        </div>
+
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 60px;">🏆</div>
+        <h2 style="font-size: 23px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 16px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalarni muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
+        <div>
+          <div class="header-bar">
+            <span class="badge">3-§ Trenajyor</span>
+            <span id="fc-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+        </div>
+
+        <div class="avatar-area">
+          <div class="avatar-bubble thinking" id="fc-avatar">🧐</div>
+          <div class="avatar-status" id="fc-status">O‘ylab ko‘ring-chi!</div>
+        </div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 60px;">🎉</div>
+        <h2 style="font-size: 23px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 16px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 30 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (30 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
+        <div>
+          <div class="header-bar">
+            <span class="badge">3-§ Test Sinovi</span>
+            <span id="q-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+        </div>
+
+        <div class="avatar-area">
+          <div class="avatar-bubble thinking" id="q-avatar">🤔</div>
+          <div class="avatar-status" id="q-status">To‘g‘ri javobni tanlang...</div>
+        </div>
+
+        <div class="test-scroll-area">
+          <div class="q-title" id="q-title">Yuklanmoqda...</div>
+          <div class="options-grid" id="q-options"></div>
+          <div class="exp-box" id="q-explanation"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="q-next-btn" style="display:none;" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 60px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/30</div>
+        <h2 style="font-size: 23px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 16px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Davrlar xronologiyasi
+      [
+        { id: 1, left: "So‘nggi paleolit davri", right: "Mil. avv. 40–12-mingyilliklar" },
+        { id: 2, left: "Mezolit davri", right: "Mil. avv. 12–7-mingyilliklar" },
+        { id: 3, left: "Neolit davri", right: "Mil. avv. 6–4-mingyilliklar" },
+        { id: 4, left: "Kromanyon odami", right: "Zamonaviy qiyofadagi inson" }
+      ],
+      // 2-bosqich: Ijtimoiy tuzum va jamoalar
+      [
+        { id: 5, left: "Urug‘ jamoasi", right: "Qarindoshlardan tarkib topgan ixcham guruhlar" },
+        { id: 6, left: "Qabila", right: "Bir joyda yashagan bir qancha urug‘lar birlashmasi" },
+        { id: 7, left: "Boshpana (turarjoy)", right: "So‘nggi paleolit odamlarining muhim ixtirosi" },
+        { id: 8, left: "O‘q-yoy", right: "Mezolit davrining eng buyuk kashfiyoti" }
+      ],
+      // 3-bosqich: Mezolit manzilgohlari
+      [
+        { id: 9, left: "Obishir makoni", right: "Farg‘ona vodiysida joylashgan" },
+        { id: 10, left: "Qo‘shilish makoni", right: "Toshkent vohasida joylashgan" },
+        { id: 11, left: "Machay makoni", right: "Surxondaryo viloyatida joylashgan" },
+        { id: 12, left: "It", right: "Inson tomonidan birinchi xonakilashtirilgan hayvon" }
+      ],
+      // 4-bosqich: Xo‘jalik shakllari
+      [
+        { id: 13, left: "O‘zlashtiruvchi xo‘jalik", right: "Termachilik, ovchilik va baliqchilik" },
+        { id: 14, left: "Ishlab chiqaruvchi xo‘jalik", right: "Dehqonchilik (ziroatchilik) va chorvachilik" },
+        { id: 15, left: "Mikrolitlar", right: "Mayda tosh mehnat qurollari" },
+        { id: 16, left: "O‘troq turmush tarzi", right: "Neolit davrida to‘liq shakllangan hayot tarzi" }
+      ],
+      // 5-bosqich: Neolit davri ixtirolari
+      [
+        { id: 17, left: "Kulolchilik", right: "Loydan idishlar yasab, olovda pishirish" },
+        { id: 18, left: "To‘quvchilik", right: "Tolalar va jundan kiyim-kechak tayyorlash" },
+        { id: 19, left: "Silliqlash va parmalash", right: "Neolitda toshga ishlov berishning yangi usullari" },
+        { id: 20, left: "Sopol idishlar kashfi", right: "Arxeologlar neolit boshlanishini belgilovchi mezon" }
+      ],
+      // 6-bosqich: So‘nggi paleolit yutuqlari va makonlari
+      [
+        { id: 21, left: "Taqinchoqlar (munchoq, tumor)", right: "So‘nggi paleolitda yasash o‘rganilgan bezaklar" },
+        { id: 22, left: "Olov hosil qilish", right: "So‘nggi paleolitda inson mustaqil o‘rgangan mahorat" },
+        { id: 23, left: "Samarqand makoni", right: "So‘nggi paleolit davriga oid yirik manzilgoh" },
+        { id: 24, left: "Kesuvchi va arralovchi qurollar", right: "So‘nggi paleolitda toshdan yasalgan yangi asboblar" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'flex';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+
+      document.getElementById('match-avatar').className = 'avatar-bubble thinking';
+      document.getElementById('match-avatar').innerText = '🧩';
+      document.getElementById('match-status').innerText = 'Atama va ma’nosini bosing!';
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+        document.getElementById('match-avatar').innerText = '🤔';
+        document.getElementById('match-status').innerText = 'Juftini toping...';
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+          
+          document.getElementById('match-avatar').className = 'avatar-bubble happy';
+          document.getElementById('match-avatar').innerText = '🎉👍';
+          document.getElementById('match-status').innerText = 'To‘g‘ri topdingiz!';
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 600);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          document.getElementById('match-avatar').className = 'avatar-bubble sad';
+          document.getElementById('match-avatar').innerText = '😢';
+          document.getElementById('match-status').innerText = 'Mos kelmadi, qayta urining!';
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 500);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. So‘nggi paleolit davri qaysi mingyilliklarni o‘z ichiga oladi?", a: "Miloddan avvalgi 40–12-mingyilliklarni o‘z ichiga oladi." },
+      { q: "2. So‘nggi paleolit davrida qanday qiyofadagi odam yashagan?", a: "Zamonaviy qiyofaga ega bo‘lgan kromanyon odami yashagan." },
+      { q: "3. O‘zbekiston hududida So‘nggi paleolit davriga oid qaysi manzilgohlar topilgan?", a: "Samarqand shahri hududida, Toshkent viloyatida (Ko‘lbuloq) va Farg‘ona vodiysida." },
+      { q: "4. Urug‘ jamoasi qanday vujudga keldi va u nimani anglatadi?", a: "Qarindoshlardan tarkib topgan ixcham guruhlar — bitta manzilgohda birgalikda yashagan jamoa." },
+      { q: "5. Qabila nima?", a: "Bir joyda yashab turgan bir qancha urug‘larning birlashuvi." },
+      { q: "6. So‘nggi paleolit davri odamlarining eng muhim ixtirolaridan biri nima edi?", a: "Turarjoylar (boshpana) qurilishining boshlanishi." },
+      { q: "7. So‘nggi paleolitda odamlar kiyim-kechaklarni nimadan tayyorlashgan?", a: "Hayvonlar terisidan tayyorlashgan." },
+      { q: "8. So‘nggi paleolit davrida odam qanday yangi ko‘nikmalarni o‘rgandi?", a: "Sun’iy olov hosil qilishni, taqinchoqlar yasashni, boshpana qurishni, kesuvchi va arralovchi tosh qurollar yasashni." },
+      { q: "9. So‘nggi paleolitda qanday taqinchoqlar yasalgan?", a: "Munchoq, tumor va uzuklar." },
+      { q: "10. Mezolit — o‘rta tosh davri qaysi mingyilliklarni qamrab oladi?", a: "Miloddan avvalgi 12–7-mingyilliklarni o‘z ichiga oladi." },
+      { q: "11. Mezolit davri boshlanishi tabiatda qanday o‘zgarishga sabab bo‘ldi?", a: "Muzlik davri poyoniga yetdi, iqlim ancha ilidi va odamlar turmushida keskin o‘zgarishlar yuz berdi." },
+      { q: "12. O‘rta Osiyodagi mashhur Mezolit manzilgohlarini ayting.", a: "Obishir (Farg‘ona vodiysi), Qo‘shilish (Toshkent vohasi) va Machay (Surxondaryo viloyati)." },
+      { q: "13. Mezolit davrining eng buyuk texnik ixtirosi qaysi?", a: "O‘q-yoyning kashf etilishi." },
+      { q: "14. O‘q-yoy ixtirosi ibtidoiy odamlar hayotiga qanday yengillik kiritdi?", a: "Uzoq masofadagi tez yurar hayvonlar va qushlarni ovlashni osonlashtirdi, ov samaradorligini oshirdi." },
+      { q: "15. Hayvonlarni qo‘lga o‘rgatish qaysi davrda boshlandi?", a: "Mezolit davrining oxirida boshlandi." },
+      { q: "16. Insoniyat tarixida birinchi bo‘lib qaysi hayvon xonakilashtirilgan?", a: "It birinchi bo‘lib xonakilashtirilgan." },
+      { q: "17. Nima sababdan och qolgan it odamlar manzilgohiga kelgan?", a: "Ochlik uni g‘or yoniga tashlangan suyak va ov qoldiqlarini yeyish uchun yetaklagan." },
+      { q: "18. Itning qo‘lga o‘rgatilishi odamlarga qanday foyda keltirdi?", a: "Ov qilishni osonlashtirdi, kechalari manzilgohni yirtqichlardan (ayiq, bo‘ri) qo‘riqladi va odamlarning doimiy hamrohiga aylandi." },
+      { q: "19. Mezolit davri oxirida tiriklayin tutilgan hayvonlar nima maqsadda saqlangan?", a: "Yegulik zaxirasi sifatida saqlangan (bu chorvachilikning boshlanishi edi)." },
+      { q: "20. Ibtidoiy ziroatchilik va chorvachilik kurtaklari qaysi davrda paydo bo‘ldi?", a: "Mezolit davrida kurtak yozdi." },
+      { q: "21. Neolit — yangi tosh davri O‘rta Osiyoda qaysi davrlarni o‘z ichiga oladi?", a: "Miloddan avvalgi 6–4-mingyilliklarni o‘z ichiga oladi." },
+      { q: "22. Ishlab chiqaruvchi xo‘jalik nima va u qachon vujudga keldi?", a: "Neolit davrida vujudga keldi: tabiat berganini olishdan dehqonchilik va chorvachilikka o‘tish." },
+      { q: "23. O‘zlashtiruvchi va ishlab chiqaruvchi xo‘jalikning asosiy farqi nimada?", a: "O‘zlashtiruvchi — termachilik, ovchilik, baliqchilik; Ishlab chiqaruvchi — dehqonchilik va chorvachilik." },
+      { q: "24. Arxeologlar Neolit davri boshlanishini qaysi kashfiyot bilan belgilaydilar?", a: "Sopol idishlar yasash (kulolchilik)ning kashf etilishi bilan." },
+      { q: "25. Mikrolitlar nima?", a: "Toshdan yasalgan mayda, uchi o‘tkir mehnat qurollari." },
+      { q: "26. Neolit davrida toshga ishlov berishning qanday yangi usullari paydo bo‘ldi?", a: "Toshni silliqlash va teshikchalar parmalash usullari." },
+      { q: "27. Kulolchilik nima?", a: "Loydan idishlar yasash va ularni olovda pishirish hunari." },
+      { q: "28. To‘quvchilik qanday vujudga keldi?", a: "Tolalar va hayvonlar junidan kiyim-kechak tayyorlash orqali Neolit davrida vujudga keldi." },
+      { q: "29. Neolit davrida odamlar qanday turmush tarziga o‘tishdi?", a: "Doimiy xom g‘isht va loydan uylar qurib, o‘troq turmush tarziga o‘tishdi." },
+      { q: "30. Qadimgi Sharq hududlarida Neolit davridagi buyuk burilish qanday ataladi?", a: "Ishlab chiqaruvchi xo‘jalik (dehqonchilik va chorvachilik)ka o‘tish davri." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+
+      document.getElementById('fc-avatar').className = 'avatar-bubble thinking';
+      document.getElementById('fc-avatar').innerText = '🧐';
+      document.getElementById('fc-status').innerText = 'O‘ylab ko‘ring-chi!';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+      document.getElementById('fc-avatar').className = 'avatar-bubble happy';
+      document.getElementById('fc-avatar').innerText = '💡';
+      document.getElementById('fc-status').innerText = 'Javobni eslab qoldingizmi?';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'flex';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+    }
+
+    // --- 3. TEST SINOVI (30 TA MATN ASOSIDAGI TEST) ---
+    const testQuestions = [
+      {
+        q: "1. So‘nggi paleolit davri qaysi mingyilliklarni o‘z ichiga oladi?",
+        options: [
+          "Mil. avv. 100–40-mingyilliklar",
+          "Mil. avv. 40–12-mingyilliklar",
+          "Mil. avv. 12–7-mingyilliklar",
+          "Mil. avv. 6–4-mingyilliklar"
+        ],
+        correct: 1,
+        exp: "So‘nggi paleolit davri miloddan avvalgi 40–12-mingyilliklarni qamrab oladi."
+      },
+      {
+        q: "2. So‘nggi paleolit davrida yashagan, zamonaviy qiyofaga ega bo‘lgan inson turi qanday atalgan?",
+        options: [
+          "Neandertal odam",
+          "Kromanyon odami",
+          "Tik yuruvchi odam",
+          "Ishbilarmon odam"
+        ],
+        correct: 1,
+        exp: "So‘nggi paleolitda zamonaviy qiyofadagi kromanyon odami shakllandi."
+      },
+      {
+        q: "3. O‘zbekiston hududidagi qaysi manzilgohlar So‘nggi paleolit davriga oid?",
+        options: [
+          "Selungur va Machay",
+          "Samarqand shahri, Ko‘lbuloq va Farg‘ona vodiysi makonlari",
+          "Obishir va Qo‘shilish",
+          "Zarautsoy va Sopollitepa"
+        ],
+        correct: 1,
+        exp: "Samarqand makoni, Toshkent viloyatidagi Ko‘lbuloq va Farg‘onadagi manzilgohlar so‘nggi paleolitga oiddir."
+      },
+      {
+        q: "4. Qarindoshlardan tarkib topgan, bitta manzilgohda yashagan ixcham guruhlar nima deb atalgan?",
+        options: [
+          "Ibtidoiy to‘da",
+          "Urug‘ jamoasi",
+          "Qabila ittifoqi",
+          "Shahar jamoasi"
+        ],
+        correct: 1,
+        exp: "Qarindoshlardan iborat ixcham guruhlar urug‘ jamoalariga birlashgan."
+      },
+      {
+        q: "5. Bir hududda yashab turgan bir qancha urug‘larning yirik birlashmasi qanday atalgan?",
+        options: [
+          "To‘da",
+          "Qabila",
+          "Davlat",
+          "Harbiy ittifoq"
+        ],
+        correct: 1,
+        exp: "Bir joyda yashagan bir qancha urug‘lar birlashib, qabilani tashkil etgan."
+      },
+      {
+        q: "6. Turarjoylar (boshpana) qurilishining boshlanishi qaysi davr odamlarining muhim ixtirosi bo‘ldi?",
+        options: [
+          "Ilk paleolit",
+          "O‘rta paleolit",
+          "So‘nggi paleolit",
+          "Eneolit"
+        ],
+        correct: 2,
+        exp: "Turarjoylar qurilishi So‘nggi paleolit davrining muhim ixtirosi hisoblanadi."
+      },
+      {
+        q: "7. So‘nggi paleolitda odamlar o‘z kiyim-kechaklarini nimalardan tayyorlashgan?",
+        options: [
+          "Paxta va zig‘ir tolasidan",
+          "Hayvonlar terisidan",
+          "Daraxt po‘stlog‘idan",
+          "Ipak matolardan"
+        ],
+        correct: 1,
+        exp: "So‘nggi paleolit odamlari kiyimlarni hayvonlar terisidan tayyorlashgan."
+      },
+      {
+        q: "8. Quyidagilardan qaysi biri So‘nggi paleolit davrida odam tomonidan o‘rganilgan yangi ko‘nikma hisoblanadi?",
+        options: [
+          "Temirdan qurol yasash",
+          "Olov hosil qilish va boshpana qurish",
+          "G‘ildirakni kashf etish",
+          "Tangalar zarb qilish"
+        ],
+        correct: 1,
+        exp: "So‘nggi paleolitda odam olov hosil qilish, taqinchoq yasash, boshpana qurish va kesuvchi-arralovchi qurollar yasashni o‘rgandi."
+      },
+      {
+        q: "9. Munchoq, tumor va uzuk kabi ilk taqinchoqlar qaysi davrda paydo bo‘lgan?",
+        options: [
+          "Ilk paleolitda",
+          "So‘nggi paleolitda",
+          "Bronza davrida",
+          "Temir davrida"
+        ],
+        correct: 1,
+        exp: "So‘nggi paleolitda inson taqinchoqlar (munchoq, tumor, uzuk) yasashni o‘rgangan."
+      },
+      {
+        q: "10. Mezolit — o‘rta tosh davri qaysi mingyilliklarni o‘z ichiga oladi?",
+        options: [
+          "Mil. avv. 40–12-mingyilliklar",
+          "Mil. avv. 12–7-mingyilliklar",
+          "Mil. avv. 6–4-mingyilliklar",
+          "Mil. avv. 4–3-mingyilliklar"
+        ],
+        correct: 1,
+        exp: "Mezolit davri miloddan avvalgi 12–7-mingyilliklarni qamrab oladi."
+      },
+      {
+        q: "11. Yer yuzida muzlik davrining poyoniga yetishi va iqlimning ancha ilishi qaysi davr boshlanishiga to‘g‘ri keladi?",
+        options: [
+          "Paleolit davri",
+          "Mezolit davri",
+          "Neolit davri",
+          "Eneolit davri"
+        ],
+        correct: 1,
+        exp: "Mezolit davri boshlanishi bilan Buyuk muzlik davri poyoniga yetdi."
+      },
+      {
+        q: "12. Farg‘ona vodiysida joylashgan mashhur Mezolit davri manzilgohi qaysi?",
+        options: [
+          "Selungur",
+          "Obishir",
+          "Qo‘shilish",
+          "Machay"
+        ],
+        correct: 1,
+        exp: "Obishir makoni Farg‘ona vodiysida joylashgan mezolit manzilgohidir."
+      },
+      {
+        q: "13. Toshkent vohasida joylashgan Mezolit davri manzilgohi qaysi?",
+        options: [
+          "Ko‘lbuloq",
+          "Qo‘shilish",
+          "Obishir",
+          "Teshiktosh"
+        ],
+        correct: 1,
+        exp: "Qo‘shilish makoni Toshkent vohasida joylashgan mezolit yodgorligidir."
+      },
+      {
+        q: "14. Surxondaryo viloyatida joylashgan mashhur Mezolit davri manzilgohi qaysi?",
+        options: [
+          "Teshiktosh",
+          "Machay",
+          "Zarautsoy",
+          "Sopollitepa"
+        ],
+        correct: 1,
+        exp: "Machay g‘or makoni Surxondaryo viloyatidagi mezolit manzilgohidir."
+      },
+      {
+        q: "15. Mezolit davrida insoniyat tomonidan kashf etilgan eng buyuk ov quroli qaysi?",
+        options: [
+          "Chopper",
+          "O‘q-yoy",
+          "Tosh bolta",
+          "Temir qilich"
+        ],
+        correct: 1,
+        exp: "Mezolit davrida odamlar o‘q-yoy yasashni o‘rgandilar."
+      },
+      {
+        q: "16. O‘q-yoy kashf etilishining eng katta tarixiy ahamiyati nimada?",
+        options: [
+          "Odamlar urush qilishni boshlaganida",
+          "Yovvoyi hayvonlar va qushlarni uzoq masofadan ovlash imkoni tug‘ilganida",
+          "Hayvonlar butunlay qirilib ketganida",
+          "Faqat baliq ovlashda qo‘llanganida"
+        ],
+        correct: 1,
+        exp: "O‘q-yoy uzoqdan turib tez harakatlanuvchi hayvonlar va parrandalarni ovlash imkonini berdi."
+      },
+      {
+        q: "17. Hayvonlarni xonakilashtirish (qo‘lga o‘rgatish) jarayoni qaysi davrdan boshlangan?",
+        options: [
+          "Ilk paleolitdan",
+          "Mezolit davri oxiridan",
+          "Eneolit davridan",
+          "Bronza davridan"
+        ],
+        correct: 1,
+        exp: "Mezolit davri oxirida inson hayvonlarni qo‘lga o‘rgata boshladi."
+      },
+      {
+        q: "18. Inson tomonidan eng birinchi qo‘lga o‘rgatilgan hayvon qaysi?",
+        options: [
+          "Ot",
+          "Qo‘y",
+          "It",
+          "Qoramol"
+        ],
+        correct: 2,
+        exp: "Ovchilar birinchi bo‘lib itni qo‘lga o‘rgatdilar."
+      },
+      {
+        q: "19. Nima sababdan och qolgan it qadimgi odamlar yashaydigan g‘orga yaqinlashgan?",
+        options: [
+          "Odamlarga hujum qilish uchun",
+          "Ochlik va ov qoldiqlarini yeyish ilinjida",
+          "Sovuqdan qochish uchungina",
+          "Boshqa itlarni qidirib"
+        ],
+        correct: 1,
+        exp: "Aynan ochlik itni odamlar yashaydigan g‘or tomon yetaklagan."
+      },
+      {
+        q: "20. Itning xonakilashtirilishi odamlar hayotida qanday o‘zgarish yasadi?",
+        options: [
+          "Odamlar dehqonchilik qilishni to‘xtatdi",
+          "Ov qilishni osonlashtirdi va manzilgohni yirtqichlardan qo‘riqladi",
+          "Odamlar tog‘larga ko‘chib ketdi",
+          "Odamlar faqat baliqchilikka o‘tdi"
+        ],
+        correct: 1,
+        exp: "Itlar hayvonlarni ovlashni yengillashtirdi va odamlarni yirtqichlardan saqladi."
+      },
+      {
+        q: "21. Mezolit davrida tiriklayin tutilgan qo‘zichoq va uloqchalar dastlab nima maqsadda saqlangan?",
+        options: [
+          "Faqat diniy qurbonlik qilish uchun",
+          "Yegulik zaxirasi sifatida saqlash uchun",
+          "Sotish va ayirboshlash uchun",
+          "Ulov sifatida minish uchun"
+        ],
+        correct: 1,
+        exp: "Tiriklayin tutilgan yosh hayvonlar yegulik zaxirasi sifatida saqlanib, chorvachilikka asos bo‘ldi."
+      },
+      {
+        q: "22. O‘rta Osiyoda Neolit — yangi tosh davri qaysi davrlarni o‘z ichiga oladi?",
+        options: [
+          "Mil. avv. 12–7-mingyilliklar",
+          "Mil. avv. 6–4-mingyilliklar",
+          "Mil. avv. 4–3-mingyilliklar",
+          "Mil. avv. 3–1-mingyilliklar"
+        ],
+        correct: 1,
+        exp: "O‘rta Osiyoda Neolit davri miloddan avvalgi 6–4-mingyilliklarni o‘z ichiga oladi."
+      },
+      {
+        q: "23. Qaysi xo‘jalik turi «ishlab chiqaruvchi xo‘jalik» deb ataladi?",
+        options: [
+          "Termachilik va ovchilik",
+          "Dehqonchilik (ziroatchilik) va chorvachilik",
+          "Faqat baliqchilik",
+          "Tosh qurollar terish"
+        ],
+        correct: 1,
+        exp: "Dehqonchilik va chorvachilik ishlab chiqaruvchi xo‘jalik hisoblanadi."
+      },
+      {
+        q: "24. Quyidagilardan qaysilari o‘zlashtiruvchi xo‘jalik shakllariga kiradi?",
+        options: [
+          "Dehqonchilik va chorvachilik",
+          "Termachilik, ovchilik va baliqchilik",
+          "Kulolchilik va to‘quvchilik",
+          "Metall eritish va bog‘dorchilik"
+        ],
+        correct: 1,
+        exp: "Termachilik, ovchilik va baliqchilik o‘zlashtiruvchi xo‘jalikdir."
+      },
+      {
+        q: "25. Arxeologlar Neolit davrining boshlanishini qaysi ixtiro bilan belgilaydilar?",
+        options: [
+          "O‘q-yoyning kashf etilishi bilan",
+          "Sopol idishlar yasash (kulolchilik)ning kashf etilishi bilan",
+          "Temirning kashf etilishi bilan",
+          "Matriarxat tugashi bilan"
+        ],
+        correct: 1,
+        exp: "Arxeologlar neolit davri boshlanishini sopol idishlar yasashning kashf etilishi bilan belgilaydilar."
+      },
+      {
+        q: "26. Mezolit va Neolit davrlarida toshdan yasalgan mayda mehnat qurollari nima deb ataladi?",
+        options: [
+          "Chopperlar",
+          "Mikrolitlar",
+          "Qo‘l cho‘qmorlari",
+          "Qirg‘ichlar"
+        ],
+        correct: 1,
+        exp: "Toshdan yasalgan mayda mehnat qurollari «mikrolitlar» deb ataladi."
+      },
+      {
+        q: "27. Neolit davrida toshga ishlov berishning qanday mutlaqo yangi usullari kashf qilindi?",
+        options: [
+          "Toshni eritish va quyish",
+          "Toshni silliqlash va teshikchalar parmalash",
+          "Toshni faqat sindirish",
+          "Toshni loyga qorish"
+        ],
+        correct: 1,
+        exp: "Neolitda toshga ishlov berishning yangi usullari — silliqlash va parmalash qo‘llana boshladi."
+      },
+      {
+        q: "28. Loydan idishlar yasab, ularni olovda pishirish hunari nima deb ataladi?",
+        options: [
+          "Temirchilik",
+          "Kulolchilik",
+          "To‘quvchilik",
+          "Zargarlik"
+        ],
+        correct: 1,
+        exp: "Loydan idishlar yasab pishirish — kulolchilik deb ataladi."
+      },
+      {
+        q: "29. Tolalar va jundan kiyim-kechak tayyorlash kasbi nima deb ataladi?",
+        options: [
+          "Charmdo‘zlik",
+          "To‘quvchilik",
+          "Etikdo‘zlik",
+          "Zardo‘zlik"
+        ],
+        correct: 1,
+        exp: "Tolalar va jundan kiyim tayyorlash — to‘quvchilik deb ataladi."
+      },
+      {
+        q: "30. Neolit davrida odamlarning turmush tarzida qanday muhim o‘zgarish sodir bo‘ldi?",
+        options: [
+          "Odamlar faqat g‘orlarda yashashga qaytdilar",
+          "Doimiy turarjoylar qurilib, o‘troq turmush tarziga o‘tildi",
+          "Odamlar ko‘chmanchilikka butunlay o‘tdilar",
+          "Urug‘ jamoalari butunlay tarqalib ketdi"
+        ],
+        correct: 1,
+        exp: "Neolitda doimiy uylar qurilib, o‘troq turmush tarziga o‘tildi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const av = document.getElementById('q-avatar');
+      av.className = 'avatar-bubble thinking';
+      av.innerText = '🤔';
+      document.getElementById('q-status').innerText = 'To‘g‘ri javobni tanlang...';
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('q-next-btn').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+      const av = document.getElementById('q-avatar');
+      const st = document.getElementById('q-status');
+
+      buttons.forEach((btn, idx) => {
+        btn.classList.add('disabled');
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+        av.className = 'avatar-bubble happy';
+        av.innerText = '🎉👍';
+        st.innerText = 'Ajoyib! To‘ppa-to‘g‘ri!';
+      } else {
+        av.className = 'avatar-bubble sad';
+        av.innerText = '😢🤦‍♂️';
+        st.innerText = 'Afsus, xato bo‘ldi...';
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      document.getElementById('q-next-btn').style.display = 'block';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) loadTestQuestion();
+      else showQuizResult();
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 27) fb.innerText = "Mukammal natija! 3-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 18) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'flex';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

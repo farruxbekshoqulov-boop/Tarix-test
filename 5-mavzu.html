@@ -13,7 +13,7 @@
       --danger: #ef4444;
       --text: #ffffff;
       --text-muted: #94a3b8;
-      --card-bg: rgba(30, 41, 59, 0.92);
+      --card-bg: rgba(30, 41, 59, 0.95);
       --card-border: rgba(255, 255, 255, 0.16);
     }
 
@@ -25,53 +25,53 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
       background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
       color: var(--text);
       min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 10px;
-      overflow: hidden;
+      padding: 10px 10px 100px 10px;
     }
 
     .app-card {
       width: 100%;
       max-width: 540px;
-      height: 96vh;
-      max-height: 880px;
       background: var(--card-bg);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border: 1.5px solid var(--card-border);
-      border-radius: 26px;
-      padding: 16px;
+      border-radius: 24px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      gap: 12px;
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
     }
 
     .tab-nav {
       display: flex;
       background: rgba(15, 23, 42, 0.7);
-      padding: 5px;
-      border-radius: 16px;
+      padding: 4px;
+      border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      gap: 5px;
-      flex-shrink: 0;
+      gap: 4px;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 12px 4px;
+      padding: 10px 2px;
       border: none;
       background: transparent;
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 800;
       color: var(--text-muted);
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -85,9 +85,7 @@
     .tab-content {
       display: none;
       flex-direction: column;
-      height: 100%;
-      justify-content: space-between;
-      margin-top: 6px;
+      gap: 10px;
     }
 
     .tab-content.active { display: flex; }
@@ -96,28 +94,26 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-shrink: 0;
     }
 
     .badge {
       background: rgba(59, 130, 246, 0.25);
       color: #93c5fd;
       border: 1px solid rgba(59, 130, 246, 0.4);
-      padding: 5px 14px;
+      padding: 4px 12px;
       border-radius: 20px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
     }
 
     .progress-track {
       width: 100%;
-      height: 8px;
+      height: 6px;
       background: rgba(255, 255, 255, 0.12);
       border-radius: 999px;
       overflow: hidden;
-      margin: 8px 0;
-      flex-shrink: 0;
+      margin: 6px 0;
     }
 
     .progress-fill {
@@ -127,65 +123,29 @@
       transition: width 0.3s ease;
     }
 
-    /* Avatar */
-    .avatar-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 2px 0;
-      flex-shrink: 0;
-    }
-
-    .avatar-bubble {
-      font-size: 54px;
-      line-height: 1;
-      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.3));
-    }
-
-    .avatar-bubble.thinking { animation: thinkBounce 2s infinite ease-in-out; }
-    .avatar-bubble.happy { animation: happyJump 0.5s ease; }
-    .avatar-bubble.sad { animation: sadShake 0.5s ease; }
-
-    @keyframes thinkBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-    @keyframes happyJump { 0% { transform: scale(1); } 50% { transform: scale(1.2) translateY(-6px); } 100% { transform: scale(1); } }
-    @keyframes sadShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
-
-    .avatar-status {
-      font-size: 14px;
-      font-weight: 700;
-      color: #cbd5e1;
-      margin-top: 4px;
-      background: rgba(15, 23, 42, 0.5);
-      padding: 3px 14px;
-      border-radius: 20px;
-    }
-
     /* MATCH GAME */
     .match-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
       margin: 6px 0;
-      flex: 1;
-      align-content: center;
     }
 
     .match-btn {
       background: rgba(30, 41, 59, 0.95);
       border: 2px solid rgba(255, 255, 255, 0.16);
-      border-radius: 14px;
-      padding: 12px 10px;
+      border-radius: 12px;
+      padding: 12px 8px;
       color: #ffffff;
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 60px;
-      line-height: 1.35;
+      min-height: 56px;
+      line-height: 1.3;
       transition: all 0.2s ease;
     }
 
@@ -208,42 +168,40 @@
     .match-btn.wrong {
       background: rgba(239, 68, 68, 0.3);
       border-color: var(--danger);
-      animation: sadShake 0.4s ease;
     }
 
     /* FLASHCARD */
     .flashcard-area {
-      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
       background: rgba(15, 23, 42, 0.55);
       border: 2px dashed rgba(255, 255, 255, 0.22);
-      border-radius: 20px;
-      padding: 18px;
+      border-radius: 18px;
+      padding: 16px;
       margin: 6px 0;
       text-align: center;
+      min-height: 180px;
     }
 
-    .fc-q { font-size: 19px; font-weight: 800; line-height: 1.45; color: #f8fafc; }
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
     .fc-a {
-      font-size: 17px; font-weight: 700; color: #34d399;
+      font-size: 16px; font-weight: 700; color: #34d399;
       background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
-      border-radius: 14px; padding: 14px; margin-top: 14px; line-height: 1.45; display: none;
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
     }
 
     /* TEST */
-    .test-scroll-area { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
-    .q-title { font-size: 17.5px; font-weight: 800; text-align: center; color: #f8fafc; line-height: 1.4; }
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
     .options-grid { display: flex; flex-direction: column; gap: 8px; }
     
     .opt-btn {
-      background: rgba(30, 41, 59, 0.95);
-      border: 2px solid rgba(255, 255, 255, 0.14);
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-size: 15.5px;
-      font-weight: 700;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
       color: #f1f5f9;
       cursor: pointer;
       text-align: left;
@@ -251,19 +209,20 @@
       transition: all 0.15s ease;
     }
 
-    .opt-btn.correct { background: rgba(16, 185, 129, 0.3) !important; border-color: var(--success) !important; color: #a7f3d0 !important; }
-    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.3) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
     
     .exp-box {
       background: rgba(59, 130, 246, 0.2);
       border-left: 4px solid var(--primary);
-      padding: 10px 14px;
+      padding: 10px 12px;
       border-radius: 8px;
       font-size: 13.5px;
       font-weight: 600;
       color: #bfdbfe;
       line-height: 1.4;
       display: none;
+      margin-top: 6px;
     }
 
     .action-btn {
@@ -271,29 +230,51 @@
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #ffffff;
       border: none;
-      padding: 15px;
-      border-radius: 16px;
-      font-size: 17px;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
     }
 
     .finish-state {
       display: none;
-      flex: 1;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       gap: 12px;
+      padding: 20px 0;
     }
 
     .finish-badge {
-      width: 85px; height: 85px; border-radius: 50%;
+      width: 75px; height: 75px; border-radius: 50%;
       background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
       display: flex; align-items: center; justify-content: center;
-      font-size: 26px; font-weight: 900; color: #60a5fa;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
     }
   </style>
 </head>
@@ -309,27 +290,19 @@
 
     <!-- 1. MOSLASH (3 BOSQICHLI MATCHING) -->
     <div id="tab-match" class="tab-content active">
-      <div id="match-play-box" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
-        <div>
-          <div class="header-bar">
-            <span class="badge" id="match-stage-badge">Bosqich: 1 / 3</span>
-            <span id="match-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
-          </div>
-          <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 3</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
         </div>
-
-        <div class="avatar-area">
-          <div class="avatar-bubble thinking" id="match-avatar">🧩</div>
-          <div class="avatar-status" id="match-status">Atama va uning to‘g‘ri ma’nosini bosing!</div>
-        </div>
-
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
         <div class="match-grid" id="match-container"></div>
       </div>
 
       <div id="match-finish-box" class="finish-state">
-        <div style="font-size: 60px;">🏆</div>
-        <h2 style="font-size: 23px; font-weight: 800;">3 ta bosqich yakunlandi!</h2>
-        <p style="font-size: 16px; color: var(--text-muted); max-width: 320px;">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">3 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
           Barcha atamalarni muvaffaqiyatli mosladingiz. Endi 20 talik Savol-Javob qismiga o‘tamizmi?
         </p>
         <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
@@ -341,19 +314,12 @@
 
     <!-- 2. SAVOL-JAVOB (20 TA SAVOL) -->
     <div id="tab-cards" class="tab-content">
-      <div id="fc-play-box" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
-        <div>
-          <div class="header-bar">
-            <span class="badge">5-§ Trenajyor</span>
-            <span id="fc-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 20</span>
-          </div>
-          <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">5-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 20</span>
         </div>
-
-        <div class="avatar-area">
-          <div class="avatar-bubble thinking" id="fc-avatar">🧐</div>
-          <div class="avatar-status" id="fc-status">O‘ylab ko‘ring-chi!</div>
-        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
 
         <div class="flashcard-area">
           <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
@@ -367,9 +333,9 @@
       </div>
 
       <div id="fc-finish-box" class="finish-state">
-        <div style="font-size: 60px;">🎉</div>
-        <h2 style="font-size: 23px; font-weight: 800;">20 ta savol tugadi!</h2>
-        <p style="font-size: 16px; color: var(--text-muted); max-width: 320px;">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">20 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
           Barcha muhim faktlarni takrorlab oldingiz. Endi 20 talik Test sinoviga o‘tamizmi?
         </p>
         <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
@@ -381,36 +347,23 @@
 
     <!-- 3. TEST SINOVI (20 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
-      <div id="quiz-body" style="display:flex; flex-direction:column; height:100%; justify-content:space-between;">
-        <div>
-          <div class="header-bar">
-            <span class="badge">5-§ Test Sinovi</span>
-            <span id="q-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 20</span>
-          </div>
-          <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">5-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 20</span>
         </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
 
-        <div class="avatar-area">
-          <div class="avatar-bubble thinking" id="q-avatar">🤔</div>
-          <div class="avatar-status" id="q-status">To‘g‘ri javobni tanlang...</div>
-        </div>
-
-        <div class="test-scroll-area">
-          <div class="q-title" id="q-title">Yuklanmoqda...</div>
-          <div class="options-grid" id="q-options"></div>
-          <div class="exp-box" id="q-explanation"></div>
-        </div>
-
-        <div>
-          <button class="action-btn" id="q-next-btn" style="display:none;" onclick="nextTestQuestion()">Keyingi savol ➔</button>
-        </div>
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
       </div>
 
       <div id="quiz-result" class="finish-state">
-        <div style="font-size: 60px;" id="res-avatar">🏆</div>
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
         <div class="finish-badge" id="q-score">0/20</div>
-        <h2 style="font-size: 23px; font-weight: 800;">Sinov yakunlandi!</h2>
-        <p id="q-feedback" style="font-size: 16px; color: var(--text-muted); max-width: 320px;"></p>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
         <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
           <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
@@ -420,7 +373,17 @@
 
   </div>
 
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
   <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
     function switchTab(tab) {
       ['match', 'cards', 'quiz'].forEach(t => {
         document.getElementById(`tab-btn-${t}`).classList.remove('active');
@@ -428,6 +391,8 @@
       });
       document.getElementById(`tab-btn-${tab}`).classList.add('active');
       document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // --- 1. MOSLASH (3 BOSQICH) ---
@@ -461,7 +426,7 @@
 
     function initMatch() {
       currentMatchStage = 0;
-      document.getElementById('match-play-box').style.display = 'flex';
+      document.getElementById('match-play-box').style.display = 'block';
       document.getElementById('match-finish-box').style.display = 'none';
       loadMatchStage();
     }
@@ -491,10 +456,6 @@
         btn.onclick = () => onMatchClick(btn);
         container.appendChild(btn);
       });
-
-      document.getElementById('match-avatar').className = 'avatar-bubble thinking';
-      document.getElementById('match-avatar').innerText = '🧩';
-      document.getElementById('match-status').innerText = 'Atama va ma’nosini bosing!';
     }
 
     function onMatchClick(btn) {
@@ -503,8 +464,6 @@
       if (!selectedMatchBtn) {
         selectedMatchBtn = btn;
         btn.classList.add('selected');
-        document.getElementById('match-avatar').innerText = '🤔';
-        document.getElementById('match-status').innerText = 'Juftini toping...';
       } else {
         if (selectedMatchBtn.dataset.id === btn.dataset.id) {
           btn.classList.add('matched');
@@ -513,10 +472,6 @@
           selectedMatchBtn = null;
           matchesRemaining--;
           document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
-          
-          document.getElementById('match-avatar').className = 'avatar-bubble happy';
-          document.getElementById('match-avatar').innerText = '🎉👍';
-          document.getElementById('match-status').innerText = 'To‘g‘ri topdingiz!';
 
           if (matchesRemaining === 0) {
             currentMatchStage++;
@@ -528,20 +483,17 @@
                 document.getElementById('match-play-box').style.display = 'none';
                 document.getElementById('match-finish-box').style.display = 'flex';
               }
-            }, 600);
+            }, 500);
           }
         } else {
           btn.classList.add('wrong');
           selectedMatchBtn.classList.add('wrong');
-          document.getElementById('match-avatar').className = 'avatar-bubble sad';
-          document.getElementById('match-avatar').innerText = '😢';
-          document.getElementById('match-status').innerText = 'Mos kelmadi, qayta urining!';
           
           setTimeout(() => {
             btn.classList.remove('wrong', 'selected');
             if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
             selectedMatchBtn = null;
-          }, 500);
+          }, 400);
         }
       }
     }
@@ -580,19 +532,12 @@
       document.getElementById('fc-answer').style.display = 'none';
       document.getElementById('fc-toggle-btn').style.display = 'block';
       document.getElementById('fc-next-btn').style.display = 'none';
-
-      document.getElementById('fc-avatar').className = 'avatar-bubble thinking';
-      document.getElementById('fc-avatar').innerText = '🧐';
-      document.getElementById('fc-status').innerText = 'O‘ylab ko‘ring-chi!';
     }
 
     function toggleAnswer() {
       document.getElementById('fc-answer').style.display = 'block';
       document.getElementById('fc-toggle-btn').style.display = 'none';
       document.getElementById('fc-next-btn').style.display = 'block';
-      document.getElementById('fc-avatar').className = 'avatar-bubble happy';
-      document.getElementById('fc-avatar').innerText = '💡';
-      document.getElementById('fc-status').innerText = 'Javobni eslab qoldingizmi?';
     }
 
     function nextFlashcard() {
@@ -602,13 +547,15 @@
         document.getElementById('fc-play-box').style.display = 'none';
         document.getElementById('fc-finish-box').style.display = 'flex';
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartCards() {
       fcIdx = 0;
-      document.getElementById('fc-play-box').style.display = 'flex';
+      document.getElementById('fc-play-box').style.display = 'block';
       document.getElementById('fc-finish-box').style.display = 'none';
       loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // --- 3. TEST SINOVI (20 TA MATN ASOSIDAGI TEST) ---
@@ -843,11 +790,6 @@
       document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
       document.getElementById('q-title').innerText = q.q;
 
-      const av = document.getElementById('q-avatar');
-      av.className = 'avatar-bubble thinking';
-      av.innerText = '🤔';
-      document.getElementById('q-status').innerText = 'To‘g‘ri javobni tanlang...';
-
       const optBox = document.getElementById('q-options');
       optBox.innerHTML = '';
 
@@ -860,17 +802,14 @@
       });
 
       document.getElementById('q-explanation').style.display = 'none';
-      document.getElementById('q-next-btn').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
     }
 
     function selectOpt(selectedIdx) {
       const q = testQuestions[tIdx];
       const buttons = document.querySelectorAll('.opt-btn');
-      const av = document.getElementById('q-avatar');
-      const st = document.getElementById('q-status');
 
       buttons.forEach((btn, idx) => {
-        btn.classList.add('disabled');
         btn.onclick = null;
         if(idx === q.correct) btn.classList.add('correct');
         else if(idx === selectedIdx) btn.classList.add('incorrect');
@@ -878,42 +817,44 @@
 
       if(selectedIdx === q.correct) {
         score++;
-        av.className = 'avatar-bubble happy';
-        av.innerText = '🎉👍';
-        st.innerText = 'Ajoyib! To‘ppa-to‘g‘ri!';
-      } else {
-        av.className = 'avatar-bubble sad';
-        av.innerText = '😢🤦‍♂️';
-        st.innerText = 'Afsus, xato bo‘ldi...';
       }
 
       const exp = document.getElementById('q-explanation');
       exp.innerText = "💡 Izoh: " + q.exp;
       exp.style.display = 'block';
-      document.getElementById('q-next-btn').style.display = 'block';
+      
+      // Tugma ekranning pastida chiqadi
+      document.getElementById('sticky-bar').style.display = 'flex';
     }
 
     function nextTestQuestion() {
       tIdx++;
-      if (tIdx < testQuestions.length) loadTestQuestion();
-      else showQuizResult();
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
     }
 
     function showQuizResult() {
       document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
       document.getElementById('quiz-result').style.display = 'flex';
       document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
       const fb = document.getElementById('q-feedback');
       if(score >= 18) fb.innerText = "Mukammal natija! 5-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
       else if(score >= 12) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
       else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartTest() {
       tIdx = 0; score = 0;
-      document.getElementById('quiz-body').style.display = 'flex';
+      document.getElementById('quiz-body').style.display = 'block';
       document.getElementById('quiz-result').style.display = 'none';
       loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // Dastlabki ishga tushirish

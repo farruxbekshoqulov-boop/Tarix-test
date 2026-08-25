@@ -1,211 +1,350 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>6-sinf Qadimgi Dunyo Tarixi — Interaktiv Testlar</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    :root {
-      --primary: #3b82f6;
-      --accent: #8b5cf6;
-      --card-bg: rgba(30, 41, 59, 0.92);
-      --card-border: rgba(255, 255, 255, 0.16);
-      --text: #ffffff;
-      --text-muted: #94a3b8;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>6-Sinf Tarix Testlari</title>
+    <!-- Telegram Web App rasmiy kutubxonasi -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-    body {
-      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 16px 12px;
-    }
+        html, body {
+            height: 100%;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
 
-    .app-card {
-      width: 100%;
-      max-width: 540px;
-      background: var(--card-bg);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1.5px solid var(--card-border);
-      border-radius: 26px;
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
-    }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px 16px 100px 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .header-box {
-      text-align: center;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
 
-    .title {
-      font-size: 20px;
-      font-weight: 900;
-      background: linear-gradient(135deg, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 4px;
-    }
+        header h1 {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
 
-    .subtitle {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
+        header p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
 
-    .section-label {
-      font-size: 13px;
-      font-weight: 800;
-      color: #93c5fd;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 4px;
-    }
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            flex: 1;
+        }
 
-    .topics-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+        .question-number {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
 
-    .topic-card {
-      background: rgba(15, 23, 42, 0.7);
-      border: 1.5px solid rgba(255, 255, 255, 0.12);
-      border-radius: 16px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      text-decoration: none;
-      color: var(--text);
-      transition: all 0.2s ease;
-    }
+        .question-text {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
 
-    .topic-card:hover {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: var(--primary);
-      transform: translateY(-2px);
-    }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-    .topic-info {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      padding-right: 10px;
-    }
+        .option-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 15px;
+            color: var(--text-main);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    .topic-number {
-      font-size: 12px;
-      font-weight: 800;
-      color: #38bdf8;
-      text-transform: uppercase;
-    }
+        .option-btn:active {
+            transform: scale(0.98);
+        }
 
-    .topic-title {
-      font-size: 15px;
-      font-weight: 700;
-      line-height: 1.35;
-      color: #f8fafc;
-    }
+        .option-btn.correct {
+            background: #dcfce7;
+            border-color: var(--success);
+            color: var(--success);
+            font-weight: 600;
+        }
 
-    .action-btn {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #ffffff;
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 800;
-      white-space: nowrap;
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    }
-  </style>
+        .option-btn.wrong {
+            background: #fee2e2;
+            border-color: var(--danger);
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        /* Pastki doimiy ko'rinadigan boshqaruv paneli */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .score-badge {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .next-btn {
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: none;
+        }
+
+        .next-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Natija oynasi */
+        .result-box {
+            text-align: center;
+            padding: 30px 10px;
+            display: none;
+        }
+
+        .result-box h2 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .result-box p {
+            font-size: 16px;
+            margin-bottom: 24px;
+            color: var(--text-muted);
+        }
+
+        .restart-btn {
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="app-card">
+    <div class="container">
+        <header>
+            <h1>6-SINF TARIX TESTI</h1>
+            <p>I Bo‘lim: Eng qadimgi tuzumdan sivilizatsiya sari</p>
+        </header>
 
-    <div class="header-box">
-      <div class="title">6-SINF TARIX TESTLARI</div>
-      <div class="subtitle">Interaktiv Moslash, Trenajyor va Testlar portali</div>
+        <!-- Savollar bloki -->
+        <div class="card" id="quiz-card">
+            <span class="question-number" id="q-counter">Savol 1 / 5</span>
+            <div class="question-text" id="q-text">Savol yuklanmoqda...</div>
+            <div class="options-list" id="options-container"></div>
+        </div>
+
+        <!-- Natijalar bloki -->
+        <div class="card result-box" id="result-card">
+            <h2>Natija</h2>
+            <p id="result-text"></p>
+            <button class="restart-btn" onclick="restartQuiz()">Qaytadan boshlash 🔄</button>
+        </div>
     </div>
 
-    <div class="section-label">I Bo‘lim: Eng qadimgi tuzumdan sivilizatsiya sari</div>
-
-    <div class="topics-list">
-
-    <!-- 1-mavzu -->
-      <a href="1-mavzu.html" class="topic-card">
-        <div class="topic-info">
-          <span class="topic-number">1-Mavzu</span>
-          <span class="topic-title">Qadimgi tarix ildizlari</span>
-        </div>
-        <div class="action-btn">Boshlash ➔</div>
-      </a>
-
-      <!-- 2-mavzu -->
-      <a href="2-mavzu.html" class="topic-card">
-        <div class="topic-info">
-          <span class="topic-number">2-Mavzu</span>
-          <span class="topic-title">Eng qadimgi odamlarning rivojlanish bosqichlari</span>
-        </div>
-        <div class="action-btn">Boshlash ➔</div>
-      </a>
-
-      <!-- 3-mavzu -->
-      <a href="3-mavzu.html" class="topic-card">
-        <div class="topic-info">
-          <span class="topic-number">3-Mavzu</span>
-          <span class="topic-title">Urug‘chilik jamiyati</span>
-        </div>
-        <div class="action-btn">Boshlash ➔</div>
-      </a>
-
-      <!-- 4-mavzu -->
-      <a href="4-mavzu.html" class="topic-card">
-        <div class="topic-info">
-          <span class="topic-number">4-Mavzu</span>
-          <span class="topic-title">Eneolit va bronza davri</span>
-        </div>
-        <div class="action-btn">Boshlash ➔</div>
-      </a>
-
-      <!-- 5-mavzu -->
-      <a href="5-mavzu.html" class="topic-card">
-        <div class="topic-info">
-          <span class="topic-number">5-Mavzu</span>
-          <span class="topic-title">O‘rta Osiyo temir asriga o‘tish davrida</span>
-        </div>
-        <div class="action-btn">Boshlash ➔</div>
-      </a>
-
-      <!-- I Bo'lim Takrorlash -->
-      <a href="1-bo'lim. 1-5-mavzular.html" class="topic-card" style="border-color: #38bdf8; background: rgba(56, 189, 248, 0.15);">
-        <div class="topic-info">
-          <span class="topic-number" style="color: #fbbf24;">Umumiy Nazorat</span>
-          <span class="topic-title" style="font-weight: 800; color: #ffffff;">I BO‘LIM: Umumiy takrorlash va mustahkamlash</span>
-        </div>
-        <div class="action-btn" style="background: #fbbf24; color: #0f172a;">Sinov ➔</div>
-      </a>
-
+    <!-- Pastki harakatchan panel -->
+    <div class="bottom-bar" id="bottom-bar">
+        <div class="score-badge" id="score-display">Ball: 0</div>
+        <button class="next-btn" id="next-btn" onclick="nextQuestion()">Keyingisi ➡️</button>
     </div>
 
-  </div>
+    <script>
+        // Telegram Web App moslashtirish
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.ready();
+            window.Telegram.WebApp.expand(); // Ekranni to'liq yoyish
+        }
 
+        const questions = [
+            {
+                question: "O‘zbekiston hududidan topilgan eng qadimgi odam qoldiqlari qaysi g‘ordan aniqlangan?",
+                options: ["Teshiktosh g‘ori", "Zarautsoy", "Obirahmat", "Selung‘ur"],
+                correct: 0
+            },
+            {
+                question: "Odamlar tomonidan birinchi bo‘lib o‘zlashtirilgan va ishlatilgan metall qaysi?",
+                options: ["Temir", "Mis", "Bronza", "Oltin"],
+                correct: 1
+            },
+            {
+                question: "O‘rta tosh davri fanda qanday nomlanadi?",
+                options: ["Paleolit", "Neolit", "Mezolit", "Eneolit"],
+                correct: 2
+            },
+            {
+                question: "Ibtidoiy jamoa davrida olov hosil qilish qaysi davrda kashf etilgan?",
+                options: ["Ilk paleolit", "O‘rta paleolit", "Neolit", "Bronza davri"],
+                correct: 1
+            },
+            {
+                question: "O‘zbekiston hududida ilk dehqonchilik madaniyati qaysi hududda shakllangan?",
+                options: ["Zarafshon vohasida", "Farg‘ona vodiysida", "Janubiy O‘zbekistonda (Zamonbobo, Sopollitepa)", "Toshkent vohasida"],
+                correct: 2
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let answered = false;
+
+        function loadQuestion() {
+            answered = false;
+            document.getElementById('next-btn').style.display = 'none';
+
+            const q = questions[currentIdx];
+            document.getElementById('q-counter').innerText = `Savol ${currentIdx + 1} / ${questions.length}`;
+            document.getElementById('q-text').innerText = q.question;
+
+            const opts = document.getElementById('options-container');
+            opts.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(idx, btn);
+                opts.appendChild(btn);
+            });
+        }
+
+        function selectOption(idx, btn) {
+            if (answered) return;
+            answered = true;
+
+            const q = questions[currentIdx];
+            const allButtons = document.querySelectorAll('.option-btn');
+
+            allButtons.forEach(b => b.disabled = true);
+
+            if (idx === q.correct) {
+                btn.classList.add('correct');
+                score++;
+                document.getElementById('score-display').innerText = `Ball: ${score}`;
+            } else {
+                btn.classList.add('wrong');
+                allButtons[q.correct].classList.add('correct');
+            }
+
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-card').style.display = 'none';
+            document.getElementById('bottom-bar').style.display = 'none';
+            document.getElementById('result-card').style.display = 'block';
+
+            const percent = Math.round((score / questions.length) * 100);
+            document.getElementById('result-text').innerHTML = `
+                Siz <b>${questions.length}</b> ta savoldan <b>${score}</b> tasiga to‘g‘ri javob berdingiz.<br>
+                Ko‘rsatkich: <b>${percent}%</b>
+            `;
+        }
+
+        function restartQuiz() {
+            currentIdx = 0;
+            score = 0;
+            document.getElementById('score-display').innerText = `Ball: 0`;
+            document.getElementById('quiz-card').style.display = 'block';
+            document.getElementById('bottom-bar').style.display = 'flex';
+            document.getElementById('result-card').style.display = 'none';
+            loadQuestion();
+        }
+
+        // Dastlabki yuklash
+        loadQuestion();
+    </script>
 </body>
 </html>

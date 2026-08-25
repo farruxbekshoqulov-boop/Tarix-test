@@ -1,407 +1,223 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>6-Sinf Tarix | Interaktiv Trenajyor</title>
-    <!-- Telegram Web App Skripti -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --primary-light: #eff6ff;
-            --success: #16a34a;
-            --danger: #dc2626;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
-            --selected: #fef08a;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>6-sinf Qadimgi Dunyo Tarixi — Interaktiv Testlar</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --card-bg: rgba(30, 41, 59, 0.92);
+      --card-border: rgba(255, 255, 255, 0.16);
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        html, body {
-            min-height: 100%;
-            background-color: var(--bg);
-            color: var(--text-dark);
-            overflow-x: hidden;
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch;
-        }
+    html, body {
+      height: 100%;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
 
-        /* Sahifaning pastki qismi tugma bemalol ko'rinishi uchun kengaytirilgan */
-        body {
-            padding-bottom: 140px !important;
-        }
+    body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 16px 12px 90px 12px;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 16px 16px 40px 16px;
-        }
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 26px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
 
-        header {
-            text-align: center;
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            margin-bottom: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
+    .header-box {
+      text-align: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        header h1 {
-            font-size: 18px;
-            color: var(--primary);
-            margin-bottom: 4px;
-        }
+    .title {
+      font-size: 20px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
 
-        header p {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
+    .subtitle {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
 
-        .level-badge {
-            display: inline-block;
-            background: var(--primary-light);
-            color: var(--primary);
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-bottom: 8px;
-        }
+    .section-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: #93c5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
 
-        .game-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
+    .topics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-        .task-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 14px;
-            text-align: center;
-            color: var(--text-dark);
-        }
+    .topic-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
+    .topic-card:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
 
-        .column {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    .topic-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding-right: 10px;
+    }
 
-        .item-btn {
-            background: var(--bg);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 10px;
-            font-size: 13px;
-            font-weight: 500;
-            text-align: center;
-            cursor: pointer;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            line-height: 1.2;
-            word-break: break-word;
-        }
+    .topic-number {
+      font-size: 12px;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+    }
 
-        .item-btn:active {
-            transform: scale(0.97);
-        }
+    .topic-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      color: #f8fafc;
+    }
 
-        .item-btn.selected {
-            background: var(--selected);
-            border-color: #eab308;
-            font-weight: 600;
-        }
-
-        .item-btn.matched {
-            background: #dcfce7;
-            border-color: var(--success);
-            color: var(--success);
-            font-weight: 600;
-            pointer-events: none;
-            opacity: 0.85;
-        }
-
-        .item-btn.wrong {
-            background: #fee2e2;
-            border-color: var(--danger);
-            color: var(--danger);
-            animation: shake 0.3s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            75% { transform: translateX(4px); }
-        }
-
-        /* Tugmalar bloki */
-        .controls-panel {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .action-btn {
-            background: var(--primary);
-            color: #ffffff;
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
-            transition: background 0.2s;
-        }
-
-        .action-btn:hover {
-            background: #1d4ed8;
-        }
-
-        .action-btn:disabled {
-            background: #cbd5e1;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        /* Natijalar bloki */
-        .result-view {
-            display: none;
-            text-align: center;
-            padding: 24px 16px;
-        }
-
-        .result-view h2 {
-            font-size: 22px;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .result-view p {
-            font-size: 15px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-    </style>
+    .action-btn {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="level-badge" id="level-indicator">1-BOSQICH / 3</div>
-            <h1>6-SINF QADIMGI DUNYO TARIXI</h1>
-            <p>I Bo‘lim: Eng qadimgi tuzumdan sivilizatsiya sari</p>
-        </header>
+  <div class="app-card">
 
-        <div class="game-card" id="game-box">
-            <div class="task-title" id="task-desc">Atamalar va ularning to‘g‘ri ma’nosini juftlang:</div>
-            
-            <div class="grid-container">
-                <div class="column" id="left-col"></div>
-                <div class="column" id="right-col"></div>
-            </div>
-
-            <div class="controls-panel">
-                <button class="action-btn" id="next-btn" onclick="nextStage()" style="display: none;">Keyingi bosqich ➡️</button>
-            </div>
-        </div>
-
-        <div class="game-card result-view" id="result-box">
-            <h2>Tabriklaymiz! 🏆</h2>
-            <p>Siz I Bo‘lim bo‘yicha barcha moslashtirish bosqichlarini muvaffaqiyatli yakunladingiz!</p>
-            <button class="action-btn" onclick="restartAll()">Qaytadan boshlash 🔄</button>
-        </div>
+    <div class="header-box">
+      <div class="title">6-SINF TARIX TESTLARI</div>
+      <div class="subtitle">Interaktiv Moslash, Trenajyor va Testlar portali</div>
     </div>
 
-    <script>
-        // Telegram Web App to'liq ekranga yoyish
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-        }
+    <div class="section-label">I Bo‘lim: Eng qadimgi tuzumdan sivilizatsiya sari</div>
 
-        // 1-5 mavzular bo'yicha bosqichma-bosqich ma'lumotlar
-        const stages = [
-            {
-                title: "1-BOSQICH: Tarixiy atamalarni juftlang",
-                pairs: [
-                    { left: "Arxeologiya", right: "Moddiy manbalarni o‘rganuvchi fan" },
-                    { left: "Paleolit", right: "Qadimgi tosh davri" },
-                    { left: "Antropologiya", right: "Odamning jismoniy shakllanishini o‘rganadi" },
-                    { left: "Etnografiya", right: "Xalqlarning urf-odatlarini o‘rganuvchi fan" }
-                ]
-            },
-            {
-                title: "2-BOSQICH: Qadimgi manzilgohlarni juftlang",
-                pairs: [
-                    { left: "Teshiktosh", right: "Neandertal bola suyaklari (Surxondaryo)" },
-                    { left: "Obirahmat", right: "Gromov tomonidan o‘rganilgan manzilgoh" },
-                    { left: "Selung‘ur", right: "Farg‘ona vodiysidagi qadimgi g‘or" },
-                    { left: "Zarautsoy", right: "Qoyatosh rasmlari maskani" }
-                ]
-            },
-            {
-                title: "3-BOSQICH: Davrlar va ularning xususiyatlari",
-                pairs: [
-                    { left: "Mezolit", right: "Kamon va o‘q kashf etilgan davr" },
-                    { left: "Neolit", right: "Kulolchilik va to‘qimachilik vujudga keldi" },
-                    { left: "Eneolit", right: "Mis-tosh davri, ilk metall" },
-                    { left: "Bronza davri", right: "Mis va qalay qotishmasi davri" }
-                ]
-            }
-        ];
+    <div class="topics-list">
 
-        let currentStageIdx = 0;
-        let selectedLeft = null;
-        let selectedRight = null;
-        let matchedCount = 0;
+      <!-- 1-mavzu -->
+      <a href="1-MAVZU.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">1-Mavzu</span>
+          <span class="topic-title">Qadimgi tarix ildizlari</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
 
-        function loadStage() {
-            const stage = stages[currentStageIdx];
-            document.getElementById('level-indicator').innerText = `${currentStageIdx + 1}-BOSQICH / ${stages.length}`;
-            document.getElementById('task-desc').innerText = stage.title;
-            document.getElementById('next-btn').style.display = 'none';
+      <!-- 2-mavzu -->
+      <a href="2-mavzu.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">2-Mavzu</span>
+          <span class="topic-title">Eng qadimgi odamlarning rivojlanish bosqichlari</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
 
-            selectedLeft = null;
-            selectedRight = null;
-            matchedCount = 0;
+      <!-- 3-mavzu -->
+      <a href="3-mavzu.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">3-Mavzu</span>
+          <span class="topic-title">Urug‘chilik jamiyati</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
 
-            const leftCol = document.getElementById('left-col');
-            const rightCol = document.getElementById('right-col');
-            leftCol.innerHTML = '';
-            rightCol.innerHTML = '';
+      <!-- 4-mavzu -->
+      <a href="4-mavzu.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">4-Mavzu</span>
+          <span class="topic-title">Eneolit va bronza davri</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
 
-            // Chap tomondagi elementlar
-            stage.pairs.forEach((pair, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'item-btn';
-                btn.innerText = pair.left;
-                btn.dataset.id = idx;
-                btn.onclick = () => handleLeftClick(btn);
-                leftCol.appendChild(btn);
-            });
+      <!-- 5-mavzu -->
+      <a href="5-mavzu.html" class="topic-card">
+        <div class="topic-info">
+          <span class="topic-number">5-Mavzu</span>
+          <span class="topic-title">O‘rta Osiyo temir asriga o‘tish davrida</span>
+        </div>
+        <div class="action-btn">Boshlash ➔</div>
+      </a>
 
-            // O'ng tomondagi elementlarni aralashtirish (shuffle)
-            const shuffledRights = stage.pairs.map((p, idx) => ({ text: p.right, id: idx }))
-                                              .sort(() => Math.random() - 0.5);
+      <!-- I Bo'lim Takrorlash -->
+      <a href="1-bo'lim. 1-5-mavzular.html" class="topic-card" style="border-color: #38bdf8; background: rgba(56, 189, 248, 0.15);">
+        <div class="topic-info">
+          <span class="topic-number" style="color: #fbbf24;">Umumiy Nazorat</span>
+          <span class="topic-title" style="font-weight: 800; color: #ffffff;">I BO‘LIM: Umumiy takrorlash va mustahkamlash</span>
+        </div>
+        <div class="action-btn" style="background: #fbbf24; color: #0f172a;">Sinov ➔</div>
+      </a>
 
-            shuffledRights.forEach(item => {
-                const btn = document.createElement('button');
-                btn.className = 'item-btn';
-                btn.innerText = item.text;
-                btn.dataset.id = item.id;
-                btn.onclick = () => handleRightClick(btn);
-                rightCol.appendChild(btn);
-            });
-        }
+    </div>
 
-        function handleLeftClick(btn) {
-            if (btn.classList.contains('matched')) return;
-            document.querySelectorAll('#left-col .item-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedLeft = btn;
-            checkMatch();
-        }
+  </div>
 
-        function handleRightClick(btn) {
-            if (btn.classList.contains('matched')) return;
-            document.querySelectorAll('#right-col .item-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedRight = btn;
-            checkMatch();
-        }
-
-        function checkMatch() {
-            if (!selectedLeft || !selectedRight) return;
-
-            const leftId = selectedLeft.dataset.id;
-            const rightId = selectedRight.dataset.id;
-
-            if (leftId === rightId) {
-                // To'g'ri topildi
-                selectedLeft.classList.remove('selected');
-                selectedRight.classList.remove('selected');
-                selectedLeft.classList.add('matched');
-                selectedRight.classList.add('matched');
-
-                selectedLeft = null;
-                selectedRight = null;
-                matchedCount++;
-
-                if (matchedCount === stages[currentStageIdx].pairs.length) {
-                    const nextBtn = document.getElementById('next-btn');
-                    nextBtn.style.display = 'block';
-                    // Tugma chiqqanda avtomatik ravishda tugmaga qarab pastga siljiydi
-                    setTimeout(() => {
-                        nextBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 150);
-                }
-            } else {
-                // Noto'g'ri
-                const l = selectedLeft;
-                const r = selectedRight;
-                l.classList.add('wrong');
-                r.classList.add('wrong');
-
-                setTimeout(() => {
-                    l.classList.remove('wrong', 'selected');
-                    r.classList.remove('wrong', 'selected');
-                }, 400);
-
-                selectedLeft = null;
-                selectedRight = null;
-            }
-        }
-
-        function nextStage() {
-            currentStageIdx++;
-            if (currentStageIdx < stages.length) {
-                loadStage();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                document.getElementById('game-box').style.display = 'none';
-                document.getElementById('result-box').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        function restartAll() {
-            currentStageIdx = 0;
-            document.getElementById('game-box').style.display = 'block';
-            document.getElementById('result-box').style.display = 'none';
-            loadStage();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Boshlash
-        loadStage();
-    </script>
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+  </script>
 </body>
 </html>

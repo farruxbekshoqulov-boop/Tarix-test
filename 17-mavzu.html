@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>17-§. Qadimgi Xitoy sivilizatsiyalari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va davlatchilik bosqichlarini muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">17-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni puxta takrorlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">17-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Daryolar va ilk davlatlar
+      [
+        { id: 1, left: "Xuanxe va Yanszi", right: "Qadimgi Xitoy sivilizatsiyasi vujudga kelgan yirik daryolar" },
+        { id: 2, left: "Mil. avv. 3-mingyillik oxirlari", right: "Xuanxe havzasining o‘rta qismida ilk davlat paydo bo‘lgan davr" },
+        { id: 3, left: "Shan davlati", right: "Shan qabilasi boshlig‘i tomonidan bo‘ysundirib asos solingan davlat" },
+        { id: 4, left: "Chjou davlati", right: "Shan davlatini o‘ziga qo‘shib olgan yirik davlat" }
+      ],
+      // 2-bosqich: Davlatchilik unvonlari va xronologiya
+      [
+        { id: 5, left: "«Osmon ostidagi podsholik»", right: "Yerlari ulkanligi bois Chjou davlatiga berilgan nom" },
+        { id: 6, left: "«Osmon o‘g‘illari»", right: "Chjou davlati hukmdorlarining rasmiy unvoni" },
+        { id: 7, left: "Mil. avv. 2-mingyillik", right: "Xitoyda Shan va Chjou davlatlari hukmronlik qilgan davr" },
+        { id: 8, left: "Shimoliy Xitoy", right: "Chjou davlati tarkibiga to‘liq kirgan ulkan hudud" }
+      ],
+      // 3-bosqich: Xitoy qishloq xo‘jaligi
+      [
+        { id: 9, left: "Javdar va bug‘doy", right: "Qadimgi Xitoy dehqonchiligining asosiy an’anaviy ekinlari" },
+        { id: 10, left: "Sholi urug‘i", right: "Xitoyga Hindistondan keltirilib ekila boshlangan ekin" },
+        { id: 11, left: "Choy daraxti", right: "Barglaridan shifobaxsh ichimlik tayyorlangan o‘simlik" },
+        { id: 12, left: "Dehqonchilik", right: "Qadimgi Xitoyda azaldan eng e’tiborli va faxrli kasb" }
+      ],
+      // 4-bosqich: Ipakchilik va to‘qimachilik
+      [
+        { id: 13, left: "Tut daraxti", right: "Barglari bilan ipak qurti boqilgan daraxt" },
+        { id: 14, left: "Ipak qurti pillalari", right: "O‘ralgan tolalardan nafis shoyi mato olingan xomashyo" },
+        { id: 15, left: "Shoyi", right: "Pilladan to‘qilgan nihoyatda yengil va nafis mato" },
+        { id: 16, left: "Choy ichimligi", right: "Xitoyda tayyorlanib, tez orada butun jahonga tarqalgan ne’mat" }
+      ],
+      // 5-bosqich: «Ko‘p podsholiklar» davri va birlashish
+      [
+        { id: 17, left: "Mil. avv. VII–V asrlar", right: "Xitoy tarixidagi «ko‘p podsholiklar» davri" },
+        { id: 18, left: "200 yildan uzoqroq", right: "Mayda podsholiklar o‘rtasidagi urushlar davom etgan muddat" },
+        { id: 19, left: "Mil. avv. III asr", right: "Sin Shixuandi Xitoyni yagona davlatga birlashtirgan davr" },
+        { id: 20, left: "Sin davlati", right: "Barcha raqiblarini yengib, yagona markazlashgan davlat tuzgan podsholik" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Qadimgi Xitoyda ilk sivilizatsiyalar qaysi katta daryolar bo‘ylarida vujudga kelgan?", a: "Xuanxe va Yanszi daryolari bo‘ylarida vujudga kelgan." },
+      { q: "2. Qadimgi Xitoy hududida birinchi davlat qachon va qayerda paydo bo‘ldi?", a: "Miloddan avvalgi 3-mingyillikning oxirlarida Xuanxe daryosi havzasining o‘rta qismida." },
+      { q: "3. Ilk davlatni o‘ziga bo‘ysundirgan qabila va davlat nomi qanday atalgan?", a: "Shan qabilasi bo‘lib, davlat va uning bosh shahri ham «Shan» deb atalgan." },
+      { q: "4. Shan davlatining zaiflashuviga nima sabab bo‘ldi?", a: "Beto‘xtov olib borilgan bosqinchilik urushlari davlatni zaiflashtirgan." },
+      { q: "5. Shan davlati o‘rnida qaysi qo‘shni qabila katta davlat barpo etdi?", a: "Qo‘shni Chjou qabilasi bostirib kirib, «Chjou» deb nomlangan katta davlatni bunyod etdi." },
+      { q: "6. Chjou davlati nima sababdan «Osmon ostidagi podsholik» deb atalgan?", a: "Davlat yerlari nihoyatda ulkan va keng bo‘lganligi sababli." },
+      { q: "7. Chjou davlati hukmdorlari o‘zlarini qanday atashgan?", a: "O‘zlarini «Osmon o‘g‘illari» deb atashgan." },
+      { q: "8. Chjou davlati tarkibiga Xitoyning qaysi yirik hududi to‘liq kirgan?", a: "Butun Shimoliy Xitoy ushbu davlat tarkibiga kirgan." },
+      { q: "9. Qadimgi Xitoyda qaysi kasb azaldan eng e’tiborli va faxrli hisoblangan?", a: "Dehqonchilik kasbi." },
+      { q: "10. Xitoyda dehqonchilikning dastlabki asosiy ekinlari qaysilar bo‘lgan?", a: "Javdar va bug‘doy bo‘lgan." },
+      { q: "11. Xitoyliklar sholi yetishtirishni qayerdan o‘rganganlar va urug‘i qayerdan keltirilgan?", a: "Sholi urug‘i Hindistondan keltirilib, yetishtirila boshlangan." },
+      { q: "12. Xitoy aholisi qaysi o‘simlik barglaridan shifobaxsh ichimlik tayyorlagan?", a: "Choy daraxti barglaridan «choy» ichimligini tayyorlagan." },
+      { q: "13. Xitoyda ipakchilik qanday rivojlangan?", a: "Tut daraxti yetishtirilib, uning bargi bilan ipak qurti boqilgan va pillalaridan tola olingan." },
+      { q: "14. Ipak qurtining pillalaridan qanday mato to‘qilgan?", a: "Nihoyatda yengil va nafis mato bo‘lmish «shoyi» tayyorlangan." },
+      { q: "15. Chjou davlatida markaziy hokimiyat qachon zaiflasha boshladi?", a: "Miloddan avvalgi VIII–VII asrlarda." },
+      { q: "16. Chjou davlatining parchalanishiga qanday ichki va tashqi omillar sabab bo‘ldi?", a: "Ayrim viloyat noiblarining podshodan ajralib chiqishga intilishi va ko‘chmanchi qabilalar hujumi." },
+      { q: "17. Xitoy tarixida «ko‘p podsholiklar» davri qaysi asrlarni o‘z ichiga oladi?", a: "Miloddan avvalgi VII–V asrlardagi davrni o‘z ichiga oladi." },
+      { q: "18. «Kurashayotgan podsholiklar» davrida mayda davlatlar o‘rtasidagi urushlar necha yil davom etdi?", a: "200 yildan uzoqroq davom etdi." },
+      { q: "19. Xitoyda parokandalikka barham berib, yagona davlat tuzgan podsholik qaysi?", a: "Sin davlati (Sin Shixuandi)." },
+      { q: "20. Sin davlati hukmdori Xitoyni qachon yagona davlatga birlashtirdi?", a: "Miloddan avvalgi III asrda." },
+      { q: "21. Qadimgi Xitoy sivilizatsiyasi jahon madaniyatiga qanday mashhur ne’matlarni tuhfa etdi?", a: "Choy ichimligi va ipak (shoyi) matolarini." },
+      { q: "22. Shan va Chjou davlatlari qaysi mingyillikda hukmronlik qilgan?", a: "Miloddan avvalgi 2-mingyillikda." },
+      { q: "23. Xuanxe daryosining nomi qanday ma’noni anglatadi?", a: "«Sariq daryo» (loyqa oqishi sababli)." },
+      { q: "24. Xitoyda tutchilik va ipakchilik bilan asosan qanday maqsadlarda shug‘ullanilgan?", a: "Ipak qurtini boqish va qimmatbaho shoyi matolar ishlab chiqarish uchun." },
+      { q: "25. Sin davlati hukmdori barcha raqiblarini qanday yo‘l bilan bartaraf etdi?", a: "Harbiy jihatdan kuchayib, o‘zaro urushayotgan barcha mayda podsholiklarni bo‘ysundirish orqali." },
+      { q: "26. Xitoyda dehqonchilikning e’tiborli kasb bo‘lishiga asosiy sabab nima edi?", a: "Chunki aholining oziq-ovqat xavfsizligi va davlat qudrati aynan qishloq xo‘jaligiga tayangan." },
+      { q: "27. Qadimgi Xitoyda shahar soqchilari burjlarining vazifasi nima bo‘lgan?", a: "Shaharni dushman va ko‘chmanchilar hujumidan doimiy kuzatib, himoya qilish." },
+      { q: "28. Chjou davlatining hududiy ko‘lami qanchalik keng bo‘lgan?", a: "Xuanxe va Yanszi havzalarini, butun Shimoliy Xitoy yerlarini qamrab olgan." },
+      { q: "29. Xitoy shoyisining boshqa matolardan asosiy farqi nimada edi?", a: "Nihoyatda yengilligi, nozikligi va yaltiroq nafisligida." },
+      { q: "30. Miloddan avvalgi III asrda Sin davlatining g‘alabasi Xitoy tarixida qanday yangi davrni ochib berdi?", a: "Yagona markazlashgan qudratli Xitoy imperiyasi davrini boshlab berdi." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA ARALASH TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Qadimgi Xitoyda ilk davlat qachon va qayerda paydo bo‘lgan?",
+        options: [
+          "Miloddan avvalgi 3-mingyillikning oxirlarida Xuanxe daryosi havzasining o‘rta qismida",
+          "Miloddan avvalgi 4-mingyillikda Yanszi daryosi bo‘yida",
+          "Miloddan avvalgi 2-mingyillikda Janubiy Xitoy dengizi sohilida",
+          "Miloddan avvalgi VII asrda Pekin yaqinida"
+        ],
+        correct: 0, // A
+        exp: "Miloddan avvalgi 3-mingyillikning oxirlarida qadimgi Xitoy hududida ilk davlat Xuanxe daryosi havzasining o‘rta qismida paydo bo‘ladi."
+      },
+      {
+        q: "2. Xitoyda yerlarining nihoyatda ulkanligi bois «Osmon ostidagi podsholik» deb nomlangan davlat qaysi?",
+        options: [
+          "Shan davlati",
+          "Chjou davlati",
+          "Sin davlati",
+          "Elam davlati"
+        ],
+        correct: 1, // B
+        exp: "Davlat yerlari ulkanligi bois hukmdorlar uni «Osmon ostidagi podsholik», o‘zlarini esa «Osmon o‘g‘illari» deb atagan."
+      },
+      {
+        q: "3. Qadimgi Xitoyga sholi urug‘i qaysi mamlakatdan keltirilgan?",
+        options: [
+          "Misrdan",
+          "Mesopotamiyadan",
+          "Hindistondan",
+          "Fors davlatidan"
+        ],
+        correct: 2, // C
+        exp: "Keyinchalik xitoyliklar sholi yetishtira boshladi. Sholi urug‘i Hindistondan keltirilgan."
+      },
+      {
+        q: "4. «Kurashayotgan podsholiklar» davrida mayda podsholiklar o‘rtasidagi urushlar qancha vaqt davom etdi?",
+        options: [
+          "50 yil",
+          "100 yil",
+          "500 yil",
+          "200 yildan uzoqroq"
+        ],
+        correct: 3, // D
+        exp: "Chjou davlatida hukmronlikni qo‘lga kiritish uchun mayda podsholiklar o‘rtasida urushlar 200 yildan uzoqroq davom etdi."
+      },
+      {
+        q: "5. Qadimgi Xitoyda tut daraxti barglari bilan qaysi foydali jonivor boqilgan?",
+        options: [
+          "Ipak qurti",
+          "Asalari",
+          "Qo‘ng‘iz",
+          "Kiyik"
+        ],
+        correct: 0, // A
+        exp: "Tut bargi bilan ipak qurti boqiladi. Ipak qurtlari pillalarga tolalarni o‘raydi."
+      },
+      {
+        q: "6. Qadimgi Xitoy tarixida «ko‘p podsholiklar» davri qaysi asrlarni o‘z ichiga oladi?",
+        options: [
+          "Miloddan avvalgi 3-mingyillikni",
+          "Miloddan avvalgi VII–V asrlarni",
+          "Miloddan avvalgi II mingyillikni",
+          "Miloddan avvalgi III asrni"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. VII–V asrlardagi davr tarixda «ko‘p podsholiklar» davri nomini olgan."
+      },
+      {
+        q: "7. Qadimgi Xitoyda ilk sivilizatsiyalar qaysi daryolar bo‘ylarida vujudga kelgan?",
+        options: [
+          "Hind va Gang",
+          "Dajla va Frot",
+          "Xuanxe va Yanszi",
+          "Nil va Amudaryo"
+        ],
+        correct: 2, // C
+        exp: "Xitoyda ilk sivilizatsiyalar Xuanxe va Yanszi nomli katta daryolar bo‘ylarida vujudga kelgan."
+      },
+      {
+        q: "8. Xitoyda barcha raqiblarini yo‘q qilib, miloddan avvalgi III asrda yagona davlat tuzgan podsholik qaysi?",
+        options: [
+          "Shan davlati",
+          "Chjou davlati",
+          "Isroil davlati",
+          "Sin davlati"
+        ],
+        correct: 3, // D
+        exp: "Sin davlati hukmdori o‘zining barcha raqiblarini yo‘q qilib, mil. avv. III asrda yagona davlat tuzishi bilan yakunlandi."
+      },
+      {
+        q: "9. Chjou davlati hukmdorlari o‘zlarini qanday rasmiy unvon bilan atashgan?",
+        options: [
+          "«Osmon o‘g‘illari»",
+          "«Quyosh farzandlari»",
+          "«To‘rt iqlim podshosi»",
+          "«Sahro shohlari»"
+        ],
+        correct: 0, // A
+        exp: "Hukmdorlar davlatni «Osmon ostidagi podsholik», o‘zlarini esa «Osmon o‘g‘illari» deb atagan."
+      },
+      {
+        q: "10. Xitoyda choy daraxti yetishtirilib, uning barglaridan qanday ichimlik tayyorlangan?",
+        options: [
+          "Sharbat",
+          "Shifobaxsh choy",
+          "Qimiz",
+          "Giyohli dori"
+        ],
+        correct: 1, // B
+        exp: "Choy daraxti barglaridan shifobaxsh ichimlik bo‘lmish choy tayyorlanadi. Choy tez orada butun jahonga tarqaldi."
+      },
+      {
+        q: "11. Shan davlatining zaiflashuviga quyidagilardan qaysi omil asosiy sabab bo‘ldi?",
+        options: [
+          "Kuchli qurg‘oqchilik va ocharchilik",
+          "Dengiz qaroqchilarining hujumi",
+          "Beto‘xtov olib borilgan bosqinchilik urushlari",
+          "Piramidalar qurilishi xarajatlari"
+        ],
+        correct: 2, // C
+        exp: "Beto‘xtov olib borilgan bosqinchilik urushlari Shan davlatini zaiflashtirgan."
+      },
+      {
+        q: "12. Ipak qurtining pillalaridan qanday qimmatbaho mato to‘qilgan?",
+        options: [
+          "Zig‘ir mato",
+          "Paxta gazlama",
+          "Jun gazlama",
+          "Nihoyatda yengil va nafis shoyi"
+        ],
+        correct: 3, // D
+        exp: "Pilladan esa nihoyatda yengil va nafis mato bo‘lmish shoyi tayyorlanadi."
+      },
+      {
+        q: "13. Qadimgi Xitoy aholisining azaldan eng e’tiborli va faxrli kasbi nima hisoblangan?",
+        options: [
+          "Dehqonchilik",
+          "Chorvachilik",
+          "Harbiylik",
+          "Konchilik"
+        ],
+        correct: 0, // A
+        exp: "Dehqonchilik Xitoyda azaldan e’tiborli va faxrli kasb hisoblangan."
+      },
+      {
+        q: "14. Chjou davlati tarkibiga Xitoyning qaysi ulkan hududi to‘liq kirgan?",
+        options: [
+          "Janubiy Xitoy",
+          "Butun Shimoliy Xitoy",
+          "Faqat Tayvan oroli",
+          "Tibet tog‘lari"
+        ],
+        correct: 1, // B
+        exp: "Butun Shimoliy Xitoy ana shu (Chjou) davlat tarkibiga kirgan."
+      },
+      {
+        q: "15. Qadimgi Xitoyda an’anaviy yetishtirilgan asosiy g‘alla ekinlari qaysilar edi?",
+        options: [
+          "Makkajo‘xori va no‘xat",
+          "Shakarqamish va paxta",
+          "Javdar va bug‘doy",
+          "Arpa va tariq"
+        ],
+        correct: 2, // C
+        exp: "Asosiy dehqonchilik ekinlari javdar va bug‘doy bo‘lgan."
+      },
+      {
+        q: "16. Chjou davlatida markaziy hokimiyatning zaiflashuvi qaysi asrlarda boshlandi?",
+        options: [
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. III asrda",
+          "Mil. avv. X asrda",
+          "Mil. avv. VIII–VII asrlarda"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. VIII–VII asrlarda Chjou davlatida markaziy hokimiyat zaiflasha boshladi."
+      },
+      {
+        q: "17. Qadimgi Xitoyda ilk davlat paydo bo‘lgan daryo havzasi qaysi?",
+        options: [
+          "Xuanxe daryosi havzasi",
+          "Yanszi daryosi havzasi",
+          "Amur daryosi havzasi",
+          "Mekong daryosi havzasi"
+        ],
+        correct: 0, // A
+        exp: "Qadimgi Xitoy hududida ilk davlat Xuanxe daryosi havzasining o‘rta qismida paydo bo‘ladi."
+      },
+      {
+        q: "18. Shan davlati qanday nom bilan ham atalgan?",
+        options: [
+          "Chjou",
+          "Shan (bosh shahri nomi kabi)",
+          "Sin",
+          "Xuanxe"
+        ],
+        correct: 1, // B
+        exp: "Shu tariqa davlat nomi ham uning bosh shahri nomi kabi Shan deb atalgan."
+      },
+      {
+        q: "19. Xitoyda tut daraxti yetishtirishning asosiy maqsadi nima bo‘lgan?",
+        options: [
+          "Faqat mevasini iste’mol qilish",
+          "Kema qurilishida yog‘och olish",
+          "Ipak qurtini boqish va pilla olish",
+          "Dori-darmon tayyorlash"
+        ],
+        correct: 2, // C
+        exp: "Tut daraxtini yetishtirish asosiy mashg‘ulotlardan biri bo‘lib, bargi bilan ipak qurti boqilgan."
+      },
+      {
+        q: "20. Xitoyda parokandalik davrida chekka viloyatlarning ajralib chiqishiga qanday tashqi omil yordam berdi?",
+        options: [
+          "Misr fir’avnlari bosqini",
+          "Forslarning «shoh yo‘li» qurilishi",
+          "Hindistondan savdogarlar kelishi",
+          "Xitoyga ko‘chmanchi qabilalar hujum qila boshlagani"
+        ],
+        correct: 3, // D
+        exp: "Xitoyga ko‘chmanchi qabilalar hujum qila boshlaganidan foydalangan chekka viloyatlar ajralib chiqib, o‘z davlatini tuzdi."
+      },
+      {
+        q: "21. Shan davlatini bo‘ysundirib, o‘rniga katta davlat tuzgan qabila qaysi?",
+        options: [
+          "Chjou qabilasi",
+          "Sin qabilasi",
+          "Skif qabilasi",
+          "Akkad qabilasi"
+        ],
+        correct: 0, // A
+        exp: "Bundan qo‘shni Chjou qabilasi foydalangan va bostirib kirib, Chjou deb nomlangan katta davlatni bunyod etadi."
+      },
+      {
+        q: "22. Xitoyda sholi yetishtirish qaysi ekinlardan keyin o‘zlashtirildi?",
+        options: [
+          "Choy va tutdan keyin",
+          "Javdar va bug‘doydan keyin",
+          "Paxta va kanopdan keyin",
+          "Shakarqamishdan keyin"
+        ],
+        correct: 1, // B
+        exp: "Asosiy ekinlar javdar va bug‘doy bo‘lgan. Keyinchalik xitoyliklar sholi yetishtira boshladi."
+      },
+      {
+        q: "23. Qadimgi Xitoyda Shan va Chjou davlatlari qaysi mingyillikda mavjud bo‘lgan?",
+        options: [
+          "Mil. avv. 4-mingyillikda",
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. 2-mingyillikda",
+          "Mil. avv. 1-mingyillik oxirida"
+        ],
+        correct: 2, // C
+        exp: "Darslikdagi xronologiyaga ko‘ra, mil. avv. 2-mingyillikda Shan va Chjou davlatlari hukm surgan."
+      },
+      {
+        q: "24. Xitoyning qaysi daryosi bo‘yida ilk dehqonchilik madaniyati shakllangan?",
+        options: [
+          "Gang daryosi",
+          "Hind daryosi",
+          "Dajla daryosi",
+          "Xuanxe daryosi"
+        ],
+        correct: 3, // D
+        exp: "Xitoyda ilk sivilizatsiya Xuanxe daryosi havzasida shakllangan."
+      },
+      {
+        q: "25. Xitoyda mayda podsholiklar o‘rtasidagi 200 yillik urushlar kimning g‘alabasi bilan yakunlandi?",
+        options: [
+          "Sin davlati hukmdorining (Sin Shixuandi)",
+          "Shan qabilasi boshlig‘ining",
+          "Chjou hukmdorining",
+          "Ko‘chmanchi skiflarning"
+        ],
+        correct: 0, // A
+        exp: "Bu davr Sin davlati hukmdori o‘zining barcha raqiblarini yo‘q qilib, yagona davlat tuzishi bilan yakunlandi."
+      },
+      {
+        q: "26. Xitoydan butun jahonga tarqalgan shifobaxsh ichimlik qaysi?",
+        options: [
+          "Qahva",
+          "Choy",
+          "Kakao",
+          "Sharbat"
+        ],
+        correct: 1, // B
+        exp: "Choy daraxti barglaridan shifobaxsh ichimlik bo‘lmish choy tayyorlanadi va tez orada butun jahonga tarqaldi."
+      },
+      {
+        q: "27. Qadimgi Xitoyda «Osmon ostidagi podsholik» deb atalgan davlat qaysi sulolaga tegishli edi?",
+        options: [
+          "Shan sulolasiga",
+          "Sin sulolasiga",
+          "Chjou sulolasiga",
+          "Xan sulolasiga"
+        ],
+        correct: 2, // C
+        exp: "Chjou davlati yerlarining kengligi tufayli «Osmon ostidagi podsholik» deb atalgan."
+      },
+      {
+        q: "28. Xitoyda dehqonchilikning tez rivojlanishiga sabab bo‘lgan tabiiy omil qaysi?",
+        options: [
+          "Muzliklarning erishi",
+          "Faqat dengiz suvlari",
+          "Tog‘ buloqlari",
+          "Katta daryolar (Xuanxe va Yanszi)ning toshqin suvlari va unumdor yerlari"
+        ],
+        correct: 3, // D
+        exp: "Xuanxe va Yanszi daryolari bo‘ylaridagi unumdor yerlar dehqonchilik uchun qulay imkoniyat yaratgan."
+      },
+      {
+        q: "29. Xitoyda shoyi matosini tayyorlash qaysi soha bilan bevosita bog‘liq bo‘lgan?",
+        options: [
+          "Ipakchilik va tutchilik bilan",
+          "Paxtachilik bilan",
+          "Choychilik bilan",
+          "Javdarchilik bilan"
+        ],
+        correct: 0, // A
+        exp: "Tut daraxti yetishtirilib, ipak qurti boqilgan va pilladan nafis shoyi matosi to‘qilgan."
+      },
+      {
+        q: "30. Shan davlati qaysi qabila tomonidan o‘ziga bo‘ysundirilgan edi?",
+        options: [
+          "Elamiylar",
+          "Shan qabilasining o‘z boshlig‘i tomonidan",
+          "Kassiylar",
+          "Akkadlar"
+        ],
+        correct: 1, // B
+        exp: "Shan qabilasining boshlig‘i bu davlatni o‘ziga bo‘ysundirgan va Shan deb atagan."
+      },
+      {
+        q: "31. Xitoyda yagona davlat tuzilgan asr qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Miloddan avvalgi VII asr",
+          "Miloddan avvalgi V asr",
+          "Miloddan avvalgi III asr",
+          "Milodiy I asr"
+        ],
+        correct: 2, // C
+        exp: "Sin davlati hukmdori mil. avv. III asrda Xitoyda yagona davlat tuzdi."
+      },
+      {
+        q: "32. Xitoy tarixida miloddan avvalgi VII–V asrlar qanday nom bilan ataladi?",
+        options: [
+          "«Oltin asr»",
+          "«Ilk podsholik» davri",
+          "«Yagona imperiya» davri",
+          "«Ko‘p podsholiklar» davri"
+        ],
+        correct: 3, // D
+        exp: "Miloddan avvalgi VII–V asrlardagi davr tarixda «ko‘p podsholiklar» davri nomini olgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 17-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

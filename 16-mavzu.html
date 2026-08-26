@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>16-§. Qadimgi Hindiston madaniyati</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha madaniy atamalar va diniy tushunchalarni muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">16-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim madaniy va diniy faktlarni mustahkamlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">16-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Fan va taqvim
+      [
+        { id: 1, left: "360 kunlik taqvim", right: "Qadimgi hindlar tuzgan yil hisobi" },
+        { id: 2, left: "Oy yog‘dusi", right: "Sirtiga tushgan quyosh nurining akslanishi ekani hindlarga ma’lum bo‘lgan" },
+        { id: 3, left: "Katta raqamlar belgilari", right: "Qadimgi hind matematiklari tomonidan qo‘llanilgan" },
+        { id: 4, left: "Jarrohlik asboblari", right: "Qadimgi hind tibbiy yozma manbalarida qayd etilgan" }
+      ],
+      // 2-bosqich: O‘yinlar, til va adabiyot
+      [
+        { id: 5, left: "Shaxmat", right: "Hindlar «qo‘shinlarning to‘rt turi» deb atagan intellektual o‘yin" },
+        { id: 6, left: "Sanskrit", right: "Qadimiy hind tillari asosida ishlab chiqilgan yangi adabiy til" },
+        { id: 7, left: "«Mahabharata» va «Ramayana»", right: "Sanskrit tilida bitilgan jahonga mashhur dostonlar" },
+        { id: 8, left: "Shifobaxsh dorilar", right: "Hind tabiblari tomonidan kasalliklarni davolashda ishlatilgan" }
+      ],
+      // 3-bosqich: Buddaviylik va Budda hayoti
+      [
+        { id: 9, left: "Mil. avv. VI asr", right: "Hindistonda yangi buddaviylik dini yaratilgan davr" },
+        { id: 10, left: "Siddhartha Gautama", right: "Buddaviylik dinining asoschisi bo‘lgan shahzoda" },
+        { id: 11, left: "Budda", right: "«Ma’rifatga erishgan» degan ma’noni anglatuvchi taxallus" },
+        { id: 12, left: "20 yosh", right: "Siddhartha Gautama otasi saroyida betashvish yashagan yosh chegarasi" }
+      ],
+      // 4-bosqich: «Xudolarsiz din» g‘oyalari
+      [
+        { id: 13, left: "«Xudolarsiz din»", right: "Dastlab ma’budlarga sig‘inilmagan buddaviylik e’tiqodi" },
+        { id: 14, left: "Azob-uqubatlar sababi", right: "Insonning har qanday dunyoviy xohish-istaklari" },
+        { id: 15, left: "Qon to‘kmaslik", right: "Tirik mavjudotlarga ozor bermaslik haqidagi Budda talabi" },
+        { id: 16, left: "Yolg‘on so‘zlamaslik", right: "Buddaviylar rioya qilishi shart bo‘lgan axloqiy qoida" }
+      ],
+      // 5-bosqich: Haykallar va ibodat
+      [
+        { id: 17, left: "Bodh Gaya (Mahabodhi)", right: "Hindistondagi mashhur Budda haykali joylashgan ziyoratgoh" },
+        { id: 18, left: "Nilufar guli", right: "Budda teran o‘ylarga cho‘mib ustida o‘tirgan muqaddas gul" },
+        { id: 19, left: "Chordana qurib o‘tirish", right: "Budda haykallarida aks ettirilgan xotirjam meditatsiya holati" },
+        { id: 20, left: "Sa’y-harakat va amallar", right: "Keyingi hayotda insonning kim bo‘lib tug‘ilishini belgilovchi mezon" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Qadimgi Hindistonda ilm-fanning asosan qaysi sohalari yuksak darajada rivojlangan?", a: "Astronomiya, matematika va tibbiyot sohalari." },
+      { q: "2. Hindlar yil hisobining necha kundan tarkib topgan taqvimini tuzishgan?", a: "360 kundan tarkib topgan taqvimini tuzishgan." },
+      { q: "3. Hind astronomlari Oy nuri haqida qanday ilmiy haqiqatni bilishgan?", a: "Oy yog‘dusi uning sirtiga tushgan quyosh nurining akslanishi ekanligini bilishgan." },
+      { q: "4. Qadimgi hind matematiklari hisob-kitobda qanday yutuqqa erishgan edilar?", a: "Juda katta raqamlarni bildiruvchi alohida belgilarni ishlatishgan." },
+      { q: "5. Qadimgi hind tibbiyoti haqidagi ma’lumotlar nimalarda aks etgan?", a: "Yozma manbalarda turli kasalliklar, jarrohlik asboblari va shifobaxsh dorilar qayd etilgan." },
+      { q: "6. Hindlar «qo‘shinlarning to‘rt turi» deb atagan va butun dunyoga tarqalgan o‘yin qaysi?", a: "Shaxmat o‘yini." },
+      { q: "7. Qadimiy hind tillari asosida ishlab chiqilgan yangi adabiy til qanday nomlangan?", a: "Sanskrit tili." },
+      { q: "8. Sanskrit tilida yozilgan va bugungi kungacha yetib kelgan mashhur hind dostonlari qaysilar?", a: "«Mahabharata» va «Ramayana» dostonlari." },
+      { q: "9. Buddaviylik dini qachon va kim tomonidan yaratildi?", a: "Miloddan avvalgi VI asrda shahzoda Siddhartha Gautama (Budda) tomonidan." },
+      { q: "10. «Budda» so‘zi qanday ma’noni anglatadi?", a: "«Ma’rifatga erishgan» degan ma’noni anglatadi." },
+      { q: "11. Siddhartha Gautama necha yoshiga qadar otasi saroyida betashvish hayot kechirgan?", a: "20 yoshga to‘lguniga qadar." },
+      { q: "12. Shahzoda Gautamani saroydagi farog‘atli turmushdan voz kechishga nima majbur qildi?", a: "Sayr paytida munkillagan qariya, bedavo dardga chalingan bemor va dafn marosimini ko‘rib, inson azob chekishi va o‘lishini anglashi." },
+      { q: "13. Budda inson hayoti va o‘limi haqida qanday xulosaga keldi?", a: "Inson son-sanoqsiz marotaba tug‘iladi va vafot etadi deb hisobladi." },
+      { q: "14. Buddaning ta’limotiga ko‘ra, insonning keyingi hayotda kim bo‘lib tug‘ilishi nimaga bog‘liq?", a: "Uning bu dunyodagi sa’y-harakatlari va qilgan amallariga bog‘liq." },
+      { q: "15. Budda va uning izdoshlari insonlarga qanday axloqiy talablarni qo‘ygan?", a: "Yolg‘on so‘zlamaslik, mol-davlat to‘plamaslik, tirik mavjudotlar qonini to‘kmaslik." },
+      { q: "16. Budda ta’limotiga ko‘ra, inson nega barcha xohish-istaklaridan voz kechishi kerak?", a: "Chunki har qanday dunyoviy xohish-istak azob-uqubatga olib keladi." },
+      { q: "17. Nima sababdan dastlab buddaviylik «xudolarsiz din» deb atalgan?", a: "Chunki ular ma’budlar inson azob-uqubatlarini yengillata olmaydi deb hisoblab, ma’budlarga sig‘inmaganlar." },
+      { q: "18. Vaqt o‘tishi bilan buddaviylik e’tiqodida qanday o‘zgarish yuz berdi?", a: "Buddaning o‘ziga sig‘inish boshlandi va ibodatxonalarga uning haykallari o‘rnatildi." },
+      { q: "19. Buddaviylik ibodatxonalarida Budda qanday holatda tasvirlanadi?", a: "Nilufar gulida teran o‘ylarga cho‘mgancha qilt etmay, qovoqlarini tushirgancha chordana qurib o‘tirgan holatda." },
+      { q: "20. Hindistondagi mashhur Mahabodhi ibodatxonasi yaqinida qaysi haykal qad ko‘targan?", a: "Bodh Gayadagi ulkan Budda haykali." },
+      { q: "21. Hind astronomlari yil uzunligini qanday usulda aniqlaganlar?", a: "Quyosh, yulduzlar va sayyoralar harakatini uzoq muddat muntazam kuzatish orqali." },
+      { q: "22. Hindlar yaratgan shaxmat o‘yini dastlab nimani ifodalagan?", a: "To‘rt turdagi qo‘shin (piyoda, otliq, fil va jang aravalari)ning harbiy jang san’atini." },
+      { q: "23. Sanskrit tilining qadimgi Hindiston madaniyatidagi o‘rni qanday bo‘lgan?", a: "Barcha diniy, falsafiy va adabiy asarlar bitilgan umumiy adabiy til bo‘lgan." },
+      { q: "24. «Mahabharata» dostonining asosiy mazmuni nima haqida?", a: "Qadimgi podsholar avlodlari o‘rtasidagi taxt uchun kurash va qahramonlik voqealari haqida." },
+      { q: "25. Buddaviylik dinining qadimgi Hindistondagi kasta tizimiga munosabati qanday bo‘lgan?", a: "Barcha insonlar azob chekishda teng deb hisoblab, ma’naviy poklanish yo‘lini barcha uchun ochiq deb bilgan." },
+      { q: "26. Qadimgi hind tabiblari kasallik tashxisini qanday aniqlaganlar?", a: "Bemorning holati va manbalarda yozilgan kasallik alomatlarini taqqoslash orqali." },
+      { q: "27. Budda haqidagi rivoyatda u haqiqatni izlab qayerga ketadi?", a: "Saroydagi boylikni tashlab, dunyo bo‘ylab darbadar sayohatga otlanadi." },
+      { q: "28. Hindistonda sanash tizimining rivojlanishi jahon faniga qanday ta’sir qildi?", a: "Keyinchalik o‘nlik sanoq tizimi va nol raqamining kashf etilishiga asos bo‘ldi." },
+      { q: "29. Buddaning nilufar gulida o‘tirishi qanday ramziy ma’noga ega?", a: "Dunyoviy loyqa va gunohlardan xoli, poklik hamda oliy ma’rifat ramzini bildiradi." },
+      { q: "30. Qadimgi Hindiston madaniy merosining bugungi kungacha saqlanib qolgan eng mashhur namunalari qaysilar?", a: "Shaxmat o‘yini, sanskrit adabiyoti («Mahabharata», «Ramayana») va buddaviylik ta’limoti." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA ARALASH TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Hindlar o‘zlari «qo‘shinlarning to‘rt turi» deb atagan va butun dunyoda mashhur bo‘lgan qaysi o‘yinni ixtiro qilganlar?",
+        options: [
+          "Shaxmat",
+          "Narda",
+          "Shashka",
+          "Chavgon"
+        ],
+        correct: 0, // A
+        exp: "Hindistonda ixtiro qilingan, hindlarning o‘zi «qo‘shinlarning to‘rt turi» deb ataydigan o‘yin bugungi kunda shaxmat nomi bilan mashhurdir."
+      },
+      {
+        q: "2. Qadimgi Hindistonda vujudga kelgan yangi buddaviylik dinining asoschisi kim?",
+        options: [
+          "Kiaksar",
+          "Siddhartha Gautama (Budda)",
+          "Ashshurbanipal",
+          "Brahma"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. VI asrda yangi buddaviylik dinining yaratilishi Budda taxallusini olgan shahzoda Siddhartha Gautama nomi bilan bog‘liq."
+      },
+      {
+        q: "3. Qadimiy hind tillari asosida ishlab chiqilgan yangi adabiy til qanday atalgan?",
+        options: [
+          "Oromiy tili",
+          "Lotin tili",
+          "Sanskrit tili",
+          "Pushtu tili"
+        ],
+        correct: 2, // C
+        exp: "Qadimiy hind tillari asosida yangi adabiy til bo‘lmish sanskrit ishlab chiqildi."
+      },
+      {
+        q: "4. Qadimgi hind astronomlari tuzgan yil hisobi taqvimi necha kundan iborat bo‘lgan?",
+        options: [
+          "365 kundan",
+          "354 kundan",
+          "300 kundan",
+          "360 kundan"
+        ],
+        correct: 3, // D
+        exp: "Hindlar yil hisobining 360 kundan tarkib topgan taqvimini tuzadi."
+      },
+      {
+        q: "5. «Budda» so‘zining ma’nosi qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "«Ma’rifatga erishgan»",
+          "«Xudolar elchisi»",
+          "«Sahro shohi»",
+          "«Oliy hukmdor»"
+        ],
+        correct: 0, // A
+        exp: "Budda so‘zi «ma’rifatga erishgan» degan ma’noni anglatadi."
+      },
+      {
+        q: "6. Qadimgi hindlar Oy yog‘dusi haqida qanday ilmiy haqiqatni kashf etgan edilar?",
+        options: [
+          "Oy o‘zidan nur taratuvchi yulduz ekanini",
+          "Uning sirtiga tushgan quyosh nurining akslanishi ekanligini",
+          "Oy nuri suv bug‘laridan hosil bo‘lishini",
+          "Oy yer yuzidagi olovlardan nur olishini"
+        ],
+        correct: 1, // B
+        exp: "Oy yog‘dusi uning sirtiga tushgan quyosh nurining akslanishi ekanligi ham hindlarga ma’lum bo‘lgan."
+      },
+      {
+        q: "7. Sanskrit tilida yozilgan va jahonga mashhur bo‘lgan hind dostonlari qatorini aniqlang.",
+        options: [
+          "«Iliada» va «Odisseya»",
+          "«Shohnoma» va «Avesto»",
+          "«Mahabharata» va «Ramayana»",
+          "«Gilgamish» va «Enkidu»"
+        ],
+        correct: 2, // C
+        exp: "«Mahabharata», «Ramayana» dostonlari hamda boshqa asarlar sanskrit tilida yozilgan."
+      },
+      {
+        q: "8. Nima sababdan dastlabki davrda buddaviylik «xudolarsiz din» deb atalgan?",
+        options: [
+          "Chunki ular barcha ibodatxonalarni buzib tashlagan",
+          "Chunki podsho barcha dinlarni taqiqlagan",
+          "Chunki din faqat tabiat hodisalariga sig‘ingan",
+          "Chunki ular ma’budlar inson azob-uqubatlarini yengillata olmaydi deb hisoblagan"
+        ],
+        correct: 3, // D
+        exp: "Avvaliga buddaviylar e’tiqodida ma’bud bo‘lmagan, chunki ular ma’budlar inson azob-uqubatlarini yengillatira olmaydi deb hisoblagan."
+      },
+      {
+        q: "9. Shahzoda Siddhartha Gautama necha yoshiga qadar otasi saroyida betashvish kun kechirgan?",
+        options: [
+          "20 yoshga to‘lguniga qadar",
+          "15 yoshga to‘lguniga qadar",
+          "30 yoshga to‘lguniga qadar",
+          "25 yoshga to‘lguniga qadar"
+        ],
+        correct: 0, // A
+        exp: "Rivoyatda naql qilinishicha, shahzoda Siddhartha Gautama 20 yoshga to‘lguniga qadar hukmdor otasi saroyida betashvish kun kechirgan."
+      },
+      {
+        q: "10. Budda ta’limotiga ko‘ra, insonning keyingi hayotda kim bo‘lib tug‘ilishi nimaga bog‘liq bo‘ladi?",
+        options: [
+          "Uning boyligi va to‘plagan mol-mulkiga",
+          "Uning sa’y-harakatlari va amallariga",
+          "Ota-onasining jamiyatdagi mavqeiga",
+          "Faqat kohinlarning duosiga"
+        ],
+        correct: 1, // B
+        exp: "Keyingi hayotda odamning kim bo‘lib tug‘ilishi ham uning sa’y-harakatlari va amallariga bog‘liq bo‘ladi."
+      },
+      {
+        q: "11. Qadimgi Hindiston tibbiyoti haqidagi yozma manbalarda nimalar qayd etilgan?",
+        options: [
+          "Faqat sehr-jodu duolari",
+          "Faqat qon quyish usullari",
+          "Turli xil kasalliklar, jarrohlik asboblari va shifobaxsh dorilar",
+          "Faqat mumiyolash qoidalari"
+        ],
+        correct: 2, // C
+        exp: "Yozma manbalarda turli xil kasalliklar va jarrohlik asboblari tilga olingan, shifobaxsh dorilardan foydalanilgan."
+      },
+      {
+        q: "12. Budda insonlarni barcha dunyoviy xohish-istaklardan voz kechishga chaqirishining sababi nima edi?",
+        options: [
+          "Boylik saroy xazinasiga o‘tishi uchun",
+          "Chunki bu faqat qullar uchun majburiy edi",
+          "Chunki davlatda oziq-ovqat yetishmas edi",
+          "Chunki har qanday xohish-istak azob-uqubatga olib keladi deb hisoblagan"
+        ],
+        correct: 3, // D
+        exp: "Inson har qanday xohish-istaklaridan voz kechishi zarur, negaki har qanday xohish-istak azob-uqubatga olib keladi."
+      },
+      {
+        q: "13. Buddaviylik dinining yaratilishi qaysi asrga to‘g‘ri keladi?",
+        options: [
+          "Miloddan avvalgi VI asrga",
+          "Miloddan avvalgi X asrga",
+          "Miloddan avvalgi XVIII asrga",
+          "Milodiy I asrga"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. VI asrda yangi buddaviylik dinining yaratilishi Budda nomi bilan bog‘liq."
+      },
+      {
+        q: "14. Buddaviylar qaysi asosiy axloqiy tamoyillarga qat’iy rioya qilishlari shart bo‘lgan?",
+        options: [
+          "Har yili urushda qatnashish va qul sotib olish",
+          "Yolg‘on so‘zlamaslik, mol-davlat to‘plamaslik, tirik mavjudotlar qonini to‘kmaslik",
+          "Faqat ibodatxona qurilishida ishlash",
+          "Boshqa din vakillari bilan savdo qilmaslik"
+        ],
+        correct: 1, // B
+        exp: "Inson yolg‘on so‘zlamasligi, mol-davlat to‘plamasligi, tirik mavjudotlar qonini to‘kmasligi kerak deb hisoblaydi."
+      },
+      {
+        q: "15. Qadimgi hind matematiklari hisob-kitob sohasida qanday o‘ziga xos belgilar ishlatganlar?",
+        options: [
+          "Faqat Rim raqamlarini",
+          "Faqat mixxat belgilarini",
+          "Juda katta raqamlarni bildiruvchi alohida belgilarni",
+          "Faqat nuqtalardan iborat chiziqlarni"
+        ],
+        correct: 2, // C
+        exp: "Sanash va hisoblash tizimi keng tarqaladi: hindlar juda katta raqamlarni bildiruvchi alohida belgilarni ishlatgan."
+      },
+      {
+        q: "16. Buddaviylik ibodatxonalarida Budda siymosi qanday holatda tasvirlanadi?",
+        options: [
+          "Jang aravasida qilich ushlab turgan holatda",
+          "Ot ustida chopib ketayotgan holatda",
+          "Faqat tik turib qo‘lini ko‘targan holda",
+          "Nilufar gulida teran o‘yga cho‘mib, chordana qurib o‘tirgan holatda"
+        ],
+        correct: 3, // D
+        exp: "Budda nilufar gulida teran o‘ylarga cho‘mgancha qilt etmay, qovoqlarini tushirgancha chordana qurib o‘tirgan holatda tasvirlanadi."
+      },
+      {
+        q: "17. Shahzoda Gautamaga inson hayotining o‘tkinchiligini va azob-uqubatini anglatgan hodisalar qatorini toping.",
+        options: [
+          "Munkillagan qariya, bedavo dardga chalingan bemor va dafn marosimi",
+          "Daryo toshqini, o‘rmon yong‘ini va ocharchilik",
+          "Jangdagi mag‘lubiyat va asirlar qismati",
+          "Otasi taxtdan voz kechgani va qashshoqlik"
+        ],
+        correct: 0, // A
+        exp: "Sayr paytida munkillagan, bedavo dardga yo‘liqqan kishiga, keyin esa dafn marosimiga ko‘zi tushadi va saroydan ketadi."
+      },
+      {
+        q: "18. Qadimgi Hindistonda astronomiya fanining rivojlanishi nimalarni aniqlashga imkon berdi?",
+        options: [
+          "Dengizdagi baliqlar sonini",
+          "Quyosh, yulduzlar, sayyoralar harakatini va yil uzunligini",
+          "Yer osti metall konlarini",
+          "Piramidalar balandligini"
+        ],
+        correct: 1, // B
+        exp: "Hind astronomlari Quyosh, yulduzlar va sayyoralar harakatini o‘rgangan, bu kuzatuvlar yil uzunligini aniqlashga imkon bergan."
+      },
+      {
+        q: "19. Vaqt o‘tishi bilan buddaviylik ta’limotida qanday o‘zgarish yuz berdi?",
+        options: [
+          "Din butunlay yo‘qolib ketdi",
+          "Shaxmat o‘yini taqiqlandi",
+          "Buddaning o‘ziga sig‘inish boshlandi va unga haykallar qo‘yildi",
+          "Qurbonliklar keltirish majburiy qilindi"
+        ],
+        correct: 2, // C
+        exp: "Ammo ko‘p o‘tmay Buddaning o‘ziga sig‘inish boshlanadi. Bugun ham buddaviylik ibodatxonalarida uning haykallarini ko‘rish mumkin."
+      },
+      {
+        q: "20. Hindistondagi mashhur Mahabodhi ibodatxonasi yaqinidagi Budda haykali qaysi ziyoratgohda joylashgan?",
+        options: [
+          "Mohenjodaroda",
+          "Xarappada",
+          "Pataliputrada",
+          "Bodh Gayada"
+        ],
+        correct: 3, // D
+        exp: "Bodh Gayadagi Mahabodhi ibodatxonasi yaqinidagi Budda haykali tasvirlangan."
+      },
+      {
+        q: "21. Hindlarning «Mahabharata» va «Ramayana» asarlari qaysi janrga mansub?",
+        options: [
+          "Qahramonlik dostonlari",
+          "Diniy qonunnomalar",
+          "Tibbiy qo‘llanmalar",
+          "Astronomik jadvallar"
+        ],
+        correct: 0, // A
+        exp: "«Mahabharata» va «Ramayana» sanskrit tilida bitilgan mashhur qahramonlik dostonlaridir."
+      },
+      {
+        q: "22. Shahzoda Gautama saroydagi farog‘atli hayotdan voz kechib qanday maqsad sari yo‘l oldi?",
+        options: [
+          "Qo‘shni davlatlarni bosib olish uchun",
+          "Hayot mazmunini izlab topish maqsadida",
+          "Yangi savdo yo‘llarini ochish uchun",
+          "Shaxmat o‘yinini tarqatish uchun"
+        ],
+        correct: 1, // B
+        exp: "U saroydagi farog‘atli turmushdan voz kechdi, hayot mazmunini izlab topish maqsadida dunyo bo‘ylab sayohatga otlandi."
+      },
+      {
+        q: "23. Qadimgi Hindistonda yaratilgan shaxmat o‘yinining asosiy maqsadi nimadan iborat bo‘lgan?",
+        options: [
+          "Faqat diniy marosimlarda o‘ynash",
+          "Savdogarlar hisob-kitobini osonlashtirish",
+          "Harbiy sarkardalik va aqliy taktika mahoratini rivojlantirish",
+          "Yulduzlar harakatini bashorat qilish"
+        ],
+        correct: 2, // C
+        exp: "«Qo‘shinlarning to‘rt turi» deb atalgan shaxmat harbiy strategiya va aqliy tafakkur o‘yini bo‘lgan."
+      },
+      {
+        q: "24. Budda inson ruhi haqida qanday ta’limotni ilgari surgan?",
+        options: [
+          "Inson bir marta yashaydi va ruhi o‘chadi",
+          "Inson ruhi faqat yulduzlarda yashaydi",
+          "Ruh faqat piramidalar ichida saqlanadi",
+          "Inson son-sanoqsiz marotaba tug‘iladi va vafot etadi (qayta tug‘ilish)"
+        ],
+        correct: 3, // D
+        exp: "Budda inson son-sanoqsiz marotaba tug‘iladi va vafot etadi degan xulosaga kelgan."
+      },
+      {
+        q: "25. Sanskrit tili qanday vujudga kelgan?",
+        options: [
+          "Qadimiy hind tillari asosida ishlab chiqilgan",
+          "Fors mixxatidan to‘g‘ridan-to‘g‘ri ko‘chirilgan",
+          "Misr iyerogliflarining tarjimasi sifatida paydo bo‘lgan",
+          "Finikiya alifbosidan olingan"
+        ],
+        correct: 0, // A
+        exp: "Qadimiy hind tillari asosida yangi adabiy til bo‘lmish sanskrit ishlab chiqildi."
+      },
+      {
+        q: "26. Qadimgi Hindistonda tibbiyot sohasida kasalliklarni davolashda asosan nimalardan foydalanilgan?",
+        options: [
+          "Faqat qimmatbaho toshlardan",
+          "Shifobaxsh dorivor vositalardan",
+          "Faqat muzli suvlardan",
+          "Faqat qon to‘kish usulidan"
+        ],
+        correct: 1, // B
+        exp: "Hindlar kasalliklarni davolashda shifobaxsh dorilardan foydalangan."
+      },
+      {
+        q: "27. Qadimgi hindlarning taqvimi qaysi jihati bilan Misr taqvimidan farq qilgan?",
+        options: [
+          "Hind taqvimi 365 kun, Misr taqvimi 360 kun bo‘lgan",
+          "Hind taqvimi faqat oylarga bo‘linmagan",
+          "Hind taqvimi 360 kundan tarkib topgan",
+          "Hindlar umuman taqvim tuzmagan"
+        ],
+        correct: 2, // C
+        exp: "Hindlar yil hisobining 360 kundan tarkib topgan taqvimini tuzadi (Misrda esa 365 kun bo‘lgan)."
+      },
+      {
+        q: "28. Buddaviylik ta’limotida insonning har qanday azob-uqubatlaridan qutulish yo‘li nima deb ko‘rsatilgan?",
+        options: [
+          "Katta boyliklar to‘plash",
+          "Qo‘shni o‘lkalarga hujum qilish",
+          "Faqat ibodatxonalarga qurbonlik berish",
+          "Barcha nafsoniy xohish-istaklardan voz kechish va ma’naviy poklanish"
+        ],
+        correct: 3, // D
+        exp: "Inson har qanday xohish-istaklaridan voz kechishi zarur, chunki istaklardan xalos bo‘lish azobdan qutqaradi."
+      },
+      {
+        q: "29. Qadimgi Hindiston madaniyatining qaysi yutug‘i butun dunyo bo‘ylab eng keng tarqalgan intellektual sport turiga aylandi?",
+        options: [
+          "Shaxmat",
+          "Kamondan otish",
+          "Qilichbozlik",
+          "Ot poygasi"
+        ],
+        correct: 0, // A
+        exp: "Hindlar o‘ylab topgan shaxmat bugungi kunda butun jahonda mashhur intellektual o‘yindir."
+      },
+      {
+        q: "30. Budda haykallarida uning qovoqlari tushirilgan holda tasvirlanishi nimani anglatadi?",
+        options: [
+          "Charchoq va uyqu holatini",
+          "Teran ichki tafakkur va xotirjam meditatsiya holatini",
+          "Ko‘rish qobiliyati zaifligini",
+          "Dunyo voqealaridan qo‘rquvni"
+        ],
+        correct: 1, // B
+        exp: "Teran o‘ylarga cho‘mgancha qilt etmay, qovoqlarini tushirgancha o‘tirish ruhiy xotirjamlik va ma’rifat holatidir."
+      },
+      {
+        q: "31. Siddhartha Gautama o‘z ta’limotini targ‘ib qilish uchun nima qildi?",
+        options: [
+          "Yangi davlat tuzib o‘zini shoh deb e’lon qildi",
+          "Faqat saroy ichida ma’ruzalar o‘qidi",
+          "Dunyo bo‘ylab sayohat qilib, xalqqa o‘z falsafasini o‘rgatdi",
+          "Katta qo‘shin to‘plab shaharlarni zabt etdi"
+        ],
+        correct: 2, // C
+        exp: "U saroydagi farog‘atdan voz kechib, hayot mazmunini izlab dunyo bo‘ylab sayohatga otlandi va o‘z ta’limotini yoydi."
+      },
+      {
+        q: "32. Qadimgi Hindiston madaniyatida sanskrit tili qanday mavqega ega bo‘lgan?",
+        options: [
+          "Faqat oddiy dehqonlar gaplashadigan og‘zaki sheva bo‘lgan",
+          "Faqat chet ellik elchilar bilan muloqot tili bo‘lgan",
+          "Faqat harbiy buyruqlar berish uchun ishlatilgan",
+          "Dostonlar, adabiyot va ilmiy asarlar bitilgan oliy adabiy til bo‘lgan"
+        ],
+        correct: 3, // D
+        exp: "Sanskrit yangi adabiy til bo‘lib, «Mahabharata», «Ramayana» va boshqa yuksak asarlar shu tilda yozilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 16-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

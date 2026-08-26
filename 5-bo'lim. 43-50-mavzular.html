@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>V Bo‘lim: Qadimgi Rim — Umumiy Takrorlash (43–50-mavzular)</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (40)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (40)</button>
+    </div>
+
+    <!-- 1. MOSLASH (8 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 8</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">V Bo‘lim bo‘yicha 8 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Qadimgi Rim tarixiga oid barcha asosiy davrlar va atamalarni muvaffaqiyatli mosladingiz. Endi 40 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (40 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">V Bo‘lim Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">40 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          V Bo‘limning barcha mavzularini puxta takrorlab oldingiz. Endi 40 talik Katta Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Katta Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (40 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">V Bo‘lim Katta Test</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/40</div>
+        <h2 style="font-size: 20px; font-weight: 800;">V Bo‘lim Yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (8 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Qadimgi Italiya va Rimning asos solinishi
+      [
+        { id: 1, left: "Apennin yarimoroli", right: "Italiya joylashgan hudud" },
+        { id: 2, left: "«Italiya» nomi", right: "«Buzoqchalar mamlakati» ma’nosini bildiradi" },
+        { id: 3, left: "Mil. avv. 753-yil", right: "Rivoyatga ko‘ra Rim shahriga asos solingan sana" },
+        { id: 4, left: "Romul va Rem", right: "Rimga asos solgan aka-uka ikizaklar" }
+      ],
+      // 2-bosqich: Rim respublikasi va organlar
+      [
+        { id: 5, left: "Mil. avv. 509-yil", right: "Rim respublikasi e’lon qilingan sana" },
+        { id: 6, left: "Senat", right: "«Oqsoqollar kengashi» ma’nosini anglatuvchi organ" },
+        { id: 7, left: "Konsullar", right: "Xalq majlisi bir yil muddatga saylagan ikki nafar hokim" },
+        { id: 8, left: "Xalq tribuni", right: "Qashshoq rimliklar manfaatini himoya qilgan va «veto» huquqiga ega lavozim" }
+      ],
+      // 3-bosqich: Rim shahri va turmush tarzi
+      [
+        { id: 9, left: "Forum", right: "Shahar markazidagi bozor maydoni va xalq yig‘inlari joyi" },
+        { id: 10, left: "Akveduk", right: "Suvni bir necha qavatli ko‘prik orqali shaharga olib keluvchi inshoot" },
+        { id: 11, left: "Mozaika va freska", right: "Uylar va villalar devorlarini bezatgan bezak turlari" },
+        { id: 12, left: "Toga", right: "Rimliklar kiyib yurgan va jamiyatdagi mavqeini bildirgan libos" }
+      ],
+      // 4-bosqich: Diniy e’tiqod va ma’budlar
+      [
+        { id: 13, left: "Yupiter", right: "Osmon, momaqaldiroq va yashin podshosi (bosh ma’bud)" },
+        { id: 14, left: "Mars", right: "Urush ma’budi" },
+        { id: 15, left: "Pontifiklar", right: "Diniy marosimlar o‘tkazilishini nazorat qilgan kohinlar" },
+        { id: 16, left: "Avgurlar", right: "Qushlar parvozi va alomatlarga qarab bashorat qilgan kohinlar" }
+      ],
+      // 5-bosqich: Qullar va gladiatorlar
+      [
+        { id: 17, left: "Kolonlar", right: "Yerlarni ijaraga olib dehqonchilik qilgan erkin kambag‘allar" },
+        { id: 18, left: "«Kulbali qullar»", right: "Uy-joyli va kichik yerlarni mustaqil yuritishga ruxsat berilgan qullar" },
+        { id: 19, left: "Kolizey", right: "50 ming tomoshabin sig‘diradigan eng katta amfiteatr" },
+        { id: 20, left: "Spartak", right: "Mil. avv. 74-yilda qullar qo‘zg‘olonini boshlagan frakiyalik qul" }
+      ],
+      // 6-bosqich: Sezar va respublikaning qulashi
+      [
+        { id: 21, left: "Mil. avv. 49-yil", right: "Yuliy Sezar Rubikon daryosidan kechib o‘tgan sana" },
+        { id: 22, left: "«Qur’a tashlandi!»", right: "Sezar Rubikondan o‘tayotganda aytgan mashhur iborasi" },
+        { id: 23, left: "Mil. avv. 44-yil", right: "Yuliy Sezar Senatda fitnachilar tomonidan o‘ldirilgan yil" },
+        { id: 24, left: "Brut", right: "Sezarga qarshi fitnaga rahbarlik qilgan uning do‘sti" }
+      ],
+      // 7-bosqich: Imperiya va Oktavian Avgust
+      [
+        { id: 25, left: "Mil. avv. 29-yil", right: "Oktavian Senatdan imperator unvoni va Avgust nomini olgan sana" },
+        { id: 26, left: "Mark Antoniy va Kleopatra", right: "Oktavian tomonidan mag‘lub etilgan Misr hukmdorlari" },
+        { id: 27, left: "Milodiy II asr boshlari", right: "Rim imperiyasining «oltin asri» (Trayan davri)" },
+        { id: 28, left: "Trayan ustuni", right: "Daklar bilan urush manzaralari tasvirlangan 40 metrli inshoot" }
+      ],
+      // 8-bosqich: G‘arbiy Rimning halokati va madaniyat
+      [
+        { id: 29, left: "Milodiy 395-yil", right: "Rim imperiyasining G‘arbiy va Sharqiy qismlarga bo‘lingan yili" },
+        { id: 30, left: "Milodiy 410-yil", right: "Alarix boshchiligidagi gotlar Rimni qurshab olib talagan yil" },
+        { id: 31, left: "Milodiy 476-yil", right: "Odoakr oxirgi imperator Romulni taxtdan ag‘darib, G‘arbiy Rimni qulatgan yil" },
+        { id: 32, left: "Milodiy 313-yil", right: "Imperator Konstantin xristianlikni qonuniy deb e’lon qilgan farmon chiqargan yil" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      const stageBadge = document.getElementById('match-stage-badge');
+      const matchCounter = document.getElementById('match-counter');
+      const matchProgress = document.getElementById('match-progress');
+      
+      if (stageBadge) stageBadge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (matchProgress) matchProgress.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      if (!container) return;
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          
+          const matchCounter = document.getElementById('match-counter');
+          if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                const matchProgress = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (matchProgress) matchProgress.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (40 TA INTEGRATSIYALASHGAN SAVOL) ---
+    const flashcards = [
+      { q: "1. Italiya zaminida to‘liq egallagan qaysi yarimorol mavjud?", a: "Apennin yarimoroli." },
+      { q: "2. «Italiya» so‘zi qanday ma’noni bildiradi?", a: "«Buzoqchalar mamlakati»." },
+      { q: "3. Rivoyatga ko‘ra Rim shahriga qachon va kimlar asos solgan?", a: "Miloddan avvalgi 753-yilda aka-uka Romul va Rem." },
+      { q: "4. Rim respublikasi qachon e’lon qilingan?", a: "Miloddan avvalgi 509-yilda." },
+      { q: "5. «Senat» so‘zi lotinchadan tarjima qilinganda nimani anglatadi?", a: "«Oqsoqollar kengashi»." },
+      { q: "6. Rim respublikasida xalq majlisi bir yil muddatga saylagan ikki nafar hokim kimlar edi?", a: "Konsullar." },
+      { q: "7. Qashshoq rimliklar manfaatini himoya qilgan va «veto» huquqiga ega lavozim qaysi?", a: "Xalq tribuni." },
+      { q: "8. Plebeylar talabi bilan yaratilgan qonunlarning yozma majmuasi nima deb atalgan?", a: "«12 jadval qonunlari»." },
+      { q: "9. Har bir shahar markazidagi bozor maydoni va xalq yig‘inlari joyi qanday atalgan?", a: "Forum." },
+      { q: "10. Suvni bir necha qavatli ko‘prik orqali shaharga olib keluvchi inshoot qanday nomlangan?", a: "Akveduk." },
+      { q: "11. Rimda o‘g‘il bolalar 14 yoshga to‘lgunga qadar qanday toga kiyishgan?", a: "Pushti yo‘lli toga." },
+      { q: "12. Rimning bosh ma’budi, osmon, momaqaldiroq va yashin podshosi kim edi?", a: "Yupiter." },
+      { q: "13. Diniy marosimlar o‘tkazilishini nazorat qilgan Rim ruhoniylari kimlar edi?", a: "Pontifiklar." },
+      { q: "14. Mayda yer ijarachilari va kambag‘al dehqonlar qanday atalgan?", a: "Kolonlar." },
+      { q: "15. O‘z mehnati qurollari va urug‘ligi bor qullar qanday nomlangan?", a: "«Kulbali qullar» (uy-joyli qullar)." },
+      { q: "16. Rimning eng katta amfiteatri va 50 ming tomoshabin sig‘diradigan joy qaysi?", a: "Kolizey." },
+      { q: "17. Spartak boshchiligidagi qullar qo‘zg‘oloni qachon boshlangan?", a: "Miloddan avvalgi 74-yilda." },
+      { q: "18. Yuliy Sezar Rimga bostirib kirish uchun qaysi daryodan kechib o‘tgan?", a: "Rubikon daryosidan (mil. avv. 49-yilda)." },
+      { q: "19. Yuliy Sezar qachon fitnachilar tomonidan o‘ldirilgan?", a: "Miloddan avvalgi 44-yilda." },
+      { q: "20. Oktavian Senatdan imperator unvoni va Avgust nomini qachon olgan?", a: "Miloddan avvalgi 29-yilda." },
+      { q: "21. Rim imperiyasining «oltin asri» deb nomlangan davr qaysi asr edi?", a: "Milodiy II asr boshlari (Trayan davri)." },
+      { q: "22. Dunay bo‘ylarida yashovchi daklarni bo‘ysundirgan imperator kim?", a: "Trayan." },
+      { q: "23. Milodiy 395-yilda Rim imperiyasi nechta qismga bo‘lindi?", a: "Ikki qismga: G‘arbiy va Sharqiy Rim imperiyalariga." },
+      { q: "24. Milodiy 410-yilda Alarix boshchiligidagi qaysi qabilalar Rimni qurshab oldi?", a: "Gotlar." },
+      { q: "25. Milodiy 476-yilda oxirgi imperator Romulni taxtdan ag‘dargan german sarkardasi kim?", a: "Odoakr." },
+      { q: "26. G‘arbiy Rim imperiyasining qulashi bilan qaysi davr boshlandi?", a: "O‘rta asrlar tarixi." },
+      { q: "27. Rim imperatorlari poytaxt aholisi uchun qurdirgan ko‘rkam hammomlar qanday atalgan?", a: "Termalar." },
+      { q: "28. Rimliklar ixtiro qilgan, vaqt o‘tishi bilan toshdan ham mustahkam bo‘ladigan material qaysi?", a: "Beton." },
+      { q: "29. Panteon so‘zi qanday ma’noni anglatadi?", a: "«Barcha xudolar ibodatxonasi»." },
+      { q: "30. «Rim tarixi» asarini yozgan mashhur Rim tarixchisi kim?", a: "Tit Liviy." },
+      { q: "31. Milodiy I asr boshlarida Iso tug‘ilgan Falastindagi shahar qaysi?", a: "Vifleyem." },
+      { q: "32. Iso payg‘ambarga o‘lim jazosini tasdiqlagan Rim noibi kim edi?", a: "Pontiy Pilat." },
+      { q: "33. Iso Masih haqidagi rivoyatlar majmuasi qanday nomlangan?", a: "Yevangeliya (Injiil — «xushxabar»)." },
+      { q: "34. Xristian jamoalariga peshvolik qilgan shaxslar qanday atalgan?", a: "Yepiskoplar." },
+      { q: "35. Milodiy 313-yilda imperator Konstantin qanday farmon chiqargan?", a: "Xristianlikni boshqa dinlar bilan teng huquqli deb e’lon qilgan." },
+      { q: "36. Dastlab yunonlar tushunarsiz tillarda so‘zlashuvchi qabilalarni qanday atashgan?", a: "«Varvarlar»." },
+      { q: "37. Milodiy 330-yilda Vizantiy shahri Rim imperiyasining poytaxti etib e’lon qilingach qanday nomlandi?", a: "Konstantinopol." },
+      { q: "38. Milodiy 455-yilda Rimga hujum qilib talagan german qabilalari kimlar edi?", a: "Vandallar." },
+      { q: "39. Yozuvni o‘rganayotgan bolalar harflarni nimaga o‘yib yozishgan?", a: "Mum qoplangan taxtachalarga stil deb ataluvchi metall tayoqcha bilan." },
+      { q: "40. Yunon-rim sarkardalari hayoti haqida kitob yozib qoldirgan tarixchi kim?", a: "Plutarx." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      const counter = document.getElementById('fc-counter');
+      const progress = document.getElementById('fc-progress');
+      const question = document.getElementById('fc-question');
+      const answer = document.getElementById('fc-answer');
+      
+      if (counter) counter.innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      if (progress) progress.style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      if (question) question.innerText = card.q;
+      if (answer) {
+        answer.innerText = card.a;
+        answer.style.display = 'none';
+      }
+      
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (toggleBtn) toggleBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      const answer = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (answer) answer.style.display = 'block';
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      
+      if (fcIdx < flashcards.length) {
+        loadFlashcard();
+      } else {
+        if (playBox) playBox.style.display = 'none';
+        if (finishBox) finishBox.style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (40 TA ARALASH TEST - JAVOBLAR 10 TADAN TENG) ---
+    const testQuestions = [
+      {
+        q: "1. Qadimgi Italiya zaminida to‘liq egallagan qaysi yarimorol mavjud?",
+        options: ["Apennin yarimoroli", "Balqon yarimoroli", "Peloponnes yarimoroli", "Attika yarimoroli"],
+        correct: 0,
+        exp: "Apennin yarimorolini to‘liq egallagan Italiya zaminida..."
+      },
+      {
+        q: "2. «Italiya» so‘zi lug‘aviy jihatdan qanday ma’noni bildiradi?",
+        options: ["«Quyoshli o‘lka»", "«Buzoqchalar mamlakati»", "«Tog‘lar diyori»", "«Dengizlar mamlakati»"],
+        correct: 1,
+        exp: "«Italiya» so‘zi «buzoqchalar mamlakati» ma’nosini bildiradi."
+      },
+      {
+        q: "3. Rivoyatga ko‘ra Rim shahriga qachon va kimlar asos solgan?",
+        options: ["Mil. avv. 509-yilda", "Mil. avv. 312-yilda", "Mil. avv. 753-yilda aka-uka Romul va Rem", "Mil. avv. VI asrda"],
+        correct: 2,
+        exp: "Rivoyatga qaraganda, Rim shahriga mil. avv. 753-yilda aka-uka Romul va Rem asos solgan."
+      },
+      {
+        q: "4. Podsho hokimiyatining ag‘darilishi va Rim respublikasining asos solinishi qaysi yilda yuz berdi?",
+        options: ["Mil. avv. 753-yilda", "Mil. avv. 44-yilda", "Mil. avv. 29-yilda", "Mil. avv. 509-yilda"],
+        correct: 3,
+        exp: "Mil. avv. 509-yilda podsho hokimiyatining ag‘darilishi Rim respublikasi asosini yaratdi."
+      },
+      {
+        q: "5. Lotinchadan tarjima qilinganda «senat» so‘zi qanday ma’noni anglatadi?",
+        options: ["«Oqsoqollar kengashi»", "«Xalq ishi»", "«Harbiy kengash»", "«Sudyalar palatasi»"],
+        correct: 0,
+        exp: "Lotinchadan tarjima qilinganda «senat» so‘zi «oqsoqollar kengashi» degan ma’noni anglatadi."
+      },
+      {
+        q: "6. Xalq majlisi tomonidan bir yil muddatga saylangan ikki nafar hokim qanday atalgan?",
+        options: ["Diktatorlar", "Konsullar", "Liktorlar", "Senatorlar"],
+        correct: 1,
+        exp: "Xalq majlisi patrisiy va plebeylardan ikki kishini bir yil muddatga hokim qilib saylagan — konsullar."
+      },
+      {
+        q: "7. Qashshoq rimliklar manfaatini himoya qilgan va «veto» huquqiga ega lavozim qaysi?",
+        options: ["Konsul", "Diktator", "Xalq tribuni", "Senat raisi"],
+        correct: 2,
+        exp: "Rim respublikasida xalq tribuni lavozimi ta’sis etilgan bo‘lib, ular «veto» huquqiga ega bo‘lgan."
+      },
+      {
+        q: "8. Plebeylar talabiga ko‘ra qonunlarning yozma majmuasi qanday nomlangan?",
+        options: ["«Hamurapi qonunlari»", "«Drakont qonunlari»", "«Solon qonunlari»", "«12 jadval qonunlari»"],
+        correct: 3,
+        exp: "Plebeylar talabiga ko‘ra, qonunlarning yozma majmuasini yaratish uchun 12 jadval qonunlari yaratildi."
+      },
+      {
+        q: "9. Shisha yoki tosh parchalaridan ishlangan bezakli suratlar nima deb atalgan?",
+        options: ["Mozaikalar", "Freskalar", "Akveduk", "Forum"],
+        correct: 0,
+        exp: "Uy mozaikalar — shisha yoki tosh parchalaridan ishlangan suratlar bilan bezatilgan."
+      },
+      {
+        q: "10. Suvni bir necha qavatli ko‘prik orqali shaharga olib keluvchi inshoot qanday nomlangan?",
+        options: ["Forum", "Akveduk", "Villa", "Pontifik"],
+        correct: 1,
+        exp: "Suv shaharga bir necha qavatli ko‘prikka o‘xshash akveduk orqali oqib kelgan."
+      },
+      {
+        q: "11. Rimliklarning osmon, momaqaldiroq va yashin podshosi bo‘lgan bosh ma’budi kim edi?",
+        options: ["Neptun", "Mars", "Yupiter", "Vulqon"],
+        correct: 2,
+        exp: "Rimliklar bosh ma’budi, osmon, momaqaldiroq va yashin podshosi Yupiter edi."
+      },
+      {
+        q: "12. Marosimlar o‘tkazilishini nazorat qilgan Rim ruhoniylari (kohinlar) qanday atalgan?",
+        options: ["Avgurlar", "Senatorlar", "Konsullar", "Pontifiklar"],
+        correct: 3,
+        exp: "Marosimlar o‘tkazilishi ustidan kohinlar — pontifiklar rahbarlik qilgan."
+      },
+      {
+        q: "13. Yerlarni ijaraga olib dehqonchilik qilgan erkin kambag‘allar qanday atalgan?",
+        options: ["Kolonlar", "Patrisiylar", "Plebeylar", "Liktorlar"],
+        correct: 0,
+        exp: "Mayda yer ijarachilari kolonlar deb atalgan."
+      },
+      {
+        q: "14. O‘z mehnati qurollari va urug‘ligi bo‘lgan, oilasi bilan ishlaydigan qullar qanday nomlangan?",
+        options: ["Kolonlar", "«Kulbali qullar»", "Patrisiylar", "Plebeylar"],
+        correct: 1,
+        exp: "Bunday qullar «kulbali qullar», ya’ni uy-joyli qullar deb nomlangan."
+      },
+      {
+        q: "15. 50 ming tomoshabin sig‘diradigan eng katta Rim amfiteatri qanday nomlangan?",
+        options: ["Pantheon", "Parfenon", "Kolizey", "Forum"],
+        correct: 2,
+        exp: "50 ming tomoshabin sig‘adigan Kolizey eng katta amfiteatr bo‘lgan."
+      },
+      {
+        q: "16. Spartak boshchiligidagi qullar qo‘zg‘oloni qachon boshlangan?",
+        options: ["Mil. avv. 73-yilda", "Mil. avv. 72-yilda", "Mil. avv. 71-yilda", "Mil. avv. 74-yilda"],
+        correct: 3,
+        exp: "Miloddan avvalgi 74-yilda boshlangan Spartak boshchiligidagi qullar qo‘zg‘oloni..."
+      },
+      {
+        q: "17. Yuliy Sezar Galliyadagi zafarli urushdan so‘ng Rimga boruvchi yo‘ldagi qaysi daryodan kechib o‘tgan?",
+        options: ["Rubikon daryosidan", "Tibr daryosidan", "Po daryosidan", "Dunay daryosidan"],
+        correct: 0,
+        exp: "Yuliy Sezar mil. avv. 49-yilda Galliyadagi zafarli urushdan keyin Rimga boruvchi yo‘ldagi Rubikon daryosidan kechib o‘tgan."
+      },
+      {
+        q: "18. Yuliy Sezar qaysi yilda fitnachilar xanjarlari ostida vafot etgan?",
+        options: ["Mil. avv. 49-yilda", "Mil. avv. 44-yilda", "Mil. avv. 29-yilda", "Milodiy 98-yilda"],
+        correct: 1,
+        exp: "Mil. avv. 44-yilda Senatdagi majlisda fitnachilar Sezarni o‘ldirishadi."
+      },
+      {
+        q: "19. Oktavian Senatdan imperator unvoni va Avgust nomini qachon olgan?",
+        options: ["Mil. avv. 44-yilda", "Mil. avv. 49-yilda", "Mil. avv. 29-yilda", "Milodiy 98-yilda"],
+        correct: 2,
+        exp: "Mil. avv. 29-yilda Oktavian Senatdan imperator unvoni va Avgust nomini oladi."
+      },
+      {
+        q: "20. Rim imperiyasining kuch-qudrati qayta tiklanib, «oltin asr» degan nom olgan davr qaysi asr edi?",
+        options: ["Milodiy I asr", "Mil. avv. I asr", "Milodiy III asr", "Milodiy II asrning boshlari"],
+        correct: 3,
+        exp: "Faqat milodiy II asrning boshlarida Rim imperiyasining kuch-qudrati qayta tiklandi. Bu asr «oltin asr» deb nomlangan."
+      },
+      {
+        q: "21. Milodiy 98-yilda Rim imperatori taxtini egallagan va Dunay bo‘ylarida daklar bilan urush olib borgan hukmdor kim?",
+        options: ["Trayan", "Oktavian Avgust", "Neron", "Kaligula"],
+        correct: 0,
+        exp: "Milodiy 98-yilda Trayan Rim imperatori taxtini egalladi va daklar bilan urush olib bordi."
+      },
+      {
+        q: "22. Milodiy 395-yilda Rim imperiyasi nechta qismga bo‘lindi?",
+        options: ["Uchta qismga", "Ikki qismga (G‘arbiy va Sharqiy)", "To‘rtta qismga", "Beshita qismga"],
+        correct: 1,
+        exp: "Imparator Feodosiy o‘limidan so‘ng milodiy 395-yili Rim imperiyasi ikkiga bo‘lindi."
+      },
+      {
+        q: "23. Alarix boshchiligidagi german qabilalari — gotlar Rimni qachon qurshab olib talaganlar?",
+        options: ["Milodiy 330-yilda", "Milodiy 395-yilda", "Milodiy 410-yilda", "Milodiy 455-yilda"],
+        correct: 2,
+        exp: "Milodiy 410-yilda Alarix boshchiligidagi german qabilalari — gotlar Rimni qurshab oldi."
+      },
+      {
+        q: "24. German qabilalarining yollanma qo‘shini sarkardasi Odoakr oxirgi imperator Romulni qachon taxtdan ag‘dargan?",
+        options: ["Milodiy 410-yilda", "Milodiy 455-yilda", "Milodiy 395-yilda", "Milodiy 476-yilda"],
+        correct: 3,
+        exp: "Milodiy 476-yilda Odoakr so‘nggi imperator Romulni taxtdan ag‘dardi."
+      },
+      {
+        q: "25. Rim imperatorlari poytaxt aholisi uchun qurdirgan ko‘rkam hammomlar qanday atalgan?",
+        options: ["Termalar", "Kolizey", "Akveduk", "Panteon"],
+        correct: 0,
+        exp: "Rim imperatorlari poytaxt aholisi uchun «termalar» deb atalgan ko‘rkam hammomlar qurdirgan."
+      },
+      {
+        q: "26. Rim me’morchiligida gumbaz shaklida ustunsiz qurilgan, «barcha xudolar ibodatxonasi» deb nomlangan bino qaysi?",
+        options: ["Kolizey", "Panteon", "Akveduk", "Triumf arkasi"],
+        correct: 1,
+        exp: "Rimdagi Panteon — «barcha xudolar ibodatxonasi» ustunsiz, gumbaz shaklida qurilgan."
+      },
+      {
+        q: "27. «Rim tarixi» asarini yozgan mashhur Rim tarixchisi kim edi?",
+        options: ["Plutarx", "Kvint Kursiy Ruf", "Tit Liviy", "Gerodot"],
+        correct: 2,
+        exp: "Tarixchi Tit Liviy «Rim tarixi»ni yozgan."
+      },
+      {
+        q: "28. Milodiy I asr boshlarida Iso tug‘ilgan Falastindagi shahar qaysi?",
+        options: ["Rim", "Afinas", "Aleksandriya", "Vifleyem"],
+        correct: 3,
+        exp: "Milodiy I asr boshlarida Rim hokimiyati ostidagi Falastindagi Vifleyem shahrida Iso tug‘ilgan."
+      },
+      {
+        q: "29. Milodiy 313-yilda xristianlikni boshqa dinlar bilan teng huquqli deb e’lon qilgan imperator kim?",
+        options: ["Konstantin", "Feodosiy", "Trayan", "Oktavian Avgust"],
+        correct: 0,
+        exp: "Milodiy 313-yilda imperator Konstantin xristianlikni boshqa dinlar bilan teng bir din deb e’lon qilgan farmon chiqardi."
+      },
+      {
+        q: "30. Yozuvni o‘rganayotgan bolalar harflarni mum qoplangan taxtachalarga nima bilan o‘yib yozishgan?",
+        options: ["Qalam bilan", "Stil deb atalgan metall tayoqcha bilan", "Mo‘yqalam bilan", "Temir mix bilan"],
+        correct: 1,
+        exp: "Yozuvni o‘rganayotgan bolalar stil degan metall tayoqcha bilan mum qoplangan taxtachalarga o‘yib yozardilar."
+      },
+      {
+        q: "31. Anhorlarning yuqori qismidan o‘tkazilgan suv ko‘priklari qanday nomlangan?",
+        options: ["Triumf arkasi", "Termalar", "Akveduklar", "Amfiteatr"],
+        correct: 2,
+        exp: "Anhorlarning yuqori qismidan o‘tkazilgan ko‘priklar akveduklar deb atalgan."
+      },
+      {
+        q: "32. Yunon-rim sarkardalari hayoti haqida kitob yozib qoldirgan tarixchi kim?",
+        options: ["Tit Liviy", "Kvint Kursiy Ruf", "Arrian", "Plutarx"],
+        correct: 3,
+        exp: "Plutarx yunon-rim sarkardalari hayoti haqida kitob yozib qoldirgan."
+      },
+      {
+        q: "33. Iso payg‘ambarga o‘lim jazosini tasdiqlagan Rim noibi kim edi?",
+        options: ["Pontiy Pilat", "Mark Antoniy", "Pompey", "Krass"],
+        correct: 0,
+        exp: "Rim noibi Pontiy Pilat bu hukmni tasdiqlagan."
+      },
+      {
+        q: "34. Xristian jamoalariga peshvolik qilgan shaxslar qanday atalgan?",
+        options: ["Apostollar", "Yepiskoplar", "Kohinlar", "Pontifiklar"],
+        correct: 1,
+        exp: "Xristian jamoalariga yepiskoplar peshvolik qiladi."
+      },
+      {
+        q: "35. Milodiy 455-yilda Rimga hujum qilib, ikki hafta davomida shaharni talagan german qabilalari kimlar edi?",
+        options: ["Gotlar", "Hunlar", "Vandallar", "Italiklar"],
+        correct: 2,
+        exp: "Milodiy 455-yilda Rimga germanlarning vandal qabilalari hujum qildi."
+      },
+      {
+        q: "36. G‘arbiy Rim imperiyasining qulashi bilan tarixda qaysi davr boshlandi?",
+        options: ["Qadimgi dunyo tarixi", "Yangi davr tarixi", "Eng yangi davr", "O‘rta asrlar tarixi"],
+        correct: 3,
+        exp: "Mazkur sanadan boshlab o‘rta asrlar tarixi boshlandi."
+      },
+      {
+        q: "37. Milodiy 330-yilda Vizantiy shahri Rim imperiyasining poytaxti etib e’lon qilgach qanday nomlandi?",
+        options: ["Konstantinopol", "Karfagen", "Afinas", "Aleksandriya"],
+        correct: 0,
+        exp: "Shahar imperator sharafiga Konstantinopol deb atala boshlandi."
+      },
+      {
+        q: "38. Spartak qo‘zg‘oloni bostirilgach, Rimda hokimiyat uchun kimlar uzoq vaqt kurash olib bordi?",
+        options: ["Romul va Rem", "Krass va Pompey", "Brut va Oktavian", "Kaligula va Neron"],
+        correct: 1,
+        exp: "Spartak qo‘zg‘oloni bostirilib, tor-mor etilganidan keyin Krass va Pompey hokimiyat uchun ancha vaqt kurash olib bordi."
+      },
+      {
+        q: "39. Miloddan avvalgi I asrda muntazam yollanma qo‘shinlarga tayanuvchi harbiy boshliqlarni asosan nima qiziqtirar edi?",
+        options: ["Davlatning rivojlanishi", "Xalqning farovonligi", "Faqat o‘lja va o‘z mavqeini kuchaytirish", "Respublikaning saqlanishi"],
+        correct: 2,
+        exp: "Yollanma askarlarni Rimning harbiy qudrati va davlatning kuchayishi emas, faqat o‘lja qiziqtirardi."
+      },
+      {
+        q: "40. Qadimgi Rimda «Rim burguti» nimaning ramzi hisoblangan?",
+        options: ["Ozodlikning", "Savdo-sotiqning", "Dehqonchilikning", "Rim hukmdorlarining"],
+        correct: 3,
+        exp: "Rasm ostidagi izohda: «Rim burguti. Rim hukmdorlari ramzi hisoblangan» deb yozilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const progress = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (progress) progress.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      if (!optBox) return;
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const qScore = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 36) fb.innerText = "Mukammal natija! V Bo‘limni 100% to‘liq o‘zlashtiribsiz 🏆";
+        else if(score >= 28) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+        else fb.innerText = "V Bo‘lim mavzularini qayta o‘qib chiqish tavsiya etiladi 📚";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

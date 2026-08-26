@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>49–50-§. Qadimgi Rim madaniyati</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va Rim madaniyatiga oid tushunchalarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">49–50-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">49–50-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Termalar", right: "Rim imperatorlari poytaxt aholisi uchun qurdirgan ko‘rkam hammomlar" },
+        { id: 2, left: "Termos", right: "Yunoncha «issiq» so‘zining kelib chiqishi" },
+        { id: 3, left: "Stil", right: "Yozuvni o‘rganayotgan bolalar harflarni mum qoplangan taxtachalarga o‘yib yozgan metall tayoqcha" },
+        { id: 4, left: "Grammatika", right: "Badavlat bolalar tahsilni davom ettirgan o‘rta maktab" }
+      ],
+      [
+        { id: 5, left: "Triumf arkalari", right: "Rim me’morchiligida qurilgan g‘alaba va tantana inshootlari" },
+        { id: 6, left: "Akveduklar", right: "Anhorlarning yuqori qismidan o‘tkazilgan suv ko‘priklari" },
+        { id: 7, left: "Beton", right: "Rimliklar ixtiro qilgan, vaqt o‘tishi bilan toshdan ham mustahkam bo‘ladigan yangi qurilish materiali" },
+        { id: 8, left: "Panteon", right: "Yunonchada «barcha xudolar ibodatxonasi» ma’nosini anglatuvchi gumbazli bino" }
+      ],
+      [
+        { id: 9, left: "Kolizey", right: "Rimning eng katta amfiteatri va ulug‘vorlik namunasi" },
+        { id: 10, left: "Tit Liviy", right: "«Rim tarixi» asarini yozgan mashhur Rim tarixchisi" },
+        { id: 11, left: "Plutarx", right: "Yunon-rim sarkardalari hayoti haqida kitob yozib qoldirgan tarixchi" },
+        { id: 12, left: "Kvint Kursiy Ruf", right: "«Makedoniyalik Aleksandr tarixi» asarini yaratgan ijodkor" }
+      ],
+      [
+        { id: 13, left: "Vifleyem", right: "Milodiy I asr boshlarida Iso tug‘ilgan Falastindagi shahar" },
+        { id: 14, left: "Pontiy Pilat", right: "Iso payg‘ambarga o‘lim jazosini tasdiqlagan Rim noibi" },
+        { id: 15, left: "Golgofa tog‘i", right: "Iso payg‘ambar dafn etilgan va keyinchalik qayta tirilib osmonga ko‘tarilgan joy" },
+        { id: 16, left: "Iso Masih", right: "Uchinchi kuni qayta tirilib, osmonga ko‘tarilgan deb ishongan shaxs" }
+      ],
+      [
+        { id: 17, left: "Yevangeliya", right: "Yunonchadan tarjima qilganda «xushxabar» ma’nosini anglatuvchi rivoyatlar majmuasi" },
+        { id: 18, left: "Apostollar", right: "Iso payg‘ambarning o‘n ikki nafar shogirdlari (havoriylar)" },
+        { id: 19, left: "Yepiskoplar", right: "Xristian jamoalariga peshvolik qilgan rahbarlar" },
+        { id: 20, left: "Milodiy I asr", right: "Xristianlik dini vujudga kelgan davr" }
+      ],
+      [
+        { id: 21, left: "Milodiy 313-yil", right: "Imperator Konstantin xristianlikni boshqa dinlar bilan teng huquqli deb e’lon qilgan farmon chiqargan yil" },
+        { id: 22, left: "Imperator Konstantin", right: "Xristianlarga ibodatxonalar qurish va oshkora ibodat qilish imkonini bergan hukmdor" },
+        { id: 23, left: "Patrisiy", right: "Rim zodagonlari bo‘lib, dastlab bir qavatli oddiy uylarda yashagan qatlam" },
+        { id: 24, left: "Kutubxona", right: "Termalar va maktablar qoshida ta’lim olish hamda fan bilan shug‘ullanish uchun tashkil etilgan maskan" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      const stageBadge = document.getElementById('match-stage-badge');
+      const matchCounter = document.getElementById('match-counter');
+      const matchProgress = document.getElementById('match-progress');
+      
+      if (stageBadge) stageBadge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (matchProgress) matchProgress.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      if (!container) return;
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          
+          const matchCounter = document.getElementById('match-counter');
+          if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                const matchProgress = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (matchProgress) matchProgress.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Qadimgi zamonlarda Rim zodagonlari bo‘lgan patrisiyalar qanday uylarda yashashgan?", a: "Bir qavatli oddiy uylarda." },
+      { q: "2. Badavlat kishilar yashaydigan tepaliklar bag‘rida nimalar paydo bo‘lgan?", a: "Tomoshabog‘lar va chorbo‘g‘lar." },
+      { q: "3. Rim imperatorlari poytaxt aholisi uchun qanday majmualar qurdirishgan?", a: "«Termalar» deb atalgan ko‘rkam hammomlar." },
+      { q: "4. Yunoncha «termos» so‘zi qanday ma’noni bildiradi?", a: "«Issiq»." },
+      { q: "5. Termalar qoshida nimalar faoliyat yuritgan?", a: "Suzish uchun haysenyurlar, sport zallari va kutubxona." },
+      { q: "6. Kambag‘al rimliklarning farzandlari nima sababdan maktabda o‘qishmagan?", a: "Xo‘jalik ishlarida ota-onalariga yordam berganliklari sababli." },
+      { q: "7. Badavlat xonadon farzandlari maktabga necha yoshdan qatnashgan?", a: "6 yoshdan." },
+      { q: "8. Yozuvni o‘rganayotgan bolalar harflarni qanday taxtachalarga o‘yib yozishgan?", a: "Mum qoplangan taxtachalarga stil deb ataluvchi metall tayoqcha bilan." },
+      { q: "9. O‘qish, yozish va hisoblashni o‘rganib bo‘lgach, badavlat bolalar qayerda tahsilni davom ettirgan?", a: "Grammatikada (o‘rta maktabda)." },
+      { q: "10. Grammatikada qanday fanlar o‘qitilgan?", a: "Tarix, geografiya, geometriya, musiqa va astronomiya." },
+      { q: "11. Rim me’morchiligida qaysi inshoot turlari keng tarqalgan edi?", a: "Amfiteatrlar, sirklar, teatrlar, ibodatxonalar, saroylar, triumf arkalari." },
+      { q: "12. Milodiy I asrda Rim qanday shaharga aylangan edi?", a: "Eng yirik va aholisi ko‘p shaharga." },
+      { q: "13. Akveduklar nima maqsadda qurilgan?", a: "Anhorlarning yuqori qismidan suvni daryo va jarqotlardan o‘tkazish uchun." },
+      { q: "14. Rimliklar qanday yangi qurilish materialini ixtiro qilishgan?", a: "Betonni." },
+      { q: "15. Betonning qanday afzalligi bor edi?", a: "Vaqt o‘tishi bilan u toshdan ham mustahkam bo‘lib qolgan va tez inshoot qurish imkonini bergan." },
+      { q: "16. Panteon so‘zi yunonchadan tarjima qilinganda nimani anglatadi?", a: "«Barcha xudolar ibodatxonasi»." },
+      { q: "17. Rimning eng katta amfiteatri qanday nomlangan?", a: "Kolizey." },
+      { q: "18. «Rim tarixi» asarini yozgan mashhur Rim tarixchisi kim?", a: "Tit Liviy." },
+      { q: "19. Yunon-rim sarkardalari hayoti haqida kitob yozib qoldirgan tarixchi kim?", a: "Plutarx." },
+      { q: "20. «Makedoniyalik Aleksandr tarixi» asarini yaratgan ijodkor kim?", a: "Kvint Kursiy Ruf." },
+      { q: "21. Milodiy I asr boshlarida Iso tug‘ilgan Falastindagi shahar qaysi?", a: "Vifleyem." },
+      { q: "22. Iso payg‘ambarga o‘lim jazosini tasdiqlagan Rim noibi kim edi?", a: "Pontiy Pilat." },
+      { q: "23. Iso vafotidan keyin uning jasadini qayerga dafn etishgan?", a: "Golgofa tog‘idagi bir g‘orga." },
+      { q: "24. Iso payg‘ambar nechanchi kuni qayta tirilib, osmonga ko‘tarilgan deb ishonishgan?", a: "Uchinchi kuni." },
+      { q: "25. Iso Masih haqidagi rivoyatlar majmuasi qanday nomlangan?", a: "Yevangeliya (Injiil — «xushxabar»)." },
+      { q: "26. Iso payg‘ambarning o‘n ikki nafar shogirdlari qanday atalgan?", a: "Apostollar (havoriylar)." },
+      { q: "27. Xristian jamoalariga kimlar peshvolik qilgan?", a: "Yepiskoplar." },
+      { q: "28. Xristianlik dini qachon vujudga kelgan?", a: "Milodiy I asrda." },
+      { q: "29. Rim hukmdorlari dastlab xristianlarga qanday munosabatda bo‘lishgan?", a: "Ularni ta’qib etgan, yirtqich hayvonlar changaliga tashlagan." },
+      { q: "30. Milodiy 313-yilda imperator Konstantin qanday farmon chiqargan?", a: "Xristianlikni boshqa dinlar bilan teng huquqli deb e’lon qilgan va ibodatxonalar qurishga ruxsat bergan." },
+      { q: "31. Stil nima?", a: "Yozuv yozish uchun ishlatiladigan metall tayoqcha." },
+      { q: "32. Triumf arkalari Rimda nimaning sharafiga qurilgan?", a: "G‘alaba va tantanalar sharafiga." },
+      { q: "33. Rim me’morchiligi nimasi bilan ajralib turgan?", a: "Muhtashamligi va rang-barangligi bilan." },
+      { q: "34. Xristianlik qaysi hududda vujudga kelgan?", a: "Falastinda." },
+      { q: "35. Imperator Konstantin xristianlikni qachon qonuniy deb e’lon qilgan?", a: "Milodiy 313-yilda." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      const counter = document.getElementById('fc-counter');
+      const progress = document.getElementById('fc-progress');
+      const question = document.getElementById('fc-question');
+      const answer = document.getElementById('fc-answer');
+      
+      if (counter) counter.innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      if (progress) progress.style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      if (question) question.innerText = card.q;
+      if (answer) {
+        answer.innerText = card.a;
+        answer.style.display = 'none';
+      }
+      
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (toggleBtn) toggleBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      const answer = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (answer) answer.style.display = 'block';
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      
+      if (fcIdx < flashcards.length) {
+        loadFlashcard();
+      } else {
+        if (playBox) playBox.style.display = 'none';
+        if (finishBox) finishBox.style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Rim imperatorlari poytaxt aholisi uchun qurdirgan ko‘rkam hammomlar qanday atalgan?",
+        options: ["Termalar", "Kolizey", "Akveduk", "Panteon"],
+        correct: 0,
+        exp: "Rim imperatorlari poytaxt aholisi uchun «termalar» deb atalgan ko‘rkam hammomlar qurdirgan."
+      },
+      {
+        q: "2. Rim me’morchiligida gumbaz shaklida ustunsiz qurilgan, «barcha xudolar ibodatxonasi» deb nomlangan bino qaysi?",
+        options: ["Kolizey", "Panteon", "Akveduk", "Triumf arkasi"],
+        correct: 1,
+        exp: "Rimdagi Panteon — «barcha xudolar ibodatxonasi» ustunsiz, gumbaz shaklida qurilgan."
+      },
+      {
+        q: "3. «Rim tarixi» asarini yozgan mashhur Rim tarixchisi kim edi?",
+        options: ["Plutarx", "Kvint Kursiy Ruf", "Tit Liviy", "Gerodot"],
+        correct: 2,
+        exp: "Tarixchi Tit Liviy «Rim tarixi»ni yozgan."
+      },
+      {
+        q: "4. Milodiy I asr boshlarida Iso tug‘ilgan Falastindagi shahar qaysi?",
+        options: ["Rim", "Afinas", "Aleksandriya", "Vifleyem"],
+        correct: 3,
+        exp: "Milodiy I asr boshlarida Rim hokimiyati ostidagi Falastindagi Vifleyem shahrida Iso tug‘ilgan."
+      },
+      {
+        q: "5. Milodiy 313-yilda xristianlikni boshqa dinlar bilan teng huquqli deb e’lon qilgan imperator kim?",
+        options: ["Konstantin", "Feodosiy", "Trayan", "Oktavian Avgust"],
+        correct: 0,
+        exp: "Milodiy 313-yilda imperator Konstantin xristianlikni boshqa dinlar bilan teng bir din deb e’lon qilgan farmon chiqardi."
+      },
+      {
+        q: "6. Yozuvni o‘rganayotgan bolalar harflarni mum qoplangan taxtachalarga nima bilan o‘yib yozishgan?",
+        options: ["Qalam bilan", "Stil deb atalgan metall tayoqcha bilan", "Mo‘yqalam bilan", "Temir mix bilan"],
+        correct: 1,
+        exp: "Yozuvni o‘rganayotgan bolalar stil degan metall tayoqcha bilan mum qoplangan taxtachalarga o‘yib yozardilar."
+      },
+      {
+        q: "7. Anhorlarning yuqori qismidan o‘tkazilgan suv ko‘priklari qanday nomlangan?",
+        options: ["Triumf arkasi", "Termalar", "Akveduklar", "Amfiteatr"],
+        correct: 2,
+        exp: "Anhorlarning yuqori qismidan o‘tkazilgan ko‘priklar akveduklar deb atalgan."
+      },
+      {
+        q: "8. Yunon-rim sarkardalari hayoti haqida kitob yozib qoldirgan tarixchi kim?",
+        options: ["Tit Liviy", "Kvint Kursiy Ruf", "Arrian", "Plutarx"],
+        correct: 3,
+        exp: "Plutarx yunon-rim sarkardalari hayoti haqida kitob yozib qoldirgan."
+      },
+      {
+        q: "9. Iso payg‘ambarga o‘lim jazosini tasdiqlagan Rim noibi kim edi?",
+        options: ["Pontiy Pilat", "Mark Antoniy", "Pompey", "Krass"],
+        correct: 0,
+        exp: "Rim noibi Pontiy Pilat bu hukmni tasdiqlagan."
+      },
+      {
+        q: "10. Xristian jamoalariga peshvolik qilgan shaxslar qanday atalgan?",
+        options: ["Apostollar", "Yepiskoplar", "Kohinlar", "Pontifiklar"],
+        correct: 1,
+        exp: "Xristian jamoalariga yepiskoplar peshvolik qiladi."
+      },
+      {
+        q: "11. Rimning eng katta amfiteatri va ulug‘vorlik namunasi bo‘lgan inshoot qaysi?",
+        options: ["Panteon", "Akveduk", "Kolizey", "Triumf arkasi"],
+        correct: 2,
+        exp: "Rimning eng katta amfiteatri bo‘lmish Kolizey o‘tmishdagi ulug‘vorlik namunasi sifatida saqlangan."
+      },
+      {
+        q: "12. «Makedoniyalik Aleksandr tarixi» asarini yaratgan ijodkor kim?",
+        options: ["Tit Liviy", "Plutarx", "Gerodot", "Kvint Kursiy Ruf"],
+        correct: 3,
+        exp: "Kvint Kursiy Ruf «Makedoniyalik Aleksandr tarixi» asarini yaratgan."
+      },
+      {
+        q: "13. Rimliklar qanday yangi qurilish materialini ixtiro qilishgan?",
+        options: ["Beton", "Pishiq g‘isht", "Marmar", "Granit"],
+        correct: 0,
+        exp: "Rimliklar yangi qurilish materialil bo‘lmish betonni ixtiro qilishgan."
+      },
+      {
+        q: "14. Xristianlik dini qachon vujudga kelgan?",
+        options: ["Miloddan avvalgi V asrda", "Milodiy I asrda", "Milodiy IV asrda", "Mil. avv. II asrda"],
+        correct: 1,
+        exp: "Milodiy I asr xristianlik vujudga kelgan sana hisoblanadi."
+      },
+      {
+        q: "15. Yunonchadan tarjima qilganda «xushxabar» ma’nosini anglatuvchi rivoyatlar majmuasi nima deb ataladi?",
+        options: ["Apostol", "Yepiskop", "Yevangeliya (Injiil)", "Panteon"],
+        correct: 2,
+        exp: "Iso Masih haqidagi rivoyatlar Yevangeliya (Injiil) nomini olgan, yunonchadan «xushxabar» ma’nosini anglatadi."
+      },
+      {
+        q: "16. Iso payg‘ambarning o‘n ikki nafar shogirdlari qanday atalgan?",
+        options: ["Pontifiklar", "Avgurlar", "Senatorlar", "Apostollar (havoriylar)"],
+        correct: 3,
+        exp: "Shogirdlari apostollar (havoriylar) deb atalgan."
+      },
+      {
+        q: "17. Qadimgi zamonlarda Rim zodagonlari bo‘lgan patrisiyalar qanday uylarda yashashgan?",
+        options: ["Bir qavatli oddiy uylarda", "Ulkan saroylarda", "Katta koshonalarda", "G‘orlarda"],
+        correct: 0,
+        exp: "Rim zodagonlari bo‘lmish patrisiyalar bir qavatli oddiy uylarda yashardilar."
+      },
+      {
+        q: "18. Badavlat bolalar o‘rta maktabda (grammatikada) qaysi fanlarni o‘qitishgan?",
+        options: ["Faqat harbiy ishni", "Tarix, geografiya, geometriya, musiqa va astronomiya", "Faqat din va huquqni", "Faqat falsafani"],
+        correct: 1,
+        exp: "Grammatikada tarix, geografiya, geometriya, musiqa va astronomiya o‘qitilardi."
+      },
+      {
+        q: "19. Iso payg‘ambar vafotidan keyin uning jasadini qayerga dafn etishgan?",
+        options: ["Vifleyemdagi cherkovga", "Rim forumiga", "Golgofa tog‘idagi bir g‘orga", "Daryo bo‘yiga"],
+        correct: 2,
+        exp: "Iso vafotidan keyin uning jasadini shogirdlari Golgofa tog‘idagi bir g‘orga dafn qilishadi."
+      },
+      {
+        q: "20. Rimdagi termalar qanday imkoniyatlarga ega bo‘lgan?",
+        options: ["Faqat suv quyish uchun", "Faqat uchrashuv uchun", "Faqat sport uchun", "Suzish hovuzlari, sport zallari va kutubxona"],
+        correct: 3,
+        exp: "Termalarda suzish uchun haysenyurlar, sport zallari va kutubxona bo‘lgan."
+      },
+      {
+        q: "21. Betonning ishlatilishi rimliklarga qanday imkon bergan?",
+        options: ["Tez va pishiq inshootlar qurishga", "Faqat kemalar yasashga", "Faqat yo‘l yotqizishga", "Faqat haykal yasashga"],
+        correct: 0,
+        exp: "Beton ishlatilishi rimliklarga tez va pishiq inshootlar qurishga imkon bergan."
+      },
+      {
+        q: "22. Xristianlik dini ilk bor qaysi imperator davrida boshqa dinlar bilan teng huquqli deb e’lon qilindi?",
+        options: ["Neron", "Konstantin", "Trayan", "Feodosiy"],
+        correct: 1,
+        exp: "Milodiy 313-yilda imperator Konstantin xristianlikni boshqa dinlar bilan teng bir din deb e’lon qilgan farmon chiqardi."
+      },
+      {
+        q: "23. Qadimgi Rimda akveduklar nima maqsadda ishlatilgan?",
+        options: ["Dushmanlardan saqlanish uchun", "Kema qatnovi uchun", "Suv o‘tkazish uchun (ko‘prik vazifasida)", "Savdo qilish uchun"],
+        correct: 2,
+        exp: "Daralar va vodiylardan suv o‘tkazish uchun akveduklar qurilgan."
+      },
+      {
+        q: "24. Badavlat kishilar yashaydigan tepaliklar bag‘irida nimalar paydo bo‘lgan?",
+        options: ["Zavodlar", "Qullar bozori", "Harbiy kazarmalar", "Tomoshabog‘lar va chorbo‘g‘lar"],
+        correct: 3,
+        exp: "Badavlat kishilar yashaydigan tepaliklar bag‘rida tomoshabog‘lar va chorbo‘g‘lar paydo bo‘lgan."
+      },
+      {
+        q: "25. Kambag‘al rimliklar farzandlari nima uchun maktabda o‘qiy olishmagan?",
+        options: ["Xo‘jalik ishlarida ota-onalarga yordam berishgani uchun", "Maktablar yopib qo‘yilgani uchun", "O‘qish taqiqlangani uchun", "Faqat qizlar o‘qitilgani uchun"],
+        correct: 0,
+        exp: "Kambag‘al rimliklarning farzandlari xo‘jalik ishlarida ota-onalariga yordam berganliklari sababli maktabda o‘qimas edilar."
+      },
+      {
+        q: "26. Panteon binosining asosiy me’moriy xususiyati nimadan iborat edi?",
+        options: ["U toshdan yasalmagan edi", "Ustunsiz, gumbaz shaklida qurilgan edi", "U besh qavatli edi", "U suv ustida qurilgan edi"],
+        correct: 1,
+        exp: "Shiftlar gumbaz shaklida ustunsiz quriladigan bo‘ldi — Panteon shu taxlitda qurilgan."
+      },
+      {
+        q: "27. Rimliklar dastlab xristianlarga qanday munosabatda bo‘lishgan?",
+        options: ["Ularni hurmat qilishgan", "Ularga yer berishgan", "Ularni ta’qib etib, yirtqich hayvonlarga tashlashgan", "Ularni boshqaruvga qo‘yishgan"],
+        correct: 2,
+        exp: "Rim hukmdorlari xristianlarni ta’qib etadilar, yirtqich hayvonlar changaliga tashlaydilar."
+      },
+      {
+        q: "28. Stilda o‘qishni o‘rganuvchi bolalar nima ustiga yozishgan?",
+        options: ["Qog‘ozga", "Papirusga", "Charmga", "Mum qoplangan taxtachalarga"],
+        correct: 3,
+        exp: "Bolalar stil bilan mum qoplangan taxtachalarga o‘yib yozardilar."
+      },
+      {
+        q: "29. Rim me’morchiligida g‘alaba va tantanalar sharafiga nimalar qurilgan?",
+        options: ["Triumf arkalari", "Termalar", "Akveduklar", "Kutubxonalar"],
+        correct: 0,
+        exp: "Amfiteatrlar, sirklar va teatrlar, ibodatxonalar, saroylar, triumf arkalari barpo etildi."
+      },
+      {
+        q: "30. Iso payg‘ambar necha yoshida odamlarga Xudyo oyatlari haqida hikoyalar so‘zlay boshlagan?",
+        options: ["20 yoshida", "30 yoshida", "40 yoshida", "12 yoshida"],
+        correct: 1,
+        exp: "Rivoyatga ko‘ra, 30 yoshida Iso o‘n ikki nafar shogirdi bilan Falastin bo‘ylab sayohat qilib..."
+      },
+      {
+        q: "31. Qadimgi Rimda har bir termada nimalar mavjud bo‘lgan?",
+        options: ["Faqat issiq suv", "Faqat savdo rastalari", "Suzish uchun haysenyurlar, sport zallari va kutubxona", "Faqat dindorlar yig‘ini"],
+        correct: 2,
+        exp: "Termalarda suzish uchun haysenyurlar, sport zallari, shuningdek kutubxona bo‘lgan."
+      },
+      {
+        q: "32. Xristian jamoalarining yetakchilari va peshvolari kimlar edi?",
+        options: ["Apostollar", "Imperatorlar", "Pontifiklar", "Yepiskoplar"],
+        correct: 3,
+        exp: "Xristian jamoalariga yepiskoplar peshvolik qiladi."
+      },
+      {
+        q: "33. Qadimgi Rimda tarixchilar va ularning asarlari moslashtirilganda qaysi biri xato?",
+        options: ["Tit Liviy — «Rim tarixi»", "Plutarx — sarkardalar hayoti", "Kvint Kursiy Ruf — «Makedoniyalik Aleksandr tarixi»", "Gerodot — «Panteon tarixi»"],
+        correct: 3,
+        exp: "Gerodot bu mavzuga tegishli emas va Panteon tarixi degan asar yo‘q."
+      },
+      {
+        q: "34. Iso tug‘ilgan Vifleyem shahri qayerda joylashgan?",
+        options: ["Falastinda", "Yunonistonda", "Misrda", "Italiyada"],
+        correct: 0,
+        exp: "Rim hokimiyati ostidagi Falastindagi Vifleyem shahrida Iso tug‘ilgan."
+      },
+      {
+        q: "35. Rimda akveduklar nima uchun qurilgan edi?",
+        options: ["Shaharni dushmandan himoya qilish uchun", "Anhorlarning yuqori qismidan suv o‘tkazish uchun", "Kemalar qatnovini ta’minlash uchun", "Tantanali marosimlar o‘tkazish uchun"],
+        correct: 1,
+        exp: "Akveduklar — anhorlarning yuqori qismidan o‘tkazilgan ko‘priklar suv o‘tkazish uchun qurilgan."
+      },
+      {
+        q: "36. Qadimgi Rim me’morchiligi va san’ati haqidagi ma’lumotlarga ko‘ra quyidagilardan qaysi biri to‘g‘ri?",
+        options: ["Beton faqat haykal yasashda ishlatilgan", "Kolizey eng kichik amfiteatr edi", "Beton ixtiro qilinishi tez va pishiq inshootlar qurishga imkon bergan", "Panteon ustunli bino edi"],
+        correct: 2,
+        exp: "Beton ishlatilishi rimliklarga tez va pishiq inshootlar qurishga imkon bergan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const progress = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (progress) progress.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      if (!optBox) return;
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const qScore = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 32) fb.innerText = "Mukammal natija! 49–50-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+        else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+        else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish (xavfsiz va to‘g‘ridan-to‘g‘ri chaqiruv)
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

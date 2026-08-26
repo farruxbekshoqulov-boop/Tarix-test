@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>47-§. Rim respublikasining qulashi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va shaxslarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">47-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">47-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Qullar qo‘zg‘olonlari", right: "Quldorlarni qattiq qo‘rquvga solib, kuchli hokimiyat talab qilgan omil" },
+        { id: 2, left: "Harbiy diktatura", right: "Quldorlar qarshisida o‘rnatish zarurligi ko‘ndalang turgan kuchli boshqaruv" },
+        { id: 3, left: "Senatorlar va mansabdorlar", right: "Ulkan davlatni risolagidek boshqarishni ta’minlay olmagan qatlam" },
+        { id: 4, left: "Mil. avv. I asr", right: "Muntazam yollanma qo‘shinlarga tayanuvchi harbiy boshliqlar kuchga aylangan davr" }
+      ],
+      [
+        { id: 5, left: "Krass va Pompey", right: "Spartak qo‘zg‘oloni bostirilgach hokimiyat uchun kurashgan xavfli raqiblar" },
+        { id: 6, left: "Yuliy Sezar", right: "Galliyadagi zafardan so‘ng Rimga bostirib kirgan sarkarda" },
+        { id: 7, left: "Mil. avv. 49-yil", right: "Yuliy Sezar Rubikon daryosidan kechib o‘tgan sana" },
+        { id: 8, left: "«Qur’a tashlandi!»", right: "Sezar Rubikondan o‘tayotganda aytgan mashhur so‘zi" }
+      ],
+      [
+        { id: 9, left: "Imperator va diktator", right: "Yuliy Sezar ega bo‘lgan cheklanmagan oliy unvonlar" },
+        { id: 10, left: "Senat va Xalq majlisi", right: "Sezar hisob bermaydigan va ularning roziligisiz mansabdor tayinlagan organlar" },
+        { id: 11, left: "Senatorlar fitnasi", right: "Sezarning cheklanmagan hokimiyatidan norozi bo‘lib uyushtirilgan suiqasd" },
+        { id: 12, left: "Brut", right: "Sezarning yaqin do‘stlaridan biri bo‘lib, fitnaga rahbarlik qilgan shaxs" }
+      ],
+      [
+        { id: 13, left: "Mil. avv. 44-yil", right: "Yuliy Sezar xanjar zarbalari bilan o‘ldirilgan sana" },
+        { id: 14, left: "Fuqarolar urushi", right: "Sezarning o‘ldirilishidan keyin sarkardalar o‘rtasida boshlangan to‘qnashuv" },
+        { id: 15, left: "Oktavian", right: "Sezarning jiyani bo‘lib, respublikachilarga qarshi kurash boshlagan shaxs" },
+        { id: 16, left: "Mark Antoniy", right: "Oktavian bilan ittifoq tuzib, Rimning Sharqiy qismini boshqargan sarkarda" }
+      ],
+      [
+        { id: 17, left: "Kleopatra", right: "Misr malikasi bo‘lib, Mark Antoniy uylangan shaxs" },
+        { id: 18, left: "Mil. avv. 29-yil", right: "Oktavian Senatdan imperator unvoni va Avgust nomini olgan sana" },
+        { id: 19, left: "Misrning qo‘shilishi", right: "Antoniy va Kleopatra mag‘lub bo‘lgach Rim provinsiyasiga aylangan o‘lka" },
+        { id: 20, left: "Rim imperiyasi", right: "Oktavian Avgust asos solgan yangi davlat tuzumi" }
+      ],
+      [
+        { id: 21, left: "Kaligula va Neron", right: "Oktavian Avgustdan keyin kelib imperiya inqirozini boshlagan vorislar" },
+        { id: 22, left: "Milodiy II asr boshlari", right: "Rim imperiyasining «oltin asri» deb nomlangan davri" },
+        { id: 23, left: "Milodiy 98-yil", right: "Dunay bo‘ylarida yashovchi daklarni bo‘ysundirgan imperator Trayan taxtga o‘tirgan yil" },
+        { id: 24, left: "Trayan ustuni", right: "Balandligi 40 metr bo‘lib, daklar bilan urush manzaralari tasvirlangan yodgorlik" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Qullar qo‘zg‘olonlari quldorlarda nimanini keltirib chiqargan?", a: "Qattiq qo‘rquv[cite: 1]." },
+      { q: "2. Quldorlar qarshisida qanday hokimiyat o‘rnatish zarurligi ko‘ndalang turgandi?", a: "Harbiy diktatura[cite: 1]." },
+      { q: "3. Senatorlar va kam sonli mansabdor shaxslar nima qila olmas edilar?", a: "Ulkan davlatni risolagidek boshqarishni ta’minlay olmas edilar[cite: 1]." },
+      { q: "4. Miloddan avvalgi I asrda kimlar haqiqiy kuchga aylangan edi?", a: "Muntazam yollanma qo‘shinlarga tayanuvchi harbiy boshliqlar[cite: 1]." },
+      { q: "5. Yollanma askarlarni asosan nima qiziqtirar edi?", a: "Faqat o‘lja (kimlar bilan jang qilish va kimlarni talashning farqi bo‘lmagan)[cite: 1]." },
+      { q: "6. Spartak qo‘zg‘oloni bostirilgach, kimlar hokimiyat uchun kurash olib bordi?", a: "Krass va Pompey[cite: 1]." },
+      { q: "7. Krass halok bo‘lgach, Pompey uchun kim birdan-bir xavfli raqib bo‘lib qoldi?", a: "Yuliy Sezar[cite: 1]." },
+      { q: "8. Yuliy Sezar Galliyadagi zafarli urushdan so‘ng qaysi daryodan kechib o‘tdi?", a: "Rubikon daryosidan (mil. avv. 49-yilda)[cite: 1]." },
+      { q: "9. Rubikon daryosidan o‘tayotganda Sezar qanday mashhur so‘zni aytgan?", a: "«Qur’a tashlandi!»[cite: 1]" },
+      { q: "10. Yuliy Sezar qanday hokimiyatga ega hukmdorga aylandi?", a: "Imperator va diktator — cheklanmagan hokimiyatga ega[cite: 1]." },
+      { q: "11. Sezar mansabdor shaxslarni qanday tayinlardi?", a: "Hech qanday saylovlarsiz[cite: 1]." },
+      { q: "12. Sezarning cheklanmagan hokimiyatidan norozi bo‘lganlar kimlar edi?", a: "Senatorlar[cite: 1]." },
+      { q: "13. Sezarga qarshi fitnaga uning yaqin do‘stlaridan biri bo‘lgan kim rahbarlik qildi?", a: "Brut[cite: 1]." },
+      { q: "14. Yuliy Sezar qachon va qanday vafot etdi?", a: "Miloddan avvalgi 44-yilda Senatdagi majlisda fitnachilar xanjarlari ostida[cite: 1]." },
+      { q: "15. Sezarning o‘ldirilishidan keyin nima boshlandi?", a: "Sarkardalar o‘rtasida fuqarolar urushi[cite: 1]." },
+      { q: "16. Rimda Sezarning jiyani kim va u kimlarga qarshi kurash boshladi?", a: "Oktavian; brut va uning tarafdorlariga qarshi[cite: 1]." },
+      { q: "17. Oktavian kim bilan ittifoq tuzib respublikachilarni tor-mor etdi?", a: "Mark Antoniy bilan[cite: 1]." },
+      { q: "18. Mark Antoniy Misrga kelib kimga uylandi?", a: "Misr malikasi Kleopatragacha (Kleopatragaga)[cite: 1]." },
+      { q: "19. Antoniy Kleopatradan sovg‘a tariqasida nima oldi?", a: "Rimning sharqiy provinsiyalarini[cite: 1]." },
+      { q: "20. Yunoniston qirg‘oqlarida kimlarning flotlari o‘rtasida jang bo‘ldi?", a: "Antoniy va Oktavian flotlari o‘rtasida[cite: 1]." },
+      { q: "21. Jang qizigan pallada Antoniy va Kleopatra qayerga qochib ketishdi?", a: "Aleksandriya shahriga[cite: 1]." },
+      { q: "22. Antoniy va Kleopatra oxir-oqibat nima qilishdi?", a: "O‘z-o‘zini o‘ldirishdi (Misr esa Rim provinsiyasiga aylandi)[cite: 1]." },
+      { q: "23. Oktavian qachon Senatdan imperator unvoni va Avgust nomini oldi?", a: "Miloddan avvalgi 29-yilda[cite: 1]." },
+      { q: "24. Oktavian Avgust Rim imperiyasining qanday arbobiga aylandi?", a: "Asoschisi va yakka hukmdoriga[cite: 1]." },
+      { q: "25. Oktavian Avgust vafotidan so‘ng uning vorislari davrida nima boshlandi?", a: "Kaligula va Neron davrida imperiya inqirozi boshlandi[cite: 1]." },
+      { q: "26. Rim imperiyasining kuch-qudrati qayta tiklangan davr qanday nomlangan?", a: "«Oltin asr» (milodiy II asr boshlari)[cite: 1]." },
+      { q: "27. Milodiy 98-yilda Rim imperatori taxtini egallagan shaxs kim?", a: "Trayan[cite: 1]." },
+      { q: "28. Trayan zamomida Dunay daryosi bo‘ylarida yashovchi qaysi xalq bilan urush olib borildi?", a: "Daklar bilan[cite: 1]." },
+      { q: "29. Daklar bilan urush manzaralari Rimdagi qaysi inshootda tasvirlangan?", a: "Balandligi 40 metr bo‘lgan Trayan ustunida[cite: 1]." },
+      { q: "30. Trayan davrida Rim imperiyasi tarkibiga yana qaysi hududlar kirdi?", a: "Suriya va Mesopotamiya[cite: 1]." },
+      { q: "31. Trayan qaysi podshohlik bilan muvaffaqiyatli urush olib borgan?", a: "Parfiya podsholigi bilan[cite: 1]." },
+      { q: "32. Oktavian Avgust davrida Rimda nima ko‘paydi?", a: "Qurilish ishlari (ko‘plab saroy va ibodatxonalar)[cite: 1]." },
+      { q: "33. Yuliy Sezar Rimda qanday mavqega ega bo‘lganini senatorlar qanday qabul qildi?", a: "Ular respublikani tiklashni istamay, Sezarga qarshi fitna uyushtirdilar[cite: 1]." },
+      { q: "34. Sezarning so‘nggi so‘zlari aytilgan daryo qanday nomlanadi?", a: "Rubikon daryosi[cite: 1]." },
+      { q: "35. Oktavian Avgust Rim imperiyasining yakka hukmdori bo‘lgach nima qildi?", a: "Bir qator islohotlar o‘tkazdi[cite: 1]." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Yuliy Sezar Galliyadagi zafarli urushdan so‘ng Rimga boruvchi yo‘ldagi qaysi daryodan kechib o‘tgan?",
+        options: ["Rubikon daryosidan", "Tibr daryosidan", "Po daryosidan", "Dunay daryosidan"],
+        correct: 0,
+        exp: "Yuliy Sezar mil. avv. 49-yilda Galliyadagi zafarli urushdan keyin Rimga boruvchi yo‘ldagi Rubikon daryosidan kechib o‘tgan[cite: 1]."
+      },
+      {
+        q: "2. Yuliy Sezar qaysi yilda fitnachilar xanjarlari ostida vafot etgan?",
+        options: ["Mil. avv. 49-yilda", "Mil. avv. 44-yilda", "Mil. avv. 29-yilda", "Milodiy 98-yilda"],
+        correct: 1,
+        exp: "Mil. avv. 44-yilda Senatdagi majlisda fitnachilar Sezarni o‘ldirishadi[cite: 1]."
+      },
+      {
+        q: "3. Oktavian Senatdan imperator unvoni va Avgust nomini qachon olgan?",
+        options: ["Mil. avv. 44-yilda", "Mil. avv. 49-yilda", "Mil. avv. 29-yilda", "Milodiy 98-yilda"],
+        correct: 2,
+        exp: "Mil. avv. 29-yilda Oktavian Senatdan imperator unvoni va Avgust nomini oladi[cite: 1]."
+      },
+      {
+        q: "4. Rim imperiyasining kuch-qudrati qayta tiklanib, «oltin asr» degan nom olgan davr qaysi asr edi?",
+        options: ["Milodiy I asr", "Mil. avv. I asr", "Milodiy III asr", "Milodiy II asrning boshlari"],
+        correct: 3,
+        exp: "Faqat milodiy II asrning boshlarida Rim imperiyasining kuch-qudrati qayta tiklandi. Bu asr «oltin asr» deb nomlangan[cite: 1]."
+      },
+      {
+        q: "5. Milodiy 98-yilda Rim imperatori taxtini egallagan va Dunay bo‘ylarida daklar bilan urush olib borgan hukmdor kim?",
+        options: ["Trayan", "Oktavian Avgust", "Neron", "Kaligula"],
+        correct: 0,
+        exp: "Milodiy 98-yilda Trayan Rim imperatori taxtini egalladi va daklar bilan urush olib bordi[cite: 1]."
+      },
+      {
+        q: "6. Yuliy Sezarga qarshi uyushtirilgan fitnaga uning yaqin do‘stlaridan biri bo‘lgan kim rahbarlik qilgan?",
+        options: ["Mark Antoniy", "Brut", "Pompey", "Krass"],
+        correct: 1,
+        exp: "Fitnaga Sezarning yaqin do‘stlaridan bo‘lmish Brut boshchilik qildi[cite: 1]."
+      },
+      {
+        q: "7. Mark Antoniy Misrga kelib kimga uylangan edi?",
+        options: ["To‘marisga", "Apamaga", "Kleopatragacha (Kleopatra)", "Roksanaga"],
+        correct: 2,
+        exp: "Misrga kelgan Antoniy Misr malikasi Kleopatragacha uylandi[cite: 1]."
+      },
+      {
+        q: "8. Balandligi 40 metr bo‘lgan Trayan ustuni sirtida qaysi xalq bilan urush manzaralari tasvirlangan?",
+        options: ["Gallar bilan", "Parfiyaliklar bilan", "Karfagenliklar bilan", "Daklar bilan"],
+        correct: 3,
+        exp: "Balandligi 40 metrgacha teng Trayan ustuni sirtida daklar bilan urush manzaralari tasvirlangan[cite: 1]."
+      },
+      {
+        q: "9. Yuliy Sezar Rubikon daryosidan o‘tayotganda qanday mashhur iborani aytgan?",
+        options: ["«Qur’a tashlandi!»", "«Evrika!»", "«Keldim, ko‘rdim, yengdim!»", "«Menga tayanch nuqtasi bering!»"],
+        correct: 0,
+        exp: "Sezar o‘shanda shunday degan: «Qur’a tashlandi!»[cite: 1]"
+      },
+      {
+        q: "10. Oktavian Avgust vafotidan so‘ng uning vorislari bo‘lgan qaysi hukmdorlar davrida imperiya inqirozi boshlandi?",
+        options: ["Trayan va Adrian", "Kaligula va Neron", "Sezar va Pompey", "Krass va Brut"],
+        correct: 1,
+        exp: "Oktavian Avgust vafotidan so‘ng uning vorislari — Kaligula va Neron hukmronligi davrida imperiya inqirozi boshlandi[cite: 1]."
+      },
+      {
+        q: "11. Spartak qo‘zg‘oloni bostirilgach, Rimda hokimiyat uchun kimlar uzoq vaqt kurash olib bordi?",
+        options: ["Romul va Rem", "Brut va Oktavian", "Krass va Pompey", "Kaligula va Neron"],
+        correct: 2,
+        exp: "Spartak qo‘zg‘oloni bostirilib, tor-mor etilganidan keyin Krass va Pompey hokimiyat uchun ancha vaqt kurash olib bordi[cite: 1]."
+      },
+      {
+        q: "12. Miloddan avvalgi I asrda muntazam yollanma qo‘shinlarga tayanuvchi harbiy boshliqlarni asosan nima qiziqtirar edi?",
+        options: ["Davlatning rivojlanishi", "Xalqning farovonligi", "Respublikaning saqlanishi", "Faqat o‘lja va o‘z mavqeini kuchaytirish"],
+        correct: 3,
+        exp: "Yollanma askarlarni Rimning harbiy qudrati va davlatning kuchayishi emas, faqat o‘lja qiziqtirardi[cite: 1]."
+      },
+      {
+        q: "13. Yuliy Sezar Rimda qanday mutlaq unvonlarni egallagan edi?",
+        options: ["Imperator va diktator", "Buyuk pontifik va konsul", "Xalq tribuni va senator", "Shoh va fir’avn"],
+        correct: 0,
+        exp: "Sezar Rim imperatori va diktatori — cheklanmagan hokimiyatga ega hukmdorga aylandi[cite: 1]."
+      },
+      {
+        q: "14. Mark Antoniy va Oktavian o‘rtasidagi kurash natijasida Misr davlati nima bo‘ldi?",
+        options: ["Mustaqil qirollikka aylandi", "Rim davlati provinsiyasiga aylandi", "Parfiyaga qo‘shib yuborildi", "Ikiga bo‘linib ketdi"],
+        correct: 1,
+        exp: "Keyingi yili Oktavian qo‘shinlari bilan Misrga yetib keladi, Antoniy va Kleopatra o‘z-o‘zini o‘ldiradi, Misr esa Rim provinsiyasiga aylanadi[cite: 1]."
+      },
+      {
+        q: "15. Yuliy Sezarning o‘ldirilishidan keyin Rimda nima boshlandi?",
+        options: ["Tinchlik muzokaralari", "Iqtisodiy yuksalish", "Sarkardalar o‘rtasida fuqarolar urushi", "Respublika qonunlarining tiklanishi"],
+        correct: 2,
+        exp: "Yuliy Sezar hukmronligi tugab, uning o‘ldirilishidan so‘ng sarkardalar o‘rtasida kurash avj oldi va bu fuqarolar urushiga olib keldi[cite: 1]."
+      },
+      {
+        q: "16. Oktavian Avgust Rim imperiyasiga asos solgach nima qilgan?",
+        options: ["Barcha hududlarni bo‘shatib yuborgan", "Respublikani qayta tiklagan", "Hokimiyatni xalqqa bergan", "Bir qator islohotlar o‘tkazib, ko‘plab saroy va ibodatxonalar qurdirgan"],
+        correct: 3,
+        exp: "U Rim imperiyasining asoschisiga aylanib, bir qator islohotlar o‘tkazadi va ko‘plab saroy hamda ibodatxonalar bunyod etdiradi[cite: 1]."
+      },
+      {
+        q: "17. Krass halok bo‘lgach, Pompey uchun kim birdan-bir xavfli raqib bo‘lib qoldi?",
+        options: ["Yuliy Sezar", "Mark Antoniy", "Oktavian", "Brut"],
+        correct: 0,
+        exp: "Urushlardan birida Krass halok bo‘ldi. Endi Pompey uchun Sezar birdan-bir xavfli raqib bo‘lib qoldi[cite: 1]."
+      },
+      {
+        q: "18. Sezarning cheklanmagan hokimiyatidan norozi bo‘lgan senatorlar nima qilishdi?",
+        options: ["Mamlakatni tark etishdi", "Fitna uyushtirib, Sezarni o‘ldirishdi", "Xalq majlisiga shikoyat qilishdi", "Yangi qonun qabul qilishdi"],
+        correct: 1,
+        exp: "Sezarning cheklanmagan hokimiyatidan norozi bo‘lgan senatorlar fitna uyushtirib, uni o‘ldirishga ahd qilishdi[cite: 1]."
+      },
+      {
+        q: "19. Sezarning jiyani va davomchisi bo‘lgan Oktavian dastlab kimga qarshi kurash boshladi?",
+        options: ["Parfiyaga", "Misrga", "Brut va uning tarafdorlariga", "Karfagenga"],
+        correct: 2,
+        exp: "Ayni paytda Rimda Sezarning jiyani — Oktavian Brut va uning tarafdorlariga qarshi kurash boshlaydi[cite: 1]."
+      },
+      {
+        q: "20. Trayan davrida Rim imperiyasi tarkibiga qaysi Sharqiy hududlar kiritildi?",
+        options: ["Faqat Misr va Liviya", "Faqat Ispaniya va Galliya", "Faqat Hindiston va Xitoy", "Suriya va Mesopotamiya"],
+        correct: 3,
+        exp: "Ushbu davrda Suriya va Mesopotamiya hududlari Rim imperiyasi tarkibiga kirdi[cite: 1]."
+      },
+      {
+        q: "21. Qullar qo‘zg‘olonlari quldorlarga qanday ta’sir ko‘rsatdi?",
+        options: ["Qattiq qo‘rquv solib, kuchli hokimiyat — harbiy diktatura o‘rnatish zarurligini ko‘ndalang qo‘ydi", "Ularni qullardan voz kechishga majbur qildi", "Respublika tuzumini mustahkamladi", "Yangi savdo yo‘llarini ochishga undadi"],
+        correct: 0,
+        exp: "Qullar qo‘zg‘olonlari quldorlarni qattiq qo‘rquvga solib qo‘ydi. Quldorlar qarshisida kuchli hokimiyat bo‘lmish harbiy diktatura o‘rnatishi zarurligi ko‘ndalang turgan edi[cite: 1]."
+      },
+      {
+        q: "22. Mark Antoniy Misr malikasi Kleopatradan sovg‘a sifatida nimalarni olgan edi?",
+        options: ["Oltin konlari va flot", "Rimning sharqiy provinsiyalarini (viloyatlari)", "Katta qo‘shin", "Yangi saroylar"],
+        correct: 1,
+        exp: "Nikoh sovg‘asi tariqasida Antoniy Kleopatradan Rimning sharqiy provinsiyalarini beradi[cite: 1]."
+      },
+      {
+        q: "23. Yuliy Sezarning Rubikon daryosidan kechib o‘tishi nimani anglatardi?",
+        options: ["Tinchlik muzokaralarini", "Chet elga savdo safarini", "Yakkahokimlik uchun ochiq kurash boshlanganini", "Respublika qonunlariga itoat etishni"],
+        correct: 2,
+        exp: "Rubikon daryosidan kechib o‘tar ekan, yakkahokimlik uchun oshkora kurashni boshlab yuborardi[cite: 1]."
+      },
+      {
+        q: "24. Oktavian va Mark Antoniy flotlari o‘rtasidagi hal qiluvchi jang qayerda bo‘ldi?",
+        options: ["Sitsiliya yaqinida", "Karfagen qirg‘oqlarida", "Krit orolida", "Yunoniston qirg‘oqlarida"],
+        correct: 3,
+        exp: "Yunoniston qirg‘oqlarida Antoniy va Oktavian flotlari o‘rtasida jang bo‘ldi[cite: 1]."
+      },
+      {
+        q: "25. Yuliy Sezarning o‘ldirilgan yili qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: ["Mil. avv. 44-yilda", "Mil. avv. 49-yilda", "Mil. avv. 29-yilda", "Milodiy 98-yilda"],
+        correct: 0,
+        exp: "Mil. avv. 44-yilda Yuliy Sezar hukmronligi tugadi[cite: 1]."
+      },
+      {
+        q: "26. Mark Antoniy va Kleopatra Rim qo‘shinlari tomonidan mag‘lub bo‘lgach nima qilishdi?",
+        options: ["Taslim bo‘lib kechirim so‘rashdi", "O‘z-o‘zini o‘ldirishdi", "Parfiyaga qochib ketishdi", "Hokimiyatni bo‘lishib olishdi"],
+        correct: 1,
+        exp: "Antonov va Kleopatra o‘z-o‘zini o‘ldiradi, Misr esa Rim davlati provinsiyasiga aylanadi[cite: 1]."
+      },
+      {
+        q: "27. Trayan Parfiya podsholigi bilan qanday munosabatda bo‘lgan?",
+        options: ["Do‘stona shartnoma imzolagan", "Tinchlik o‘rnatgan", "Muvaffaqiyatli urush olib borgan", "Mag‘lubiyatga uchragan"],
+        correct: 2,
+        exp: "Trayan Parfiya podsholigi bilan muvaffaqiyatli urush olib borgan[cite: 1]."
+      },
+      {
+        q: "28. Qadimgi Rimda «Rim burguti» nimaning ramzi hisoblangan?",
+        options: ["Ozodlikning", "Savdo-sotiqning", "Dehqonchilikning", "Rim hukmdorlarining"],
+        correct: 3,
+        exp: "Rasm ostidagi izohda: «Rim burguti. Rim hukmdorlari ramzi hisoblangan» deb yozilgan[cite: 1]."
+      },
+      {
+        q: "29. Oktavian Avgust Rim imperiyasining yakka hukmdori bo‘lgach qachon va qanday unvonga sazovor bo‘ldi?",
+        options: ["Mil. avv. 29-yilda imperator unvoni va Avgust nomini oldi", "Mil. avv. 44-yilda diktator unvonini oldi", "Milodiy 98-yilda shoh unvonini oldi", "Mil. avv. 49-yilda konsul unvonini oldi"],
+        correct: 0,
+        exp: "Mil. avv. 29-yilda Oktavian Senatdan imperator unvoni va Avgust nomini oladi[cite: 1]."
+      },
+      {
+        q: "30. Rim imperiyasida milodiy II asr boshlari qanday nom bilan mashhur bo‘ldi?",
+        options: ["Inqiroz asri", "«Oltin asr»", "Qora asr", "Respublika davri"],
+        correct: 1,
+        exp: "Faqat milodiy II asrning boshlarida Rim imperiyasining kuch-qudrati qayta tiklandi. Bu asr Rim imperiyasining «oltin asr» degan nom olgan[cite: 1]."
+      },
+      {
+        q: "31. Yuliy Sezarning hokimiyatni qo‘lga kiritishida unga nima hal qiluvchi yordam berdi?",
+        options: ["Faqat Senatning roziligi", "Chet el davlatlarining yordami", "Rim aholisining qo‘llab-quvvatlashi va harbiy kuchi", "Boylarning mablag‘i"],
+        correct: 2,
+        exp: "Rim aholisining qo‘llab-quvvatlashi hal qiluvchi ahamiyat kasb etdi[cite: 1]."
+      },
+      {
+        q: "32. Yuliy Sezardan keyin hokimiyat uchun kurashda kimlar asosiy raqiblar bo‘lib qoldi?",
+        options: ["Krass va Pompey", "Romul va Rem", "Kaligula va Neron", "Oktavian va Mark Antoniy"],
+        correct: 3,
+        exp: "Sezarning o‘ldirilishidan so‘ng sarkardalar o‘rtasida kurash avj oldi (Oktavian va Mark Antoniy o‘rtasida)[cite: 1]."
+      },
+      {
+        q: "33. Yuliy Sezar Rimda qanday lavozimlarga ega edi?",
+        options: ["Imperator va diktator", "Faqat xalq tribuni", "Faqat bosh kohin", "Faqat oliy sudya"],
+        correct: 0,
+        exp: "Sezar Rim imperatori va diktatori – cheklanmagan hokimiyatga ega hukmdorga aylandi[cite: 1]."
+      },
+      {
+        q: "34. Brut va uning tarafdorlari Rimda nima qilmoqchi bo‘lishgandi?",
+        options: ["Yangi imperiya tuzishni", "Respublikani qayta tiklashni", "Misrni zabt etishni", "Xalq majlisini tarqatib yuborishni"],
+        correct: 1,
+        exp: "Brut oldin respublikani qayta tiklashga urinib ko‘radi[cite: 1]."
+      },
+      {
+        q: "35. Oktavian bilan ittifoq tuzgan va keyinchalik Misr malikasiga uylangan sarkarda kim?",
+        options: ["Yuliy Sezar", "Pompey", "Mark Antoniy", "Trayan"],
+        correct: 2,
+        exp: "Oktavian Mark Antoniy bilan ittifoq tuzadi. Misrga kelgan Antoniy Misr malikasi Kleopatragacha uylandi[cite: 1]."
+      },
+      {
+        q: "36. Milodiy 98-yilda Rim imperatori taxtini egallagan shaxs kim edi?",
+        options: ["Kaligula", "Neron", "Oktavian Avgust", "Trayan"],
+        correct: 3,
+        exp: "Milodiy 98-yilda Trayan Rim imperatori taxtini egalladi[cite: 1]."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const progress = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (progress) progress.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      if (!optBox) return;
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const qScore = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 32) fb.innerText = "Mukammal natija! 47-§ ni 100% to‘liq o‘zlashtiribsiz 🏆[cite: 1]";
+        else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍[cite: 1]";
+        else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚[cite: 1]";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Ishga tushirish funksiyalari to'g'ridan-to‘g‘ri chaqirildi
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>26-§. Afinada demokratiya</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va siyosiy islohotlarni muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">26-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni puxta takrorlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">26-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Demokratiya va Agora
+      [
+        { id: 1, left: "Demokratiya", right: "Yunoncha «xalq hokimiyati» (demos – xalq, kratos – hokimiyat)" },
+        { id: 2, left: "Agora", right: "Akropol tevaragida joylashgan, xalq yig‘ini o‘tkazilgan shahar maydoni" },
+        { id: 3, left: "Oyda to‘rt marta", right: "Afina erkak fuqarolari yangi qonunlarni muhokama qilish uchun to‘plangan muddat" },
+        { id: 4, left: "Aristokratiya", right: "Aslzodalar (zodagonlar) hokimiyati boshqaruv tizimi" }
+      ],
+      // 2-bosqich: Drakont qonunlari
+      [
+        { id: 5, left: "Mil. avv. 621-yil", right: "Drakont tomonidan o‘ta qattiq va ayovsiz qonunlar yozilgan sana" },
+        { id: 6, left: "«Qon bilan yozilgan»", right: "Afinaliklar tomonidan Drakont qonunlariga berilgan ta’rif" },
+        { id: 7, left: "O‘lim jazosi", right: "Drakont qonunlarida qonunbuzarlik uchun belgilangan yagona jazo" },
+        { id: 8, left: "Shahardan haydalish", right: "Xalq noroziligidan so‘ng qonunchi Drakontning qismati" }
+      ],
+      // 3-bosqich: Solon islohotlari
+      [
+        { id: 9, left: "Mil. avv. 594-yil", right: "Solon Afinada aristokratiyani demokratiyaga almashtirgan yil" },
+        { id: 10, left: "Solon", right: "Dehqonlarni qarz tufayli qul qilishni bekor qilgan bilimdon zodagon" },
+        { id: 11, left: "Qarz qulligi bekor qilinishi", right: "Solon islohoti natijasida dehqonlar erishgan katta yutuq" },
+        { id: 12, left: "Xalq majlisi", right: "Solon davrida tiklanib, davlat boshqaruvidagi oliy tashkilotga aylangan organ" }
+      ],
+      // 4-bosqich: Davlat organlari va yosh chegaralari
+      [
+        { id: 13, left: "20 yoshdan", right: "Erkak fuqarolar Xalq majlisida ishtirok eta boshlagan yosh" },
+        { id: 14, left: "30 yoshdan", right: "Fuqarolar Xalq sudi faoliyatida ishtirok etish huquqiga ega bo‘lgan yosh" },
+        { id: 15, left: "Beshyuzlar kengashi", right: "Har yili saylanib, kundalik joriy masalalarga yechim topgan organ" },
+        { id: 16, left: "Oqsoqollar kengashi", right: "Drakont davrida hokimlar va sudyalarni saylagan aslzodalar kengashi" }
+      ],
+      // 5-bosqich: «Perikl asri» va madaniyat
+      [
+        { id: 17, left: "Mil. avv. 443–429-yillar", right: "Perikl 15 marta strateg lavozimiga saylanib, boshqargan davr" },
+        { id: 18, left: "Ish haqi to‘lash", right: "Perikl tomonidan Xalq majlisidagi davlat lavozimlari uchun joriy etilgan tartib" },
+        { id: 19, left: "Parfenon", right: "Perikl tashabbusi bilan Akropolda bunyod etilgan Afina ibodatxonasi" },
+        { id: 20, left: "Fidiy", right: "Periklning do‘sti bo‘lgan mashhur yunon haykaltaroshi" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Afinada xalq yig‘ini o‘tkaziladigan shahar maydoni qanday atalgan va u qayerda joylashgan?", a: "«Agora» deb atalgan; u Akropol tevaragida joylashgan." },
+      { q: "2. Afina erkak fuqarolari yangi qonunlar va muammolarni muhokama qilish uchun agorada qanchada yig‘ilardi?", a: "Har oyda to‘rt marta yig‘ilardi." },
+      { q: "3. «Demokratiya» so‘zi qaysi tildan olingan va qanday ma’noni anglatadi?", a: "Yunoncha «demos» – xalq va «kratos» – hokimiyat, ya’ni «xalq hokimiyati» degan ma’noni anglatadi." },
+      { q: "4. Drakont qonunlariga qadar Afinani idora qilishda qaysi organ muhim ahamiyatga ega bo‘lgan?", a: "Aslzodalardan iborat Oqsoqollar kengashi (hokimlar va sudyalarni saylagan)." },
+      { q: "5. Drakont kim bo‘lgan va unga nima maqsadda murojaat qilishgan?", a: "Adolat qaror topishi uchun huquq va majburiyatlar borasida hammani tenglashtiruvchi qonunlar yozish iltimosi bilan murojaat qilingan hukmdor." },
+      { q: "6. Drakont qonunlari qachon yozilgan va unga qanday ta’rif berilgan?", a: "Miloddan avvalgi 621-yilda; o‘ta ayovsiz bo‘lgani uchun «siyoh qolib, qon bilan yozilgan» deb ta’riflangan." },
+      { q: "7. Drakont qonunlarida qonunbuzarlik uchun qanday jazo belgilangan edi?", a: "Bitta jazo — o‘lim jazosi belgilangan." },
+      { q: "8. Qonunchi Drakontning keyingi qismati qanday kechdi?", a: "Afinaliklar norozi bo‘lib, uni shahardan haydab yuborishgan." },
+      { q: "9. Solon islohotlari qachon o‘tkazilgan va u davlat boshqaruvida qanday o‘zgarish yasadi?", a: "Miloddan avvalgi 594-yilda; aristokratiya (aszodalar hokimiyati)ni demokratiya (xalq hokimiyati)ga almashtirdi." },
+      { q: "10. Solonning qarzga botgan dehqonlar borasidagi asosiy qarori nima bo‘ldi?", a: "Dehqonlarni qarzdorligi sababli qul qilish bekor qilindi." },
+      { q: "11. Solon islohotlaridan so‘ng davlat boshqaruvidagi oliy tashkilot qaysi organga aylandi?", a: "Xalq majlisi faoliyati tiklanib, oliy organga aylandi." },
+      { q: "12. Afinada davlatni boshqarishda kimlar ishtirok eta olardi va kimlarga ruxsat berilmasdi?", a: "Faqat erkak fuqarolar ishtirok etardi; ayollar va chet elliklar qonunlar muhokamasida va ovoz berishda qatnashmasdi." },
+      { q: "13. Afina erkak fuqarolari necha yoshdan boshlab Xalq majlisida ishtirok eta olardi?", a: "20 yoshdan boshlab." },
+      { q: "14. Xalq majlisi qanday muhim davlat ishlarini hal qilgan?", a: "Yangi qonunlarni tasdiqlagan, eskilarni bekor qilgan, qurilish va armiyaga mablag‘ ajratishni hal qilgan." },
+      { q: "15. Afinada har yili saylanadigan «Beshyuzlar kengashi»ning vazifasi nima edi?", a: "Kundalik joriy masalalarga yechim topish (kengash qarorlari Xalq majlisida tasdiqlangan)." },
+      { q: "16. Beshyuzlar kengashiga kim rahbarlik qilgan?", a: "Strateg rahbarlik qilgan." },
+      { q: "17. Afina Xalq sudi faoliyatida fuqarolar necha yoshdan boshlab ishtirok etish huquqiga ega bo‘lgan?", a: "30 yoshga to‘lgan fuqarolar." },
+      { q: "18. Afina sudida da’vogar yoki ayblanuvchi o‘zini qanday himoya qilgan?", a: "O‘zini-o‘zi himoya qilgan yoki chiroyli so‘zlay oladigan va qonunlarni biladigan odamni (notiqni) yollagan." },
+      { q: "19. «Perikl asri» deb qaysi yillar oralig‘iga aytiladi?", a: "Miloddan avvalgi 443–429-yillarga (Perikl 15 marta strateg lavozimiga saylangan davr)." },
+      { q: "20. Perikl davlat boshqaruvida kambag‘al fuqarolar uchun qanday muhim yangilik joriy qildi?", a: "Xalq majlisidagi davlat lavozimlariga ish haqi to‘lashni joriy qildi." },
+      { q: "21. Perikl kam ta’minlangan oilalar uchun qanday maxsus jamg‘arma tashkil etdi?", a: "Teatr spektakllarini borib ko‘rishlari uchun pul jamg‘armasini tashkil etdi." },
+      { q: "22. Perikl tashabbusi bilan Akropolda bunyod etilgan mashhur ibodatxona qaysi?", a: "Parfenon — ma’buda Afina ibodatxonasi." },
+      { q: "23. Perikl bilan do‘st tutingan mashhur yunon tarixchisi va haykaltaroshi kimlar edi?", a: "Tarixchi Gerodot va haykaltarosh Fidiy." },
+      { q: "24. «Aristokratiya» atamasi nimani anglatadi?", a: "Aslzodalar (zodagonlar) hokimiyatini." },
+      { q: "25. Afinada fuqarolarning barcha qarorlari qanday yo‘l bilan qabul qilingan?", a: "Ovoz berish yo‘li bilan." },
+      { q: "26. Afinada xalq nima sababdan aslzodalarga qarshi qo‘zg‘olon ko‘targan edi?", a: "Aslzodalar hukmronligidan norozilik va xalqning ahvoli tobora og‘irlashib borgani sababli." },
+      { q: "27. Solon qaysi tabaqa vakili bo‘lgan?", a: "O‘ta bilimdon va tajribali zodagon bo‘lgan, biroq xalqqa yon berish tarafdori edi." },
+      { q: "28. Perikl davrida Afina davlatining umumiy mavqei qanday darajaga yetdi?", a: "Afina eng qudratli davlatga aylandi va mamlakatda demokratiya yuksak ravnaq topdi." },
+      { q: "29. Xalq majlisining asosiy ko‘pchilik qismini qaysi tabaqalar tashkil etgan?", a: "Hunarmandlar, savdogarlar, yollanib ishlovchilar va dehqonlar." },
+      { q: "30. Parfenon ibodatxonasi kimning sharafiga va qayerda qad ko‘targan?", a: "Ma’buda Afina sharafiga Akropol tepaligida qurilgan." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA ARALASH TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Afinada xalq yig‘ini o‘tkaziladigan va Akropol tevaragida joylashgan shahar maydoni nima deb atalgan?",
+        options: [
+          "Agora",
+          "Palestra",
+          "Pirey",
+          "Akropol"
+        ],
+        correct: 0, // A
+        exp: "Xalq yig‘ilgan joy — shahar maydoni esa agora deb yuritilgan."
+      },
+      {
+        q: "2. «Demokratiya» so‘zining lug‘aviy ma’nosi qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Aslzodalar boshqaruvi",
+          "«Xalq hokimiyati» (demos – xalq, kratos – hokimiyat)",
+          "Harbiy sarkardalar tuzumi",
+          "Qonunlar ustuvorligi"
+        ],
+        correct: 1, // B
+        exp: "Demokratiya — bu atama «xalq hokimiyati» degan ma’noni anglatadi (demos – «xalq» va kratos – «hokimiyat»)."
+      },
+      {
+        q: "3. Drakont qonunlari qaysi yilda yozilgan va qonunbuzarlik uchun qanday jazo belgilangan edi?",
+        options: [
+          "Mil. avv. 594-yilda; qullik jazosi",
+          "Mil. avv. 443-yilda; jarima jazosi",
+          "Mil. avv. 621-yilda; bitta jazo — o‘lim jazosi",
+          "Mil. avv. IV asrda; quvg‘in qilish"
+        ],
+        correct: 2, // C
+        exp: "Mil. avv. 621-yilda Drakont qonunlarni yozadi. Qonunlarni buzganlik uchun bitta jazo — o‘lim jazosini belgilagan."
+      },
+      {
+        q: "4. Afinada miloddan avvalgi 594-yilda aristokratiyani demokratiyaga almashtirgan islohotchi hukmdor kim?",
+        options: [
+          "Drakont",
+          "Perikl",
+          "Fidiy",
+          "Solon"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. 594-yilda Solon boshqaruv tizimini o‘zgartirib, aristokratiyani demokratiyaga almashtirdi."
+      },
+      {
+        q: "5. Solon islohotlari natijasida qarzga botgan kambag‘al dehqonlar qanday katta yutuqqa erishdilar?",
+        options: [
+          "Dehqonlarni qarzdorligi sababli qul qilish bekor bo‘ldi",
+          "Ularga tekinga yer va oltin tarqatildi",
+          "Ular soliq to‘lashdan butunlay ozod etildi",
+          "Barcha qarzlar davlat hisobidan to‘lab berildi"
+        ],
+        correct: 0, // A
+        exp: "Solonning taklifi bilan dehqonlar qarzdorlarni qul qilishi bekor bo‘ldi."
+      },
+      {
+        q: "6. Afina erkak fuqarolari necha yoshdan boshlab Xalq majlisida ishtirok etish huquqiga ega edilar?",
+        options: [
+          "18 yoshdan",
+          "20 yoshdan",
+          "25 yoshdan",
+          "30 yoshdan"
+        ],
+        correct: 1, // B
+        exp: "Barcha erkak fuqarolar 20 yoshdan boshlab Xalq majlisida ishtirok etardi."
+      },
+      {
+        q: "7. Afinada har yili saylanadigan va kundalik joriy masalalarga yechim topadigan organ nima deb atalgan?",
+        options: [
+          "Oqsoqollar kengashi",
+          "Xalq sudi",
+          "Beshyuzlar kengashi",
+          "Senat"
+        ],
+        correct: 2, // C
+        exp: "Har yili saylanadigan Beshyuzlar kengashi kundalik joriy masalalarga yechim topardi."
+      },
+      {
+        q: "8. Afina Xalq sudi faoliyatida fuqarolar necha yoshga to‘lgach ishtirok eta olar edilar?",
+        options: [
+          "18 yoshga",
+          "20 yoshga",
+          "25 yoshga",
+          "30 yoshga"
+        ],
+        correct: 3, // D
+        exp: "30 yoshga to‘lgan fuqarolar Xalq sudi faoliyatida ishtirok etar edi."
+      },
+      {
+        q: "9. Miloddan avvalgi 443–429-yillarda 15 marta strateg lavozimiga saylangan Afina hukmdori kim?",
+        options: [
+          "Perikl",
+          "Solon",
+          "Drakont",
+          "Gerodot"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 443–429-yillarda 15 marotaba strateg lavozimiga saylangan Perikl hukmronlik qildi."
+      },
+      {
+        q: "10. Perikl davrida kambag‘al fuqarolarning davlat boshqaruvida faol qatnashishini ta’minlash uchun qanday tartib joriy etildi?",
+        options: [
+          "Qul sotib olish majburiy qilindi",
+          "Xalq majlisidagi davlat lavozimlariga ish haqi to‘lash joriy qilindi",
+          "Faqat boylarga ovoz berish huquqi qoldirildi",
+          "Barcha soliqlarni bekor qildi"
+        ],
+        correct: 1, // B
+        exp: "Perikl Xalq majlisidagi lavozimlarga ish haqi to‘lashni joriy qildi."
+      },
+      {
+        q: "11. Perikl tashabbusi bilan Akropolda bunyod etilgan ma’buda Afina ibodatxonasi qanday ataladi?",
+        options: [
+          "Zikkurat",
+          "Palestra",
+          "Parfenon",
+          "Panteon"
+        ],
+        correct: 2, // C
+        exp: "U Akropolda qurilgan mashhur inshoot Parfenon — ma’buda Afina ibodatxonasining tashabbuskori bo‘lgan."
+      },
+      {
+        q: "12. Perikl bilan do‘st tutingan mashhur yunon haykaltaroshi kim edi?",
+        options: [
+          "Gomer",
+          "Ktesiy",
+          "Gerodot",
+          "Fidiy"
+        ],
+        correct: 3, // D
+        exp: "Perikl tarixchi Gerodot, haykaltarosh Fidiy bilan do‘st tutingan edi."
+      },
+      {
+        q: "13. Afina fuqarolari yangi qonunlar va muammolarni muhokama qilish uchun agorada qancha vaqtda to‘planishgan?",
+        options: [
+          "Har oyda to‘rt marta",
+          "Yilda bir marta",
+          "Har haftada bir marta",
+          "Har kuni ertalab"
+        ],
+        correct: 0, // A
+        exp: "Ular yuzaga kelgan muammolar va yangi qonunlarni muhokama qilish uchun har oyda to‘rt marta agorada yig‘ilardi."
+      },
+      {
+        q: "14. Afina aholisi nima sababdan Drakont qonunlariga «siyoh qolib, qon bilan yozilgan» deb ta’rif berishgan?",
+        options: [
+          "Qonunlar qizil rangli siyohda yozilgani uchun",
+          "Ular nihoyatda qattiq va ayovsiz bo‘lib, hatto arzimas aybga ham o‘lim jazosi berilgani uchun",
+          "Urush vaqtida bitilgani uchun",
+          "Qonunlar faqat qurbonlik qoniga botirib e’lon qilingani uchun"
+        ],
+        correct: 1, // B
+        exp: "Bu qonunlar shu qadar qattiq va ayovsiz ediki, afinaliklar ularga «siyoh qolib, qon bilan yozilgan» deya ta’rif berishgan."
+      },
+      {
+        q: "15. Afinada qonunlar muhokamasida va ovoz berishda kimlarning ishtirok etishiga mutlaqo ruxsat berilmagan?",
+        options: [
+          "Faqat dehqonlar va hunarmandlarga",
+          "Faqat yollanma ishchilarga",
+          "Ayollar va chet elliklarga",
+          "Faqat keksa yoshdagi fuqarolarga"
+        ],
+        correct: 2, // C
+        exp: "Ayollar va chet elliklar qabul qilinayotgan qonunlar muhokamasida va ovoz berishda ishtirok eta olmasdi."
+      },
+      {
+        q: "16. Perikl kambag‘al oilalarning madaniy hordiq chiqarishini ta’minlash maqsadida qanday tadbirni amalga oshirdi?",
+        options: [
+          "Barcha sport maydonlarini xususiylashtirdi",
+          "Akropolga kirishni bepul qildi",
+          "Chet elga sayohat qilishga ruxsat berdi",
+          "Teatr spektakllarini borib ko‘rishlari uchun maxsus pul jamg‘armasini tashkil etdi"
+        ],
+        correct: 3, // D
+        exp: "Kam ta’minlangan oilalar teatr spektakllarini borib ko‘rishi uchun pul jamg‘armasini tashkil etgan."
+      },
+      {
+        q: "17. Afina sudida da’vogar yoki ayblanuvchi o‘z haq-huquqini qanday himoya qilgan?",
+        options: [
+          "O‘zini-o‘zi himoya qilgan yoki chiroyli so‘zlay oladigan va qonunlarni biladigan odamni yollagan",
+          "Faqat davlat tomonidan tayinlangan advokat orqali",
+          "Faqat qimmatbaho sovg‘alar berish orqali",
+          "Qur’a tashlash orqali"
+        ],
+        correct: 0, // A
+        exp: "Sudda ayblanuvchi shaxs o‘zini-o‘zi himoya qila bilishi yoki chiroyli so‘zlay oladigan va qonunlarni biladigan odamni yollashi kerak bo‘lgan."
+      },
+      {
+        q: "18. Drakont qonunlaridan norozi bo‘lgan afinaliklar qonunchi Drakontga nisbatan qanday chora ko‘rishdi?",
+        options: [
+          "Uni qatl etishdi",
+          "Uni shahardan haydab yuborishdi",
+          "Uni umrbod qamoqqa tashlashdi",
+          "Uni strateg etib tayinlashdi"
+        ],
+        correct: 1, // B
+        exp: "Afinaliklar norozi bo‘la boshlashgan va qonunchi Drakontni shahardan haydab yuborishgan."
+      },
+      {
+        q: "19. «Aristokratiya» boshqaruv shakli nimani anglatadi?",
+        options: [
+          "Xalq hokimiyatini",
+          "Bitta podshoning cheklanmagan hokimiyatini",
+          "Aslzodalar (zodagonlar) hokimiyatini",
+          "Diniy kohinlar hokimiyatini"
+        ],
+        correct: 2, // C
+        exp: "Aristokratiya — aslzodalar hokimiyatidir."
+      },
+      {
+        q: "20. Afinada qaysi organning qarorlari Xalq majlisida tasdiqlangandan so‘ng kuchga kirgan?",
+        options: [
+          "Xalq sudi qarorlari",
+          "Oqsoqollar kengashi qarorlari",
+          "Sparta kengashi qarorlari",
+          "Beshyuzlar kengashi qarorlari"
+        ],
+        correct: 3, // D
+        exp: "Kengash (Beshyuzlar kengashi) qarorlari Xalq majlisida tasdiqlangan."
+      },
+      {
+        q: "21. Afinada yangi qonunlarni qabul qilish, armiyaga mablag‘ ajratish va davlat ishlarini hal qilish qaysi oliy organning vakolatida edi?",
+        options: [
+          "Xalq majlisi",
+          "Oqsoqollar kengashi",
+          "Palestra",
+          "Xalq sudi"
+        ],
+        correct: 0, // A
+        exp: "Xalq majlisi yangi qonunlarni tasdiqlar, eski qonunlarni bekor qilar, armiyaga va qurilishga mablag‘ ajratardi."
+      },
+      {
+        q: "22. Xalq majlisining katta qismini asosan qaysi mehnatkash tabaqalar tashkil etgan?",
+        options: [
+          "Faqat boy savdogarlar va kemasozlar",
+          "Hunarmandlar, savdogarlar, yollanib ishlovchilar va dehqonlar",
+          "Faqat diniy ruhoniylar",
+          "Faqat chet ellik meteklar"
+        ],
+        correct: 1, // B
+        exp: "Xalq majlisining katta qismi hunarmandlar, savdogarlar, yollanib ishlovchilar, dehqonlardan iborat bo‘lgan."
+      },
+      {
+        q: "23. Perikl davrida Afinaning yuksalishi tarixda qanday nom bilan atalgan?",
+        options: [
+          "«Solon islohotlari»",
+          "«Oltin asr»",
+          "«Perikl asri»",
+          "«Ellinizm davri»"
+        ],
+        correct: 2, // C
+        exp: "Bu davr shuning uchun ham «Perikl asri» deb atalgan."
+      },
+      {
+        q: "24. Beshyuzlar kengashiga kim rahbarlik qilgan?",
+        options: [
+          "Arxont",
+          "Hokim",
+          "Sudya",
+          "Strateg"
+        ],
+        correct: 3, // D
+        exp: "Beshyuzlar kengashiga strateg rahbarlik qilgan."
+      },
+      {
+        q: "25. Solon qanday shaxs bo‘lgan va nima uchun zodagonlar uni hokim qilib saylashdi?",
+        options: [
+          "O‘ta bilimdon va tajribali zodagon bo‘lib, xalqqa yon berish tarafdori bo‘lgani uchun",
+          "U eng boy sudxo‘r bo‘lgani uchun",
+          "U armiyaning bosh sarkardasi bo‘lgani uchun",
+          "Fors shohlari tavsiya qilgani uchun"
+        ],
+        correct: 0, // A
+        exp: "O‘ta bilimdon va tajribali Solon degan zodagon xalqqa yon berishning qattiq tarafdori bo‘lgan. Zodagonlar uni hokim etib sayladi."
+      },
+      {
+        q: "26. Afinada barcha davlat qarorlari qanday usulda qabul qilingan?",
+        options: [
+          "Faqat bitta podshoning buyrug‘i bilan",
+          "Ovoz berish yo‘li bilan",
+          "Qur’a tashlash orqali",
+          "Oqsoqollar kengashi yashirin qarori bilan"
+        ],
+        correct: 1, // B
+        exp: "Barcha qarorlar ovoz berish yo‘li bilan qabul qilingan."
+      },
+      {
+        q: "27. Afinada xalqning zodagonlar uy-qo‘rg‘onlariga hujum qilib, qo‘zg‘olon ko‘tarishiga nima sabab bo‘ldi?",
+        options: [
+          "Forslar bilan tuzilgan shartnoma",
+          "Olimpiada o‘yinlarining bekor qilinishi",
+          "Aslzodalar zulmi va xalq ahvolining tobora og‘irlashib borishi",
+          "Qishloqlarni suv toshqini bosishi"
+        ],
+        correct: 2, // C
+        exp: "Xalq aslzodalar hukmronligidan norozi edi. Ahvoli tobora yomonlashavergach, odamlar haq-huquqlari uchun kurashga bel bog‘ladi."
+      },
+      {
+        q: "28. Afinada qonun chiqaruvchi va davlat boshqaruvidagi barcha tadbirlar nimaning rivojlanishiga olib keldi?",
+        options: [
+          "Monarxiya kuchayishiga",
+          "Qullikning kengayishiga",
+          "Chet elliklar hokimiyatni egallashiga",
+          "Demokratiyaning ravnaq topishiga"
+        ],
+        correct: 3, // D
+        exp: "Qonun chiqaruvchi tadbirlar amalga oshirilishi natijasida demokratiya rivojlangan."
+      },
+      {
+        q: "29. Tarixchi Gerodot va haykaltarosh Fidiy qaysi Afina strategining yaqin do‘stlari bo‘lgan?",
+        options: [
+          "Periklning",
+          "Solonning",
+          "Drakontning",
+          "Aleksandrning"
+        ],
+        correct: 0, // A
+        exp: "Perikl tarixchi Gerodot, haykaltarosh Fidiy bilan do‘st tutingan edi."
+      },
+      {
+        q: "30. Parfenon ibodatxonasi qaysi tepalikda qad ko‘targan?",
+        options: [
+          "Olimp tog‘ida",
+          "Akropol tepaligida",
+          "Agora maydonida",
+          "Pirey portida"
+        ],
+        correct: 1, // B
+        exp: "Akropolda qurilgan mashhur inshoot Parfenon — ma’buda Afina ibodatxonasidir."
+      },
+      {
+        q: "31. Afinada qaysi yoshdagi fuqarolar Xalq sudi faoliyatida ishtirok etishi mumkin edi?",
+        options: [
+          "20 yoshdan boshlab",
+          "Faqat 50 yoshdan oshganlar",
+          "30 yoshga to‘lgan fuqarolar",
+          "Faqat zodagonlar sulolasi vakillari"
+        ],
+        correct: 2, // C
+        exp: "Xalq sudi faoliyatida 30 yoshga to‘lgan fuqarolar ishtirok etar edi."
+      },
+      {
+        q: "32. Afinada Solon islohotlari qaysi sohadagi keskin ziddiyatlarni yumshatdi?",
+        options: [
+          "Faqat harbiy sohadagi",
+          "Faqat dengiz savdosidagi",
+          "Chet elliklar va qullar o‘rtasidagi",
+          "Zodagonlar va oddiy xalq o‘rtasidagi ijtimoiy-iqtisodiy ziddiyatlarni"
+        ],
+        correct: 3, // D
+        exp: "Solon xalq talablarini qondirib, qarz qulligini bekor qildi va aslzodalar bilan xalq o‘rtasidagi ziddiyatni bartaraf etdi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 26-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

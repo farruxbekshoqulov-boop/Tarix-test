@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>13-§. Old Osiyo davlatlari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha davlatlar va tarixiy faktlarni muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">13-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni puxta takrorlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">13-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Ossuriya podsholigi
+      [
+        { id: 1, left: "Ashshur va Nineviya", right: "Ossuriya podsholigining poytaxtlari" },
+        { id: 2, left: "Ashshurbanipal", right: "Nineviyada sopol taxtachalardan ulkan kutubxona jamlagan podsho" },
+        { id: 3, left: "Mil. avv. 605-yil", right: "Midiya va Bobil tomonidan Ossuriya qo‘shinlari tor-mor etilgan yil" },
+        { id: 4, left: "Frot va Dajla yuqori oqimi", right: "Ossuriya davlati vujudga kelgan hudud (hozirgi Iroq)" }
+      ],
+      // 2-bosqich: Urartu podsholigi
+      [
+        { id: 5, left: "Tushpa shahri", right: "Urartu davlatining poytaxti" },
+        { id: 6, left: "Teyshebaini", right: "Skif qabilalari tomonidan vayron qilingan shahar-qal’a" },
+        { id: 7, left: "Mil. avv. IX–VIII asr boshlari", right: "Urartu davlati gullab-yashnagan davr" },
+        { id: 8, left: "Kavkazorti (Turkiya sharqi va Armaniston)", right: "Urartu davlati joylashgan hudud" }
+      ],
+      // 3-bosqich: Finikiya davlati
+      [
+        { id: 9, left: "Tir, Sidon, Ugarit", right: "Finikiyaning O‘rta Yer dengizi sohilidagi yirik shaharlari" },
+        { id: 10, left: "Mil. avv. X asr", right: "Finikiyada 22 ta undosh harfdan iborat alifbo yaratilgan davr" },
+        { id: 11, left: "Yog‘och, metall va gazlamalar", right: "Finikiyalik savdogarlar qo‘shnilarga sotgan asosiy tovarlar" },
+        { id: 12, left: "Unli harflar qo‘shilishi", right: "Yunonlar tomonidan Finikiya alifbosiga kiritilgan yangilik" }
+      ],
+      // 4-bosqich: Falastin va din
+      [
+        { id: 13, left: "Mil. avv. XI asr", right: "Falastin hududida Isroil podsholigi vujudga kelgan davr" },
+        { id: 14, left: "Yahudiy podsholigi", right: "Bobil podsholigi tomonidan bosib olingan davlat" },
+        { id: 15, left: "«Bibliya» so‘zi ma’nosi", right: "Yunoncha «kitob» degan ma’noni anglatadi" },
+        { id: 16, left: "Qadimgi yahudiy afsonalari", right: "Bibliyaga jamlangan diniy kitoblar to‘plami" }
+      ],
+      // 5-bosqich: Davlatlarning zavoli va xalqlari
+      [
+        { id: 17, left: "Urartlar", right: "Urartu podsholigining asosiy aholisi" },
+        { id: 18, left: "Midiya davlati", right: "Ossuriya va Urartu davlatlarini zabt etgan kuch" },
+        { id: 19, left: "Skiflar", right: "Teyshebaini qal’asini ishg‘ol qilgan ko‘chmanchi qabilalar" },
+        { id: 20, left: "Dengizbo‘yi savdosi", right: "Finikiya aholisining asosiy mashg‘ulotlaridan biri" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Ossuriya podsholigi qachon va qayerda vujudga kelgan?", a: "Miloddan avvalgi 2-mingyillikda Frot va Dajla daryolari yuqori oqimida (hozirgi Iroq hududida)." },
+      { q: "2. Ossuriya davlatining dastlabki va keyingi poytaxtlarini ayting.", a: "Avval Ashshur shahri, keyin esa Nineviya shahri poytaxt bo‘lgan." },
+      { q: "3. Ossuriya aholisining asosiy mashg‘ulotlari nimalardan iborat edi?", a: "Dehqonchilik va savdo-sotiq edi." },
+      { q: "4. Ossuriya qanday xalq bo‘lgan va davlat xazinasi qanday to‘ldirilgan?", a: "Jangari xalq bo‘lib, har yili bosqinchilik yurishlari qilib, bo‘ysundirilgan xalqlardan katta o‘lponlar olgan." },
+      { q: "5. Nineviya shahrida sopol taxtachalardan iborat ulkan kutubxona jamlagan Ossuriya podshosi kim?", a: "Ashshurbanipal." },
+      { q: "6. Ossuriya davlati qachon va kimlar tomonidan tor-mor etilib, zavolga yuz tutdi?", a: "Miloddan avvalgi 605-yilda Midiya va Bobil qo‘shinlari tomonidan." },
+      { q: "7. Urartu davlati qaysi hududlarda joylashgan va uning aholisi nima deb atalgan?", a: "Kavkazortida (hozirgi Turkiyaning sharqiy qismi va Armaniston hududlarida), aholisi «urartlar» deb atalgan." },
+      { q: "8. Urartu davlatining tezkor tashkil topishiga nima sabab bo‘ldi?", a: "Ossuriyaliklar hujumlaridan birgalikda himoyalanish zarurati." },
+      { q: "9. Urartu davlati qaysi davrda gullab-yashnadi va uning poytaxti qaysi shahar bo‘ldi?", a: "Miloddan avvalgi IX–VIII asr boshlarida, poytaxti Tushpa shahri bo‘lgan." },
+      { q: "10. Urartu podsholigining Teyshebaini shahar-qal’asi qaysi ko‘chmanchilar tomonidan vayron qilindi?", a: "Ko‘chmanchi skif qabilalari tomonidan." },
+      { q: "11. Skiflar hujumidan so‘ng Urartu podsholigini qaysi davlat bosib oldi?", a: "Midiya davlati bosib oldi." },
+      { q: "12. Qadimgi Finikiya qayerda joylashgan edi?", a: "O‘rta Yer dengizining sharqiy qirg‘og‘i bo‘ylab, hozirgi Livan va Suriyaning bir qismida." },
+      { q: "13. Finikiyaliklarning asosiy mashg‘uloti nima bo‘lgan va ular qo‘shnilariga nimalar sotgan?", a: "Savdo-sotiq bo‘lib, qo‘shnilariga yog‘och, metallar va gazlamalar sotgan." },
+      { q: "14. O‘rta Yer dengizi sohilida joylashgan yirik Finikiya shaharlarini ayting.", a: "Tir, Sidon, Ugarit kabi yirik dengizbo‘yi shaharlari." },
+      { q: "15. Finikiyada ilk alifbo qachon yaratildi va u nechta harfdan iborat edi?", a: "Miloddan avvalgi X asrda yaratilgan bo‘lib, 22 ta undosh harfdan iborat edi." },
+      { q: "16. Yunonlar Finikiya alifbosini qanday takomillashtirdilar?", a: "Uni o‘zlashtirib, unga unli harflarni ham qo‘shib qo‘ydilar." },
+      { q: "17. Falastin hududida Isroil podsholigi qachon vujudga kelgan?", a: "Miloddan avvalgi XI asrda." },
+      { q: "18. Isroil podsholigi keyinchalik qaysi davlat bilan birlashdi?", a: "Yahudiy podsholigi bilan birlashdi." },
+      { q: "19. Yahudiy podsholigi qaysi yirik davlat tomonidan bosib olindi?", a: "Bobil podsholigi tomonidan bosib olindi." },
+      { q: "20. «Bibliya» so‘zi qaysi tildan olingan va nima degani?", a: "Yunoncha so‘z bo‘lib, «kitob» degan ma’noni anglatadi." },
+      { q: "21. Bibliya kitoblar to‘plamida qanday diniy rivoyatlar jamlangan?", a: "Olamning yaratilishi, Odam Ato va Momo Havoning yaratilishi, to‘fon bosishi va yahudiylarning qadimiy afsonalari." },
+      { q: "22. Finikiya alifbosi nima uchun dunyo yozuv tarixida inqilobiy yangilik hisoblanadi?", a: "Murakkab iyeroglif va mixxatlardan farqli ravishda harflarga asoslangan sodda alifbo bo‘lgani uchun." },
+      { q: "23. Ossuriya podsholari har yili nima maqsadda yangi yerlarga yurish qilganlar?", a: "O‘zga hududlarni zabt etish, boyliklarni talash va doimiy o‘lpon undirish uchun." },
+      { q: "24. Urartlar va ossuriyaliklar o‘rtasidagi kurash qanday yakunlangan?", a: "Urartlar dastlab g‘alaba qozongan bo‘lsa-da, keyinchalik ossuriyaliklar ularning qo‘shinini tor-mor etgan." },
+      { q: "25. Finikiyalik dengizchilar qaysi dengiz bo‘ylab erkin suzib, savdo-sotiq qilganlar?", a: "O‘rta Yer dengizi bo‘ylab." },
+      { q: "26. Ashshurbanipal kutubxonasining fanda tutgan eng katta ahamiyati nimada?", a: "Qadimgi Mesopotamiya va Old Osiyo tarixi, adabiyoti va faniga oid minglab mixxat taxtachalarini saqlab qolganida." },
+      { q: "27. Falastin davlatlari birlashuvidan so‘ng tashkil topgan davlat qaysi edi?", a: "Isroil-Yahudiy podsholigi." },
+      { q: "28. Skiflar qanday turmush tarziga ega xalq bo‘lgan?", a: "Ko‘chmanchi jangari qabilalar bo‘lgan." },
+      { q: "29. Finikiya shaharlaridan qaysi biri dengiz savdosida alohida mavqega ega bo‘lgan?", a: "Tir, Sidon va Ugarit shaharlari." },
+      { q: "30. Qadimgi dunyoda eng birinchi unli harflar qo‘shilgan alifbo qaysi xalqqa tegishli?", a: "Finikiya alifbosini o‘zlashtirgan qadimgi yunonlarga tegishli." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA ARALASH TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Finikiyada miloddan avvalgi X asrda yaratilgan alifbo nechta harfdan iborat bo‘lgan?",
+        options: [
+          "22 ta undosh harfdan",
+          "30 ta harfdan",
+          "24 ta unli va undosh harfdan",
+          "750 ta belgidan"
+        ],
+        correct: 0, // A
+        exp: "Miloddan avvalgi X asrda Finikiyada 22 undosh harfdan iborat alifbo yaratildi."
+      },
+      {
+        q: "2. Nineviya shahrida sopol taxtachalardan iborat yirik kutubxona jamlagan Ossuriya podshosi kim?",
+        options: [
+          "Sargon I",
+          "Ashshurbanipal",
+          "Navuxodonosor II",
+          "Xammurapi"
+        ],
+        correct: 1, // B
+        exp: "Ashshurbanipal hukmronligi yillarida Nineviyada sopol taxtachalardan iborat yirik kutubxona jamlangan edi."
+      },
+      {
+        q: "3. Qadimgi Urartu davlati poytaxti qaysi shahar bo‘lgan?",
+        options: [
+          "Nineviya",
+          "Tir",
+          "Tushpa",
+          "Teyshebaini"
+        ],
+        correct: 2, // C
+        exp: "Mil. avv. IX–VIII asr boshlarida Tushpa shahri Urartu davlati poytaxtiga aylandi."
+      },
+      {
+        q: "4. Falastin hududida Isroil podsholigi qachon vujudga kelgan?",
+        options: [
+          "Miloddan avvalgi 2-mingyillikda",
+          "Miloddan avvalgi X asrda",
+          "Miloddan avvalgi VII asrda",
+          "Miloddan avvalgi XI asrda"
+        ],
+        correct: 3, // D
+        exp: "Miloddan avvalgi XI asrda Falastin hududida Isroil podsholigi vujudga keldi."
+      },
+      {
+        q: "5. Ossuriya podsholigining dastlabki poytaxti qaysi shahar edi?",
+        options: [
+          "Ashshur",
+          "Nineviya",
+          "Bobil",
+          "Tushpa"
+        ],
+        correct: 0, // A
+        exp: "Ossuriya podsholigining poytaxti avval Ashshur shahri, keyin esa Nineviya bo‘lgan."
+      },
+      {
+        q: "6. Urartu davlatining Teyshebaini shahar-qal’asi qaysi ko‘chmanchilar tomonidan ishg‘ol etilib, vayron qilindi?",
+        options: [
+          "Giksoslar",
+          "Skif qabilalari",
+          "Forslar",
+          "Akkadlar"
+        ],
+        correct: 1, // B
+        exp: "Teyshebaini shahridagi qal’a ko‘chmanchi skif qabilalari tomonidan ishg‘ol etiladi va vayron qilinadi."
+      },
+      {
+        q: "7. Qadimgi yahudiylarning afsonalari va diniy kitoblari jamlangan «Bibliya» so‘zining ma’nosi nima?",
+        options: [
+          "«Muqaddas bitik»",
+          "«Qonunlar majmuasi»",
+          "«Kitob» (yunoncha)",
+          "«Hikmatlar»"
+        ],
+        correct: 2, // C
+        exp: "Diniy kitoblar to‘plami Bibliyaga jamlangan bo‘lib, bu so‘z yunonchada «kitob» degan ma’noni anglatadi."
+      },
+      {
+        q: "8. Finikiya alifbosini o‘zlashtirib, unga unli harflarni qo‘shgan xalq qaysi?",
+        options: [
+          "Misrliklar",
+          "Forslar",
+          "Shumerlar",
+          "Yunonlar"
+        ],
+        correct: 3, // D
+        exp: "Yunonlar ana shu Finikiya alifbosini o‘zlashtirib oldi va ularga unli harflarni ham qo‘shib qo‘ydi."
+      },
+      {
+        q: "9. Ossuriya davlati qaysi hududda vujudga kelgan?",
+        options: [
+          "Frot va Dajla daryolari yuqori oqimida (hozirgi Iroq)",
+          "Nil daryosi vodiysida",
+          "O‘rta Yer dengizi sohillarida",
+          "Kavkazorti tog‘larida"
+        ],
+        correct: 0, // A
+        exp: "Ossuriya qadimda Frot va Dajla daryolari yuqori oqimidagi (hozirgi Iroq) kichik hududni egallagan."
+      },
+      {
+        q: "10. Yahudiy podsholigi qaysi davlat tomonidan bosib olindi?",
+        options: [
+          "Ossuriya",
+          "Bobil podsholigi",
+          "Urartu",
+          "Finikiya"
+        ],
+        correct: 1, // B
+        exp: "Yahudiy podsholigi Bobil podsholigi tomonidan bosib olindi."
+      },
+      {
+        q: "11. Finikiyaning O‘rta Yer dengizi sohilida joylashgan yirik shaharlari qatori qaysi javobda to‘g‘ri berilgan?",
+        options: [
+          "Ashshur, Nineviya, Memfis",
+          "Tushpa, Teyshebaini, Giza",
+          "Tir, Sidon, Ugarit",
+          "Bobil, Uruk, Ur"
+        ],
+        correct: 2, // C
+        exp: "O‘rta Yer dengizi sohilida Tir, Sidon, Ugarit singari yirik dengizbo‘yi shaharlari vujudga keladi."
+      },
+      {
+        q: "12. Miloddan avvalgi 605-yilda Ossuriya qo‘shinlarini tor-mor keltirgan ittifoqchi davlatlar qaysilar edi?",
+        options: [
+          "Urartu va Finikiya",
+          "Misr va Isroil",
+          "Forslar va Skiflar",
+          "Midiya va Bobil"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. 605-yilda Ossuriya qo‘shinlari Midiya va Bobil tomonidan tor-mor etildi."
+      },
+      {
+        q: "13. Urartu davlati qaysi hududda tashkil topgan edi?",
+        options: [
+          "Kavkazortida, Turkiya sharqi va Armaniston hududlarida",
+          "Sinay yarimorolida",
+          "Janubiy Mesopotamiyada",
+          "Liviya cho‘llarida"
+        ],
+        correct: 0, // A
+        exp: "Urartu davlati Kavkazortida, hozirgi Turkiyaning sharqiy qismida va Armaniston hududlarida joylashgan."
+      },
+      {
+        q: "14. Qadimgi Finikiya qaysi hududda joylashgan edi?",
+        options: [
+          "Qizil dengiz sohillarida",
+          "O‘rta Yer dengizining sharqiy qirg‘og‘i (hozirgi Livan va Suriyaning bir qismi)da",
+          "Dajla daryosi yuqori oqimida",
+          "Fors qo‘ltig‘i bo‘ylarida"
+        ],
+        correct: 1, // B
+        exp: "Finikiya O‘rta Yer dengizining sharqiy qirg‘og‘i bo‘ylab hozirgi Livan hududida va Suriyaning bir qismida joylashgan."
+      },
+      {
+        q: "15. Skiflar hujumidan so‘ng Urartu podsholigini qaysi davlat bosib oldi?",
+        options: [
+          "Bobil",
+          "Forslar",
+          "Midiya",
+          "Misr"
+        ],
+        correct: 2, // C
+        exp: "Shundan keyin Urartu podsholigini Midiya bosib oladi."
+      },
+      {
+        q: "16. Ossuriya davlati qachon vujudga kelgan?",
+        options: [
+          "Miloddan avvalgi 4-mingyillikda",
+          "Miloddan avvalgi XI asrda",
+          "Miloddan avvalgi VII asrda",
+          "Miloddan avvalgi 2-mingyillikda"
+        ],
+        correct: 3, // D
+        exp: "Miloddan avvalgi 2-mingyillikda Old Osiyo hududida Ossuriya podsholigi vujudga kelgan."
+      },
+      {
+        q: "17. Urartu davlatining tezkorlik bilan birlashishi va tashkil topishiga asosiy sabab nima bo‘ldi?",
+        options: [
+          "Ossuriya hujumlaridan himoyalanish zarurati",
+          "Misr bilan savdo qilish ehtiyoji",
+          "Finikiya alifbosini tarqatish",
+          "Bobil bosqinini to‘xtatish"
+        ],
+        correct: 0, // A
+        exp: "Ossuriya hujumlaridan himoyalanish zarurati Urartu davlati tashkil topishini tezlashtiradi."
+      },
+      {
+        q: "18. Finikiyalik savdogarlar qo‘shni o‘lkalarga asosan qanday mahsulotlar sotganlar?",
+        options: [
+          "Papirus va g‘alla",
+          "Yog‘och, metallar va gazlamalar",
+          "Faqat sopol xumlar",
+          "Chorva mollari va otlar"
+        ],
+        correct: 1, // B
+        exp: "Finikiyaliklar qo‘shnilariga yog‘och, metallar va gazlamalar sotardi."
+      },
+      {
+        q: "19. Ossuriya podsholigining ikkinchi va eng yirik poytaxti qaysi shahar bo‘lgan?",
+        options: [
+          "Ashshur",
+          "Tushpa",
+          "Nineviya",
+          "Ugarit"
+        ],
+        correct: 2, // C
+        exp: "Avval Ashshur shahri, keyin esa Nineviya shahri poytaxt bo‘lgan."
+      },
+      {
+        q: "20. Urartu podsholigi qaysi asrlarda eng yuksak ravnaqqa erishdi?",
+        options: [
+          "Miloddan avvalgi XI asrda",
+          "Miloddan avvalgi X asrda",
+          "Miloddan avvalgi VII asrda",
+          "Miloddan avvalgi IX–VIII asr boshlarida"
+        ],
+        correct: 3, // D
+        exp: "Miloddan avvalgi IX–VIII asr boshlarida Urartu davlati gullab-yashnadi."
+      },
+      {
+        q: "21. Finikiyaning Tir va Sidon shaharlari qaysi dengiz sohilida joylashgan edi?",
+        options: [
+          "O‘rta Yer dengizi",
+          "Qizil dengiz",
+          "Qora dengiz",
+          "Kaspiy dengizi"
+        ],
+        correct: 0, // A
+        exp: "O‘rta Yer dengizi sohilida Tir, Sidon, Ugarit singari yirik dengizbo‘yi shaharlari vujudga keladi."
+      },
+      {
+        q: "22. Isroil podsholigi keyinchalik qaysi davlat bilan birlashdi?",
+        options: [
+          "Finikiya",
+          "Yahudiy podsholigi",
+          "Bobil",
+          "Ossuriya"
+        ],
+        correct: 1, // B
+        exp: "Isroil podsholigi keyinchalik Yahudiy podsholigi bilan birlashdi."
+      },
+      {
+        q: "23. Ashshurbanipal kutubxonasidagi kitoblar qanday ashyodan tayyorlangan edi?",
+        options: [
+          "Papirus o‘ramlaridan",
+          "Teri varaqlaridan",
+          "Sopol taxtachalardan",
+          "Yog‘och doskalardan"
+        ],
+        correct: 2, // C
+        exp: "Ashshurbanipal davrida Nineviyada sopol taxtachalardan iborat yirik kutubxona jamlangan."
+      },
+      {
+        q: "24. Urartu aholisi o‘z davlatida qanday nom bilan atalgan?",
+        options: [
+          "Ossuriylar",
+          "Midiylar",
+          "Skiflar",
+          "Urartlar"
+        ],
+        correct: 3, // D
+        exp: "Urartu davlati aholisini «urartlar» deyishgan."
+      },
+      {
+        q: "25. Ossuriya davlatining asosiy iqtisodiy qudrati nimaga asoslangan edi?",
+        options: [
+          "Harbiy yurishlar va bo‘ysundirilgan xalqlardan olingan katta o‘lponlarga",
+          "Faqat dengiz savdosiga",
+          "Oltin konlarini qazib olishga",
+          "Piramidalar qurilishiga"
+        ],
+        correct: 0, // A
+        exp: "Bo‘ysundirilgan xalqlar Ossuriya hukmdoriga katta miqdorda o‘lpon to‘lagan."
+      },
+      {
+        q: "26. Finikiya alifbosining o‘ziga xos asosiy xususiyati nima edi?",
+        options: [
+          "U faqat unli harflardan iborat bo‘lgan",
+          "Faqat 22 ta undosh harfdan iborat bo‘lgan",
+          "Faqat rasmlar orqali ifodalangan",
+          "Harflar faqat toshga o‘yilgan"
+        ],
+        correct: 1, // B
+        exp: "Finikiya alifbosi faqat 22 undosh harfdan iborat bo‘lgan."
+      },
+      {
+        q: "27. Bibliyadagi diniy afsonalar qaysi xalqning qadimgi rivoyatlariga tayanadi?",
+        options: [
+          "Finikiyaliklar",
+          "Ossuriyaliklar",
+          "Qadimiy yahudiylar",
+          "Urartlar"
+        ],
+        correct: 2, // C
+        exp: "Qadimiy yahudiylarning afsonalari diniy kitoblarga yozib borilgan va Bibliyaga jamlangan."
+      },
+      {
+        q: "28. Teyshebaini shahrining tarixiy ahamiyati nimada?",
+        options: [
+          "U yerda Finikiya alifbosi ixtiro qilingan",
+          "U Ossuriyaning birinchi poytaxti bo‘lgan",
+          "U yerda Bibliya kitobi yozilgan",
+          "U Urartuning mashhur shahar-qal’asi bo‘lgan"
+        ],
+        correct: 3, // D
+        exp: "Teyshebaini Urartu davlatining mashhur shahar-qal’asi bo‘lgan."
+      },
+      {
+        q: "29. Ossuriya qo‘shinlari tor-mor etilib, davlat zavolga yuz tutgan sana qaysi?",
+        options: [
+          "Miloddan avvalgi 605-yilda",
+          "Miloddan avvalgi 539-yilda",
+          "Miloddan avvalgi 525-yilda",
+          "Miloddan avvalgi X asrda"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 605-yilda Ossuriya qo‘shinlari tor-mor etilganidan keyin davlat zavolga yuz tutdi."
+      },
+      {
+        q: "30. Finikiyaning Ugarit shahri aholisi asosan nima bilan mashhur bo‘lgan?",
+        options: [
+          "Piramida qurish bilan",
+          "Dengizbo‘yi savdosi va hunarmandchilik bilan",
+          "Faqat dehqonchilik bilan",
+          "Yilnomalar tuzish bilan"
+        ],
+        correct: 1, // B
+        exp: "Ugarit Finikiyaning yirik dengizbo‘yi savdo va hunarmandchilik shahri bo‘lgan."
+      },
+      {
+        q: "31. Bibliyada insoniyat ibtidosiga oid qanday mashhur rivoyatlar mavjud?",
+        options: [
+          "Gilgamish va Enkidu jangi",
+          "Ptax va Apis afsonasi",
+          "Odam Ato va Momo Havoning yaratilishi hamda to‘fon fojiasi",
+          "Xufu piramidasi qurilishi"
+        ],
+        correct: 2, // C
+        exp: "Bibliyada olam, ilk odamlar — Odam Ato va Momo Havo, yer yuzini to‘fon bosishi kabi rivoyatlar mavjud."
+      },
+      {
+        q: "32. Old Osiyo mintaqasida joylashgan Finikiya qaysi zamonaviy davlat hududiga to‘g‘ri keladi?",
+        options: [
+          "Iroq va Eron",
+          "Armaniston va Turkiya",
+          "Misr va Sudan",
+          "Livan va Suriyaning bir qismi"
+        ],
+        correct: 3, // D
+        exp: "Qadimgi Finikiya O‘rta Yer dengizining sharqiy qirg‘og‘i bo‘ylab hozirgi Livan va Suriyaning bir qismida joylashgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 13-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

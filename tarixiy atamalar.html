@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tarixiy atamalar lug‘ati — Trenajyor va Test</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha tarixiy atamalarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">Atamalar Lug‘ati</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta atama tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha tushunchalarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST - TARTIBI ALASHTIRILGAN) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">Atamalar Testi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Agora", right: "Qadimgi Yunoniston shaharlarida xalq yig‘inlari joyi, markaziy maydon" },
+        { id: 2, left: "Akveduk", right: "Shaharga suv keladigan, ustida anhori bo‘lgan baland ko‘prik" },
+        { id: 3, left: "Altamir", right: "Ispaniyadagi so‘nggi paleolitga oid rasmlar topilgan g‘or" },
+        { id: 4, left: "Amfiteatr", right: "Sahna atrofida tomoshabinlar o‘tirishiga mo‘ljallangan tomsiz katta inshoot" }
+      ],
+      [
+        { id: 5, left: "Animizm", right: "Insonni qurshab turgan muhitda jonlar va ruhlarning mavjudligiga ishonish" },
+        { id: 6, left: "Antik", right: "Lotinchadan tarjima qilinganda «qadimgi» degan ma’noni bildiradi" },
+        { id: 7, left: "Aramey yozuvi", right: "Mesopotamiyaning o‘rta qismida arameylar tomonidan yaratilgan 20 ta harfli yozuv" },
+        { id: 8, left: "Arxeologiya", right: "Ashyoviy manbalarni o‘rganuvchi va ular orqali o‘tmishni qayta tiklovchi fan" }
+      ],
+      [
+        { id: 9, left: "Buddaviylik", right: "Mil. avv. VI asrda Siddxarta Gautama tomonidan Hindistonda asos solingan din" },
+        { id: 10, left: "Falanga", right: "Og‘ir qurollangan askarlarning bir necha qatlam saf tortishi" },
+        { id: 11, left: "Falsafa", right: "Yunoncha «sevish» va «donishmandlik» tushunchalarini anglatuvchi fan" },
+        { id: 12, left: "Fir’avn", right: "Misr hukmdori; «ulug‘ xonadon» ma’nosini anglatadi" }
+      ],
+      [
+        { id: 13, left: "Goplit", right: "Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi" },
+        { id: 14, left: "Ibodatxona", right: "Muqaddas deb e’lon qilingan, odamlar xudolarga sig‘ingan bino yoki joy" },
+        { id: 15, left: "Imperator", right: "Qadimgi Rimda dastlab faxriy harbiy unvon, keyinchalik mutlaq hukmdor unvoni" },
+        { id: 16, left: "Imperiya", right: "Hukmdorning cheklanmagan hokimiyati joriy etilgan, ko‘plab xalqlarni bo‘ysundirgan davlat" }
+      ],
+      [
+        { id: 17, left: "Italiklar", right: "Apennin yarimorolida istiqomat qilgan qadimgi qabilalar" },
+        { id: 18, left: "Iyerogliflar", right: "Qadimgi yunonlar misrliklar yozuvini atagan «muqaddas bitiklar»" },
+        { id: 19, left: "Kapitoliy tepaligi", right: "Rimdagi eng baland tepalik va qal’a joylashgan maskan" },
+        { id: 20, left: "Konsul", right: "Respublika davrida Rimdagi oliy siyosiy lavozim" }
+      ],
+      [
+        { id: 21, left: "Lojuvard", right: "Ko‘k rangdagi tabiiy tosh, ma’dan" },
+        { id: 22, left: "Respublika", right: "«Umumiy ish» ma’nosini anglatuvchi davlat boshqaruv shakli" },
+        { id: 23, left: "Termalar", right: "Qadimgi Rim shahridagi jamoat hammomlari" },
+        { id: 24, left: "Sivilizatsiya", right: "Jamiyat taraqqiyotining ancha yuksak darajasi (shahar, yozuv va davlat)" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      const stageBadge = document.getElementById('match-stage-badge');
+      const matchCounter = document.getElementById('match-counter');
+      const matchProgress = document.getElementById('match-progress');
+      
+      if (stageBadge) stageBadge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (matchProgress) matchProgress.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      if (!container) return;
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          
+          const matchCounter = document.getElementById('match-counter');
+          if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                const matchProgress = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (matchProgress) matchProgress.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Qadimgi Yunoniston shaharlarida xalq yig‘inlari o‘tkaziladigan markaziy maydon nima deb atalgan?", a: "Agora." },
+      { q: "2. Shaharga suv keladigan, ustida anhori bo‘lgan baland ko‘prik qanday nomlangan?", a: "Akveduk." },
+      { q: "3. Ispaniyadagi so‘nggi paleolitga oid qoyatosh rasmlari topilgan g‘or qaysi?", a: "Altamir." },
+      { q: "4. Sahna atrofida tomoshabinlar o‘tirishiga mo‘ljallangan tomsiz katta inshoot nima?", a: "Amfiteatr." },
+      { q: "5. Insonni qurshab turgan muhitda jonlar va ruhlarning mavjudligiga ishonish qanday atalgan?", a: "Animizm." },
+      { q: "6. «Antik» so‘zi lotinchadan tarjima qilinganda qanday ma’noni bildiradi?", a: "«Qadimgi»." },
+      { q: "7. Aramey yozuvi nechta harfdan iborat bo‘lgan?", a: "20 ta harfdan." },
+      { q: "8. Ashyoviy manbalarni o‘rganuvchi va ular orqali o‘tmishni tiklovchi fan?", a: "Arxeologiya." },
+      { q: "9. Miloddan avvalgi VI asrda Hindistonda Siddxarta Gautama asos solgan din?", a: "Buddaviylik." },
+      { q: "10. Og‘ir qurollangan askarlarning bir necha qatlam bo‘lib saf tortishi nima deb atalgan?", a: "Falanga." },
+      { q: "11. Falsafa so‘zi yunoncha qaysi tushunchalardan kelib chiqqan?", a: "«Filo» — sevish va «sofiya» — donishmandlik." },
+      { q: "12. «Fir’avn» so‘zining lug‘aviy ma’nosi nima?", a: "«Ulug‘ xonadon»." },
+      { q: "13. Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi kim?", a: "Goplit." },
+      { q: "14. Muqaddas deb e’lon qilingan, odamlar xudolarga sig‘ingan bino yoki joy?", a: "Ibodatxona." },
+      { q: "15. Qadimgi Rimda dastlab faxriy harbiy unvon bo‘lgan, keyinchalik mutlaq hukmdorni bildirgan so‘z?", a: "Imperator." },
+      { q: "16. Hukmdorning cheklanmagan hokimiyati joriy etilgan davlat turi?", a: "Imperiya." },
+      { q: "17. Apennin yarimorolida istiqomat qilgan qadimgi qabilalar kimlar?", a: "Italiklar." },
+      { q: "18. Qadimgi yunonlar misrliklar yozuvini qanday nomlashgan?", a: "Iyerogliflar («muqaddas bitiklar»)." },
+      { q: "19. Rimdagi eng baland tepalik va qal’a joylashgan maskan qaysi?", a: "Kapitoliy tepaligi." },
+      { q: "20. Respublika davrida Rimdagi oliy siyosiy lavozim qaysi?", a: "Konsul." },
+      { q: "21. Ko‘k rangdagi tabiiy tosh, qimmatbaho ma’dan qanday atalgan?", a: "Lojuvard." },
+      { q: "22. «Umumiy ish» ma’nosini anglatuvchi davlat boshqaruv shakli?", a: "Respublika." },
+      { q: "23. Qadimgi Rim shahridagi jamoat hammomlari qanday nomlangan?", a: "Termalar." },
+      { q: "24. Jamiyat taraqqiyotining ancha yuksak darajasi (shahar, yozuv va davlat) nima deb ataladi?", a: "Sivilizatsiya." },
+      { q: "25. Tepasida ibodatxonasi bo‘lgan zinapoyali yirik va baland inshoot nima?", a: "Zikkurat." },
+      { q: "26. Misrdagi ilk davlatlar qanday nomlangan?", a: "Nomlar." },
+      { q: "27. Qadimgi Misrdagi ilk davlatning hukmdori kim edi?", a: "Nomarx." },
+      { q: "28. Poyasi yozuv materiali tayyorlash uchun ishlatiladigan qamish qanday atalgan?", a: "Papirus." },
+      { q: "29. Rimning qadimgi tub aholisi kimlar edi?", a: "Patrisiylar." },
+      { q: "30. Fir’avnlar maqbarasi bo‘lgan mahobatli tosh inshoot nima?", a: "Piramida." },
+      { q: "31. Rimga ko‘chib kelgan odamlar va ularning avlodlari qanday atalgan?", a: "Plebeylar." },
+      { q: "32. Yunoncha «shahar» ma’nosini anglatuvchi atama?", a: "Polis." },
+      { q: "33. «Oqsoqollar kengashi» ma’nosini anglatuvchi davlat organi?", a: "Senat." },
+      { q: "34. Kanallar va ariqlar yordamida ekinlarni sug‘orish jarayoni?", a: "Sun’iy sug‘orish." },
+      { q: "35. Tanasi sherniki va boshi insonniki bo‘lgan ulkan haykal qanday atalgan?", a: "Sfinks." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      const counter = document.getElementById('fc-counter');
+      const progress = document.getElementById('fc-progress');
+      const question = document.getElementById('fc-question');
+      const answer = document.getElementById('fc-answer');
+      
+      if (counter) counter.innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      if (progress) progress.style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      if (question) question.innerText = card.q;
+      if (answer) {
+        answer.innerText = card.a;
+        answer.style.display = 'none';
+      }
+      
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (toggleBtn) toggleBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      const answer = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (answer) answer.style.display = 'block';
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      
+      if (fcIdx < flashcards.length) {
+        loadFlashcard();
+      } else {
+        if (playBox) playBox.style.display = 'none';
+        if (finishBox) finishBox.style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST — TARTIBI QAT'IY ARALASHTIRILGAN) ---
+    const testQuestions = [
+      {
+        q: "1. Qadimgi Yunoniston shaharlarida xalq yig‘inlari o‘tkaziladigan markaziy maydon nima deb atalgan?",
+        options: ["Akveduk", "Agora", "Altamir", "Amfiteatr"],
+        correct: 1, // B
+        exp: "Agora — Qadimgi Yunoniston shaharlarida xalq yig‘inlari joyi, markaziy maydon."
+      },
+      {
+        q: "2. Shaharga suv keladigan, ustida anhori bo‘lgan baland ko‘prik qanday nomlangan?",
+        options: ["Akveduk", "Agora", "Amfiteatr", "Animizm"],
+        correct: 0, // A
+        exp: "Akveduk — shaharga suv keladigan, ustida anhori bo‘lgan baland ko‘prik."
+      },
+      {
+        q: "3. Ispaniyadagi so‘nggi paleolitga oid qoyatosh rasmlari topilgan g‘or qaysi?",
+        options: ["Amfiteatr", "Animizm", "Altamir", "Antik"],
+        correct: 2, // C
+        exp: "Altamir — Ispaniyadagi so‘nggi paleolitga oid rasmlar topilgan g‘or."
+      },
+      {
+        q: "4. Sahna atrofida tomoshabinlar o‘tirishiga mo‘ljallangan tomsiz katta inshoot nima?",
+        options: ["Animizm", "Antik", "Aramey yozuvi", "Amfiteatr"],
+        correct: 3, // D
+        exp: "Amfiteatr — sahna atrofida tomoshabinlar o‘tirishiga mo‘ljallangan kurilmalar bilan qurshalgan tomsiz katta inshoot."
+      },
+      {
+        q: "5. Insonni qurshab turgan muhitda jonlar va ruhlarning mavjudligiga ishonish qanday atalgan?",
+        options: ["Animizm", "Arxeologiya", "Antik", "Buddaviylik"],
+        correct: 0, // A
+        exp: "Animizm — insonni qurshab turgan muhitda jonlar va ruhlarning mavjudligiga ishonish."
+      },
+      {
+        q: "6. «Antik» so‘zi lotinchadan tarjima qilinganda qanday ma’noni bildiradi?",
+        options: ["Arxeologiya", "«Qadimgi»", "Buddaviylik", "Falanga"],
+        correct: 1, // B
+        exp: "Antik — lotincha «qadimgi» ma’nosini bildiradi."
+      },
+      {
+        q: "7. Aramey yozuvi nechta harfdan iborat bo‘lgan?",
+        options: ["Buddaviylik", "Falanga", "20 ta harfdan", "Falsafa"],
+        correct: 2, // C
+        exp: "Aramey yozuvi 20 ta harfdan iborat bo‘lgan."
+      },
+      {
+        q: "8. Ashyoviy manbalarni o‘rganuvchi va ular orqali o‘tmishni qayta tiklovchi fan?",
+        options: ["Falanga", "Falsafa", "Fir’avn", "Arxeologiya"],
+        correct: 3, // D
+        exp: "Arxeologiya — ashyoviy manbalarni o‘rganuvchi va o‘tmishni qayta tiklovchi fan."
+      },
+      {
+        q: "9. Miloddan avvalgi VI asrda Hindistonda Siddxarta Gautama asos solgan din?",
+        options: ["Buddaviylik", "Falsafa", "Fir’avn", "Goplit"],
+        correct: 0, // A
+        exp: "Buddaviylik — mil. avv. VI asrda Hindistonda Siddxarta Gautama tomonidan asos solingan din."
+      },
+      {
+        q: "10. Og‘ir qurollangan askarlarning bir necha qatlam bo‘lib saf tortishi nima deb atalgan?",
+        options: ["Fir’avn", "Falanga", "Goplit", "Ibodatxona"],
+        correct: 1, // B
+        exp: "Falanga — og‘ir qurollangan askarlarning bir necha 9 yoki 16 qator saf tortishi."
+      },
+      {
+        q: "11. Falsafa so‘zi yunoncha qaysi tushunchalardan kelib chiqqan?",
+        options: ["Goplit", "Ibodatxona", "«Filo» — sevish va «sofiya» — donishmandlik", "Imperator"],
+        correct: 2, // C
+        exp: "Falsafa — yunoncha filo – «sevish», sofiya – «donishmandlik» tushunchalarini anglatadi."
+      },
+      {
+        q: "12. «Fir’avn» so‘zining lug‘aviy ma’nosi nima?",
+        options: ["Ibodatxona", "Imperator", "Imperiya", "«Ulug‘ xonadon»"],
+        correct: 3, // D
+        exp: "Fir’avn — Misr hukmdori; «ulug‘ xonadon» ma’nosini anglatadi."
+      },
+      {
+        q: "13. Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi kim?",
+        options: ["Goplit", "Imperator", "Imperiya", "Italiklar"],
+        correct: 0, // A
+        exp: "Goplit — Qadimgi Yunoniston va yunon-makedon armiyalarining og‘ir qurollangan piyoda jangchisi."
+      },
+      {
+        q: "14. Muqaddas deb e’lon qilingan, odamlar xudolarga sig‘ingan bino yoki joy?",
+        options: ["Imperator", "Ibodatxona", "Italiklar", "Iyerogliflar"],
+        correct: 1, // B
+        exp: "Ibodatxona — muqaddas deb e’lon qilingan, odamlar xudolarga sig‘ingan bino yoki joy."
+      },
+      {
+        q: "15. Qadimgi Rimda dastlab faxriy harbiy unvon bo‘lgan, keyinchalik mutlaq hukmdorni bildirgan so‘z?",
+        options: ["Italiklar", "Iyerogliflar", "Imperator", "Kapitoliy"],
+        correct: 2, // C
+        exp: "Imperator — qadimgi Rimda dastlab faxriy harbiy unvon, keyinchalik mutlaq hukmdorga tegishli unvon."
+      },
+      {
+        q: "16. Hukmdorning cheklanmagan hokimiyati joriy etilgan, ko‘plab xalqlarni o‘ziga bo‘ysundirgan davlat?",
+        options: ["Iyerogliflar", "Kapitoliy", "Konsul", "Imperiya"],
+        correct: 3, // D
+        exp: "Imperiya — hukmdorning cheklanmagan hokimiyati joriy etilgan, boshqa ko‘plab xalqlarni o‘ziga bo‘ysundirgan davlat."
+      },
+      {
+        q: "17. Apennin yarimorolida istiqomat qilgan qadimgi qabilalar kimlar?",
+        options: ["Italiklar", "Kapitoliy", "Konsul", "Lojuvard"],
+        correct: 0, // A
+        exp: "Italiklar — Apennin yarimorolida istiqomat qilgan qadimgi qabilalar."
+      },
+      {
+        q: "18. Qadimgi yunonlar misrliklar yozuvini qanday nomlashgan?",
+        options: ["Konsul", "Iyerogliflar", "Lojuvard", "Respublika"],
+        correct: 1, // B
+        exp: "Iyerogliflar — qadimgi yunonlar misrliklar yozuvini shunday atashgan, «muqaddas bitiklar» ma’nosini anglatadi."
+      },
+      {
+        q: "19. Rimdagi eng baland tepalik va qal’a joylashgan maskan qaysi?",
+        options: ["Lojuvard", "Respublika", "Kapitoliy tepaligi", "Termalar"],
+        correct: 2, // C
+        exp: "Kapitoliy tepaligi — Rimdagi eng baland tepalik."
+      },
+      {
+        q: "20. Respublika davrida Rimdagi oliy siyosiy lavozim qaysi?",
+        options: ["Termalar", "Sivilizatsiya", "Zikkurat", "Konsul"],
+        correct: 3, // D
+        exp: "Konsul — respublika davrida Rimdagi oliy siyosiy lavozim."
+      },
+      {
+        q: "21. Ko‘k rangdagi tabiiy tosh, qimmatbaho ma’dan qanday atalgan?",
+        options: ["Lojuvard", "Respublika", "Termalar", "Sivilizatsiya"],
+        correct: 0, // A
+        exp: "Lojuvard — ko‘k rangdagi tabiiy tosh, ma’dan."
+      },
+      {
+        q: "22. «Umumiy ish» ma’nosini anglatuvchi davlat boshqaruv shakli?",
+        options: ["Termalar", "Respublika", "Sivilizatsiya", "Zikkurat"],
+        correct: 1, // B
+        exp: "Respublika — «umumiy ish» ma’nosini anglatadi, davlat boshqaruvi shakli."
+      },
+      {
+        q: "23. Qadimgi Rim shahridagi jamoat hammomlari qanday nomlangan?",
+        options: ["Sivilizatsiya", "Zikkurat", "Termalar", "Nom"],
+        correct: 2, // C
+        exp: "Termalar — Qadimgi Rim shahridagi jamoat hammomlari."
+      },
+      {
+        q: "24. Jamiyat taraqqiyotining ancha yuksak darajasi (shahar, yozuv va davlat) nima deb ataladi?",
+        options: ["Zikkurat", "Nom", "Nomarx", "Sivilizatsiya"],
+        correct: 3, // D
+        exp: "Sivilizatsiya — qadimgi jamiyat taraqqiyotining ancha yuksak darajasi."
+      },
+      {
+        q: "25. Tepasida ibodatxonasi bo‘lgan zinapoyali yirik va baland inshoot nima?",
+        options: ["Zikkurat", "Nom", "Nomarx", "Papirus"],
+        correct: 0, // A
+        exp: "Zikkurat — tepasida ibodatxonasi bo‘lgan zinapoyali yirik va baland inshoot."
+      },
+      {
+        q: "26. Misrdagi ilk davlatlar qanday nomlangan?",
+        options: ["Nomarx", "Nom", "Papirus", "Patrisiylar"],
+        correct: 1, // B
+        exp: "Nomlar — Misrdagi ilk davlatlar."
+      },
+      {
+        q: "27. Qadimgi Misrdagi ilk davlatning hukmdori kim edi?",
+        options: ["Papirus", "Patrisiylar", "Nomarx", "Piramida"],
+        correct: 2, // C
+        exp: "Nomarx — Qadimgi Misrdagi ilk davlatning hukmdori."
+      },
+      {
+        q: "28. Poyasi yozuv materiali tayyorlash uchun ishlatiladigan qamish qanday atalgan?",
+        options: ["Piramida", "Plebeylar", "Polis", "Papirus"],
+        correct: 3, // D
+        exp: "Papirus — poyasi yozuv materiali tayyorlash uchun ishlatiladigan qamish."
+      },
+      {
+        q: "29. Rimning qadimgi tub aholisi kimlar edi?",
+        options: ["Patrisiylar", "Plebeylar", "Polis", "Respublika"],
+        correct: 0, // A
+        exp: "Patrisiylar — Rimning qadimgi tub aholisi."
+      },
+      {
+        q: "30. Fir’avnlar maqbarasi bo‘lgan mahobatli tosh inshoot nima?",
+        options: ["Plebeylar", "Piramida", "Polis", "Respublika"],
+        correct: 1, // B
+        exp: "Piramida — mahobatli tosh inshoot, fir’avnlar maqbarasi."
+      },
+      {
+        q: "31. Rimga ko‘chib kelgan odamlar va ularning avlodlari qanday atalgan?",
+        options: ["Polis", "Respublika", "Plebeylar", "Senat"],
+        correct: 2, // C
+        exp: "Plebeylar — Rimga ko‘chib kelgan odamlar va ularning avlodlari."
+      },
+      {
+        q: "32. Yunoncha «shahar» ma’nosini anglatuvchi atama?",
+        options: ["Respublika", "Senat", "Sun’iy sug‘orish", "Polis"],
+        correct: 3, // D
+        exp: "Polis (yunoncha polis) — «shahar»."
+      },
+      {
+        q: "33. «Oqsoqollar kengashi» ma’nosini anglatuvchi davlat organi?",
+        options: ["Senat", "Sun’iy sug‘orish", "Sfinks", "Termalar"],
+        correct: 0, // A
+        exp: "Senat — «oqsoqollar kengashi» ma’nosini anglatadi."
+      },
+      {
+        q: "34. Kanallar va ariqlar yordamida ekinlarni sug‘orish jarayoni?",
+        options: ["Sfinks", "Sun’iy sug‘orish", "Termalar", "Varvar"],
+        correct: 1, // B
+        exp: "Sun’iy sug‘orish — kanallar va ariqlar yordamida ekinlarni sug‘orish."
+      },
+      {
+        q: "35. Tanasi sherniki va boshi insonniki bo‘lgan ulkan haykal qanday atalgan?",
+        options: ["Termalar", "Varvar", "Sfinks", "Sivilizatsiya"],
+        correct: 2, // C
+        exp: "Sfinks — tanasi sherniki va boshi insonniki bo‘lgan, pyramidalarni qo‘riqlovchi ulkan haykal."
+      },
+      {
+        q: "36. Dastlab yunon tilida so‘zlashmaydigan har qanday chet mamlakatlik kishi keyinchalik madaniyatsiz odamlarga nisbatan ishlatilgan so‘z?",
+        options: ["Sivilizatsiya", "Zikkurat", "Nom", "Varvar"],
+        correct: 3, // D
+        exp: "Varvar — dastlab yunon tilida so‘zlashmaydigan har qanday chet mamlakatlik kishi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const progress = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (progress) progress.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      if (!optBox) return;
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const qScore = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 32) fb.innerText = "Mukammal natija! Atamalar lug‘atini 100% to‘liq o‘zlashtiribsiz 🏆";
+        else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+        else fb.innerText = "Lug‘atni qayta o‘qib chiqish tavsiya etiladi 📚";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

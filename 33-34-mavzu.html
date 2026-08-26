@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>33–34-§. Ahamoniylarning O‘rta Osiyoga bosqinchilik yurishlari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va tarixiy voqealarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">33–34-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">33–34-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Kir II va To‘maris
+      [
+        { id: 1, left: "Parfiya, Marg‘iyona, Baqtriya", right: "Kir II bosib olgan O‘rta Osiyo hududlari" },
+        { id: 2, left: "Mil. avv. 530-yil", right: "Kir II massagetlar ustiga yurish qilgan sana" },
+        { id: 3, left: "To‘maris", right: "Massaget qabilalarining jasur malikasi" },
+        { id: 4, left: "Gerodot", right: "Kir II va To‘maris jangi haqida yozib qoldirgan «tarix otasi»" }
+      ],
+      // 2-bosqich: Doro I va Frada isyoni
+      [
+        { id: 5, left: "Mil. avv. 522-yil", right: "Marg‘iyonadagi Frada boshchiligidagi isyon bostirilgan sana" },
+        { id: 6, left: "Frada", right: "Marg‘iyona isyoniga rahbarlik qilgan shaxs" },
+        { id: 7, left: "Dadarshish", right: "Doro I yuborgan Baqtriya satrapi (chopari)" },
+        { id: 8, left: "Behistun yozuvlari", right: "Doro I ning isyonni bostirgani haqidagi qoyatosh bitiklari" }
+      ],
+      // 3-bosqich: Shiroq jasorati
+      [
+        { id: 9, left: "Shiroq", right: "Forslarni suvsiz sahroda adashtirib ketgan jasur cho‘pon" },
+        { id: 10, left: "Poliyen", right: "Shiroq jasorati haqidagi rivoyatni keltirib o‘tgan mil. avv. II asr tarixchisi" },
+        { id: 11, left: "Ranosbat", right: "Fors qo‘shinining mingboshisi (qulovzini)" },
+        { id: 12, left: "Yetti kunlik yo‘l", right: "Forslar Shiroq ortidan suvsiz cho‘lga kirib borgan muddat" }
+      ],
+      // 4-bosqich: Boshqaruv va soliqlar
+      [
+        { id: 13, left: "Satrapiyalar", right: "Ahamoniylar davlati bo‘lingan alohida viloyatlar («xshatra»)" },
+        { id: 14, left: "Satrap", right: "Satrapiyalar hokimi (ko‘pchiligi Ahamoniylar sulolasi vakillari)" },
+        { id: 15, left: "Uchta satrapiya", right: "O‘rta Osiyoning forslar bosib olgan hududlari bo‘lingan bo‘laklar" },
+        { id: 16, left: "Yillik soliq-o‘lpon", right: "Kumush, chorva, hunarmandchilik va matolar ko‘rinishida to‘langan majburiyat" }
+      ],
+      // 5-bosqich: Madaniyat va arxeologiya
+      [
+        { id: 17, left: "Ko‘ktepa, Daratepa, Xumbuztepa", right: "O‘rta Osiyoda Ahamoniylar davriga oid qadimiy manzilgohlar" },
+        { id: 18, left: "Amudaryo xazinasi", right: "Britaniya muzeyida saqlanayotgan yuksak zargarlik buyumlari majmuasi" },
+        { id: 19, left: "Qubodiyon", right: "Amudaryo xazinasi topilgan qadimiy Baqtriya yeri (1877-yil)" },
+        { id: 20, left: "Oltin ot-arava", right: "Amudaryo xazinasidan topilgan san’at asari namunasi" }
+      ],
+      // 6-bosqich: Harbiy ishtirok
+      [
+        { id: 21, left: "Marafon jangi (mil. avv. 490-yil)", right: "Fors qo‘shinlari safi markazida saklar muvaffaqiyatli urishgan jang" },
+        { id: 22, left: "Kserks qo‘shini", right: "Tarkibida sug‘d, baqtriya va xorazmlik saralangan jangchilar bo‘lgan armiya" },
+        { id: 23, left: "Baqtriyaliklar quroli", right: "Kamon va nayzalar" },
+        { id: 24, left: "Saklar quroli", right: "Xanjar va jangovar boltalar" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. O‘rta Osiyo hududini bosib olishga harakat qilgan birinchi fors hukmdori kim?", a: "Kir II." },
+      { q: "2. Kir II O‘rta Osiyoning qaysi hududlarini bosib olgan edi?", a: "Parfiya, Marg‘iyona va Baqtriyani." },
+      { q: "3. Kir II massagetlar ustiga qachon yurish qildi?", a: "Miloddan avvalgi 530-yilda." },
+      { q: "4. Miloddan avvalgi 530-yilda massagetlar qabilasining malikasi kim edi?", a: "To‘maris." },
+      { q: "5. Kir II va To‘maris jangi haqida batafsil ma’lumot bergan yunon tarixchisi kim?", a: "Gerodot («tarix otasi»)." },
+      { q: "6. Kir II massagetlar bilan jangda qanday oqibatga duch keldi?", a: "Massagetlar g‘alaba qozondi, fors qo‘shinining ko‘pchiligi qirildi va Kir II ning o‘zi halok bo‘ldi." },
+      { q: "7. Doro I hukmronligining birinchi yili Marg‘iyonada ko‘tarilgan isyonga kim rahbarlik qildi?", a: "Frada." },
+      { q: "8. Marg‘iyonadagi isyon qachon bostirildi va bu haqda qayerda yozilgan?", a: "Miloddan avvalgi 522-yilda; Behistun qoyatosh yozuvlarida qayd etilgan." },
+      { q: "9. Doro I isyonni bostirish uchun Marg‘iyonaga kimni yuborgan?", a: "Baqtriya satrapi Dadarshishni." },
+      { q: "10. Doro I ning saklarga qarshi yurishi haqidagi boshqa bir rivoyatni qaysi tarixchi keltirgan?", a: "Mil. avv. II asr tarixchisi Poliyen." },
+      { q: "11. Poliyen rivoyatiga ko‘ra, forslarni suvsiz sahroda adashtirib ketgan jasur cho‘pon kim?", a: "Shiroq." },
+      { q: "12. Shiroq forslarning mingboshisi Ranosbatga qanday shart qo‘ygan edi?", a: "O‘zini o‘zidan boshqa hech kim bilmaydigan so‘qmoq orqali saklarning orqa tomoniga boshlab borishni aytgan." },
+      { q: "13. Shiroq forslarni suvsiz sahroda necha kun aylantirgan?", a: "Yetti kun." },
+      { q: "14. Shiroq sahroda fosh bo‘lgach, forslarga nima deb javob berdi?", a: "«Men yengdim. Saklarni halokatdan qutqarmoq uchun sizlarni tashna va ochlik balosiga giriftor qildim»." },
+      { q: "15. Ahamoniylar bosib olgan yagona davlatni boshqarish uchun qanday ma’muriy birliklarga bo‘lingan?", a: "Satrapiyalarga («xshatra» – viloyat)." },
+      { q: "16. Satrapiyalarni kimlar boshqargan va ularning ko‘pchiligi kimlar bo‘lgan?", a: "Satraplar boshqargan; ko‘pchiligi Ahamoniylar sulolasi vakillari bo‘lgan." },
+      { q: "17. O‘rta Osiyoning forslar bosib olgan hududlari nechta satrapiyaga bo‘lingan?", a: "Uchta satrapiyaga." },
+      { q: "18. Satrapiyalar zimmasiga qanday majburiyatlar yuklatilgan?", a: "Fors shohiga yillik soliq-o‘lpon yetkazib berish, saroy va ibodatxona qurilishiga safarbar etilish." },
+      { q: "19. Soliq sifatida forslarga nimalar to‘langan?", a: "Kumush, chorva mollar (ot, tuya, qo‘y), hunarmandchilik buyumlari, matolar va teri." },
+      { q: "20. Doro I va Kserks davrida o‘rtaosiyolik jangchilar qaysi urushlarda ishtirok etgan?", a: "Yunon-fors urushlarida." },
+      { q: "21. Marafon jangida (mil. avv. 490-yil) fors qo‘shinlari safining markazida kimlar muvaffaqiyatli urishgan?", a: "Saklar." },
+      { q: "22. Gerodotning yozishicha, Kserks qo‘shinidagi o‘rtaosiyoliklar qanday qurollar bilan jang qilishgan?", a: "Baqtriyaliklar — kamon va nayza; saklar — xanjar va jangovar boltalar bilan." },
+      { q: "23. O‘rta Osiyoda Ahamoniylar davriga oid qaysi qadimiy manzilgohlar aniqlangan?", a: "Ko‘ktepa, Daratepa, Xumbuztepa." },
+      { q: "24. Miloddan avvalgi V–IV asrlarda O‘rta Osiyoda nimalar keng tarqalgan?", a: "Dastlabki tanga pullar." },
+      { q: "25. 1877-yilda qaysi yerdan topilgan oltin va kumush buyumlar majmuasi «Amudaryo xazinasi» deb atalgan?", a: "Qubodiyon vohasidan (qadimgi Baqtriya yeri)." },
+      { q: "26. Amudaryo xazinasi hozir qayerda saqlanmoqda?", a: "Buyuk Britaniya muzeyida." },
+      { q: "27. Amudaryo xazinasidan topilgan eng mashhur san’at namunalaridan birini ayting.", a: "Oltindan yasalgan ot-arava va bilaguzuklar." },
+      { q: "28. Shahar va qo‘rg‘onlar atrofida dehqonchilikni rivojlantirish uchun nimalar qilingan?", a: "Dala, suv olib kelgan anhorlar va ariqlar qazilgan." },
+      { q: "29. Doro I ning Suzadagi saroy qurilishi yozuvida O‘rta Osiyodan nimalar keltirilgani aytilgan?", a: "Baqtriyadan oltin, Sug‘diyonadan la’l va yoqut, Xorazmdan kumush keltirilgan." },
+      { q: "30. Shiroq jasorati haqidagi hikoyani bizgacha yetkazib bergan Poliyen qaysi asrda yashagan?", a: "Miloddan avvalgi II asrda." },
+      { q: "31. Frada boshchiligidagi isyon qaysi hududda yuz bergan?", a: "Marg‘iyona mamlakatida." },
+      { q: "32. To‘maris va Kir II jangi qaysi daryo yaqinida bo‘lib o‘tgan?", a: "Araks (Amudaryo) bo‘ylarida." },
+      { q: "33. Xorazm va sug‘diylar Kserks qo‘shinida qanday qurollar bilan jang qilgan?", a: "Baqtriyaliklar va saklarning qurol-aslahalari bilan." },
+      { q: "34. Shiroq fors lashkarini adashtirish uchun o‘zini qanday ahvolga solgan edi?", a: "O‘zini quloq-burnini kesib, jarohatlab fors tomoniga qochib kelgandek ko‘rsatgan." },
+      { q: "35. Ahamoniylar davlatida satraplarga qanday huquqlar berilgan edi?", a: "Cheklanmagan hokimiyat berilgan edi." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Kir II O‘rta Osiyo massagetlari ustiga qachon yurish qilgan?",
+        options: [
+          "Miloddan avvalgi 530-yilda",
+          "Miloddan avvalgi 522-yilda",
+          "Miloddan avvalgi 490-yilda",
+          "Miloddan avvalgi 330-yilda"
+        ],
+        correct: 0, // A
+        exp: "Miloddan avvalgi 530-yilda Kir II ulkan lashkar bilan massagetlar ustiga yurish qildi."
+      },
+      {
+        q: "2. Doro I hukmronligining birinchi yili Marg‘iyonada ko‘tarilgan yirik isyonga kim rahbarlik qilgan?",
+        options: [
+          "Shiroq",
+          "Frada",
+          "To‘maris",
+          "Dadarshish"
+        ],
+        correct: 1, // B
+        exp: "Doro I hukmronligining birinchi yili Marg‘iyonada fors istilochilariga qarshi isyon ko‘tarildi, unga Frada rahbarlik qildi."
+      },
+      {
+        q: "3. Forslarni suvsiz sahroda adashtirib, o‘z xalqini qutqargan afsonaviy cho‘pon kim?",
+        options: [
+          "Oksiart",
+          "Ranosbat",
+          "Shiroq",
+          "Dadarshish"
+        ],
+        correct: 2, // C
+        exp: "Forslarning qoshiga sak qabilasidan bo‘lgan cho‘pon — Shiroq kelib, ularni suvsiz cho‘lga boshlab borgan."
+      },
+      {
+        q: "4. Ahamoniylar davlatida bosib olingan mamlakatlarni boshqarish uchun joriy etilgan ma’muriy viloyatlar nima deb atalgan?",
+        options: [
+          "Nom",
+          "Polis",
+          "Satrapiya",
+          "Zikkurat"
+        ],
+        correct: 3, // D
+        exp: "Ahamoniylar yagona davlatni alohida viloyat — satrapiyalarga bo‘lib tashlagan."
+      },
+      {
+        q: "5. 1877-yilda Qubodiyon vohasidan (qadimgi Baqtriya yeri) topilgan oltin va kumush buyumlar majmuasi qanday nomlanadi?",
+        options: [
+          "Amudaryo xazinasi",
+          "Makedoniya xazinasi",
+          "Samarqand xazinasi",
+          "Behistun xazinasi"
+        ],
+        correct: 0, // A
+        exp: "Bu yuksak darajada ishlangan san’at namunalari «Amudaryo (Oks) xazinasi» nomi bilan mashhur."
+      },
+      {
+        q: "6. Doro I ning saklarga qarshi yurishi va Frada isyonining bostirilishi haqidagi ma’lumotlar qayerda yozib qoldirilgan?",
+        options: [
+          "Papirus o‘ramlarida",
+          "Behistun qoyatosh yozuvlarida",
+          "Krit loy taxtachalarida",
+          "Parfenon ustunlarida"
+        ],
+        correct: 1, // B
+        exp: "Bu voqea haqidagi ma’lumotlar Behistun qoyatosh yozuvlarida qayd etilgan."
+      },
+      {
+        q: "7. Shiroq jasorati haqidagi rivoyatni bizgacha yetkazib bergan miloddan avvalgi II asr tarixchisi kim?",
+        options: [
+          "Gerodot",
+          "Ktesiy",
+          "Poliyen",
+          "Strabon"
+        ],
+        correct: 2, // C
+        exp: "Ayni paytda bu yurish haqida tarixchi Poliyen (mil. avv. II asr) keltirgan boshqa bir rivoyat ham mavjud."
+      },
+      {
+        q: "8. Amudaryo xazinasi hozirgi kunda qaysi mamlakat muzeyida saqlanmoqda?",
+        options: [
+          "Fransiya (Luvr muzeyi)",
+          "Rossiya (Ermitaj)",
+          " AQSh (Metropoliten)",
+          "Buyuk Britaniya muzeyida"
+        ],
+        correct: 3, // D
+        exp: "Bugungi kunda Britaniya muzeyida saqlanayotgan Amudaryo xazinasi bunga yorqin misoldir."
+      },
+      {
+        q: "9. Kir II O‘rta Osiyoni bosib olishda dastlab qaysi hududlarni qo‘lga kiritgan edi?",
+        options: [
+          "Parfiya, Marg‘iyona va Baqtriyani",
+          "Faqat Xorazmni",
+          "Faqat Sirdaryo bo‘ylarini",
+          "Farg‘ona vodiysini"
+        ],
+        correct: 0, // A
+        exp: "Kir II O‘rta Osiyo hududini bosib olishga harakat qilgan birinchi fors hukmdorlaridan bo‘lib, Parfiya, Marg‘iyona va Baqtriyani bosib oldi."
+      },
+      {
+        q: "10. Doro I ning saklar ustiga yurishi uning hukmronligining nechanchi yilida yuz bergan?",
+        options: [
+          "Birinchi yilida",
+          "Uchinchi yilida",
+          "Beshinchi yilida",
+          "O‘ninchi yilida"
+        ],
+        correct: 1, // B
+        exp: "Doro I hukmronligining uchinchi yilida saklar ustiga yurish qiladi."
+      },
+      {
+        q: "11. Shiroq forslarni suvsiz sahroda necha kun davomida adashtirib yurgan?",
+        options: [
+          "Uch kun",
+          "O‘n kun",
+          "Yetti kun",
+          "Bir oy"
+        ],
+        correct: 2, // C
+        exp: "Suvsiz cho‘l-biyobon bo‘ylab yetti kun yo‘l bosgach, forslar aldanganlarini sezib qolishadi."
+      },
+      {
+        q: "12. Ahamoniylar davlatida satrapiyalarni boshqargan hokimlar nima deb atalgan?",
+        options: [
+          "Arxont",
+          "Strateg",
+          "Satrap",
+          "Nomarx"
+        ],
+        correct: 3, // D
+        exp: "Satrapiyalar hukmdorlari — satraplarga cheklanmagan hokimiyat berilgan edi."
+      },
+      {
+        q: "13. Gerodotning yozishicha, Kir II va To‘maris o‘rtasidagi jang haqida nima deyilgan?",
+        options: [
+          "Bu jang barcha janglardan ham dahshatliroq edi va unda Kir II halok bo‘ldi",
+          "Forslar qon to‘kmasdan g‘alaba qozondi",
+          "Massagetlar taslim bo‘ldi",
+          "Jang sulh bilan yakunlandi"
+        ],
+        correct: 0, // A
+        exp: "Gerodot bu jang barcha janglardan ham dahshatliroq bo‘lganini va Kir II halok bo‘lganini yozadi."
+      },
+      {
+        q: "14. Marg‘iyonadagi isyonga rahbarlik qilgan Frada qanday oqibatga duch keldi?",
+        options: [
+          "U qochib qutuldi",
+          "Asir olindi va qatl etildi",
+          "U fors satrapi etib tayinlandi",
+          "U Afinaga jo‘natib yuborildi"
+        ],
+        correct: 1, // B
+        exp: "Fradaning o‘zi asirga olinadi va qatl etiladi."
+      },
+      {
+        q: "15. O‘rta Osiyoda Ahamoniylar davriga oid topilgan qadimiy manzilgohlar qatorini aniqlang.",
+        options: [
+          "Mohenjodaro va Xarappa",
+          "Afrosiyob va Qiziltepa",
+          "Ko‘ktepa, Daratepa, Xumbuztepa",
+          "Tushpa va Teyshebaini"
+        ],
+        correct: 2, // C
+        exp: "Ko‘ktepa, Daratepa, Xumbuztepa va Ko‘zaliqir kabi manzilgohlar mavjud."
+      },
+      {
+        q: "16. Doro I ning Suzadagi saroy qurilishi yozuvida Sug‘diyonadan nima keltirilgani yozilgan?",
+        options: [
+          "Oltin",
+          "Kumush",
+          "Mis",
+          "La’l va yoqut"
+        ],
+        correct: 3, // D
+        exp: "Olmos, la’l va yoqut Sug‘diyonadan keltirildi."
+      },
+      {
+        q: "17. Shiroq jasorati bayon etilgan asar muallifi kim?",
+        options: [
+          "Poliyen",
+          "Gerodot",
+          "Ktesiy",
+          "Strabon"
+        ],
+        correct: 0, // A
+        exp: "Tarixchi Poliyen keltirgan rivoyatda Shiroq jasorati hikoya qilinadi."
+      },
+      {
+        q: "18. Amudaryo xazinasi qachon va qayerdan topilgan?",
+        options: [
+          "1905-yilda Toshkent yaqinidan",
+          "1877-yilda Qubodiyon vohasidan",
+          "1822-yilda Misrdan",
+          "1930-yilda Afg‘onistondan"
+        ],
+        correct: 1, // B
+        exp: "Bu oltin buyumlar 1877-yili Qubodiyon vohasidan, qadimgi Baqtriya yeridan topilgan."
+      },
+      {
+        q: "19. Ahamoniylar davlatida satraplar lavozimiga asosan kimlar tayinlangan?",
+        options: [
+          "Mahalliy o‘rtaosiyolik zodagonlar",
+          "Oddiy dehqonlar",
+          "Ahamoniylar sulolasi vakillari",
+          "Chet ellik yollanma askarlar"
+        ],
+        correct: 2, // C
+        exp: "Satrapiyalar hukmdorlari — satraplarga cheklanmagan hokimiyat berilgan edi. Ularning ko‘pchiligi Ahamoniylar sulolasi vakillari bo‘lgan."
+      },
+      {
+        q: "20. Kir II ning massagetlar ustiga yurish qilgan vaqti qaysi?",
+        options: [
+          "Mil. avv. 522-yil",
+          "Mil. avv. 490-yil",
+          "Mil. avv. 338-yil",
+          "Mil. avv. 530-yil"
+        ],
+        correct: 3, // D
+        exp: "Miloddan avvalgi 530-yilda Kir II ulkan lashkar bilan massagetlar ustiga yurish qildi."
+      },
+      {
+        q: "21. Shiroq forslarni qaysi hududga aldab olib borgan edi?",
+        options: [
+          "Suvsiz sahroga",
+          "Farg‘ona vodiysiga",
+          "Amudaryo qirg‘og‘iga",
+          "Tog‘ darasiga"
+        ],
+        correct: 0, // A
+        exp: "Forslar Shiroq bilan yetti kunlik yo‘lda, suvsiz sahroga kirib bordi."
+      },
+      {
+        q: "22. Doro I ning Suzadagi saroyiga Xorazmdan nima keltirilgan?",
+        options: [
+          "Oltin",
+          "Qo‘llangan to‘q ko‘k yoqut",
+          "La’l",
+          "Mis"
+        ],
+        correct: 1, // B
+        exp: "Yozuvda: «Qo‘llangan to‘q ko‘k yoqut Xorazmdan, kumush va jez Misrdan olib kelindi» deyilgan."
+      },
+      {
+        q: "23. O‘rta Osiyodagi forslar bosib olgan viloyatlar nechta satrapiyaga bo‘lingan?",
+        options: [
+          "Beshta",
+          "O‘nta",
+          "Uchta",
+          "Ikkita"
+        ],
+        correct: 2, // C
+        exp: "O‘rta Osiyoning forslar bosib olgan viloyatlari uch satrapiyaga bo‘lingan."
+      },
+      {
+        q: "24. Doro I va uning vorisi Kserks davrida o‘rtaosiyolik jangchilar qaysi yirik urushlarda qatnashganlar?",
+        options: [
+          "Troya urushida",
+          "Piramida qurilishida",
+          "Rim-Karfagen urushlarida",
+          "Yunon-fors urushlarida"
+        ],
+        correct: 3, // D
+        exp: "Doro I va uning vorisi Kserks hukmronligi davrida egallab olingan hududlarda istiqomat qilgan o‘rtaosiyoliklar yunon-fors urushlarida ishtirok etgan."
+      },
+      {
+        q: "25. Kir II ning massagetlar bilan jangi qaysi daryo bo‘ylarida bo‘lib o‘tgan?",
+        options: [
+          "Araks (Amudaryo) bo‘ylarida",
+          "Xuanxe daryosida",
+          "Nil daryosida",
+          "Dajla daryosida"
+        ],
+        correct: 0, // A
+        exp: "Massagetlar yashaydigan Araks (Amudaryo) bo‘ylarida shiddatli jang bo‘lgan."
+      },
+      {
+        q: "26. Doro I davrida Marg‘iyonada chiqqan isyon qaysi shaharda yoki hududda bo‘lgan?",
+        options: [
+          "Xorazm vohasida",
+          "Marg‘iyona mamlakatida",
+          "Samarqandda",
+          "Baxshida"
+        ],
+        correct: 1, // B
+        exp: "Marg‘iyona degan mamlakat menga bo‘ysunmay qo‘ygan edi, deya yozgan Doro I."
+      },
+      {
+        q: "27. Shiroq jasorati bayon etilgan asar muallifi kim?",
+        options: [
+          "Gerodot",
+          "Ktesiy",
+          "Poliyen",
+          "Strabon"
+        ],
+        correct: 2, // C
+        exp: "Tarixchi Poliyen keltirgan rivoyatda Shiroq jasorati hikoya qilinadi."
+      },
+      {
+        q: "28. Amudaryo xazinasi qachon va qayerdan topilgan?",
+        options: [
+          "1905-yilda Toshkent yaqinidan",
+          "1822-yilda Misrdan",
+          "1930-yilda Afg‘onistondan",
+          "1877-yilda Qubodiyon vohasidan"
+        ],
+        correct: 3, // D
+        exp: "Bu oltin buyumlar 1877-yili Qubodiyon vohasidan, qadimgi Baqtriya yeridan topilgan."
+      },
+      {
+        q: "29. Kir II ning massagetlar ustiga yurish qilgan vaqti qaysi?",
+        options: [
+          "Mil. avv. 530-yil",
+          "Mil. avv. 522-yil",
+          "Mil. avv. 490-yil",
+          "Mil. avv. 338-yil"
+        ],
+        correct: 0, // A
+        exp: "Miloddan avvalgi 530-yilda Kir II ulkan lashkar bilan massagetlar ustiga yurish qildi."
+      },
+      {
+        q: "30. O‘rta Osiyo satrapiyalariga shohga yillik soliq sifatida nimalar to‘lanishi belgilangan?",
+        options: [
+          "Faqat bug‘doy va sholi",
+          "Kumush, chorva mollar, hunarmandchilik buyumlari va matolar",
+          "Faqat oltin quymalar",
+          "Faqat qurol-yarog‘"
+        ],
+        correct: 1, // B
+        exp: "Soliq sifatida kumush, chorva mollar, hunarmandchilik buyumlari, matolar berilar edi."
+      },
+      {
+        q: "31. Amudaryo xazinasi tarkibiga qanday buyumlar kirgan?",
+        options: [
+          "Faqat sopol idishlar va tosh qurollar",
+          "Faqat temir qilichlar va dubulg‘alar",
+          "Yuksak badiiy uslubda ishlangan oltin va kumush buyumlar, haykalchalar",
+          "Faqat qog‘oz hujjatlar va tangalar"
+        ],
+        correct: 2, // C
+        exp: "U yuqori badiiy uslubda ishlangan oltin va kumush buyumlar majmuidan iborat."
+      },
+      {
+        q: "32. Satrapiya so‘zi qaysi tildan kelib chiqqan va qanday ma’noni anglatadi?",
+        options: [
+          "Yunoncha — «shahar»",
+          "Lotincha — «qonun»",
+          "Shumercha — «ibodatxona»",
+          "Forscha «xshatra» — «viloyat»"
+        ],
+        correct: 3, // D
+        exp: "Bu so‘z forscha «xshatra» — «viloyat» so‘zidan kelib chiqqan."
+      },
+      {
+        q: "33. Marg‘iyonadagi isyonga rahbarlik qilgan Frada qanday oqibatga duch keldi?",
+        options: [
+          "Asir olindi va qatl etildi",
+          "U qochib qutuldi",
+          "U fors satrapi etib tayinlandi",
+          "U Afinaga jo‘natib yuborildi"
+        ],
+        correct: 0, // A
+        exp: "Fradaning o‘zi asirga olinadi va qatl etiladi."
+      },
+      {
+        q: "34. O‘rta Osiyoda Ahamoniylar davriga oid topilgan qadimiy manzilgohlar qatorini aniqlang.",
+        options: [
+          "Afrosiyob va Qiziltepa",
+          "Ko‘ktepa, Daratepa, Xumbuztepa",
+          "Mohenjodaro va Xarappa",
+          "Tushpa va Teyshebaini"
+        ],
+        correct: 1, // B
+        exp: "Ko‘ktepa, Daratepa, Xumbuztepa va Ko‘zaliqir kabi manzilgohlar mavjud."
+      },
+      {
+        q: "35. Gerodotning yozishicha, Kserks qo‘shinidagi o‘rtaosiyoliklar qanday qurollar bilan jang qilishgan?",
+        options: [
+          "Faqat qilichlar bilan",
+          "Qalqon va temir nayzalar bilan",
+          "Baqtriyaliklar — kamon va nayza; saklar — xanjar va jangovar boltalar bilan",
+          "Faqat tosh gurzilar bilan"
+        ],
+        correct: 2, // C
+        exp: "Baqtriyaliklar kamon va nayzalar bilan, saklar xanjar va jangovar boltalar bilan jangiga kirgan."
+      },
+      {
+        q: "36. Shiroq forslarni suvsiz sahroda necha kun davomida adashtirib yurgan?",
+        options: [
+          "Uch kun",
+          "O‘n kun",
+          "Bir oy",
+          "Yetti kun"
+        ],
+        correct: 3, // D
+        exp: "Suvsiz cho‘l-biyobon bo‘ylab yetti kun yo‘l bosgach, forslar aldanganlarini sezib qolishadi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! 33–34-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

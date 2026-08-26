@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>29-§. Yunon fuqarolari tarbiyasi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (20)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (24)</button>
+    </div>
+
+    <!-- 1. MOSLASH (4 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">4 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va Olimpiya o‘yinlari faktlarini muvaffaqiyatli mosladingiz. Endi 20 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (20 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">29-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 20</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">20 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 24 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (24 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">29-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 24</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/24</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Fuqaro tarbiyasi va harbiy ta’lim
+      [
+        { id: 1, left: "Faol fuqarolar", right: "Yunon maktablari tarbiyalashi kerak bo‘lgan davlat himoyachilari" },
+        { id: 2, left: "Ikki yil harbiy ta’lim", right: "Umumiy ta’limdan tashqari yigitlar olgan tayyorgarlik" },
+        { id: 3, left: "Pirey porti", right: "Ikkinchi yili ba’zi yigitlar dengizchilik san’atini o‘rgangan joy" },
+        { id: 4, left: "30 yoshga to‘lmaganlar", right: "Harbiy xavf tug‘ilganda qurol-yarog‘ bilan ko‘rikka yetib kelishi shart bo‘lganlar" }
+      ],
+      // 2-bosqich: Olimpiya o‘yinlari tarixi
+      [
+        { id: 5, left: "Mil. avv. 776-yil", right: "Olimpiya shahrida birinchi o‘yinlar o‘tkazilgan sana" },
+        { id: 6, left: "Har to‘rt yilda bir marta", right: "Olimpiada o‘yinlari o‘tkazib turilgan muddat" },
+        { id: 7, left: "Zevs sharafiga", right: "Olimpiya o‘yinlari bag‘ishlab o‘tkazilgan oliy xudo" },
+        { id: 8, left: "Gerakl", right: "Afsonalarga ko‘ra Olimpiya o‘yinlari asoschisi" }
+      ],
+      // 3-bosqich: Musobaqa turlari va shartlari
+      [
+        { id: 9, left: "Beshkurash", right: "Turli sport musobaqalaridan iborat asosiy bellashuv" },
+        { id: 10, left: "Otchopar", right: "Aravalar va otlarda poyga uyushtiriladigan joy" },
+        { id: 11, left: "Urushlarni to‘xtatish", right: "Olimpiada o‘tkazilayotgan paytda amalga oshirilgan qoida" },
+        { id: 12, left: "Ozod yunonlar", right: "Olimpiya o‘yinlarida ishtirok etish huquqiga ega bo‘lganlar" }
+      ],
+      // 4-bosqich: G‘oliblar va zamonaviylik
+      [
+        { id: 13, left: "O‘z haykalini o‘rnatish", right: "Olimpiadada uch karra g‘alaba qozongan sportchining huquqi" },
+        { id: 14, left: "Zaytun novdasi", right: "G‘oliblar taqdirlangan muqaddas gulchambar" },
+        { id: 15, left: "Milodiy 394-yil", right: "Qadimgi Olimpiya o‘yinlarini o‘tkazish to‘xtatilgan sana" },
+        { id: 16, left: "1896-yil", right: "Olimpiya o‘yinlari qayta tiklangan yil" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (20 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Yunon maktablari oldiga qo‘yilgan asosiy tarbiyaviy vazifa nima edi?", a: "Faol fuqarolar, davlat himoyachilarini tarbiyalash edi." },
+      { q: "2. Bolalikdanoq o‘g‘il bolalarga qaysi fanlarga muhabbat hissi singdirilgan?", a: "She’riyat va musiqaga." },
+      { q: "3. Yigitlar umumiy ta’limdan tashqari necha yil harbiy ta’lim olishgan?", a: "Ikki yil harbiy ta’lim olishgan." },
+      { q: "4. Harbiy ta’limning birinchi yilida yigitlar nimalarni o‘rganishgan?", a: "Uylarida yashab, safda yurish, qurol taqib yurish, ochlik va sovuqqa chidamli bo‘lishni." },
+      { q: "5. Harbiy ta’limning ikkinchi yilida yigitlar qayerlarda xizmat o‘taganlar?", a: "Attika chegara qal’alarida harbiy xizmat o‘tagan yoki Pirey portida dengizchilik san’atini o‘rgangan." },
+      { q: "6. Mamlakatni mudofaa qilish zarurati tug‘ilganda kimlar ko‘rikka yetib kelishi shart bo‘lgan?", a: "30 yoshga to‘lmagan erkaklarning barchasi qurol-yarog‘i va harbiy kiyim-kechaklari bilan." },
+      { q: "7. Vatanga muhabbat qaysi fazilatlarda o‘z aksini topgan?", a: "Har bir fuqaroning fidoyiligi va jasoratida." },
+      { q: "8. Qachon va qayerda birinchi Olimpiya o‘yinlari o‘tkazilgan?", a: "Miloddan avvalgi 776-yilda Olimpiya shahrida o‘tkazilgan." },
+      { q: "9. Olimpiya o‘yinlari qancha muddatda bir marta o‘tkazib turilgan?", a: "Har to‘rt yilda bir marta." },
+      { q: "10. Olimpiada olovi qayerda yondirilgan?", a: "Quyosh nurlarida yondirilgan." },
+      { q: "11. Olimpiya o‘yinlari qaysi oliy xudo sharafiga bag‘ishlab o‘tkazilgan?", a: "Olimp xudosi Zevs sharafiga." },
+      { q: "12. Afsonalarga ko‘ra, Olimpiya o‘yinlarining asoschisi kim?", a: "Gerakl." },
+      { q: "13. Olimpiya o‘yinlarida qatnashish huquqiga kimlar ega bo‘lgan?", a: "Faqat jinoyat sodir etmagan, sha’niga dog‘ tushirmagan ozod yunonlar." },
+      { q: "14. Olimpiya o‘yinlari o‘tkazilayotgan paytda nima to‘xtatilgan?", a: "O‘zaro urushlar to‘xtatilgan." },
+      { q: "15. Musobaqalarda uch karra g‘alaba qozongan sportchi qanday sharafga sazovor bo‘lgan?", a: "Olimpiya shahrida o‘z haykalini o‘rnatish huquqiga ega bo‘lgan." },
+      { q: "16. Olimpiya o‘yinlari g‘oliblari qanday mukofot bilan taqdirlangan?", a: "Muqaddas zaytun daraxti novdalaridan to‘qilgan gulchambar bilan." },
+      { q: "17. Qadimgi Olimpiya o‘yinlari qachon taqiqlangan?", a: "Milodiy 394-yilda xristian dini tarqalishi natijasida." },
+      { q: "18. Qadimgi Olimpiya o‘yinlari qayta qachon tiklandi?", a: "1896-yilda." },
+      { q: "19. Hozirgi kunda Olimpiya mash’alasi qayerda yondiriladi?", a: "Quyosh nurlaridan yondirilib, o‘yinlar o‘tkaziladigan joyga keltiriladi." },
+      { q: "20. Beshkurash musobaqalariga nimalar kirgan?", a: "Turli sport musobaqalari, yugurish, kurash, sakrash va uloqtirish turlari." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (24 TA ARALASH TEST - JAVOBLAR 6 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Qadimgi Yunonistonda birinchi Olimpiya o‘yinlari qachon o‘tkazilgan?",
+        options: [
+          "Miloddan avvalgi 776-yilda",
+          "Miloddan avvalgi 490-yilda",
+          "Milodiy 394-yilda",
+          "1896-yilda"
+        ],
+        correct: 0, // A
+        exp: "Miloddan avvalgi 776-yilda Olimpiya shahrida birinchi o‘yinlar o‘tkazilgan."
+      },
+      {
+        q: "2. Qadimgi Yunonistonda yigitlar umumiy ta’limdan tashqari necha yil harbiy ta’lim olganlar?",
+        options: [
+          "Bir yil",
+          "Ikki yil",
+          "Uch yil",
+          "Besh yil"
+        ],
+        correct: 1, // B
+        exp: "Umumiy ta’limdan tashqari, yigitlar ikki yil harbiy ta’lim ham olgan."
+      },
+      {
+        q: "3. Qadimgi Yunonistonda Olimpiya o‘yinlari qaysi xudo sharafiga bag‘ishlab o‘tkazilgan?",
+        options: [
+          "Apollon",
+          "Poseydon",
+          "Zevs",
+          "Gerakl"
+        ],
+        correct: 2, // C
+        exp: "Olimpiya o‘yinlari Olimp xudosi Zevs sharafiga bag‘ishlab o‘tkazilgan."
+      },
+      {
+        q: "4. Qadimgi Olimpiya o‘yinlari xristian dini tarqalishi natijasida qachon taqiqlangan?",
+        options: [
+          "Miloddan avvalgi 776-yilda",
+          "1896-yilda",
+          "Mil. avv. V asrda",
+          "Milodiy 394-yilda"
+        ],
+        correct: 3, // D
+        exp: "Milodiy 394-yilda qadimgi Olimpiya o‘yinlarini o‘tkazish butunlay to‘xtatib qoldi."
+      },
+      {
+        q: "5. Mamlakatni mudofaa qilish zarurati tug‘ilganda qurol-yarog‘i bilan ko‘rikka yetib kelishi shart bo‘lgan fuqarolar yoshi qancha edi?",
+        options: [
+          "30 yoshga to‘lmagan erkaklar",
+          "Faqat 50 yoshdan oshganlar",
+          "18 yoshli o‘smirlar",
+          "60 yoshli keksa jangchilar"
+        ],
+        correct: 0, // A
+        exp: "Mamlakatni mudofaa qilish zarurati tug‘ilganda 30 yoshga to‘lmagan erkaklarning barchasi qurol-yarog‘i bilan kelishi shart bo‘lgan."
+      },
+      {
+        q: "6. Qadimgi Yunonistonda Olimpiya o‘yinlarining afsonaviy asoschisi kim deb hisoblangan?",
+        options: [
+          "Perikl",
+          "Gerakl",
+          "Demosfen",
+          "Leonid"
+        ],
+        correct: 1, // B
+        exp: "Afsonalarga ko‘ra, Olimpiya o‘yinlari asoschisi Gerakl hisoblangan."
+      },
+      {
+        q: "7. Qadimgi Olimpiya o‘yinlari g‘oliblari qanday mukofot bilan taqdirlangan?",
+        options: [
+          "Oltin taqinchoqlar bilan",
+          "Qimmatbaho qurollar bilan",
+          "Muqaddas zaytun daraxti novdalaridan to‘qilgan gulchambar bilan",
+          "Katta yer uchastkalari bilan"
+        ],
+        correct: 2, // C
+        exp: "G‘oliblar muqaddas zaytun daraxti novdalaridan to‘qilgan gulchambar bilan taqdirlangan."
+      },
+      {
+        q: "8. Qadimgi Olimpiya o‘yinlari qayta tiklangan yil qaysi javobda ko‘rsatilgan?",
+        options: [
+          "1900-yil",
+          "1924-yil",
+          "1880-yil",
+          "1896-yil"
+        ],
+        correct: 3, // D
+        exp: "Nihoyat 1896-yilda Olimpiya o‘yinlari qayta tiklandi."
+      },
+      {
+        q: "9. Harbiy ta’limning ikkinchi yilida ayrim yigitlar qayerda dengizchilik san’atini o‘rganganlar?",
+        options: [
+          "Pirey portida",
+          "Salamin bo‘g‘ozida",
+          "Krit orolida",
+          "Marafon tekisligida"
+        ],
+        correct: 0, // A
+        exp: "Ikkinchi yili boshqalari Pirey portida dengizchilik san’atining asoslarini o‘rganar edi."
+      },
+      {
+        q: "10. Olimpiya o‘yinlari qancha muddatda bir marta o‘tkazib turilgan?",
+        options: [
+          "Har yili",
+          "Har to‘rt yilda bir marta",
+          "Har o‘n yilda bir marta",
+          "Har ikki yilda bir marta"
+        ],
+        correct: 1, // B
+        exp: "Ana shu sanadan boshlab har to‘rt yilda bir marta Olimpiada olovi quyosh nurlarida yondirilgan."
+      },
+      {
+        q: "11. Yunon maktablari o‘z oldiga qanday asosiy tarbiyaviy maqsadni qo‘ygan edi?",
+        options: [
+          "Faqat chet tillarini o‘rgatish",
+          "Boy savdogarlarni tayyorlash",
+          "Faol fuqarolar, davlat himoyachilarini tarbiyalash",
+          "Faqat professional sportchilarni chiqarish"
+        ],
+        correct: 2, // C
+        exp: "Yunon maktablari faol fuqarolar, davlat himoyachilarini tarbiyalashi kerak edi."
+      },
+      {
+        q: "12. Olimpiya o‘yinlarida ishtirok etish huquqiga kimlar ega bo‘lgan?",
+        options: [
+          "Barcha xohlovchi qullar",
+          "Chet ellik boy savdogarlar",
+          "Faqat Afina fuqarolari",
+          "Jinoyat sodir etmagan, sha’niga dog‘ tushirmagan ozod yunonlar"
+        ],
+        correct: 3, // D
+        exp: "Olimpiya o‘yinlarida faqat jinoyat sodir etmagan, sha’niga dog‘ tushirmagan ozod yunon ishtirok etishi mumkin bo‘lgan."
+      },
+      {
+        q: "13. Harbiy xizmatning birinchi yilida yigitlar qanday vazifalarni bajarganlar?",
+        options: [
+          "Uylarida yashab, safda yurish, qurol taqib yurish, ochlik va sovuqqa chidamli bo‘lishni o‘rgangan",
+          "Faqat darslik yodlagan",
+          "Chet ellarga savdo kemalarida suzgan",
+          "Piramidalar qurilishida ishlagan"
+        ],
+        correct: 0, // A
+        exp: "Birinchi yili ular uylarida yashab va safda yurish, qurol taqib yurish, ochlik va sovuqqa chidamli bo‘lishni o‘rgandi."
+      },
+      {
+        q: "14. Qadimgi Yunonistonda sport musobaqalari paytida qanday muhim shart bajarilgan?",
+        options: [
+          "Barcha shaharlar birlashib hujum qilgan",
+          "O‘zaro urushlar to‘xtatilgan",
+          "Faqat tungi vaqtda poyga qilingan",
+          "Chet elliklar qatnashishi majburiy bo‘lgan"
+        ],
+        correct: 1, // B
+        exp: "Odamlar va sportchilar Olimpiyaga eson-omon yetib kelishi uchun o‘yinlar o‘tkazilayotgan paytda urushlar to‘xtatilgan."
+      },
+      {
+        q: "15. Olimpiya shahrida uch karra g‘alaba qozongan sportchiga qanday huquq berilgan?",
+        options: [
+          "Olimpiya shahrida o‘z haykalini o‘rnatishga",
+          "Yunoniston podshosi bo‘lishga",
+          "Barcha soliqlardan umrbod ozod bo‘lishga",
+          "Katta flot egasi bo‘lishga"
+        ],
+        correct: 2, // C
+        exp: "Musobaqalarda uch karra g‘alaba qozongan sportchi Olimpiya shahrida o‘z haykalini o‘rnatishga haqli bo‘lgan."
+      },
+      {
+        q: "16. Bolalikdanoq o‘g‘il bolalarga qaysi san’at turlariga muhabbat hissi singdirilgan?",
+        options: [
+          "Rassomchilik va haykaltaroshlikka",
+          "Teatr va sahna san’atiga",
+          "Arxitektura va qurilishga",
+          "She’riyat va musiqaga"
+        ],
+        correct: 3, // D
+        exp: "Bolalikdanoq o‘g‘il bolalarga she’riyat va musiqaga muhabbat hissi singdirilardi."
+      },
+      {
+        q: "17. Qadimgi Olimpiya o‘yinlari qaysi shaharda o‘tkazilgan?",
+        options: [
+          "Olimpiya shahrida",
+          "Afinada",
+          "Spartada",
+          "Miken shahrida"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 776-yilda Olimpiya shahrida birinchi o‘yinlar o‘tkazilgan."
+      },
+      {
+        q: "18. Qadimgi yunon yigitlari harbiy xizmatning ikkinchi yilida qayerda xizmat o‘taganlar?",
+        options: [
+          "Krit orolida",
+          "Attika chegara qal’alarida",
+          "Peloponnes cho‘llarida",
+          "Marafon tekisligida"
+        ],
+        correct: 1, // B
+        exp: "Ikkinchi yili esa ayrimlari Attika chegara qal’alarida harbiy xizmat o‘tar edi."
+      },
+      {
+        q: "19. Hozirgi kunda Olimpiya o‘yinlarining mash’alasi qayerdan yoqib keltiriladi?",
+        options: [
+          "Afina Akropolidan",
+          "Olimp tog‘i cho‘qqisidan",
+          "Quyosh nurlaridan yondirilib o‘yinlar o‘tkaziladigan joyga keltiriladi",
+          "Delf ibodatxonasidan"
+        ],
+        correct: 2, // C
+        exp: "Quyosh nurlaridan yondirilgan mash’ala Olimpiya musobaqalari o‘tkaziladigan joyga keltiriladi."
+      },
+      {
+        q: "20. Yunon fuqarolari tarbiyasida Vatanga muhabbat nimalarda yaqqol namoyon bo‘lgan?",
+        options: [
+          "Faqat chiroyli she’rlar yozishda",
+          "Chet ellarga savdo qilish uchun borishda",
+          "Olimpiya o‘yinlarida hakamlik qilishda",
+          "Har bir fuqaroning fidoyiligi va jasoratida"
+        ],
+        correct: 3, // D
+        exp: "Vatanga muhabbat har bir fuqaroning fidoyiligi va jasoratida aks etgan."
+      },
+      {
+        q: "21. Beshkurash musobaqalari qanday turlardan iborat bo‘lgan?",
+        options: [
+          "Turli sport musobaqalari yig‘indisidan",
+          "Faqat suzish va eshkak eshishdan",
+          "Faqat jangovar qilichbozlikdan",
+          "Aravalar poygasidan"
+        ],
+        correct: 0, // A
+        exp: "Beshkurash turli sport musobaqalaridan iborat bo‘lgan."
+      },
+      {
+        q: "22. Otchoparda asosan qanday musobaqalar uyushtirilgan?",
+        options: [
+          "Piyoda yugurish poygalari",
+          "Aravalarda va otlarda poyga",
+          "Og‘ir atletika bellashuvlari",
+          "Nayza uloqtirish musobaqasi"
+        ],
+        correct: 1, // B
+        exp: "Otchoparda esa aravalarda va otlarda poyga uyushtirilar edi."
+      },
+      {
+        q: "23. Qadimgi Yunonistonda sportni rivojlantirish va Olimpiya o‘yinlariga qiziqishdan asosiy maqsad nima edi?",
+        options: [
+          "Faqat dam olish va ko‘ngil ochish",
+          "Chet elliklardan pul topish",
+          "Baquvvat, chidamli va davlatni himoya qiluvchi faol fuqarolarni tarbiyalash",
+          "Teatr san’atini rivojlantirish"
+        ],
+        correct: 2, // C
+        exp: "Sportni rivojlantirish va Olimpiya o‘yinlariga ommaviy qiziqish faol fuqarolar, davlat himoyachilarini tarbiyalashga xizmat qilgan."
+      },
+      {
+        q: "24. Olimpiya o‘yinlari vaqtida sportchilar va odamlar uchun qanday qoida amal qilgan?",
+        options: [
+          "Faqat boylar qatnashishi mumkin bo‘lgan",
+          "Barcha qonunlar bekor qilingan",
+          "Musobaqa paytida savdo qilish taqiqlangan",
+          "Olimpiyaga eson-omon yetib kelish uchun o‘yinlar o‘tkazilayotgan paytda urushlar to‘xtatilgan"
+        ],
+        correct: 3, // D
+        exp: "Odamlar va sportchilar Olimpiyaga eson-omon yetib kelishi uchun o‘yinlar o‘tkazilayotgan paytda urushlar to‘xtatilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 22) fb.innerText = "Mukammal natija! 29-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

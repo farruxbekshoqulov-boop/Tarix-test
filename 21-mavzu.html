@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>21-§. Zardushtiylik va “Avesto”</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va diniy tushunchalarni muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">21-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim diniy va tarixiy faktlarni mustahkamlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">21-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Zardusht va atamalar
+      [
+        { id: 1, left: "Zaratushtra (Zardusht)", right: "Mil. avv. I mingyillikning I choragida yashagan tarixiy shaxs" },
+        { id: 2, left: "Zoroastr", right: "Yunonistonda Zardushtga berilgan nom (astron – «yulduz»)" },
+        { id: 3, left: "«Avesto»", right: "«Qat’iy belgilangan qonun-qoidalar» ma’nosini anglatuvchi muqaddas kitob" },
+        { id: 4, left: "30 yoshida", right: "Zardusht yangi diniy ta’limotning targ‘ibotchisiga aylangan yoshi" }
+      ],
+      // 2-bosqich: Zardushtiylik ma’budlari
+      [
+        { id: 5, left: "Ahuramazda", right: "Zardushtiylarning ulug‘ va donishmand oliy xudosi" },
+        { id: 6, left: "Mitra", right: "Quyosh va yorug‘lik ma’budi" },
+        { id: 7, left: "Ahriman", right: "Yovuzlik va o‘lim ma’budi" },
+        { id: 8, left: "Anaxita", right: "Hosildorlik va suv ma’budasi" }
+      ],
+      // 3-bosqich: E’tiqod va tabiatga sig‘inish
+      [
+        { id: 9, left: "Olov, yer, suv, yulduzlar", right: "Zardushtiylar ilohiy deb hisoblagan tabiat unsurlari" },
+        { id: 10, left: "Kamalak", right: "Zardushtiylar sig‘ingan Mitraning o‘q uzayotgan yoyi" },
+        { id: 11, left: "Ossuariylar", right: "Suyaklar saqlangan maxsus sopol tobutchalar (suyakdonlar)" },
+        { id: 12, left: "Ochiq osmon ostida", right: "Dastlab gulxan yonida o‘tkazilgan diniy marosimlar joyi" }
+      ],
+      // 4-bosqich: «Avesto» axloqiy mezonlari
+      [
+        { id: 13, left: "Ezgu fikr, ezgu so‘z, ezgu amal", right: "Zardushtiylar hayotining tub ma’nosi" },
+        { id: 14, left: "«O‘qish – ko‘zning nuri»", right: "«Avesto»da yosh bolalarga bilim va hunar o‘rgatish haqidagi hikmat" },
+        { id: 15, left: "Qarzni qaytarmaslik", right: "«Avesto»da o‘g‘rilikka tenglashtirilgan og‘ir gunoh" },
+        { id: 16, left: "O‘lim", right: "Zardushtiylar ta’limotida yovuzlik ifodasi deb qaralgan holat" }
+      ],
+      // 5-bosqich: Tarixiy xotira va yodgorliklar
+      [
+        { id: 17, left: "Urganch shahri", right: "«Avesto» kitobi yodgorligi o‘rnatilgan joy" },
+        { id: 18, left: "Amudaryo xazinasi", right: "Zardushtiylik kohini tasvirlangan oltin plastina topilgan manba" },
+        { id: 19, left: "«Quyosh madhi»", right: "«Avesto»da Quyosh va Ahuramazdani ulug‘lovchi qasida" },
+        { id: 20, left: "Toshli va qumli tepaliklar", right: "Jasadlar go‘shti yirtqichlar yeb ketishi uchun qoldirilgan joy" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Zardushtiylik dini qachon va qayerda keng tarqaldi?", a: "Miloddan avvalgi 1-mingyillikda O‘rta Osiyoda keng tarqaldi." },
+      { q: "2. Zardushtiylar qaysi tabiat unsurlariga sig‘ingan va ularni ilohiy deb hisoblagan?", a: "Olov (quyosh), yer, suv va yulduzlarga sig‘ingan." },
+      { q: "3. Zaratushtra (Zardusht) qachon yashab o‘tgan?", a: "Miloddan avvalgi 1-mingyillikning birinchi choragida yashab o‘tgan tarixiy shaxsdir." },
+      { q: "4. Yunonistonda Zardusht qanday nomlangan va nima sababdan donishmand, munajjim hisoblangan?", a: "«Zoroastr» deb atashgan (astron – «yulduz»), yulduzlar ilmini bilgani uchun uni munajjim deb bilishgan." },
+      { q: "5. Zardusht necha yoshida yangi diniy ta’limotning targ‘ibotchisiga aylandi?", a: "30 yoshida Ahuramazdadan ilohiy vakolat olib, dinni targ‘ib qila boshladi." },
+      { q: "6. Dastlab zardushtiylikda diniy marosimlar qayerda o‘tkazilgan?", a: "Ochiq osmon ostida, gulxan yonida yoki uydagi o‘choq olovi atrofida o‘tkazilgan." },
+      { q: "7. «Avesto» so‘zi qanday ma’noni anglatadi?", a: "«Qat’iy belgilangan qonun-qoidalar» degan ma’noni anglatadi." },
+      { q: "8. Zardushtiylarning ulug‘ va donishmand oliy xudosi kim?", a: "Ahuramazda." },
+      { q: "9. Quyosh va yorug‘lik ma’budi kim bo‘lgan?", a: "Mitra." },
+      { q: "10. Yovuzlik va o‘lim ma’budi kim bo‘lgan?", a: "Ahriman." },
+      { q: "11. Hosildorlik va suv ma’budasi qanday atalgan?", a: "Anaxita." },
+      { q: "12. Zardushtiylar yomg‘irdan keyin hosil bo‘ladigan kamalakni nima deb bilishgan?", a: "Mitraning o‘q uzayotgan yoyi deb e’tiqod qilishgan." },
+      { q: "13. Zardushtiylar hayotining tub ma’nosi nimalardan iborat bo‘lgan?", a: "Ezgu amal, ezgu so‘z va ezgu fikrdan iborat bo‘lgan." },
+      { q: "14. Zardushtiylikda insonning asosiy burchi nima hisoblangan?", a: "Eng avvalo, adolatli turmush tarzi hisoblangan." },
+      { q: "15. Zardushtiylik ta’limotida o‘lim nimaning ifodasi deb qaralgan?", a: "O‘lim yovuzlik ifodasi hisoblangan." },
+      { q: "16. Nima sababdan o‘lgan odamni yerga ko‘mish, yondirish yoki suvga oqizish taqiqlangan?", a: "Chunki muqaddas hisoblangan yer, olov va suvni murda bilan bulg‘ash qat’iyan man etilgan." },
+      { q: "17. Zardushtiylar jasadni qayerda qoldirishgan va suyaklarni nimalarda dafn etishgan?", a: "Toshli va qumli tepaliklarda qoldirishgan, oftobda poklangan suyaklarni maxsus sopol tobutchalar — ossuariylarda dafn etishgan." },
+      { q: "18. «Ossuariy» so‘zi nimani anglatadi?", a: "Suyakdon — suyaklar saqlanadigan maxsus sopol idish (tobutcha)." },
+      { q: "19. «Avesto»da qanday xatti-harakatlar og‘ir jinoyat hisoblangan?", a: "Bosqinchilik, talon-taroj va turarjoylarni vayron qilish, qurol bilan do‘q qilish, jarohat yetkazish va o‘g‘rilik." },
+      { q: "20. «Avesto»da qarzni qaytarib bermaslik nimaga tenglashtirilgan?", a: "O‘g‘rilikka tenglashtirilgan." },
+      { q: "21. «Avesto»da insonning qanday mehnatlari yuksak ehtirom bilan qadrlangan?", a: "Binokorlik, dehqonchilik va chorvachilik bilan shug‘ullanish, tabiatni asrash." },
+      { q: "22. «Avesto»da oila va bolalar qanday himoya qilingan?", a: "Voyaga yetmagan bolalarni ota-onasidan olib ketish va vasiysiz qoldirish qoralangan." },
+      { q: "23. «Avesto»da yosh bolalarni o‘qitish haqida qanday hikmatli so‘z aytilgan?", a: "«O‘qish – ko‘zning nuri» deb uqtirilgan." },
+      { q: "24. «Quyosh madhi» qasidasida kimlar ulug‘langan?", a: "Quyosh nuri, ezgulik va Ahuramazda ulug‘langan." },
+      { q: "25. «Avesto» insonlarni nimalarga chorlagan?", a: "Tinchlikka, adolatga va ezgulikka chorlagan." },
+      { q: "26. O‘zbekistonning qaysi shahrida «Avesto» kitobi yodgorligi bunyod etilgan?", a: "Xorazm viloyatining Urganch shahrida." },
+      { q: "27. Amudaryo xazinasidan topilgan oltin plastinada kim tasvirlangan?", a: "Zardushtiylik kohini tasvirlangan." },
+      { q: "28. Mitra o‘tli chaqmoqlar yordamida kimga qarshi jang qilgan?", a: "Yovuzlik va o‘lim ma’budi Ahrimanga qarshi." },
+      { q: "29. Zardusht ta’limotini yoyishda dastlab kimlarga tayangan?", a: "Qabilalarni istilochilarga qarshi birlashishga chaqirib, va’zlarni kohinlar orqali yodlatgan." },
+      { q: "30. Zardushtiylik dini qaysi asosiy qarashlarning takomillashuviga ulkan ta’sir ko‘rsatdi?", a: "Dunyo ezgulik va yovuzlik o‘rtasidagi doimiy kurashdan iborat ekanligi haqidagi qarashlarga." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA ARALASH TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Zardushtiylik dinida Quyosh va yorug‘lik ma’budi kim hisoblangan?",
+        options: [
+          "Mitra",
+          "Ahuramazda",
+          "Ahriman",
+          "Anaxita"
+        ],
+        correct: 0, // A
+        exp: "Mitra — Quyosh va yorug‘lik ma’budidir."
+      },
+      {
+        q: "2. Zardushtiylik ta’limotiga ko‘ra, yovuzlik va o‘lim ma’budi qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Ahuramazda",
+          "Ahriman",
+          "Mitra",
+          "Ganesha"
+        ],
+        correct: 1, // B
+        exp: "Ahriman — yovuzlik va o‘lim ma’budi hisoblangan."
+      },
+      {
+        q: "3. «Avesto» so‘zining lug‘aviy ma’nosi nima?",
+        options: [
+          "«Muqaddas qo‘shiqlar»",
+          "«Yulduzlar ilmi»",
+          "«Qat’iy belgilangan qonun-qoidalar»",
+          "«Ezgulik kitobi»"
+        ],
+        correct: 2, // C
+        exp: "Bu kitobning nomi «Avesto» bo‘lib, «qat’iy belgilangan qonun-qoidalar» degan ma’noni anglatadi."
+      },
+      {
+        q: "4. Zardushtiylikda oftobda poklangan suyaklarni dafn etish uchun mo‘ljallangan maxsus sopol tobutchalar nima deb ataladi?",
+        options: [
+          "Sarkofag",
+          "Daxma",
+          "Zikkurat",
+          "Ossuariy"
+        ],
+        correct: 3, // D
+        exp: "Suyaklarni maxsus sopol tobutchalar — ossuariylar (suyakdonlar)da dafn etishgan."
+      },
+      {
+        q: "5. Zardushtiylikning muqaddas kitobi «Avesto»da olgan qarzni qaytarib bermaslik nimaga tenglashtirilgan?",
+        options: [
+          "O‘g‘rilikka",
+          "Qotillikka",
+          "Xiyonatga",
+          "Yolg‘onchilikka"
+        ],
+        correct: 0, // A
+        exp: "Olgan qarzni qaytarib bermaslik o‘g‘rilikka tenglashtirilgan."
+      },
+      {
+        q: "6. Zaratushtra (Zardusht) qaysi davrda yashab o‘tgan tarixiy shaxs hisoblanadi?",
+        options: [
+          "Miloddan avvalgi 3-mingyillikda",
+          "Miloddan avvalgi 1-mingyillikning birinchi choragida",
+          "Miloddan avvalgi VI asr oxirida",
+          "Milodiy I asrda"
+        ],
+        correct: 1, // B
+        exp: "U mil. avv. 1-mingyillikning birinchi choragida yashab o‘tgan tarixiy shaxsdir."
+      },
+      {
+        q: "7. Zardushtiylar e’tiqodiga ko‘ra, hosildorlik va suv ma’budasi kim bo‘lgan?",
+        options: [
+          "Ishtar",
+          "Mitra",
+          "Anaxita",
+          "Xapi"
+        ],
+        correct: 2, // C
+        exp: "Anaxita zardushtiylikda hosildorlik va suv ma’budasi hisoblangan."
+      },
+      {
+        q: "8. Zardushtiylik dini O‘rta Osiyoda qachon keng tarqaldi?",
+        options: [
+          "Miloddan avvalgi 3-mingyillikda",
+          "Miloddan avvalgi 2-mingyillikda",
+          "Milodiy V asrda",
+          "Miloddan avvalgi 1-mingyillikda"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. 1-mingyillikda O‘rta Osiyoda zardushtiylik deb atalgan din keng tarqaladi."
+      },
+      {
+        q: "9. Zardushtiylar hayotining tub ma’nosini tashkil etgan uchta asosiy axloqiy mezon qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Ezgu amal, ezgu so‘z va ezgu fikr",
+          "Boylik, qudrat va harbiy g‘alaba",
+          "Ibodat, qurbonlik va sukunat",
+          "Taqdirga tan berish va tarkidunyochilik"
+        ],
+        correct: 0, // A
+        exp: "Zardushtiylar hayotining tub ma’nosi ezgu amal, ezgu so‘z va ezgu fikrdan iborat bo‘lgan."
+      },
+      {
+        q: "10. Yunonistonda Zardushtni nima sababdan munajjim deb bilishgan va unga qanday nom berishgan?",
+        options: [
+          "Dengizda suzgani uchun — Poseydon",
+          "Yulduzlar ilmini bilgani uchun — Zoroastr (astron – «yulduz»)",
+          "Qonunlar tuzgani uchun — Solon",
+          "Tabib bo‘lgani uchun — Gippokrat"
+        ],
+        correct: 1, // B
+        exp: "Yunonistonda uning ismini «Zoroastr» deb atashgan (astron – «yulduz»), uni donishmand, munajjim deb hisoblashgan."
+      },
+      {
+        q: "11. Zardushtiylarning ulug‘ va donishmand oliy xudosi kim?",
+        options: [
+          "Brahma",
+          "Mitra",
+          "Ahuramazda",
+          "Ahriman"
+        ],
+        correct: 2, // C
+        exp: "Ahuramazda — zardushtiylarning ulug‘ va donishmand oliy xudosi hisoblangan."
+      },
+      {
+        q: "12. Zardushtiylik e’tiqodiga ko‘ra, nima sababdan murdani yerga ko‘mish, yondirish yoki suvga oqizish qat’iyan man qilingan?",
+        options: [
+          "Chunki bu juda qimmat marosim hisoblangan",
+          "Faqat podsholargina bunday dafn etilgan",
+          "Chunki jasad yulduzlarga ko‘tarilishi kerak bo‘lgan",
+          "Muqaddas hisoblangan yer, olov va suvni bulg‘amaslik uchun"
+        ],
+        correct: 3, // D
+        exp: "O‘lgan odamni yerga dafn qilish, yondirish, suvga oqizish ham mumkin emas edi (muqaddas unsurlarni asrash uchun)."
+      },
+      {
+        q: "13. «Avesto»da yosh avlodga bilim berish va hunarga o‘rgatish qanday hikmat bilan ulug‘langan?",
+        options: [
+          "«O‘qish – ko‘zning nuri»",
+          "«Bilim – tuganmas xazina»",
+          "«Hunar – oqar buloq»",
+          "«Ustoz – otangdek aziz»"
+        ],
+        correct: 0, // A
+        exp: "Yosh bolalarga bilim berib, bironta hunarga o‘rgatish qadrlangan, negaki «o‘qish – ko‘zning nuri» deb uqtirilgan."
+      },
+      {
+        q: "14. Zardusht necha yoshida Ahuramazda huzuriga yetib, yangi diniy ta’limot targ‘ibotchisiga aylandi?",
+        options: [
+          "20 yoshida",
+          "30 yoshida",
+          "40 yoshida",
+          "50 yoshida"
+        ],
+        correct: 1, // B
+        exp: "Shu tarzda Zardusht 30 yoshida yangi diniy ta’limotning targ‘ibotchisiga aylangan."
+      },
+      {
+        q: "15. Zardushtiylar yomg‘irdan keyin paydo bo‘ladigan kamalakni kimning o‘q uzayotgan yoyi deb hisoblashgan?",
+        options: [
+          "Ahuramazdaning",
+          "Ahrimanning",
+          "Mitraning",
+          "Zardushtning"
+        ],
+        correct: 2, // C
+        exp: "Zardushtiylar yomg‘irdan keyin hosil bo‘ladigan kamalakka Mitraning o‘q uzayotgan yoyi deb sig‘inishgan."
+      },
+      {
+        q: "16. O‘zbekistonning qaysi shahrida «Avesto» kitobiga bag‘ishlangan muhtasham yodgorlik majmuasi o‘rnatilgan?",
+        options: [
+          "Samarqandda",
+          "Buxoroda",
+          "Toshkentda",
+          "Urganchda"
+        ],
+        correct: 3, // D
+        exp: "Darslikdagi rasmda Urganchdagi «Avesto» kitobi yodgorligi keltirilgan."
+      },
+      {
+        q: "17. Zardushtiylik dini ilk davrlarda qanday sharoitda kurtak yoza boshlagan?",
+        options: [
+          "Odamlar tabiatni ilohiylashtirgan kezlarda",
+          "Yozuv to‘liq kashf etilgandan keyin",
+          "Faqat shaharlar vujudga kelgach",
+          "Rim imperiyasi bilan urushlar davrida"
+        ],
+        correct: 0, // A
+        exp: "Bu din hali odamlar tabiatni ilohiylashtirgan kezlarda kurtak yoza boshlagan edi."
+      },
+      {
+        q: "18. Dastlab zardushtiylikda diniy marosimlar qanday joylarda o‘tkazilgan?",
+        options: [
+          "Maxsus muhtasham ibodatxonalarda",
+          "Ochiq osmon ostida, gulxan yonida yoki o‘choq olovi atrofida",
+          "Faqat tog‘ g‘orlari ichida",
+          "Daryo tubidagi kemalarda"
+        ],
+        correct: 1, // B
+        exp: "Diniy marosimlar ochiq osmon ostida, gulxan yonida yoki uydagi o‘choq olovi atrofida o‘tkazilgan."
+      },
+      {
+        q: "19. Zardushtiylik ta’limotiga ko‘ra, insonning jamiyatdagi eng asosiy burchi nima hisoblangan?",
+        options: [
+          "Faqat boylik to‘plash",
+          "Qo‘shni o‘lkalarga yurish qilish",
+          "Adolatli turmush tarzi",
+          "Tarkidunyochilik qilish"
+        ],
+        correct: 2, // C
+        exp: "Insonning asosiy burchi, eng avvalo, adolatli turmush tarzi hisoblangan."
+      },
+      {
+        q: "20. Zardushtiylar marhumlar jasadini nima sababdan toshli va qumli tepaliklarda qoldirganlar?",
+        options: [
+          "Daryo suvlari oqizib ketishi uchun",
+          "Quyosh nurlari jasadni yondirishi uchun",
+          "Qaroqchilar olib ketmasligi uchun",
+          "Yirtqich qushlar va hayvonlar yeb ketishi uchun"
+        ],
+        correct: 3, // D
+        exp: "Yirtqich qushlar va hayvonlar yeb ketishi uchun jasadni toshli va qumli tepaliklarda qoldirishgan."
+      },
+      {
+        q: "21. Amudaryo xazinasidan topilgan oltin plastinada qaysi shaxs tasviri aks ettirilgan?",
+        options: [
+          "Zardushtiylik kohini",
+          "Podsho Kir II",
+          "Shoh Doro I",
+          "Qadimgi dehqon"
+        ],
+        correct: 0, // A
+        exp: "Darslikdagi rasm: «Zardushtiylik kohini. Amudaryo xazinasidan oltin plastina»."
+      },
+      {
+        q: "22. «Avesto»da qaysi ijtimoiy munosabatlar va qadriyatlar qat’iy muhofaza qilingan?",
+        options: [
+          "Faqat savdogarlar manfaati",
+          "Oila va bolalar huquqlari",
+          "Faqat harbiylarning huquqlari",
+          "Chet ellik asirlar huquqlari"
+        ],
+        correct: 1, // B
+        exp: "«Avesto» oila va bolalar huquqlarini qat’iy muhofaza qiladi."
+      },
+      {
+        q: "23. «Avesto» qonunlariga ko‘ra, quyidagilardan qaysi biri og‘ir jinoyat hisoblangan?",
+        options: [
+          "Dehqonchilik qilish",
+          "Quyoshga atab qo‘shiq aytish",
+          "Qurolni qo‘lga olib insonga do‘q qilish va jarohat yetkazish",
+          "Buloqlarni tozalash"
+        ],
+        correct: 2, // C
+        exp: "Qurolni qo‘lga olib insonga do‘q qilish, birovni kaltaklab, unga jarohat yetkazish qattiq jazoga loyiq ko‘rilgan."
+      },
+      {
+        q: "24. «Avesto»da insoniyat qaysi oliy g‘oyalarga chorlangan?",
+        options: [
+          "Urush va bosqinchilikka",
+          "Faqat ibodatxonalar qurishga",
+          "Dunyoviy lazzatlardan voz kechishga",
+          "Tinchlikka, adolat va ezgulikka"
+        ],
+        correct: 3, // D
+        exp: "«Avesto» kishilarni tinchlikka, adolat va ezgulikka chorlagan."
+      },
+      {
+        q: "25. Mitra o‘tli chaqmoqlar yordamida qaysi kuchga qarshi kurash olib boradi?",
+        options: [
+          "Yovuzlik va o‘lim ma’budi Ahrimanga qarshi",
+          "Ahuramazdaga qarshi",
+          "Anaxitaga qarshi",
+          "Oddiy odamlarga qarshi"
+        ],
+        correct: 0, // A
+        exp: "O‘tli chaqmoqlar yordamida u yovuzlik va o‘lim ma’budi bo‘lmish Ahriman bilan jang qiladi."
+      },
+      {
+        q: "26. Zardushtning vafotidan so‘ng uning diniy va axloqiy ta’limotlari qanday saqlab qolindi?",
+        options: [
+          "Faqat toshlarga o‘yib yozildi",
+          "Kohinlar tomonidan yod olinib, keyinchalik «Avesto» kitobiga jamlandi",
+          "Barcha yozuvlar kuydirib yuborildi",
+          "Faqat og‘zaki ertak sifatida aytildi"
+        ],
+        correct: 1, // B
+        exp: "Va’zlar kohinlar tomonidan yod olinib, bir necha asrlar o‘tgach «Avesto» kitobiga jamlandi."
+      },
+      {
+        q: "27. «Avesto»da qaysi mehnat turlari tabiatni asrash va poklikni ta’minlashning asosi deb ko‘rsatilgan?",
+        options: [
+          "Faqat konchilik va qurolsozlik",
+          "Faqat savdo-sotiq karvonlari tuzish",
+          "Binokorlik, dehqonchilik va chorvachilik",
+          "Ovchilik va baliqchilik"
+        ],
+        correct: 2, // C
+        exp: "Inson mehnat qilishi, binokorlik, dehqonchilik va chorvachilik bilan shug‘ullanishi, tabiatni asrab-avaylashi lozim."
+      },
+      {
+        q: "28. Zardushtiylik dinining boshqa qadimgi dinlardan eng katta farqi nimada edi?",
+        options: [
+          "Ko‘p qonli qurbonliklar talab qilganida",
+          "Faqat bitta shaharga tegishli bo‘lganida",
+          "Yozuvdan umuman foydalanmaganida",
+          "Ezgulik va yovuzlik kurashiga asoslangan yuksak axloqiy mezonlarni ilgari surganida"
+        ],
+        correct: 3, // D
+        exp: "Zardushtiylik dini ta’limoti insoniyatning ezgulik va yovuzlik haqidagi qarashlari takomiliga katta ta’sir ko‘rsatdi."
+      },
+      {
+        q: "29. «Quyosh madhi» qasidasida Ahuramazda yer yuziga nima taqsimlaydi deb kuylangan?",
+        options: [
+          "Baxtni",
+          "Boylikni",
+          "Yomg‘irni",
+          "Oltinni"
+        ],
+        correct: 0, // A
+        exp: "«Quyosh madhi»da: «Taqsimlaydi baxtni shunda Ahuramazda bu yerga» deb aytilgan."
+      },
+      {
+        q: "30. Zardushtiylikda yolg‘on so‘zlash va va’daga vafo qilmaslik qanday baholangan?",
+        options: [
+          "Oddiy kundalik kamchilik deb",
+          "Katta gunoh va qoralangan illat deb",
+          "Faqat begonalarga nisbatan ruxsat etilgan deb",
+          "Jazosiz qoldirilgan deb"
+        ],
+        correct: 1, // B
+        exp: "Zardushtiylik e’tiqodiga ko‘ra, yolg‘on so‘zlamaslik, aldamaslik, va’daga vafo qilish kerak edi."
+      },
+      {
+        q: "31. Zardusht Ahuramazdadan qanday vakolat olganini e’lon qildi?",
+        options: [
+          "Barcha podsholarni jazolash vakolatini",
+          "Dunyo boyliklarini yig‘ish vakolatini",
+          "Ezgu amallar haqidagi bilimlarni tarqatish vakolatini",
+          "Yangi davlat tuzish vakolatini"
+        ],
+        correct: 2, // C
+        exp: "Ahuramazda o‘zining ezgu amallari haqidagi bilimlarni tarqatish uchun uni tanlaganini aytadi."
+      },
+      {
+        q: "32. Zardushtiylik ramzida markazda qanotli doira ichida kim tasvirlangan?",
+        options: [
+          "Mitra",
+          "Ahriman",
+          "Anaxita",
+          "Ahuramazda (Faravahar)"
+        ],
+        correct: 3, // D
+        exp: "Darslikdagi ramzda qanotli quyosh va Ahuramazda siymosi aks ettirilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 21-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

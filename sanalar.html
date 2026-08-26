@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Qadimgi dunyo tarixi sanalarda — Trenajyor va Test</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (40)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (40)</button>
+    </div>
+
+    <!-- 1. MOSLASH (8 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 8</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sanalar bo‘yicha 8 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Qadimgi dunyo tarixining muhim sanalarini muvaffaqiyatli mosladingiz. Endi 40 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (40 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">Sanalar Trenajyori</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">40 ta sana tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim xronologik sanalarni mustahkamlab oldingiz. Endi 40 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (40 TA TEST - TARTIBI ARALASHTIRILGAN) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">Sanalar Testi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/40</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (8 BOSQICH) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Mil. avv. 1 million yil – 100-mingyillik", right: "O‘rta Osiyoda ilk paleolit davri" },
+        { id: 2, left: "Mil. avv. 100–40-mingyilliklar", right: "O‘rta paleolit davri" },
+        { id: 3, left: "Mil. avv. 40–12-mingyilliklar", right: "So‘nggi paleolit davri" },
+        { id: 4, left: "Mil. avv. 12–7-mingyilliklar", right: "Mezolit davri" }
+      ],
+      [
+        { id: 5, left: "Mil. avv. 6–4-mingyilliklar", right: "Neolit davri" },
+        { id: 6, left: "Mil. avv. 4–3-mingyillikning o‘rtalari", right: "Eneolit davri" },
+        { id: 7, left: "Mil. avv. 3000-yil", right: "Fir’avn Menes Misrni yagona davlatga birlashtirdi" },
+        { id: 8, left: "Mil. avv. 2600-yil", right: "Misrda Xeops (Xufu) piramidasining qurilishi" }
+      ],
+      [
+        { id: 9, left: "Mil. avv. XVIII asr", right: "Bobil hukmdori Xammurapi Mesopotamiyani yagona davlatga birlashtirdi" },
+        { id: 10, left: "Mil. avv. X asr", right: "Finikiyada alifboning yaratilishi" },
+        { id: 11, left: "Mil. avv. 753-yil", right: "Rimning tashkil topishi" },
+        { id: 12, left: "Mil. avv. 539-yil", right: "Bobilning forslar tomonidan bosib olinishi"
+      }
+      ],
+      [
+        { id: 13, left: "Mil. avv. 530-yil", right: "Kir II ning O‘rta Osiyoda halok bo‘lishi" },
+        { id: 14, left: "Mil. avv. 509-yil", right: "Rimda Respublika e’lon qilinishi" },
+        { id: 15, left: "Mil. avv. 490-yil", right: "Marafon tekisligidagi jang" },
+        { id: 16, left: "Mil. avv. 329-yil", right: "Makedoniyalik Aleksandr tomonidan Maroqandaning bosib olinishi" }
+      ],
+      [
+        { id: 17, left: "Mil. avv. 323-yil", right: "Makedoniyalik Aleksandrning vafoti" },
+        { id: 18, left: "Mil. avv. 312-yil", right: "Salavk hukmronligining boshlanishi (Salavkiylar davlati)" },
+        { id: 19, left: "Mil. avv. III asr", right: "Qang‘ va Davan davlatlarining tashkil topishi" },
+        { id: 20, left: "Mil. avv. 250-yil", right: "Yunon-Baqtriya davlatining tashkil topishi" }
+      ],
+      [
+        { id: 21, left: "Mil. avv. II asr", right: "Buyuk ipak yo‘lining vujudga kelishi" },
+        { id: 22, left: "Mil. avv. 140–130-yillar", right: "Yunon-Baqtriya davlatining yuechjilar tomonidan bosib olinishi" },
+        { id: 23, left: "Mil. avv. 74-yil", right: "Spartak qo‘zg‘oloni boshlanishi" },
+        { id: 24, left: "Mil. avv. 49-yil", right: "Yuliy Sezar Rubikondan o‘tdi" }
+      ],
+      [
+        { id: 25, left: "Mil. avv. 29-yil", right: "Oktavianga imperator unvoni va Avgust nomining berilishi" },
+        { id: 26, left: "Milodiy I asr", right: "Xristianlik dinining vujudga kelishi va Xorazmda taqvim yaratilishi" },
+        { id: 27, left: "Milodiy 330-yil", right: "Rim imperiyasining poytaxti Vizantiyga (Konstantinopolga) ko‘chirilishi" },
+        { id: 28, left: "Milodiy 395-yil", right: "Rim imperiyasining G‘arbiy va Sharqiy qismlarga bo‘linishi" }
+      ],
+      [
+        { id: 29, left: "Milodiy 410-yil", right: "Alarix boshchiligidagi gotlar tomonidan Rimning talon qilinishi" },
+        { id: 30, left: "Milodiy 452-yil", right: "Attila boshchiligida hun qabilalarining Italiyaga bostirib kirishi" },
+        { id: 31, left: "Milodiy 455-yil", right: "Rimga vandallarning hujum qilishi" },
+        { id: 32, left: "Milodiy 476-yil", right: "G‘arbiy Rim imperiyasining qulashi" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      const stageBadge = document.getElementById('match-stage-badge');
+      const matchCounter = document.getElementById('match-counter');
+      const matchProgress = document.getElementById('match-progress');
+      
+      if (stageBadge) stageBadge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (matchProgress) matchProgress.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      if (!container) return;
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          
+          const matchCounter = document.getElementById('match-counter');
+          if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                const matchProgress = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (matchProgress) matchProgress.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (40 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. O‘rta Osiyoda ilk paleolit davri qaysi davrni o‘z ichiga oladi?", a: "Mil. avv. 1 million yil – 100-mingyillik." },
+      { q: "2. O‘rta paleolit davri qaysi sanalarni o‘z ichiga oladi?", a: "Mil. avv. 100–40-mingyilliklar." },
+      { q: "3. So‘nggi paleolit davri qaysi yillarga to‘g‘ri keladi?", a: "Mil. avv. 40–12-mingyilliklar." },
+      { q: "4. Mezolit davri qaysi sanalarni qamrab oladi?", a: "Mil. avv. 12–7-mingyilliklar." },
+      { q: "5. Neolit davri qaysi yillarga to‘g‘ri keladi?", a: "Mil. avv. 6–4-mingyilliklar." },
+      { q: "6. Eneolit davri qaysi davrni o‘z ichiga oladi?", a: "Mil. avv. 4–3-mingyillikning o‘rtalari." },
+      { q: "7. Mesopotamiyada shumer va akkadlar manzilgoh va shaharlari qachon vujudga kelgan?", a: "Mil. avv. 4-mingyillikda." },
+      { q: "8. Nil qirg‘oqlarida manzilgohlar qachon vujudga kelgan?", a: "Mil. avv. 4-mingyillikda." },
+      { q: "9. Fir’avn Menes Misrni yagona davlatga qachon birlashtirdi?", a: "Mil. avv. 3000-yilda." },
+      { q: "10. Misrda Xeops (Xufu) piramidasi qachon qurilgan?", a: "Mil. avv. 2600-yilda." },
+      { q: "11. Elam davlati qachon paydo bo‘lgan?", a: "Mil. avv. 3-mingyillikda." },
+      { q: "12. Mohenjodaro va Xarappa shaharlari qachon vujudga kelgan?", a: "Mil. avv. 3-mingyillikda." },
+      { q: "13. Bronza davri qaysi sanalarni o‘z ichiga oladi?", a: "Mil. avv. 3-mingyillikning o‘rtalari – 2-mingyillik." },
+      { q: "14. Xitoyda ilk sivilizatsiya qachon vujudga kelgan?", a: "Mil. avv. 3-mingyillikning oxirlari – 2-mingyillikda." },
+      { q: "15. Old Osiyo hududida Ossuriya davlati qachon vujudga kelgan?", a: "Mil. avv. 2-mingyillikda." },
+      { q: "16. Bobil podsholigi qachon tashkil topgan?", a: "Mil. avv. 2-mingyillikda." },
+      { q: "17. Sopollitepa va Jarqo‘ton manzilgohlarini qachon tashkil topib rivojlangan?", a: "Mil. avv. 3-mingyillikning oxirlari – 2-mingyillikda." },
+      { q: "18. Miken va Krit davlatlari qachon tashkil topgan?", a: "Mil. avv. 2-mingyillikda." },
+      { q: "19. Attikada Akropol qal’asi qachon barpo etilgan?", a: "Mil. avv. 2-mingyillikda." },
+      { q: "20. Misrni ko‘chmanchi giksos qabilalari qachon zabt etgan?", a: "Mil. avv. XVIII asr oxirida." },
+      { q: "21. Bobil hukmdori Xammurapi Mesopotamiyani qachon yagona davlatga birlashtirgan?", a: "Mil. avv. XVIII asrda (1792–1750-yillar)." },
+      { q: "22. Mohenjodaro va Xarappa shaharlari qachon inqirozga uchragan?", a: "Mil. avv. XVIII asrda." },
+      { q: "23. Doriylar Lakonikani zabt etib, Spartaga qachon asos solishgan?", a: "Mil. avv. XII asrda." },
+      { q: "24. Isroil davlati qachon tashkil topgan?", a: "Mil. avv. XI asrda." },
+      { q: "25. Finikiyada alifbo qachon yaratilgan?", a: "Mil. avv. X asrda." },
+      { q: "26. Urartu davlatining gullagan davri qaysi asrlarga to‘g‘ri keladi?", a: "Mil. avv. IX–VIII asr boshlariga." },
+      { q: "27. Yunon koloniyalarining tashkil topishi qaysi davrni qamrab oladi?", a: "Mil. avv. VIII–VI asrlarni." },
+      { q: "28. Italiyada 12 shahar ittifoqi qachon vujudga kelgan?", a: "Mil. avv. VIII asrda." },
+      { q: "29. Zardushtiylik O‘rta Osiyo hududida qachon tarqalgan?", a: "Mil. avv. 1-mingyillikda." },
+      { q: "30. Misr yana qachon yagona davlatga birlashtirildi?", a: "Mil. avv. VII asrda." },
+      { q: "31. Olimpiya o‘yinlari birinchi bor qachon o‘tkazilgan?", a: "Mil. avv. 776-yilda." },
+      { q: "32. Rim shahriga qachon asos solingan?", a: "Mil. avv. 753-yilda." },
+      { q: "33. Yangi Bobil podsholigi qachon tashkil topgan?", a: "Mil. avv. VII asrda." },
+      { q: "34. Qadimgi Baqtriya podsholigi qachon tashkil topgan?", a: "Mil. avv. VII asrda." },
+      { q: "35. Ko‘ktepa, Qiziltepa va Afrosiyob shaharlari qachon rivojlangan?", a: "Mil. avv. VII–VI asrlarda." },
+      { q: "36. Xitoyda «ko‘p podshohlik» davri qaysi asrlarga to‘g‘ri keladi?", a: "Mil. avv. VII–V asrlarga." },
+      { q: "37. Drakont qonunlari qachon qabul qilingan?", a: "Mil. avv. 621-yilda." },
+      { q: "38. Ossuriya podsholigi qachon qulagan?", a: "Mil. avv. 605-yilda." },
+      { q: "39. Afinada Solon islohotlari qachon o‘tkazilgan?", a: "Mil. avv. 594-yilda." },
+      { q: "40. Kir II Fors podsholigining hukmdori bo‘lgan yil qaysi?", a: "Mil. avv. 558-yilda." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      const counter = document.getElementById('fc-counter');
+      const progress = document.getElementById('fc-progress');
+      const question = document.getElementById('fc-question');
+      const answer = document.getElementById('fc-answer');
+      
+      if (counter) counter.innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      if (progress) progress.style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      if (question) question.innerText = card.q;
+      if (answer) {
+        answer.innerText = card.a;
+        answer.style.display = 'none';
+      }
+      
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (toggleBtn) toggleBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      const answer = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (answer) answer.style.display = 'block';
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      
+      if (fcIdx < flashcards.length) {
+        loadFlashcard();
+      } else {
+        if (playBox) playBox.style.display = 'none';
+        if (finishBox) finishBox.style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (40 TA ARALASH TEST - TO‘G‘RI JAVOB TARTIBI ARALASHTIRILGAN) ---
+    const testQuestions = [
+      {
+        q: "1. O‘rta Osiyoda ilk paleolit davri qaysi sanani o‘z ichiga oladi?",
+        options: [
+          "Mil. avv. 1 million yil – 100-mingyillik",
+          "Mil. avv. 100–40-mingyilliklar",
+          "Mil. avv. 40–12-mingyilliklar",
+          "Mil. avv. 12–7-mingyilliklar"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 1 million yil – 100-mingyillik — O‘rta Osiyoda ilk paleolit davri."
+      },
+      {
+        q: "2. Fir’avn Menes Misrni yagona davlatga qachon birlashtirdi?",
+        options: [
+          "Mil. avv. 4-mingyillikda",
+          "Mil. avv. 3000-yilda",
+          "Mil. avv. 2600-yilda",
+          "Mil. avv. XVIII asrda"
+        ],
+        correct: 1,
+        exp: "Mil. avv. 3000-yilda — fir’avn Menes Misrni yagona davlatga birlashtirdi."
+      },
+      {
+        q: "3. Bobil hukmdori Xammurapi Mesopotamiyani qachon yagona davlatga birlashtirgan?",
+        options: [
+          "Mil. avv. X asrda",
+          "Mil. avv. VII asrda",
+          "Mil. avv. XVIII asrda (1792–1750-yillar)",
+          "Mil. avv. 539-yilda"
+        ],
+        correct: 2,
+        exp: "Mil. avv. XVIII asrda — Bobil hukmdori Xammurapi Mesopotamiyani yagona davlatga birlashtirdi."
+      },
+      {
+        q: "4. Rim shahriga qachon asos solingan?",
+        options: [
+          "Mil. avv. 509-yilda",
+          "Mil. avv. 776-yilda",
+          "Mil. avv. 621-yilda",
+          "Mil. avv. 753-yilda"
+        ],
+        correct: 3,
+        exp: "Mil. avv. 753-yilda — Rimning tashkil topishi."
+      },
+      {
+        q: "5. O‘rta paleolit davri qaysi yillarni o‘z ichiga oladi?",
+        options: [
+          "Mil. avv. 100–40-mingyilliklar",
+          "Mil. avv. 40–12-mingyilliklar",
+          "Mil. avv. 12–7-mingyilliklar",
+          "Mil. avv. 6–4-mingyilliklar"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 100–40-mingyilliklar — o‘rta paleolit davri."
+      },
+      {
+        q: "6. Misrda Xeops (Xufu) piramidasi qachon qurilgan?",
+        options: [
+          "Mil. avv. 3000-yilda",
+          "Mil. avv. 2600-yilda",
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. XVIII asrda"
+        ],
+        correct: 1,
+        exp: "Mil. avv. 2600-yilda — Misrda Xeops (Xufu) piramidasining qurilishi."
+      },
+      {
+        q: "7. Finikiyada alifbo qachon yaratilgan?",
+        options: [
+          "Mil. avv. XII asrda",
+          "Mil. avv. XI asrda",
+          "Mil. avv. X asrda",
+          "Mil. avv. VIII asrda"
+        ],
+        correct: 2,
+        exp: "Mil. avv. X asrda — Finikiyada alifboning yaratilishi."
+      },
+      {
+        q: "8. Bobilning forslar tomonidan bosib olinishi qaysi yilga to‘g‘ri keladi?",
+        options: [
+          "Mil. avv. 558-yil",
+          "Mil. avv. 530-yil",
+          "Mil. avv. 509-yil",
+          "Mil. avv. 539-yil"
+        ],
+        correct: 3,
+        exp: "Mil. avv. 539-yil — Bobilning forslar tomonidan bosib olinishi."
+      },
+      {
+        q: "9. So‘nggi paleolit davri qaysi sanalarni o‘z ichiga oladi?",
+        options: [
+          "Mil. avv. 40–12-mingyilliklar",
+          "Mil. avv. 12–7-mingyilliklar",
+          "Mil. avv. 6–4-mingyilliklar",
+          "Mil. avv. 4–3-mingyilliklar"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 40–12-mingyilliklar — so‘nggi paleolit davri."
+      },
+      {
+        q: "10. Elam davlati qachon paydo bo‘lgan?",
+        options: [
+          "Mil. avv. 4-mingyillikda",
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. 2-mingyillikda",
+          "Mil. avv. XVIII asrda"
+        ],
+        correct: 1,
+        exp: "Mil. avv. 3-mingyillik — Elam davlatining paydo bo‘lishi."
+      },
+      {
+        q: "11. Mohenjodaro va Xarappa shaharlari qachon inqirozga uchragan?",
+        options: [
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. XII asrda",
+          "Mil. avv. XVIII asrda",
+          "Mil. avv. X asrda"
+        ],
+        correct: 2,
+        exp: "Mil. avv. XVIII asr — Mohenjodaro va Xarappa shaharlarining inqirozi."
+      },
+      {
+        q: "12. Rimda Respublika qachon e’lon qilingan?",
+        options: [
+          "Mil. avv. 753-yilda",
+          "Mil. avv. 539-yilda",
+          "Mil. avv. 530-yilda",
+          "Mil. avv. 509-yilda"
+        ],
+        correct: 3,
+        exp: "Mil. avv. 509-yil — Rimda Respublika e’lon qilinishi."
+      },
+      {
+        q: "13. Mezolit davri qaysi yillarni o‘z ichiga oladi?",
+        options: [
+          "Mil. avv. 12–7-mingyilliklar",
+          "Mil. avv. 6–4-mingyilliklar",
+          "Mil. avv. 4–3-mingyilliklar",
+          "Mil. avv. 3-mingyillik"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 12–7-mingyilliklar — mezolit davri."
+      },
+      {
+        q: "14. Mohenjodaro va Xarappa shaharlari qachon vujudga kelgan?",
+        options: [
+          "Mil. avv. 4-mingyillikda",
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. 2-mingyillikda",
+          "Mil. avv. XVIII asrda"
+        ],
+        correct: 1,
+        exp: "Mil. avv. 3-mingyillik — Mohenjodaro va Xarappa shaharlarining vujudga kelishi."
+      },
+      {
+        q: "15. Doriylar Lakonikani zabt etib, Spartaga qachon asos solishgan?",
+        options: [
+          "Mil. avv. XVIII asrda",
+          "Mil. avv. X asrda",
+          "Mil. avv. XII asrda",
+          "Mil. avv. XI asrda"
+        ],
+        correct: 2,
+        exp: "Mil. avv. XII asr — doriylar Lakonikani zabt etdilar va Sparta shahriga asos soldilar."
+      },
+      {
+        q: "16. Marafon tekisligidagi jang qaysi yilda bo‘lgan?",
+        options: [
+          "Mil. avv. 530-yilda",
+          "Mil. avv. 338-yilda",
+          "Mil. avv. 323-yilda",
+          "Mil. avv. 490-yilda"
+        ],
+        correct: 3,
+        exp: "Mil. avv. 490-yil — Marafon tekisligidagi jang."
+      },
+      {
+        q: "17. Neolit davri qaysi yillarni qamrab oladi?",
+        options: [
+          "Mil. avv. 6–4-mingyilliklar",
+          "Mil. avv. 4–3-mingyilliklar",
+          "Mil. avv. 3-mingyillik",
+          "Mil. avv. 2-mingyillik"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 6–4-mingyilliklar — neolit davri."
+      },
+      {
+        q: "18. Bronza davri qaysi sanalarni o‘z ichiga oladi?",
+        options: [
+          "Mil. avv. 4–3-mingyillikning o‘rtalari",
+          "Mil. avv. 3-mingyillikning o‘rtalari – 2-mingyillik",
+          "Mil. avv. 3-mingyillikning oxirlari",
+          "Mil. avv. 2-mingyillik"
+        ],
+        correct: 1,
+        exp: "Mil. avv. 3-mingyillikning o‘rtalari – 2-mingyillik — bronza davri."
+      },
+      {
+        q: "19. Isroil davlati qachon tashkil topgan?",
+        options: [
+          "Mil. avv. XII asrda",
+          "Mil. avv. X asrda",
+          "Mil. avv. XI asrda",
+          "Mil. avv. VII asrda"
+        ],
+        correct: 2,
+        exp: "Mil. avv. XI asr — Isroil davlatining tashkil topishi."
+      },
+      {
+        q: "20. Makedoniyalik Aleksandr qachon vafot etgan?",
+        options: [
+          "Mil. avv. 338-yilda",
+          "Mil. avv. 329-yilda",
+          "Mil. avv. 312-yilda",
+          "Mil. avv. 323-yilda"
+        ],
+        correct: 3,
+        exp: "Mil. avv. 323-yil — Makedoniyalik Aleksandrning vafoti."
+      },
+      {
+        q: "21. Eneolit davri qaysi davrni o‘z ichiga oladi?",
+        options: [
+          "Mil. avv. 4–3-mingyillikning o‘rtalari",
+          "Mil. avv. 3-mingyillik",
+          "Mil. avv. 2-mingyillik",
+          "Mil. avv. XVIII asr"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 4–3-mingyillikning o‘rtalari — eneolit davri."
+      },
+      {
+        q: "22. Xitoyda ilk sivilizatsiya qachon vujudga kelgan?",
+        options: [
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. 3-mingyillikning oxirlari – 2-mingyillik",
+          "Mil. avv. 2-mingyillikda",
+          "Mil. avv. VII asrda"
+        ],
+        correct: 1,
+        exp: "Mil. avv. 3-mingyillikning oxirlari – 2-mingyillik — Xitoyda ilk sivilizatsiyaning vujudga kelishi."
+      },
+      {
+        q: "23. Urartu davlatining gullagan davri qaysi asrlarga to‘g‘ri keladi?",
+        options: [
+          "Mil. avv. X asrga",
+          "Mil. avv. XII asrga",
+          "Mil. avv. IX–VIII asr boshlariga",
+          "Mil. avv. VII asrga"
+        ],
+        correct: 2,
+        exp: "Mil. avv. IX–VIII asr boshlari — Urartu davlatining gullagan davri."
+      },
+      {
+        q: "24. Salavk hukmronligining boshlanishi va Salavkiylar davlatining tuzilishi qaysi yilga to‘g‘ri keladi?",
+        options: [
+          "Mil. avv. 323-yil",
+          "Mil. avv. 250-yil",
+          "Mil. avv. 140-yil",
+          "Mil. avv. 312-yil"
+        ],
+        correct: 3,
+        exp: "Mil. avv. 312-yil — Salavk hukmronligining boshlanishi; Salavk — Salavkiylar davlati asoschisi."
+      },
+      {
+        q: "25. Mesopotamiyada shumer va akkadlar manzilgoh va shaharlari qachon vujudga kelgan?",
+        options: [
+          "Mil. avv. 4-mingyillikda",
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. 2-mingyillikda",
+          "Mil. avv. XVIII asrda"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 4-mingyillik — Mesopotamiyada shumer va akkadlar manzilgohlari va shaharlarining vujudga kelishi."
+      },
+      {
+        q: "26. Old Osiyo hududida Ossuriya davlati qachon vujudga kelgan?",
+        options: [
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. 2-mingyillikda",
+          "Mil. avv. XVIII asrda",
+          "Mil. avv. X asrda"
+        ],
+        correct: 1,
+        exp: "Mil. avv. 2-mingyillik — Old Osiyo hududida Ossuriya davlatining vujudga kelishi."
+      },
+      {
+        q: "27. Yunon koloniyalarining tashkil topishi qaysi davrni qamrab oladi?",
+        options: [
+          "Mil. avv. X–IX asrlarni",
+          "Mil. avv. XI–X asrlarni",
+          "Mil. avv. VIII–VI asrlarni",
+          "Mil. avv. VII–V asrlarni"
+        ],
+        correct: 2,
+        exp: "Mil. avv. VIII–VI asrlar — yunon koloniyalarining tashkil topishi."
+      },
+      {
+        q: "28. Qang‘ va Davan davlatlari qachon tashkil topgan?",
+        options: [
+          "Mil. avv. I asrda",
+          "Milodiy I asrda",
+          "Mil. avv. II asrda",
+          "Mil. avv. III asrda"
+        ],
+        correct: 3,
+        exp: "Mil. avv. III asr — Qang‘ va Davan davlatlarining tashkil topishi."
+      },
+      {
+        q: "29. Bobil podsholigi qachon tashkil topgan?",
+        options: [
+          "Mil. avv. 2-mingyillikda",
+          "Mil. avv. 3-mingyillikda",
+          "Mil. avv. XVIII asrda",
+          "Mil. avv. X asrda"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 2-mingyillik — Bobil podsholigining tashkil topishi."
+      },
+      {
+        q: "30. Yunon-Baqtriya davlati qachon tashkil topgan?",
+        options: [
+          "Mil. avv. 323-yilda",
+          "Mil. avv. 250-yilda",
+          "Mil. avv. 312-yilda",
+          "Mil. avv. 140-yilda"
+        ],
+        correct: 1,
+        exp: "Mil. avv. 250-yil — Yunon-Baqtriya davlatining tashkil topishi."
+      },
+      {
+        q: "31. Buyuk ipak yo‘li qachon vujudga kelgan?",
+        options: [
+          "Milodiy I asrda",
+          "Milodiy V asrda",
+          "Mil. avv. II asrda",
+          "Mil. avv. IV asrda"
+        ],
+        correct: 2,
+        exp: "Mil. avv. II asr — Buyuk ipak yo‘lining vujudga kelishi."
+      },
+      {
+        q: "32. Spartak qo‘zg‘oloni qachon boshlangan?",
+        options: [
+          "Mil. avv. 49-yilda",
+          "Mil. avv. 29-yilda",
+          "Mil. avv. 71-yilda",
+          "Mil. avv. 74-yilda"
+        ],
+        correct: 3,
+        exp: "Mil. avv. 74-yil — Spartak qo‘zg‘oloni."
+      },
+      {
+        q: "33. Oktavian Senatdan imperator unvoni va Avgust nomini qachon olgan?",
+        options: [
+          "Mil. avv. 29-yilda",
+          "Mil. avv. 44-yilda",
+          "Mil. avv. 49-yilda",
+          "Milodiy 98-yilda"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 29-yil — Oktavianga Senat tomonidan imperator unvoni va Avgust faxriy nomining berilishi."
+      },
+      {
+        q: "34. Rim imperiyasida imperator Trayan hukmronligi qachon boshlangan?",
+        options: [
+          "Milodiy 330-yilda",
+          "Milodiy 98-yilda",
+          "Milodiy 395-yilda",
+          "Milodiy 476-yilda"
+        ],
+        correct: 1,
+        exp: "Milodiy 98-yil — Rim imperiyasida Trayan hukmronligining boshlanishi."
+      },
+      {
+        q: "35. Rim imperiyasining poytaxti Vizantiyga (Konstantinopolga) qachon ko‘chirilgan?",
+        options: [
+          "Milodiy 395-yilda",
+          "Milodiy 410-yilda",
+          "Milodiy 330-yilda",
+          "Milodiy 476-yilda"
+        ],
+        correct: 2,
+        exp: "Milodiy 330-yil — Rim imperiyasining poytaxti — Vizantiy (Konstantinopol)."
+      },
+      {
+        q: "36. G‘arbiy Rim imperiyasining qulashi qaysi yilga to‘g‘ri keladi?",
+        options: [
+          "Milodiy 410-yil",
+          "Milodiy 452-yil",
+          "Milodiy 455-yil",
+          "Milodiy 476-yil"
+        ],
+        correct: 3,
+        exp: "Milodiy 476-yil — G‘arbiy Rim imperiyasining qulashi."
+      },
+      {
+        q: "37. Sopollitepa va Jarqo‘ton manzilgohlari qachon tashkil topgan?",
+        options: [
+          "Mil. avv. 3-mingyillikning oxirlari – 2-mingyillik",
+          "Mil. avv. 4-mingyillik",
+          "Mil. avv. 753-yil",
+          "Mil. avv. XVIII asr"
+        ],
+        correct: 0,
+        exp: "Mil. avv. 3-mingyillikning oxirlari – 2-mingyillik — Sopollitepa va Jarqo‘ton dehqonchilik manzilgohlarining tashkil topishi va rivojlanishi."
+      },
+      {
+        q: "38. Miken va Krit davlatlari qachon tashkil topgan?",
+        options: [
+          "Mil. avv. 3-mingyillik",
+          "Mil. avv. 2-mingyillik",
+          "Mil. avv. XII asr",
+          "Mil. avv. X asr"
+        ],
+        correct: 1,
+        exp: "Mil. avv. 2-mingyillik — Miken va Krit davlatlarining tashkil topishi."
+      },
+      {
+        q: "39. Rim imperiyasining G‘arbiy va Sharqiy qismlarga bo‘linishi qachon sodir bo‘lgan?",
+        options: [
+          "Milodiy 330-yilda",
+          "Milodiy 410-yilda",
+          "Milodiy 395-yilda",
+          "Milodiy 476-yilda"
+        ],
+        correct: 2,
+        exp: "Milodiy 395-yil — Rim imperiyasining bo‘linishi: G‘arbiy va Sharqiy."
+      },
+      {
+        q: "40. Alarix boshchiligidagi gotlar tomonidan Rim qachon yaksan qilingan (talangan)?",
+        options: [
+          "Milodiy 452-yilda",
+          "Milodiy 455-yilda",
+          "Milodiy 476-yilda",
+          "Milodiy 410-yilda"
+        ],
+        correct: 3,
+        exp: "Milodiy 410-yil — Alarix boshchiligidagi gotlar tomonidan Rimning yakson qilinishi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const progress = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (progress) progress.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      if (!optBox) return;
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const qScore = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 36) fb.innerText = "Mukammal natija! Sanalarni 100% to‘liq o‘zlashtiribsiz 🏆";
+        else if(score >= 28) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+        else fb.innerText = "Sanalarni qayta o‘qib chiqish tavsiya etiladi 📚";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

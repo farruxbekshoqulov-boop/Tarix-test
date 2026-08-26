@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>6-§. Nil vodiysi va uning aholisi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (25)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (25)</button>
+    </div>
+
+    <!-- 1. MOSLASH (4 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">4 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalarni muvaffaqiyatli mosladingiz. Endi 25 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (25 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">6-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">25 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 25 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (25 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">6-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/25</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Geografiya va tabiat
+      [
+        { id: 1, left: "Nil daryosi uzunligi", right: "6 ming kilometr" },
+        { id: 2, left: "Quyi oqim vodiysi kengligi", right: "3 km dan 22 km gacha" },
+        { id: 3, left: "«Qora tuproq» / «Nil in’omi»", right: "Misrning qadimgi nomlari" },
+        { id: 4, left: "Papirus", right: "Vodiyni qoplagan chirmashib ketgan butalar" }
+      ],
+      // 2-bosqich: Dehqonchilik va xo‘jalik
+      [
+        { id: 5, left: "Kanop o‘simligi", right: "Yetishtirilib, gazlama to‘qilgan ekin" },
+        { id: 6, left: "Qoramollar", right: "Ekilgan urug‘ni yerga singdirish uchun haydalgan" },
+        { id: 7, left: "Mis o‘roqlar", right: "Boshoqlarni o‘rib olish uchun qo‘llanilgan qurol" },
+        { id: 8, left: "Sopol xumlar", right: "Donni zararkunandalardan saqlash idishi" }
+      ],
+      // 3-bosqich: Hunarmandchilik va qurilish
+      [
+        { id: 9, left: "Oddiy aholi uylari", right: "Loy suvalgan papirus poyalaridan qurilgan" },
+        { id: 10, left: "Zodagonlar uylari", right: "Oftobda quritilgan xom g‘ishtdan qurilgan" },
+        { id: 11, left: "Fir’avn saroylari va ibodatxonalar", right: "Mustahkam toshdan barpo etilgan" },
+        { id: 12, left: "Misgar ustalar", right: "Misni eritib, turli mehnat qurollari quyganlar" }
+      ],
+      // 4-bosqich: Davlatchilik va xronologiya
+      [
+        { id: 13, left: "Nomlar", right: "Qadimgi Misrdagi ilk kichik davlatlar" },
+        { id: 14, left: "Nomarxlar", right: "Kichik nom davlatlarini boshqargan hukmdorlar" },
+        { id: 15, left: "Mil. avv. 3000-yil", right: "Menes tomonidan Misrning birlashtirilishi" },
+        { id: 16, left: "Memfis va Fiva", right: "Birlashgan Misr davlatining poytaxtlari" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (25 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Nil daryosi Afrikaning qaysi qismida oqadi va uning uzunligi qancha?", a: "Afrika shimoli-sharqida joylashgan bo‘lib, uzunligi 6 ming kilometrni tashkil etadi." },
+      { q: "2. Nil daryosining quyi qismidagi qora tuproqli serhosil dalalarning kengligi qancha bo‘lgan?", a: "3 kilometrdan 22 kilometrgacha kenglikda bo‘lgan." },
+      { q: "3. Vodiyliklar o‘z yurtlarini qanday nomlar bilan atashgan?", a: "«Qora tuproq» yoki «Nil in’omi» deb nom berishgan." },
+      { q: "4. Qadimgi zamonlarda Nil vodiysini qanday o‘simlik butalari qoplab yotgan?", a: "Odam o‘tolmaydigan qalin papirus butalari chirmashib ketgan botqoqliklar qoplagan." },
+      { q: "5. Nil vodiysi botqoqliklari va suvlarida qanday xavfli jonivorlar yashagan?", a: "Suvda son-sanoqsiz timsohlar, botqoqliklarda zaharli ilonlar, quruq yerlarda yovvoyi hayvonlar galasi yashagan." },
+      { q: "6. Odamlar Nil daryosi qirg‘oqlaridagi yerlarni qachondan boshlab o‘zlashtirishga kirishdilar?", a: "Miloddan avvalgi 4-mingyillik boshlarida." },
+      { q: "7. Qadimgi Misrda qaysi g‘alla ekinlari asosiy o‘rinni egallagan?", a: "Bug‘doy va arpa ekilgan." },
+      { q: "8. Misrliklar kiyim-kechak uchun gazlamani qaysi o‘simlikdan to‘qishgan?", a: "Yetishtirilgan kanop tolasidan gazlama to‘qishgan." },
+      { q: "9. Nil vodiysida qanday poliz, meva va sabzavotlar yetishtirilgan?", a: "Uzum, qovun, anor, xurmo, piyoz, bodring, loviya kabilar." },
+      { q: "10. Qadimgi Misrda sepilgan urug‘ni yerga singdirish qanday usulda amalga oshirilgan?", a: "Urug‘ qo‘lda sepilgach, uni tuproqqa singdirish uchun daladan qoramollar haydab o‘tilgan." },
+      { q: "11. Misrliklar qaysi uy hayvonlarini boqishgan va ulardan qanday foydalanishgan?", a: "Sigir, qo‘y-echki boqishgan, ho‘kizlardan esa dala ishlarida (omoch tortishda) foydalanishgan." },
+      { q: "12. Boshoqlar qanday qurol bilan o‘rib olingan?", a: "Mis o‘roqlar bilan o‘rib olingan." },
+      { q: "13. O‘rib olingan g‘alla hosili qanday usulda yanchilgan?", a: "Maxsus joyga tashlanib, bug‘doy yoki arpa bog‘lari ustidan hayvonlarni haydab o‘tish orqali yanchilgan." },
+      { q: "14. Xirmondan chiqqan don nima maqsadda sopol xumlarda saqlangan?", a: "Donni son-sanoqsiz kemiruvchi zararkunandalardan himoya qilish uchun." },
+      { q: "15. Qadimgi Misr hunarmandligida qanchadan ortiq kasb-hunar turi mavjud bo‘lgan?", a: "30 dan ziyod kasb-kor turlari bo‘lgan." },
+      { q: "16. Misgar ustalar qanday vazifani bajargan?", a: "Misni eritib, undan turli mehnat qurollari quyishgan." },
+      { q: "17. Kulollar o‘z mahsulotlarini qayerda pishirishgan?", a: "Loydan turli idish-tovoqlar yasab, ularni maxsus xumdonda pishirishgan." },
+      { q: "18. Oddiy misrliklarning uylari qanday materialdan qurilgan?", a: "Loy suvalgan papirus poyalaridan qurilgan." },
+      { q: "19. Zodagonlarning uylari nimadan barpo etilgan?", a: "Oftobda quritilgan xom g‘ishtdan qurilgan." },
+      { q: "20. Fir’avnlarning saroylari va ibodatxonalar qaysi ashyodan qurilgan?", a: "Mustahkam toshdan barpo etilgan." },
+      { q: "21. Misrda kemasozlar qayiq va kemalarni qanday materiallardan yasashgan?", a: "Qamishdan qayiqlar, yog‘ochdan esa kemalar qurishgan." },
+      { q: "22. Qadimgi Misrda ilk kichik davlatlar nima deb atalgan va ularni kim boshqargan?", a: "«Nom» deb atalgan va ularni «nomarxlar» boshqargan." },
+      { q: "23. Dastlab Misr hududida qanday ikkita podsholik mavjud bo‘lgan?", a: "Quyi (Shimoliy) Misr va Yuqori (Janubiy) Misr podsholiklari." },
+      { q: "24. Misr qachon, kim tomonidan yagona davlatga birlashtirildi va uning poytaxti qaysi shahar bo‘ldi?", a: "Miloddan avvalgi 3000-yilda Yuqori Misr hukmdori Menes tomonidan birlashtirildi, poytaxti Memfis shahri bo‘ldi." },
+      { q: "25. Yagona davlat parchalangach, vaqt o‘tib qayta birlashgan Misrning yangi poytaxti qaysi shahar bo‘ldi?", a: "Fiva shahri bo‘lgan." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Nil daryosi uzunligi va uning geografik joylashuvi to‘g‘ri ko‘rsatilgan javobni aniqlang.",
+        options: [
+          "5 ming km; Afrika g‘arbida",
+          "6 ming km; Afrika shimoli-sharqida",
+          "7 ming km; Osiyo janubi-g‘arbida",
+          "4 ming km; Afrika markazida"
+        ],
+        correct: 1,
+        exp: "Nil daryosi Afrika shimoli-sharqida joylashgan bo‘lib, uzunligi 6 ming kilometrni tashkil etadi."
+      },
+      {
+        q: "2. Nil daryosining quyi qismidagi qora tuproqli serhosil dalalarning kengligi qanchani tashkil qilgan?",
+        options: [
+          "1 km dan 10 km gacha",
+          "3 km dan 22 km gacha",
+          "10 km dan 50 km gacha",
+          "500 metr dan 5 km gacha"
+        ],
+        correct: 1,
+        exp: "Daryoning quyi qismi 3 km dan 22 km gacha kenglikdagi qora tuproqli serhosil dalalardan iborat bo‘lgan."
+      },
+      {
+        q: "3. Qadimgi zamonlarda Nil vodiysini qoplagan chirmashib ketgan butazor o‘simlik qaysi edi?",
+        options: [
+          "Lotos",
+          "Papirus",
+          "Bambuk",
+          "Qamishzor"
+        ],
+        correct: 1,
+        exp: "Qadimda Nil vodiysini odam o‘tolmaydigan qalin papirus butalari qoplagan."
+      },
+      {
+        q: "4. Odamlar Nil daryosi qirg‘oqlaridagi yerlarni qachondan boshlab o‘zlashtirishga kirishdilar?",
+        options: [
+          "Mil. avv. 6-mingyillikda",
+          "Mil. avv. 4-mingyillik boshlarida",
+          "Mil. avv. 3-mingyillik o‘rtalarida",
+          "Mil. avv. 2-mingyillik oxirida"
+        ],
+        correct: 1,
+        exp: "Miloddan avvalgi 4-mingyillik boshlarida odamlar Nil daryosi bo‘ylarini o‘zlashtira boshladilar."
+      },
+      {
+        q: "5. Qadimgi misrliklar kiyim-kechak tayyorlash uchun gazlamani qaysi o‘simlikdan to‘qishgan?",
+        options: [
+          "Paxta",
+          "Kanop",
+          "Zig‘ir",
+          "Ipak"
+        ],
+        correct: 1,
+        exp: "Misrliklar yetishtirilgan kanop tolasidan gazlama to‘qishgan."
+      },
+      {
+        q: "6. Misrda yerga sepilgan urug‘likni tuproqqa singdirish uchun qanday tadbir qo‘llanilgan?",
+        options: [
+          "Ustidan qo‘lda tosh bostirib chiqilgan",
+          "Qoramollarni daladan haydab o‘tishgan",
+          "Otlar yordamida yerni tekislashgan",
+          "Suv toshqini oqizib kelishi kutilgan"
+        ],
+        correct: 1,
+        exp: "Urug‘ qo‘lda sepilgach, uni yerga singdirish uchun qoramollarni daladan haydab o‘tishgan."
+      },
+      {
+        q: "7. Qadimgi Misrda hosilni yig‘ib-terib olishda qaysi metalldan yasalgan o‘roqlardan foydalanilgan?",
+        options: [
+          "Temir o‘roqlar",
+          "Mis o‘roqlar",
+          "Bronza o‘roqlar",
+          "Oltin o‘roqlar"
+        ],
+        correct: 1,
+        exp: "Boshoqlarni mis o‘roqlar bilan o‘rib olishgan."
+      },
+      {
+        q: "8. Misrliklar g‘alla hosilini qanday usul bilan yanchishgan?",
+        options: [
+          "Tosh tegirmonlar yordamida",
+          "Boshoqlar ustidan hayvonlarni haydab o‘tish orqali",
+          "Qo‘lda tayoqlar bilan urib",
+          "Maxsus suv tegirmonlarida"
+        ],
+        correct: 1,
+        exp: "Bug‘doy yoki arpa bog‘lari ustidan hayvonlarni haydab o‘tish orqali don yanchilgan."
+      },
+      {
+        q: "9. Xirmonjoydan chiqqan donlarni sopol xumlarda saqlashdan asosiy maqsad nima edi?",
+        options: [
+          "Uzoq yurtlarga sotish uchun",
+          "Kemiruvchi zararkunandalardan himoyalash uchun",
+          "Fir’avn xazinasiga yashirish uchun",
+          "Suv toshqinidan asrash uchungina"
+        ],
+        correct: 1,
+        exp: "Donni son-sanoqsiz kemiruvchi zararkunandalardan himoyalash uchun sopol xumlarda saqlangan."
+      },
+      {
+        q: "10. Qadimgi Misrda hunarmandchilikning nechtadan ortiq kasb-kor turlari mavjud bo‘lgan?",
+        options: [
+          "10 dan ziyod",
+          "30 dan ziyod",
+          "50 dan ziyod",
+          "100 dan ziyod"
+        ],
+        correct: 1,
+        exp: "Darslikda keltirilishicha, Misrda hunarmandlarning 30 dan ziyod kasb-korlari bo‘lgan."
+      },
+      {
+        q: "11. Qadimgi Misrda oddiy aholining turarjoylari nimalardan qurilgan?",
+        options: [
+          "Mustahkam marmar toshlardan",
+          "Loy suvalgan papirus poyalaridan",
+          "Oftobda quritilgan xom g‘ishtdan",
+          "Pishiq paxsadan"
+        ],
+        correct: 1,
+        exp: "Oddiy misrliklarning uyi loy suvalgan papirus poyalaridan qilingan."
+      },
+      {
+        q: "12. Qadimgi Misrda zodagonlarning xonadonlari qanday materialdan barpo etilgan?",
+        options: [
+          "Pishiq g‘ishtdan",
+          "Oftobda quritilgan xom g‘ishtdan",
+          "Yog‘och ustunlardan",
+          "Papirus qamishlaridan"
+        ],
+        correct: 1,
+        exp: "Zodagonlarning uylari oftobda quritilgan xom g‘ishtdan qurilgan."
+      },
+      {
+        q: "13. Fir’avnlarning saroylari va ibodatxonalar asosan qanday xomashyodan barpo etilgan?",
+        options: [
+          "Xom g‘ishtdan",
+          "Toshdan",
+          "Qamish va yog‘ochdan",
+          "Loydan"
+        ],
+        correct: 1,
+        exp: "Fir’avnlarning saroylari va ibodatxonalar toshdan barpo etilgan."
+      },
+      {
+        q: "14. Misrlik kemasozlar qayiqlar va yirik kemalarni qanday materiallardan yasaganlar?",
+        options: [
+          "Faqat teridan",
+          "Qamishdan qayiqlar, yog‘ochdan kemalar",
+          "Faqat mis plitalardan",
+          "Papirus va temirdan"
+        ],
+        correct: 1,
+        exp: "Kemasozlar qamishdan qayiqlar, yog‘ochdan esa kemalar qurardi."
+      },
+      {
+        q: "15. Qadimgi Misrda tarqoq manzilgohlar birlashuvidan hosil bo‘lgan kichik davlatlar qanday atalgan?",
+        options: [
+          "Polis",
+          "Nom",
+          "Viloyat",
+          "Satrap"
+        ],
+        correct: 1,
+        exp: "Tarqoq manzilgohlar birlashib «nom» deb atalgan kichik davlatlarni tashkil etgan."
+      },
+      {
+        q: "16. Kichik davlatlar — «nom»larni boshqargan hukmdorlar qanday nomlangan?",
+        options: [
+          "Fir’avnlar",
+          "Nomarxlar",
+          "Oqsoqollar",
+          "Satraplar"
+        ],
+        correct: 1,
+        exp: "Nomlarni «nomarxlar» boshqargan."
+      },
+      {
+        q: "17. Qadimgi Misr dastlab qanday ikki yirik davlatga bo‘lingan edi?",
+        options: [
+          "Sharqiy va G‘arbiy Misr",
+          "Quyi (Shimoliy) va Yuqori (Janubiy) Misr",
+          "Memfis va Fiva podsholiklari",
+          "Nil va Qizil dengiz podsholiklari"
+        ],
+        correct: 1,
+        exp: "Biri Quyi (Shimoliy) Misrda, boshqasi esa Yuqori (Janubiy) Misrda podsholik qilgan."
+      },
+      {
+        q: "18. Quyi va Yuqori Misr o‘rtasidagi urushda qaysi tomon g‘alaba qozondi?",
+        options: [
+          "Quyi Misr podshosi",
+          "Yuqori Misr hukmdori Menes",
+          "Fiva shahrining zodagonlari",
+          "Kichik Osiyo qo‘shinlari"
+        ],
+        correct: 1,
+        exp: "Urushda Yuqori Misr hukmdori Menes g‘alaba qozondi."
+      },
+      {
+        q: "19. Yuqori va Quyi Misr birlashtirilgan sana qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Miloddan avvalgi 4-mingyillik boshida",
+          "Miloddan avvalgi 3000-yilda",
+          "Miloddan avvalgi 2000-yilda",
+          "Miloddan avvalgi 1-mingyillikda"
+        ],
+        correct: 1,
+        exp: "Miloddan avvalgi 3000-yilda ikkala davlat birlashtirildi."
+      },
+      {
+        q: "20. Birlashgan Misr davlatining birinchi fir’avni kim bo‘ldi?",
+        options: [
+          "Tutanxamon",
+          "Menes",
+          "Ramses",
+          "Xufu"
+        ],
+        correct: 1,
+        exp: "Birlashgan mamlakatning birinchi fir’avni Menes bo‘ldi."
+      },
+      {
+        q: "21. Menes tomonidan asos solingan yagona davlatning poytaxti qaysi shahar edi?",
+        options: [
+          "Fiva",
+          "Memfis",
+          "Luksor",
+          "Qohira"
+        ],
+        correct: 1,
+        exp: "Yagona va birlashgan davlat uchun yangi poytaxt Memfis shahri barpo etildi."
+      },
+      {
+        q: "22. Vaqt o‘tib nomlar yana mustaqil bo‘lib, keyinchalik qayta birlashgan Misrning poytaxti qaysi shaharga ko‘chirildi?",
+        options: [
+          "Memfis",
+          "Fiva",
+          "Giza",
+          "Assuan"
+        ],
+        correct: 1,
+        exp: "Qayta birlashgan Misr davlatining poytaxti Fiva shahri bo‘lgan."
+      },
+      {
+        q: "23. Qadimgi Misrda dala ishlarida (omoch tortishda) qaysi ish hayvonidan foydalanilgan?",
+        options: [
+          "Ot",
+          "Ho‘kiz",
+          "Tuya",
+          "Eshak"
+        ],
+        correct: 1,
+        exp: "Misrliklar dala ishlarida ho‘kizlardan foydalanganlar."
+      },
+      {
+        q: "24. Misrliklar o‘z yurtlarini nima sababdan «Qora tuproq» deb atashgan?",
+        options: [
+          "Yer ostidan ko‘mir qazib olingani uchun",
+          "Nil toshqinlari oqizib kelgan qora loyqa tuproq serhosil bo‘lgani sababli",
+          "Qora rangli qumtoshlar ko‘p bo‘lgani uchun",
+          "Qora tusli daraxtlar o‘sgani sababli"
+        ],
+        correct: 1,
+        exp: "Nil daryosi olib kelgan chirindiga boy qora loyqa tuproq dalalarni serhosil qilgani sababli «Qora tuproq» deb atalgan."
+      },
+      {
+        q: "25. Quyidagi atamalarning qaysi biri qadimgi Misr podsholarining unvonini bildiradi?",
+        options: [
+          "Xoqon",
+          "Fir’avn",
+          "Nomarx",
+          "Podsho-knyaz"
+        ],
+        correct: 1,
+        exp: "Qadimgi Misr hukmdorlari «fir’avn» deb atalgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 23) fb.innerText = "Mukammal natija! 6-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

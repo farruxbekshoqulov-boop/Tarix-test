@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>11-§. Mesopotamiya sivilizatsiyalari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha tushunchalar va tarixiy atamalarni muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">11-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni puxta takrorlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">11-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Geografiya va xalqlar
+      [
+        { id: 1, left: "Mesopotamiya", right: "Yunoncha «ikki daryo oralig‘i» (Dajla va Frot)" },
+        { id: 2, left: "Shumerlar", right: "Janubiy Mesopotamiyada yashagan xalq" },
+        { id: 3, left: "Akkadlar", right: "Shimoliy Mesopotamiyada yashagan xalq" },
+        { id: 4, left: "Mil. avv. 4-mingyillik", right: "Shumer manzilgoh va shaharlari vujudga kelgan davr" }
+      ],
+      // 2-bosqich: Shahar-davlatlar va me’morlik
+      [
+        { id: 5, left: "Uruk, Umma, Lagash, Ur", right: "Shumerlarning qadimgi shahar-davlatlari" },
+        { id: 6, left: "Zikkurat", right: "Zinapoyali baland ibodatxona inshooti" },
+        { id: 7, left: "Mino", right: "550 gramm kumushga teng bo‘lgan og‘irlik o‘lchovi" },
+        { id: 8, left: "Mixxat", right: "Loy taxtachalarga o‘tkir tayoqcha bilan yozilgan yozuv" }
+      ],
+      // 3-bosqich: Shumer ma’budlari
+      [
+        { id: 9, left: "Shamash", right: "Quyosh ma’budi (oliy hakam, yovuzlarni sud qilgan)" },
+        { id: 10, left: "Sin", right: "Shumerlarning Oy ma’budi" },
+        { id: 11, left: "Ea", right: "Shumerlarning Suv ma’budi" },
+        { id: 12, left: "Ishtar", right: "Hosildorlik, sevgi, urush va g‘alaba ma’budasi" }
+      ],
+      // 4-bosqich: Gilgamish dostoni
+      [
+        { id: 13, left: "Gilgamish", right: "Uruk shahri podshosi (afsonaviy qahramon)" },
+        { id: 14, left: "Enkidu", right: "Gilgamish bilan do‘st tutingan afsonaviy pahlavon" },
+        { id: 15, left: "Sehrli giyoh", right: "Boqiy hayot baxsh etuvchi, dengiz tubidan topilgan o‘simlik" },
+        { id: 16, left: "Ilon", right: "Sehrli giyohni o‘g‘irlab, po‘st tashlab yasharadigan bo‘lgan jonivor" }
+      ],
+      // 5-bosqich: Akkad davlati va Sargon I
+      [
+        { id: 17, left: "Sargon I", right: "Akkad va Shumerni birlashtirgan podsho" },
+        { id: 18, left: "Mil. avv. 3-mingyillik 2-yarmi", right: "Sargon I tomonidan yagona davlat tuzilgan davr" },
+        { id: 19, left: "5400 nafar jangchi", right: "Jahonda birinchi muntazam qo‘shin askarlari soni" },
+        { id: 20, left: "«To‘rt iqlim mamlakati podshosi»", right: "Sargon I o‘ziga bergan rasmiy unvon" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. «Mesopotamiya» atamasi qaysi tildan olingan va qanday ma’noni bildiradi?", a: "Yunoncha so‘z bo‘lib, «ikki daryo oralig‘i» (Dajla va Frot daryolari oralig‘i) degan ma’noni anglatadi." },
+      { q: "2. Janubiy va Shimoliy Mesopotamiyada qaysi qadimgi xalqlar yashagan?", a: "Janubiy qismida shumerlar (Shumer yurti), shimoliy qismida esa akkadlar (Akkad yurti) yashagan." },
+      { q: "3. Shumer manzilgohlari va shaharlari qachon vujudga kela boshladi?", a: "Miloddan avvalgi 4-mingyillikda." },
+      { q: "4. Mesopotamiya aholisining asosiy mashg‘uloti nima bo‘lgan?", a: "Asosiy mashg‘uloti dehqonchilik (ziroatchilik) bo‘lgan." },
+      { q: "5. Nima sababdan Mesopotamiyada tashqi savdo-sotiq keng rivojlangan?", a: "Chunki yog‘och va metall yetishmasdi, ammo don va chorva mollari mo‘l-ko‘l bo‘lgani sababli ayirboshlangan." },
+      { q: "6. Shumerlar qaysi o‘lkalardan metall va qimmatbaho toshlar keltirishgan?", a: "Qo‘shni Kavkazorti va Eron o‘lkalaridan donga almashtirib oltin, mis, kumush, qalay va toshlar keltirishgan." },
+      { q: "7. Mesopotamiyada pul sifatida nima ishlatilgan va asosiy og‘irlik o‘lchovi nima deb atalgan?", a: "Kumush quymasi ko‘rinishidagi tangalar ishlatilgan, og‘irlik o‘lchovi «mino» (550 gramm kumush) bo‘lgan." },
+      { q: "8. Shumerlar ixtiro qilgan qadimgi yozuv qanday atalgan va nimalarga yozilgan?", a: "Mixxat deb atalgan bo‘lib, uchi o‘tkirlangan tayoqchalar bilan xom loy taxtachalarga yozilgan." },
+      { q: "9. Miloddan avvalgi 4-mingyillik oxirida Mesopotamiyada qanday mashhur shahar-davlatlar vujudga keldi?", a: "Uruk, Umma, Lagash, Ur va boshqalar." },
+      { q: "10. Shahar-davlatlarning boshqaruv markazi nima bo‘lgan?", a: "Ibodatxonalar bo‘lib, oliy ma’bud nomidan kohinlar hukmronlik qilgan." },
+      { q: "11. Zikkurat nima?", a: "Xom g‘ishtdan terib chiqilgan muhtasham, zinapoyali qadimiy ibodatxona." },
+      { q: "12. Shumerlarning Quyosh ma’budi kim bo‘lgan va uning vazifasi nima edi?", a: "Shamash bo‘lib, oliy hakam hisoblangan va yovuz odamlarni sud qilgan." },
+      { q: "13. Shumerlarning Oy, Suv hamda Sevgi/Urush ma’budlarini sanang.", a: "Oy ma’budi — Sin, Suv ma’budi — Ea, hosildorlik, sevgi, urush va g‘alaba ma’budasi — Ishtar." },
+      { q: "14. Shumer shahar-davlatlarida katta yer-mulklar kimlarning qo‘lida bo‘lgan?", a: "Hukmdorlar va kohinlar qo‘lida bo‘lgan." },
+      { q: "15. Shumer shaharlarida sardorlar qanday qilib doimiy hukmdor — podsholarga aylangan?", a: "Urush paytida xalq sardor saylagan, doimiy urushlar tufayli ularning nufuzi ortib, muntazam podshoga aylanganlar." },
+      { q: "16. Podsho shahar-davlatni kimlarga tayanib idora qilgan?", a: "Aslzodalar, kohinlar va harbiy qo‘shinga tayangan holda amaldorlar yordamida." },
+      { q: "17. Mesopotamiya rivoyatlarining eng sevimli qahramoni kim bo‘lgan?", a: "Uruk shahri podshosi Gilgamish." },
+      { q: "18. Rivoyatga ko‘ra, bolaligida jarga tashlangan Gilgamishni kim qutqarib qolgan?", a: "Uchib ketayotgan burgut tutib olib, bog‘bonga eltib bergan." },
+      { q: "19. Gilgamish bilan do‘st tutinib, yovuz maxluqlarga qarshi kurashgan pahlavon kim?", a: "Enkidu." },
+      { q: "20. Enkidu vafot etgach, Gilgamish nima izlab safarga otlangan?", a: "Boqiy hayotga erishish uchun dengiz tubidan sehrli giyohni izlab topgan." },
+      { q: "21. Gilgamish topgan sehrli giyohni kim o‘g‘irlab ketgan?", a: "U ko‘lga cho‘milgani tushganda, hidini sezib qolgan ilon o‘g‘irlab ketgan." },
+      { q: "22. Afsonaga ko‘ra, nima sababdan ilonlar har yili po‘st tashlab yasharar emish?", a: "Gilgamishning sehrli giyohini (mehrigiyoni) yeb qo‘ygani sababli." },
+      { q: "23. Doston oxirida Gilgamish qanday xulosaga keladi?", a: "Jonajon shahri devorlari uni himoyalashini, faqat ezgu ishlari uning nomini umrboqiy qilishini tushunadi." },
+      { q: "24. Miloddan avvalgi 3-mingyillikning ikkinchi yarmida Akkad va Shumerni kim birlashtirdi?", a: "Akkad podshosi Sargon I birlashtirdi." },
+      { q: "25. Sargon I savdo-sotiqni rivojlantirish uchun qanday islohot o‘tkazdi?", a: "Barcha shaharlar uchun yagona uzunlik, maydon va og‘irlik o‘lchovini joriy etdi." },
+      { q: "26. Jahon tarixida birinchi bo‘lib muntazam qo‘shin tuzgan hukmdor kim?", a: "Akkad podshosi Sargon I." },
+      { q: "27. Sargon I ning doimiy muntazam qo‘shini necha nafar jangchidan iborat bo‘lgan?", a: "5400 nafar jangchidan iborat bo‘lgan." },
+      { q: "28. Sargon I ko‘plab yerlarni zabt etgach, o‘ziga qanday faxriy unvon berdi?", a: "«To‘rt iqlim mamlakati podshosi» degan unvon berdi." },
+      { q: "29. Shumer-Akkad davlati nima sababdan parchalanib ketdi?", a: "Ichki qo‘zg‘olonlar va ko‘chmanchi qabilalarning kuchli zarbasi natijasida." },
+      { q: "30. Shumer shaharlarining me’moriy qurilishida asosan qanday g‘ishtlardan foydalanilgan?", a: "Xom va pishgan g‘ishtlardan foydalanilgan." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN) ---
+    const testQuestions = [
+      {
+        q: "1. Jahon tarixida birinchi bo‘lib 5400 nafar jangchidan iborat muntazam qo‘shin tuzgan hukmdor kim?",
+        options: [
+          "Gilgamish",
+          "Sargon I",
+          "Menes",
+          "Tutmos III"
+        ],
+        correct: 1, // B
+        exp: "Akkad podshosi Sargon I jahonda birinchi bo‘lib 5400 nafar jangchidan iborat doimiy qo‘shin tuzgan."
+      },
+      {
+        q: "2. «Mesopotamiya» atamasi qaysi tildan olingan va qanday ma’noni anglatadi?",
+        options: [
+          "Lotincha — «qora tuproq»",
+          "Forscha — «daryo sohillari»",
+          "Yunoncha — «ikki daryo oralig‘i»",
+          "Arabcha — «unumdor vodiy»"
+        ],
+        correct: 2, // C
+        exp: "Dajla va Frot daryolari oralig‘idagi vodiy yunoncha «Mesopotamiya» (ikki daryo oralig‘i) deb atalgan."
+      },
+      {
+        q: "3. Shumerlarning Uruk shahri podshosi bo‘lgan, nomi afsona va dostonlarga aylangan mashhur qahramon kim?",
+        options: [
+          "Enkidu",
+          "Sargon I",
+          "Kambiz II",
+          "Gilgamish"
+        ],
+        correct: 3, // D
+        exp: "Mesopotamiya rivoyatlarining eng sevimli qahramoni Uruk shahri podshosi Gilgamish bo‘lgan."
+      },
+      {
+        q: "4. Qadimgi Mesopotamiyada savdo-sotiqda qo‘llanilgan «mino» og‘irlik o‘lchovi necha gramm kumushga teng bo‘lgan?",
+        options: [
+          "550 gramm kumushga",
+          "500 gramm kumushga",
+          "52,5 gramm kumushga",
+          "1000 gramm kumushga"
+        ],
+        correct: 0, // A
+        exp: "Mesopotamiyadagi og‘irlik o‘lchovi «mino» 550 gramm kumushga barobar bo‘lgan."
+      },
+      {
+        q: "5. Mesopotamiyada xom g‘ishtdan terib chiqilgan muhtasham, zinapoyali qadimiy ibodatxonalar nima deb atalgan?",
+        options: [
+          "Piramida",
+          "Zikkurat",
+          "Sarkofag",
+          "Panteon"
+        ],
+        correct: 1, // B
+        exp: "Qadimiy zinapoyali ibodatxonalar «zikkuratlar» deb atalgan."
+      },
+      {
+        q: "6. Shumerlarning Quyosh ma’budi, oliy hakam sanalgan ilohi qaysi javobda to‘g‘ri berilgan?",
+        options: [
+          "Sin",
+          "Ea",
+          "Shamash",
+          "Ishtar"
+        ],
+        correct: 2, // C
+        exp: "Quyosh ma’budi Shamash oliy hakam hisoblanib, yovuz ishlari uchun odamlarni sud qilgan."
+      },
+      {
+        q: "7. Gilgamish dostonida dengiz tubidan olib chiqilgan boqiy hayot baxsh etuvchi sehrli giyohni qaysi jonzot o‘g‘irlab ketadi?",
+        options: [
+          "Burgut",
+          "Bo‘ri",
+          "Arslon",
+          "Ilon"
+        ],
+        correct: 3, // D
+        exp: "Gilgamish ko‘lga cho‘milgani tushganda, giyohning isini sezgan ilon uni o‘g‘irlab ketadi."
+      },
+      {
+        q: "8. Shumerlar o‘zlarining mashhur mixxat yozuvini qanday ashyo ustiga yozganlar?",
+        options: [
+          "Xom loy taxtachalarga",
+          "Papirus varaqlariga",
+          "Tekis silliqlangan toshlarga",
+          "Yog‘och taxtachalarga"
+        ],
+        correct: 0, // A
+        exp: "Shumerlar uchi o‘tkirlangan tayoqchalar bilan loy taxtachalarga yozganlar."
+      },
+      {
+        q: "9. Akkad podshosi Sargon I butun Shumer va Akkad shaharlarini qachon yagona davlatga birlashtirdi?",
+        options: [
+          "Mil. avv. 4-mingyillik oxirida",
+          "Mil. avv. 3-mingyillikning ikkinchi yarmida",
+          "Mil. avv. 2-mingyillik boshida",
+          "Mil. avv. XVIII asrda"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. 3-mingyillikning ikkinchi yarmida Akkad podshosi Sargon I Akkad va Shumer shaharlarini birlashtirdi."
+      },
+      {
+        q: "10. Shumer mifologiyasida hosildorlik, sevgi, urush va g‘alaba ma’budasi kim hisoblangan?",
+        options: [
+          "Xapi",
+          "Sin",
+          "Ishtar",
+          "Ea"
+        ],
+        correct: 2, // C
+        exp: "Hosildorlik, sevgi, urush va g‘alaba ma’budasi Ishtar bo‘lgan."
+      },
+      {
+        q: "11. Sargon I o‘tkazgan muhim islohotlardan biri to‘g‘ri ko‘rsatilgan javobni toping.",
+        options: [
+          "Oltin tanga zarb qildi",
+          "Faqat toshdan uylar qurishni buyurdi",
+          "Barcha piramidalarni buzib tashladi",
+          "Yagona uzunlik, maydon va og‘irlik o‘lchovini joriy etdi"
+        ],
+        correct: 3, // D
+        exp: "Savdo-sotiqni rivojlantirish maqsadida Sargon I barcha shaharlar uchun yagona o‘lchov birliklarini joriy etdi."
+      },
+      {
+        q: "12. Janubiy Mesopotamiyada shumer manzilgohlari va shaharlari qachon vujudga kela boshladi?",
+        options: [
+          "Miloddan avvalgi 4-mingyillikda",
+          "Miloddan avvalgi 6-mingyillikda",
+          "Miloddan avvalgi 2-mingyillikda",
+          "Miloddan avvalgi 1-mingyillikda"
+        ],
+        correct: 0, // A
+        exp: "Miloddan avvalgi 4-mingyillikda Mesopotamiyada shumerlar manzilgohlari va shaharlari vujudga kela boshladi."
+      },
+      {
+        q: "13. Shumerlarning Suv ma’budi qaysi javobda ko‘rsatilgan?",
+        options: [
+          "Shamash",
+          "Ea",
+          "Sin",
+          "Ptax"
+        ],
+        correct: 1, // B
+        exp: "Shumerliklarda suv ma’budi Ea bo‘lgan."
+      },
+      {
+        q: "14. Rivoyatga ko‘ra, go‘dakligida jarga uloqtirilgan Gilgamishni qaysi qush qutqarib, bog‘bonga eltib bergan?",
+        options: [
+          "Lochin",
+          "Turna",
+          "Burgut",
+          "Qarg‘a"
+        ],
+        correct: 2, // C
+        exp: "Jarga tashlangan Gilgamishni uchib ketayotgan burgut tutib olib, bog‘bonga eltib beradi."
+      },
+      {
+        q: "15. Shumer-Akkad davlati qanday omil sababli parchalanib ketdi?",
+        options: [
+          "Misr fir’avnlari bosqini tufayli",
+          "Kuchli zilzila sababli",
+          "Nil toshqini natijasida",
+          "Qo‘zg‘olonlar va ko‘chmanchi qabilalar zarbasi natijasida"
+        ],
+        correct: 3, // D
+        exp: "Davlat ichki qo‘zg‘olonlarni bostirishga majbur bo‘ldi va ko‘chmanchi qabilalar zarbasidan parchalandi."
+      },
+      {
+        q: "16. Mesopotamiyaning shimoliy qismida qaysi xalq yashagan?",
+        options: [
+          "Akkadlar",
+          "Shumerlar",
+          "Giksoslar",
+          "Forslar"
+        ],
+        correct: 0, // A
+        exp: "Mamlakatning Akkad deb atalgan shimoliy qismida akkadlar yashagan."
+      },
+      {
+        q: "17. Shumerlarda Oy ma’budi qanday nomlangan?",
+        options: [
+          "Shamash",
+          "Sin",
+          "Ea",
+          "Ishtar"
+        ],
+        correct: 1, // B
+        exp: "Shumerliklar Oy ma’budi — Sin ga sig‘inganlar."
+      },
+      {
+        q: "18. Gilgamishning eng yaqin do‘sti bo‘lgan afsonaviy pahlavon kim edi?",
+        options: [
+          "Sargon",
+          "Menes",
+          "Enkidu",
+          "Shamash"
+        ],
+        correct: 2, // C
+        exp: "Gilgamish Enkidu degan pahlavon bilan do‘st tutinadi."
+      },
+      {
+        q: "19. Ko‘plab yerlarni zabt etgan Sargon I o‘zini qanday nom bilan ulug‘ladi?",
+        options: [
+          "«Quyosh o‘g‘li»",
+          "«Mesopotamiya xalasi»",
+          "«Bobil shohi»",
+          "«To‘rt iqlim mamlakati podshosi»"
+        ],
+        correct: 3, // D
+        exp: "Shu bois Sargon I o‘zini «to‘rt iqlim mamlakati podshosi» deb e’lon qilgan."
+      },
+      {
+        q: "20. Shumerlar qaysi o‘lkalardan donga ayirboshlab oltin, mis, kumush va qalay keltirganlar?",
+        options: [
+          "Kavkazorti va Eron o‘lkalaridan",
+          "Misr va Liviyadan",
+          "Hindiston va Xitoydan",
+          "Faqat Gretsiyadan"
+        ],
+        correct: 0, // A
+        exp: "Qo‘shni Kavkazorti va Eron o‘lkalaridan donga ayirboshlab metallar va qimmatbaho toshlar keltirilgan."
+      },
+      {
+        q: "21. Miloddan avvalgi 4-mingyillik oxirida Mesopotamiyada shakllangan shahar-davlatlar qatori to‘g‘ri berilgan javobni toping.",
+        options: [
+          "Memfis, Fiva, Giza",
+          "Uruk, Umma, Lagash, Ur",
+          "Bobil, Rim, Afina",
+          "Nineviya, Karxemish, Tir"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. 4-mingyillik oxirida Uruk, Umma, Lagash, Ur kabi shahar-davlatlar vujudga keldi."
+      },
+      {
+        q: "22. Gilgamish dostoni oxirida inson nomini boqiy qiluvchi asosiy narsa nima deb ta’kidlanadi?",
+        options: [
+          "Qurilgan oltin haykallar",
+          "Katta boyliklar to‘plash",
+          "Qilingan ezgu ishlar va xalq xotirasi",
+          "Ko‘p yerlarni bosib olish"
+        ],
+        correct: 2, // C
+        exp: "Gilgamish ezgu ishlari uning nomini umrboqiy qilishini tushunib yetadi."
+      },
+      {
+        q: "23. Qadimgi Mesopotamiyada shahar-davlatlarni dastlab boshqargan va hokimiyat markazi hisoblangan tabaqa kimlar edi?",
+        options: [
+          "Savdogarlar",
+          "Harbiy sarkardalar",
+          "Dehqonlar oqsoqoli",
+          "Kohinlar (ibodatxonalar)"
+        ],
+        correct: 3, // D
+        exp: "Har bir shaharda oliy ma’bud nomidan kohinlar hukmronlik qilgan, ibodatxonalar hokimiyat markazi bo‘lgan."
+      },
+      {
+        q: "24. Dajla va Frot daryolarining har yilgi toshqinlari qishloq xo‘jaligiga qanday foyda keltirgan?",
+        options: [
+          "Dalalarga serhosil loyqa olib kelgan",
+          "Yerlarni toshlardan tozalagan",
+          "Daryo tubidagi oltin qumlarni chiqargan",
+          "Ekinlarni sug‘orishga ehtiyoj qoldirmagan"
+        ],
+        correct: 0, // A
+        exp: "Toshqinlar paytida suv bilan birga dalalarga unumdor loyqa oqib kelgan."
+      },
+      {
+        q: "25. Shumer shaharlarida sardorlarning doimiy podsholarga aylanishiga nima sabab bo‘ldi?",
+        options: [
+          "Kohinlarning butunlay yo‘qolishi",
+          "Shahar-davlatlar o‘rtasidagi to‘xtovsiz urushlar va sardorlar nufuzining ortishi",
+          "Savdogarlarning talabi",
+          "Qo‘shni Misrning buyrug‘i"
+        ],
+        correct: 1, // B
+        exp: "Urushlar ko‘payishi oqibatida saylangan sardorlarning nufuzi ortib, muntazam podsholarga aylanishgan."
+      },
+      {
+        q: "26. Mesopotamiya hududida dastlab nimalar yetishmaganligi sababli savdo-sotiq kuchaygan?",
+        options: [
+          "Bug‘doy va arpa",
+          "Chorva mollari va go‘sht",
+          "Yog‘och va metall xomashyosi",
+          "Loy va suv"
+        ],
+        correct: 2, // C
+        exp: "Mesopotamiyada yog‘och va metall kabi materiallar bo‘lmagani uchun donga ayirboshlangan."
+      },
+      {
+        q: "27. Shumer shahar-davlatlarida podsholar o‘z hokimiyatini kimlarga tayanib boshqarganlar?",
+        options: [
+          "Faqat oddiy qullarga",
+          "Faqat chet ellik savdogarlarga",
+          "Faqat dehqon jamoalariga",
+          "Aslzodalar, kohinlar va harbiy qo‘shinga tayanib"
+        ],
+        correct: 3, // D
+        exp: "Podsho shahar-davlatni aslzodalar, kohinlar va harbiy qo‘shinga tayangan holda amaldorlar yordamida idora qilgan."
+      },
+      {
+        q: "28. Mesopotamiyada dehqonchilik maydonlariga ishlov berishda qaysi omil eng katta qulaylik tug‘dirgan?",
+        options: [
+          "Daryolarning unumdor toshqin suvlari va serunum yerlar",
+          "Yil bo‘yi yog‘adigan qorlar",
+          "Tog‘ buloqlari ko‘pligi",
+          "Temir omochlarning ko‘pligi"
+        ],
+        correct: 0, // A
+        exp: "Daryolarning toshqin suvlari, ishlov berish uchun qulay va serunum yerlar dehqonchilik uchun qulay edi."
+      },
+      {
+        q: "29. Zikkurat ibodatxonalari asosan qanday materialdan terib qurilgan?",
+        options: [
+          "Qimmatbaho marmardan",
+          "Xom g‘ishtdan",
+          "Faqat yog‘och ustunlardan",
+          "Qamish poyalaridan"
+        ],
+        correct: 1, // B
+        exp: "Zikkuratlar xom g‘ishtdan terib chiqilgan muhtasham zinapoyali inshoot bo‘lgan."
+      },
+      {
+        q: "30. Shumerlar yurtiga berilgan tarixiy geografik nom qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Akkad",
+          "Elam",
+          "Shumer (Janubiy Mesopotamiya)",
+          "Bobil"
+        ],
+        correct: 2, // C
+        exp: "Ular Janubiy Mesopotamiyaga joylashib, bu yurtni Shumer deb ataydilar."
+      },
+      {
+        q: "31. Gilgamish qaysi shaharni mustaqil boshqarishga kirishgan?",
+        options: [
+          "Lagash",
+          "Ur",
+          "Umma",
+          "Uruk"
+        ],
+        correct: 3, // D
+        exp: "Balog‘atga yetgach, bobosidan hokimiyatni olib, o‘zi Uruk shahrini boshqarishga kirishadi."
+      },
+      {
+        q: "32. Sargon I ning hokimiyat tepasiga kelishi bilan Mesopotamiyada qanday muhim siyosiy o‘zgarish sodir bo‘ldi?",
+        options: [
+          "Tarqoq shahar-davlatlar o‘rniga yagona markazlashgan Shumer-Akkad davlati tuzildi",
+          "Piramidalar qurilishi boshlandi",
+          "Shumer yozuvi butunlay taqiqlandi",
+          "Dehqonchilik to‘xtatilib, ko‘chmanchilikka o‘tildi"
+        ],
+        correct: 0, // A
+        exp: "Sargon I barcha tarqoq shahar-davlatlarni Akkad va Shumer davlati ostida birlashtirdi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 11-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

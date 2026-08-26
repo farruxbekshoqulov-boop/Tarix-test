@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>37-§. Salavkiylar davlati va Yunon-Baqtriya podsholigi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va tarixiy sanalarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">37-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">37-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Aleksandr davlatining parchalanishi
+      [
+        { id: 1, left: "Mil. avv. 323-yil 13-iyun", right: "Makedoniyalik Aleksandr vafot etgan sana" },
+        { id: 2, left: "Makedoniya, Misr, Suriya", right: "Aleksandr vafotidan so‘ng uning davlati bo‘lingan uch qism" },
+        { id: 3, left: "Salavk", right: "Mil. avv. 312-yilda Bobil (Suriya) hokimi bo‘lgan sarkarda" },
+        { id: 4, left: "Salavkiylar davlati", right: "Mesopotamiya, Eron, Parfiya va O‘rta Osiyoni o‘z ichiga olgan ulkan saltanat" }
+      ],
+      // 2-bosqich: Boshqaruv va shaxslar
+      [
+        { id: 5, left: "Strateglar", right: "Salavkiylar davlatida mudofaa va qo‘shinlarni boshqargan sobiq sarkardalar" },
+        { id: 6, left: "Antiox", right: "Salavkning o‘g‘li bo‘lib, sharqiy viloyatlarga noib etib tayinlangan hukmdor" },
+        { id: 7, left: "Apama", right: "Spitamanning qizi, Antioxning onasi va Salavning rafiqasi" },
+        { id: 8, left: "Apameya", right: "Vayronalari hozirgi Suriya hududida joylashgan Apama sharafiga atalgan shahar" }
+      ],
+      // 3-bosqich: Qal’alar va arxeologik yodgorliklar
+      [
+        { id: 9, left: "Kampir qal’a", right: "Termiz yaqinida, Amudaryoning o‘ng qirg‘og‘ida joylashgan qadimiy qo‘rg‘on" },
+        { id: 10, left: "Uzundara qal’asi", right: "Boysun tog‘larida Baqtriya va Sug‘diyonani bog‘lovchi tog‘ yo‘lini qo‘riqlagan qal’a" },
+        { id: 11, left: "Baqtra, Maroqanda, Termiz", right: "Salavkiylar davrida yirik shahar va madaniyat markazlariga aylangan maskanlar" },
+        { id: 12, left: "Spitamana", right: "Avesto tilida «Spenta-mana» — «Muqaddas ruh» ma’nosini anglatuvchi nom" }
+      ],
+      // 4-bosqich: Yunon-Baqtriya davlatining tashkil topishi
+      [
+        { id: 13, left: "Mil. avv. 250-yil", right: "Baqtriya Salavkiylar davlatidan ajralib chiqqan sana" },
+        { id: 14, left: "Diodot", right: "O‘zini podsho deb e’lon qilib, Yunon-Baqtriya davlatiga asos solgan shahar hokimi" },
+        { id: 15, left: "Yevtidem va Demetriy", right: "Diodotdan keyin Yunon-Baqtriyada hukmronlik qilgan podsholar" },
+        { id: 16, left: "Demetriy davri", right: "Yunon-Baqtriya podsholigi eng katta sarhadlarga erishib, Hindistonni qo‘shib olgan davr" }
+      ],
+      // 5-bosqich: Tashqi siyosat va parfiya ta’siri
+      [
+        { id: 17, left: "Mitridat I", right: "Parfiya hokimiyatini qo‘lga olib, Baqtriyaga harbiy tazyiqni kuchaytirgan hukmdor" },
+        { id: 18, left: "Yuechji qabilalari", right: "Mil. avv. 140–130-yillar oralig‘ida Yunon-Baqtriya davlatini bosib olgan ko‘chmanchilar" },
+        { id: 19, left: "120 yil", right: "Yunon-Baqtriya davlati taraqqiy etgan davr davomiyligi" },
+        { id: 20, left: "Buyuk ipak yo‘li", right: "Baqtriya orqali Xitoydan Hindistonga o‘tgan janubiy tarmog‘i" }
+      ],
+      // 6-bosqich: Shaharsozlik va madaniyat
+      [
+        { id: 21, left: "Oyxonim", right: "Baqtriyada joylashgan qadimgi yunon shahri (arxeologik yodgorlik)" },
+        { id: 22, left: "Tangalar zarb etish", right: "Yunon-Baqtriya davlatida hukmdorlar tasviri tushirilib yo‘lga qo‘yilgan ish" },
+        { id: 23, left: "Dajladan Baqtriyagacha yo‘l", right: "Salavkiylar davrida qadimgi Sharq davlatlari bilan savdo yo‘llarining jonlanishi" },
+        { id: 24, left: "Sopol qozonlar va xumlar", right: "Kampir qal’a va Uzundaradan topilgan maishiy buyumlar" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Makedoniyalik Aleksandr qachon vafot etdi?", a: "Miloddan avvalgi 323-yil 13-iyunda." },
+      { q: "2. Aleksandr vafotidan so‘ng uning barpo etgan davlati nechta qismga bo‘linib ketdi?", a: "Uch qismga: Makedoniya, Misr va Suriyaga." },
+      { q: "3. Salavk qachon Bobil (Suriya davlati) hukmdori bo‘ldi?", a: "Miloddan avvalgi 312-yilda." },
+      { q: "4. Salavkiylar davlati tarkibiga qaysi hududlar kirgan edi?", a: "Mesopotamiya, Eron, Parfiya, Baqtriya, Sug‘diyona va Marg‘iyona." },
+      { q: "5. Salavkiylar davlatida mudofaa va qo‘shinlarni tashkil etish bilan kimlar shug‘ullanar edi?", a: "Sobiq sarkardalardan tayinlangan strateglar." },
+      { q: "6. Salavk o‘zining qaysi o‘g‘lini sharqiy viloyatlarga noib qilib tayinladi?", a: "Antioxni." },
+      { q: "7. Antioxning onasi Apama kimning qizi edi?", a: "Spitamanning qizi edi." },
+      { q: "8. Vayronalari hozirgi Suriya hududida joylashgan shahar kimning sharafiga Apameya deb atalgan?", a: "Malika Apamaning sharafiga." },
+      { q: "9. Sug‘diyona nomining ildizlari avesto tilida qanday ma’noni anglatadi?", a: "«Spenta-mana» — «Muqaddas ruh» ma’nosini anglatadi." },
+      { q: "10. Baqtra, Maroqanda, Marg‘iyona Antioksiyasi va Termiz qanday maskanlarga aylandi?", a: "Yirik shahar va madaniyat markazlariga." },
+      { q: "11. Termiz yaqinida, Amudaryoning o‘ng qirg‘og‘ida joylashgan qadimiy qo‘rg‘on qanday nomlanadi?", a: "Kampir qal’a." },
+      { q: "12. Boysun tog‘larida joylashgan va tog‘ yo‘lini qo‘riqlagan qal’a qaysi?", a: "Uzundara qal’asi." },
+      { q: "13. Kampir qal’a ichida savdo karvonlariga xizmat ko‘rsatish uchun nima bo‘lgan?", a: "Katta g‘alla ombori bo‘lgan." },
+      { q: "14. Yunon-Baqtriya davlati qachon Salavkiylar davlatidan ajralib chiqdi?", a: "Miloddan avvalgi 250-yilda." },
+      { q: "15. Yunon-Baqtriya davlatiga asos solgan va o‘zini podsho deb e’lon qilgan shahar hokimi kim?", a: "Diodot." },
+      { q: "16. Diodotdan keyin Yunon-Baqtriyada hukmronlik qilgan podsholar kimlar edi?", a: "Yevtidem va uning o‘g‘li Demetriy." },
+      { q: "17. Demetriy hukmronligi davrida Yunon-Baqtriya qanday yutuqqa erishdi?", a: "Eng katta sarhadlarga ega bo‘lib, Hindistonning bir qismini qo‘shib oldi." },
+      { q: "18. Parfiya hokimiyati kimning qo‘liga o‘tgach Baqtriyaga harbiy tazyiq kuchaydi?", a: "Mitridat I qo‘liga o‘tgach." },
+      { q: "19. Yunon-Baqtriya davlatini mil. avv. 140–130-yillar oralig‘ida kimlar bosib oldi?", a: "Ko‘chmanchi yuechji qabilalari." },
+      { q: "20. Yunon-Baqtriya davlati necha yil taraqqiy etdi?", a: "120 yil." },
+      { q: "21. Baqtriyada joylashgan qadimgi yunon shahri arxeologik yodgorligi qanday ataladi?", a: "Oyxonim." },
+      { q: "22. Yunon-Baqtriya davlatida nimalar zarb qilingan?", a: "Hukmdorlar tasviri tushirilgan tangalar." },
+      { q: "23. Baqtriya orqali qaysi xalqaro savdo yo‘lining janubiy tarmog‘i o‘tgan?", a: "Xitoydan Hindistonga o‘tgan Buyuk ipak yo‘lining janubiy tarmog‘i." },
+      { q: "24. Salavkiylar davlati parchalangach O‘rta Osiyoda qaysi antik davlatlar taraqqiy etdi?", a: "Salavkiylar, Yunon-Baqtriya va Parfiya." },
+      { q: "25. Antiox otasi Salavning vafotidan so‘ng davlatni qancha vaqt boshqardi?", a: "20 yilga yaqin boshqardi." },
+      { q: "26. Uzundara qal’asi qaysi tog‘larda joylashgan?", a: "Boysun tog‘larida." },
+      { q: "27. Kampir qal’a qayerda joylashgan?", a: "Termiz yaqinida, Amudaryoning o‘ng qirg‘og‘ida." },
+      { q: "28. Arxeologik topilmalar jangchilar turmushi haqida nima deydi?", a: "Ovqat pishirish uchun sopol qozonlar va xumlar borligini ko‘rsatadi." },
+      { q: "29. Diodotning oltin tangasi va Yevtidem tangalari qayerdan topilgan?", a: "Baqtriya hududlaridan (antiz davri arxeologik qazilmalaridan)." },
+      { q: "30. Parfiya va Yunon-Baqtriya o‘rtasidagi munosabat qanday edi?", a: "Ularning o‘rtasida raqobat va tinimsiz urushlar bo‘lgan." },
+      { q: "31. Salavk o‘z davlati tarkibidagi O‘rta Osiyo viloyatlarini nima qilib bo‘lgan edi?", a: "Satrapiyalarga ajratgan edi." },
+      { q: "32. Antioxning bobosi Spitaman kim edi?", a: "Makedoniyalik Aleksandrga qarshi kurashgan atoqli sug‘d sarkardasi." },
+      { q: "33. Yunon-Baqtriya davlatida savdo-sotiqning jonlanishiga nima sabab bo‘ldi?", a: "Dajladan Baqtriyagacha yo‘l qurilishining tugatilishi va qadimgi Sharq davlatlari bilan aloqalar." },
+      { q: "34. Yuechji qabilalari qaysi hududdan ko‘chib kelgan ko‘chmanchilar edi?", a: "Markaziy Osiyoning sharqiy qismlaridan." },
+      { q: "35. Salavkiylar davlatida sharqiy viloyatlarni boshqargan shahzoda Antioxning onasi kim edi?", a: "Spitamanning qizi Apama." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Makedoniyalik Aleksandr qachon vafot etdi?",
+        options: [
+          "Mil. avv. 323-yil 13-iyunda",
+          "Mil. avv. 312-yilda",
+          "Mil. avv. 250-yilda",
+          "Mil. avv. 336-yilda"
+        ],
+        correct: 0, // A
+        exp: "Miloddan avvalgi 323-yil 13-iyunda Makedoniyalik Aleksandr vafot etadi."
+      },
+      {
+        q: "2. Makedoniyalik Aleksandr vafotidan so‘ng uning davlati nechta qismga bo‘linib ketdi?",
+        options: [
+          "Ikkita qismga",
+          "Uchta qismga",
+          "To‘rtta qismga",
+          "Beshita qismga"
+        ],
+        correct: 1, // B
+        exp: "U barpo etgan davlat uch qismga: Makedoniya, Misr va Suriyaga bo‘linib ketadi."
+      },
+      {
+        q: "3. Salavk qachon Bobil (Suriya davlati) hukmdori bo‘ldi?",
+        options: [
+          "Mil. avv. 323-yilda",
+          "Mil. avv. 250-yilda",
+          "Mil. avv. 312-yilda",
+          "Mil. avv. 140-yilda"
+        ],
+        correct: 2, // C
+        exp: "Miloddan avvalgi 312-yilda Salavk Bobil (Suriya davlati) hukmdori bo‘ldi."
+      },
+      {
+        q: "4. Salavkiylar davlati tarkibiga qaysi hududlar kirgan edi?",
+        options: [
+          "Faqat Gretsiya va Makedoniya",
+          "Faqat Misr va Lidiya",
+          "Faqat Italiya va Ispaniya",
+          "Mesopotamiya, Eron, Parfiya, Baqtriya, Sug‘diyona va Marg‘iyona"
+        ],
+        correct: 3, // D
+        exp: "Salavkiylar davlati tarkibiga Mesopotamiya, Eron, Parfiya, Baqtriya, Sug‘diyona va Marg‘iyona kirar edi."
+      },
+      {
+        q: "5. Salavkiylar davlatida mudofaa va qo‘shinlarni tashkil etish bilan kimlar shug‘ullanar edi?",
+        options: [
+          "Strateglar",
+          "Satraplar",
+          "Arxontlar",
+          "Nomarxlar"
+        ],
+        correct: 0, // A
+        exp: "Davlat mudofaasi va qo‘shinlarni tashkil etish bilan sobiq sarkardalardan tayinlangan strateglar shug‘ullanar edi."
+      },
+      {
+        q: "6. Salavk o‘zining qaysi o‘g‘lini sharqiy viloyatlarga noib qilib tayinlagan edi?",
+        options: [
+          "Diodotni",
+          "Antioxni",
+          "Demetriyni",
+          "Yevtidemni"
+        ],
+        correct: 1, // B
+        exp: "Salavk o‘g‘li Antioxni Sharqiy viloyatlar – Parfiya, Marg‘iyona, Baqtriya va Sug‘diyonaga noib etib tayinlaydi."
+      },
+      {
+        q: "7. Shahzoda Antioxning onasi Apama kimning qizi edi?",
+        options: [
+          "Doro III ning",
+          "To‘marisning",
+          "Spitamanning",
+          "Oksiartning"
+        ],
+        correct: 2, // C
+        exp: "Podsho Antiox Salavk va Apama — Spitaman qizining farzandi edi."
+      },
+      {
+        q: "8. Termiz yaqinida, Amudaryoning o‘ng qirg‘og‘ida joylashgan qadimiy qo‘rg‘on qanday nomlanadi?",
+        options: [
+          "Uzundara qal’asi",
+          "Ko‘zaliqir",
+          "Qiziltepa",
+          "Kampir qal’a"
+        ],
+        correct: 3, // D
+        exp: "Termiz yaqinidagi Amudaryoning o‘ng qirg‘og‘ida Kampir qal’asi joylashgan."
+      },
+      {
+        q: "9. Boysun tog‘larida joylashgan va tog‘ yo‘lini qo‘riqlagan qadimiy qal’a qaysi?",
+        options: [
+          "Uzundara qal’asi",
+          "Kampir qal’a",
+          "Afrosiyob",
+          "Oyxonim"
+        ],
+        correct: 0, // A
+        exp: "Boysun tog‘larida Baqtriya va Sug‘diyona tog‘ yo‘lini qo‘riqlagan Uzundara qal’asi joylashgan."
+      },
+      {
+        q: "10. Baqtriya Salavkiylar davlatidan qachon ajralib chiqdi?",
+        options: [
+          "Mil. avv. 312-yilda",
+          "Mil. avv. 250-yilda",
+          "Mil. avv. 323-yilda",
+          "Mil. avv. 140-yilda"
+        ],
+        correct: 1, // B
+        exp: "Miloddan avvalgi 250-yilda Baqtriya Salavkiylar davlati tarkibidan ajralib chiqadi."
+      },
+      {
+        q: "11. Yunon-Baqtriya davlatiga asos solgan va o‘zini podsho deb e’lon qilgan shaxs kim?",
+        options: [
+          "Demetriy",
+          "Yevtidem",
+          "Diodot",
+          "Mitridat I"
+        ],
+        correct: 2, // C
+        exp: "Baqtriya shaharlari hukmdori bo‘lmish Diodot o‘zini podsho deb e’lon qiladi va Yunon-Baqtriya davlati boshlanadi."
+      },
+      {
+        q: "12. Yunon-Baqtriya podsholigi qaysi hukmdor davrida eng katta sarhadlarga erishib, Hindistonni qo‘shib oldi?",
+        options: [
+          "Diodot",
+          "Salavk",
+          "Antiox",
+          "Demetriy"
+        ],
+        correct: 3, // D
+        exp: "Yevtidemning o‘g‘li Demetriy hukmronligi davrida Yunon-Baqtriya podsholigi eng katta sarhadlarga ega bo‘ldi."
+      },
+      {
+        q: "13. Parfiya hokimiyatini qo‘lga olgach Baqtriyaga harbiy tazyiqni kuchaytirgan hukmdor kim?",
+        options: [
+          "Mitridat I",
+          "Diodot",
+          "Antiox",
+          "Demetriy"
+        ],
+        correct: 0, // A
+        exp: "Parfiyada hokimiyat Mitridat I qo‘liga o‘tishi bilan u Baqtriyaga harbiy tazyiqni kuchaytiradi."
+      },
+      {
+        q: "14. Yunon-Baqtriya davlatini miloddan avvalgi 140–130-yillar oralig‘ida kimlar bosib oldi?",
+        options: [
+          "Ahamoniylar",
+          "Yuechji qabilalari",
+          "Rimliklar",
+          "Makedoniyaliklar"
+        ],
+        correct: 1, // B
+        exp: "Ko‘chmanchi yuechji qabilalari mil. avv. 140–130-yillar oralig‘ida Yunon-Baqtriya davlatini bosib oladi."
+      },
+      {
+        q: "15. Yunon-Baqtriya davlati jami qancha vaqt taraqqiy etdi?",
+        options: [
+          "50 yil",
+          "80 yil",
+          "120 yil",
+          "300 yil"
+        ],
+        correct: 2, // C
+        exp: "Yunon-Baqtriya davlati 120 yil taraqqiy etgan."
+      },
+      {
+        q: "16. Baqtriyada joylashgan qadimgi yunon shahri arxeologik yodgorligi qanday ataladi?",
+        options: [
+          "Afrosiyob",
+          "Qiziltepa",
+          "Kampir qal’a",
+          "Oyxonim"
+        ],
+        correct: 3, // D
+        exp: "Darslikda qadimgi yunon shahri Oyxonim (Baqtriya) tasvirlangan."
+      },
+      {
+        q: "17. Baqtriya orqali Xitoydan Hindistonga o‘tadigan qaysi xalqaro yo‘lning tarmog‘i o‘tgan?",
+        options: [
+          "Buyuk Ipak yo‘lining janubiy tarmog‘i",
+          "Shoh yo‘li",
+          "Lapis lazuli yo‘li",
+          "Steppe yo‘li"
+        ],
+        correct: 0, // A
+        exp: "Baqtriya orqali Xitoydan Hindistonga Buyuk ipak yo‘lining janubiy tarmog‘i o‘tdi."
+      },
+      {
+        q: "18. Salavk vafotidan so‘ng uning o‘g‘li Antiox davlatni qancha vaqt boshqardi?",
+        options: [
+          "5 yil",
+          "20 yilga yaqin",
+          "50 yil",
+          "120 yil"
+        ],
+        correct: 1, // B
+        exp: "Salavkning vafotidan so‘ng Antiox ulkan davlat boshida turib, uni 20 yilga yaqin boshqardi."
+      },
+      {
+        q: "19. Sug‘diyona nomining ildizlari avesto tilida qanday ma’noni anglatadi?",
+        options: [
+          "«Quyosh nuri»",
+          "«Erkin o‘lka»",
+          "«Muqaddas ruh»",
+          "«Daryolar oralig‘i»"
+        ],
+        correct: 2, // C
+        exp: "Sug‘diycha «Spitamana» nomining ildizlari avesto tilida «Spenta-mana» — «Muqaddas ruh» ma’nosini anglatgan."
+      },
+      {
+        q: "20. Kampir qal’a ichida savdo karvonlariga xizmat ko‘rsatish uchun nima qurilgan edi?",
+        options: [
+          "Katta bozor maydoni",
+          "Karvonsaroy",
+          "Ibodatxona",
+          "Katta g‘alla ombori"
+        ],
+        correct: 3, // D
+        exp: "Qo‘rg‘on ichida savdo karvonlariga xizmat ko‘rsatish uchun mo‘ljallangan g‘alla ombori bo‘lgan."
+      },
+      {
+        q: "21. Antioxning onasi Apamaning otasi kim edi?",
+        options: [
+          "Spitaman",
+          "Oksiart",
+          "Doro III",
+          "Frada"
+        ],
+        correct: 0, // A
+        exp: "Podsho Antiox Salavk va Apama — Spitaman qizining farzandi edi."
+      },
+      {
+        q: "22. Salavkiylar davlati parchalangach O‘rta Osiyo hududida qaysi yangi davlatlar taraqqiy etdi?",
+        options: [
+          "Misr va Lidiya",
+          "Salavkiylar, Yunon-Baqtriya va Parfiya",
+          "Bobil va Ossuriya",
+          "Midiya va Elam"
+        ],
+        correct: 1, // B
+        exp: "Salavkiylar, Yunon-Baqtriya va Parfiya singari antik davlatlar taraqqiy etadi."
+      },
+      {
+        q: "23. Antiox sharafiga atab qaysi shaharga uning onasi nomi berilgan?",
+        options: [
+          "Baqtra",
+          "Maroqanda",
+          "Apameya",
+          "Termiz"
+        ],
+        correct: 2, // C
+        exp: "Vayronalari bugungi Suriya hududida joylashgan shahar uning sharafiga Apameya deb nomlangan."
+      },
+      {
+        q: "24. Uzundara qal’asi qaysi tog‘larda joylashgan?",
+        options: [
+          "Himolay tog‘larida",
+          "Tyan-Shan tog‘larida",
+          "Pomir tog‘larida",
+          "Boysun tog‘larida"
+        ],
+        correct: 3, // D
+        exp: "Boysun tog‘larida Uzundara qal’asi joylashgan."
+      },
+      {
+        q: "25. Kampir qal’a qayerda joylashgan?",
+        options: [
+          "Termiz yaqinida, Amudaryoning o‘ng qirg‘og‘ida",
+          "Samarqand yaqinida, Zarafshon bo‘yida",
+          "Buxoroda",
+          "Xiva yaqinida"
+        ],
+        correct: 0, // A
+        exp: "Termiz yaqinidagi Amudaryoning o‘ng qirg‘og‘ida Kampir qal’asi joylashgan."
+      },
+      {
+        q: "26. Yunon-Baqtriya davlati hududiga dastlab qaysi o‘lka kirmagan edi?",
+        options: [
+          "Baqtriya",
+          "Misr",
+          "Sug‘diyona",
+          "Marg‘iyona"
+        ],
+        correct: 1, // B
+        exp: "Baqtriyadan tashqari, Yunon-Baqtriya podsholigi tarkibiga Sug‘diyona va Marg‘iyona ham kirgan (Misr kirmagan)."
+      },
+      {
+        q: "27. Salavkiylar davlati qaysi sarkarda hukmronligi ostida tashkil topgan?",
+        options: [
+          "Diodot",
+          "Aleksandr",
+          "Salavk",
+          "Antiox"
+        ],
+        correct: 2, // C
+        exp: "Makedoniyalik Aleksandrning laskarboshilaridan biri Salavk Bobil hukmdori bo‘ldi va Salavkiylar davlati tuzildi."
+      },
+      {
+        q: "28. Salavkiylar davlati hududida yangi shahar va qal’alar qurilishi nima uchun xizmat qilgan?",
+        options: [
+          "Faqat turarjoy uchun",
+          "Diniy marosimlar o‘tkazish uchun",
+          "Faqat harbiylarni yashirish uchun",
+          "Tinch hayot tiklanishi, savdo-sotiq, dehqonchilik va hunarmandchilikni rivojlantirish uchun"
+        ],
+        correct: 3, // D
+        exp: "Yangi qal’alar va shaharlar bunyod etilib, savdo-sotiq, dehqonchilik va hunarmandchilik rivojlana boshladi."
+      },
+      {
+        q: "29. Diodotdan keyin Yunon-Baqtriyada hokimiyatni kim egallagan?",
+        options: [
+          "Yevtidem",
+          "Salavk",
+          "Antiox",
+          "Mitridat I"
+        ],
+        correct: 0, // A
+        exp: "Diodotdan keyin Yunon-Baqtriyada hukmronlik Yevtidemga o‘tadi."
+      },
+      {
+        q: "30. Qadimgi O‘rta Osiyo hududida miloddan avvalgi III–II asrlarda zargarlik san’ati va savdo-sotiq rivojlanganligini nima isbotlaydi?",
+        options: [
+          "Misr piramidalari",
+          "Hukmdorlar tasviri tushirilgan tangalar va arxeologik topilmalar",
+          "Rim tangalari",
+          "Faqat tosh qurollar"
+        ],
+        correct: 1, // B
+        exp: "Yunon-Baqtriya davlatida hukmdorlar tasviri tushirilgan tangalar zarb qilingan, turli arxeologik topilmalar topilgan."
+      },
+      {
+        q: "31. Kampir qal’a arxeologik jihatdan qachon qurilgan deb topilgan?",
+        options: [
+          "Ahamoniylar davrida",
+          "Krit sivilizatsiyasi davrida",
+          "Makedoniyalik Aleksandrning Sug‘diyonaga yurishlari davrida (Oks-Amudaryodan o‘tish joyida)",
+          "Bobil podsholigi davrida"
+        ],
+        correct: 2, // C
+        exp: "Arxeologlarning aytishicha, qal’a Makedoniyalik Aleksandrning Sug‘diyonaga yurishlari davrida Oks — Amudaryodan o‘tish joyida qurilgan."
+      },
+      {
+        q: "32. Salavkiylar davlatining sharqiy qismini boshqargan shahzoda Antiox kimning evaziga qarindosh tutingan?",
+        options: [
+          "Doro III ning",
+          "To‘marisning",
+          "Fradaning",
+          "Oksiartning"
+        ],
+        correct: 3, // D
+        exp: "Aleksandr mahalliy sug‘d zodagonlari bilan munosabat o‘rnatib, Oksiartning qizi Roksanaga uylangani kabi, bu davrda ham sulolaviy yaqinliklar bo‘lgan (Antioxning bobosi Spitaman)."
+      },
+      {
+        q: "33. Makedoniyalik Aleksandr vafot etgan sana qaysi?",
+        options: [
+          "Mil. avv. 323-yil 13-iyun",
+          "Mil. avv. 312-yil",
+          "Mil. avv. 250-yil",
+          "Mil. avv. 334-yil"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 323-yil 13-iyunda Makedoniyalik Aleksandr vafot etadi."
+      },
+      {
+        q: "34. Salavkiylar davlati qancha vaqt davomida mintaqada hukmronlik qilgan?",
+        options: [
+          "Faqat 10 yil",
+          "Uzoq davom etgan o‘zaro urushlar va parchalanishlargacha",
+          "Faqat 500 yil",
+          "Bir yil"
+        ],
+        correct: 1, // B
+        exp: "Uzoq davom etgan o‘zaro urushlardan so‘ng mil. avv. 312-yilda Salavk Bobil hukmdori bo‘ldi va Salavkiylar davlati yuzaga keldi."
+      },
+      {
+        q: "35. O‘rta Osiyodagi Salavkiylar davriga oid qadimiy qal’alardan topilgan idishlar qanday vazifani bajargan?",
+        options: [
+          "Faqat diniy marosimlar uchun",
+          "Faqat bezak uchun",
+          "Ovqat pishirish uchun sopol qozonlar va suvdonlar, xumlar",
+          "Qurol yasash uchun"
+        ],
+        correct: 2, // C
+        exp: "Mazkur topilmalar ovqat pishirish uchun mo‘ljallangan sopol qozonlar va suvdonlar, xumlar, maishiy buyumlardan iborat."
+      },
+      {
+        q: "36. Yunon-Baqtriya davlatining tashkil topgan yili qaysi?",
+        options: [
+          "Mil. avv. 323-yil",
+          "Mil. avv. 312-yil",
+          "Mil. avv. 334-yil",
+          "Mil. avv. 250-yil"
+        ],
+        correct: 3, // D
+        exp: "Miloddan avvalgi 250-yilda Baqtriya Salavkiylar davlati tarkibidan ajralib chiqadi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! 37-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

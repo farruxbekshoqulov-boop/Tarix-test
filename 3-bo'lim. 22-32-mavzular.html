@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>III Bo‘lim: Qadimgi Yunoniston — Umumiy Takrorlash</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (40)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (40)</button>
+    </div>
+
+    <!-- 1. MOSLASH (8 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 8</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">III Bo‘lim bo‘yicha 8 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Qadimgi Yunoniston tarixiga oid barcha atamalar va voqealarni muvaffaqiyatli mosladingiz. Endi 40 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (40 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">III Bo‘lim Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">40 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          III Bo‘limning barcha asosiy mavzularini puxta takrorlab oldingiz. Endi 40 talik Katta Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Katta Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (40 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">III Bo‘lim Katta Test</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/40</div>
+        <h2 style="font-size: 20px; font-weight: 800;">III Bo‘lim Yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (8 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Geografiya va sivilizatsiyalar
+      [
+        { id: 1, left: "Olimp tog‘i", right: "Yunonistonning shimoli-sharqidagi eng baland cho‘qqi" },
+        { id: 2, left: "Minoy sivilizatsiyasi", right: "Krit orolida podsho Minos nomi bilan atalgan ilk madaniyat" },
+        { id: 3, left: "Axeylar", right: "Kritga bostirib kirib, Minoy sivilizatsiyasiga barham bergan qabilalar" },
+        { id: 4, left: "Doriylar", right: "Miken davlatini tugatib, Spartaga asos solgan qabilalar" }
+      ],
+      // 2-bosqich: Polis va Afina davlati
+      [
+        { id: 5, left: "Polis", right: "Yunoncha «shahar» ma’nosini bildiruvchi shahar-davlat" },
+        { id: 6, left: "Akropol", right: "Afina shahrining markazida joylashgan «yuqori shahar» qal’asi" },
+        { id: 7, left: "Meteklar", right: "Afinada yashagan, siyosiy huquqqa ega bo‘lmagan chet elliklar" },
+        { id: 8, left: "Pirey porti", right: "Afinaning asosiy dengiz bandargohi" }
+      ],
+      // 3-bosqich: Sparta va uning qatlamlari
+      [
+        { id: 9, left: "Lakonika", right: "Janubiy Yunonistonda Sparta davlati joylashgan o‘lka" },
+        { id: 10, left: "Ilotlar", right: "Spartaliklar qulga aylantirgan va davlatga tegishli mahalliy aholi" },
+        { id: 11, left: "Periyeklar", right: "Spartada to‘la huquqlarga ega bo‘lmagan erkin fuqarolar" },
+        { id: 12, left: "Falanga va goplitlar", right: "Yunon og‘ir qurollangan piyoda askarlari va ularning zich safi" }
+      ],
+      // 4-bosqich: Kolonizatsiya va islohotlar
+      [
+        { id: 13, left: "Buyuk Yunon koloniyalashtirishi", right: "Mil. avv. VIII–VI asrlarda O‘rta Yer va Qora dengiz bo‘ylarini egallash" },
+        { id: 14, left: "Ellada va ellinlar", right: "Yunonlar o‘z vataniga va o‘zlariga bergan yagona nom" },
+        { id: 15, left: "Drakont qonunlari", right: "Mil. avv. 621-yilda qabul qilingan o‘ta ayovsiz va qattiq qonunlar" },
+        { id: 16, left: "Solon islohotlari", right: "Mil. avv. 594-yilda qarz qulligini bekor qilgan islohotlar" }
+      ],
+      // 5-bosqich: Demokratiya va urushlar
+      [
+        { id: 17, left: "Demokratiya", right: "Afinada qaror topgan «xalq hokimiyati» boshqaruv shakli" },
+        { id: 18, left: "Perikl asri", right: "Mil. avv. 443–429-yillarda Afina demokratiyasi eng yuksak cho‘qqiga chiqqan davr" },
+        { id: 19, left: "Marafon jangi", right: "Mil. avv. 490-yilda yunonlar g‘alaba qozongan birinchi jang" },
+        { id: 20, left: "Fermopil jangi", right: "Leonid boshchiligidagi 300 spartalik qahramonlik ko‘rsatgan darasimon jang" }
+      ],
+      // 6-bosqich: Makedoniya va Xeroniya
+      [
+        { id: 21, left: "Filipp II", right: "Makedoniya podshosi bo‘lib, falanga armiyasini kuchaytirgan hukmdor" },
+        { id: 22, left: "Demosfen", right: "Ellada aholasini makedonlarga qarshi birlashishga chaqirgan notiq" },
+        { id: 23, left: "Xeroniya jangi", right: "Mil. avv. 338-yilda yunonlar mag‘lubiyatga uchragan hal qiluvchi jang" },
+        { id: 24, left: "Korinf kongressi", right: "Makedoniya hokimiyati ostida forslarga qarshi tuzilgan ittifoq" }
+      ],
+      // 7-bosqich: Tarbiya va Olimpiya o‘yinlari
+      [
+        { id: 25, left: "Palestra", right: "Puldor bolalar tahsil olgan xususiy gimnastika maktabi" },
+        { id: 26, left: "Mil. avv. 776-yil", right: "Olimpiya shahrida birinchi Olimpiya o‘yinlari o‘tkazilgan sana" },
+        { id: 27, left: "Zevs sharafiga", right: "Olimpiya o‘yinlari bag‘ishlab o‘tkazilgan oliy xudo" },
+        { id: 28, left: "Zaytun novdasi", right: "Olimpiya o‘yinlari g‘oliblari taqdirlangan muqaddas gulchambar" }
+      ],
+      // 8-bosqich: Madaniyat, teatr va ilm-fan
+      [
+        { id: 29, left: "Gomer", right: "«Iliada» va «Odizseya» dostonlarini yozgan shoir" },
+        { id: 30, left: "Sofokl va Aristofan", right: "Yunon teatri tragediya va komediya janrlari namoyandalari" },
+        { id: 31, left: "Arximed", right: "Sirakuzani himoya qilgan, richag qonunini yaratgan fizik" },
+        { id: 32, left: "Gerodot", right: "Yunon-fors urushlarini yozib qoldirgan «tarixning otasi»" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (40 TA INTEGRATSIYALASHGAN SAVOL) ---
+    const flashcards = [
+      { q: "1. Qadimgi Yunoniston qaysi hududlarni o‘z ichiga olgan va uni qaysi dengizlar o‘rab turgan?", a: "Bolqon yarimoroli va O‘rta Yer dengizi orollarini; O‘rta Yer va Egey dengizlari o‘rab turgan." },
+      { q: "2. Krit orolidagi ilk sivilizatsiya qanday atalgan?", a: "Minoy sivilizatsiyasi (podsho Minos nomi bilan)." },
+      { q: "3. Krit sivilizatsiyasiga dastlab nima talofat yetkazgan va uni oxir kim barbod qilgan?", a: "Zilzila va vulqon otilishi; qit’adan kelgan axey qabilalari barbod qilgan." },
+      { q: "4. Miken davlatining tugatilishiga va Sparta davlatining vujudga kelishiga nima sabab bo‘ldi?", a: "Mil. avv. XII asrda doriy qabilalarining Janubiy Yunonistonga bostirib kirishi." },
+      { q: "5. Yunonistonda shahar-davlatlar qanday atalgan?", a: "Polis (ya’ni «shahar»)." },
+      { q: "6. Afina shahri qaysi yarimorolda va uning markazidagi qal’a qanday nomlangan?", a: "Attika yarimorolida; markaziy qal’asi Akropol («yuqori shahar») deb atalgan." },
+      { q: "7. Afina aholisi qanday uchta asosiy guruhga bo‘lingan?", a: "Fuqarolar, meteklar (chet elliklar) va qullar." },
+      { q: "8. Afinaning asosiy dengiz porti (bandargohi) qanday atalgan?", a: "Pirey porti." },
+      { q: "9. Afina maktablarida o‘qish qonun bo‘yicha kimlar uchun majburiy bo‘lgan?", a: "Faqat o‘g‘il bolalar uchun." },
+      { q: "10. Puldor bolalar tahsil oladigan xususiy gimnastika maktabi nima deb atalgan?", a: "Palestra." },
+      { q: "11. Sparta davlati qaysi o‘lkada joylashgan va mahalliy qulga aylantirilgan aholi qanday atalgan?", a: "Lakonika o‘lkasida; qul qilingan mahalliy aholi ilotlar deb atalgan." },
+      { q: "12. Spartalik erkaklarning asosiy mashg‘uloti nima edi?", a: "Faqat harbiy ish bilan shug‘ullanish." },
+      { q: "13. Buyuk Yunon koloniyalashtirishi qaysi asrlarni o‘z ichiga oladi?", a: "Miloddan avvalgi VIII–VI asrlarni." },
+      { q: "14. Qora dengiz sohillarida tashkil topgan mashhur yunon koloniyalarini ayting.", a: "Olviya, Xersones, Pantikapey." },
+      { q: "15. Yunonlar o‘zlarini va o‘z vatanlarini nima deb atashgan?", a: "O‘zlarini ellinlar, vatanini esa Ellada deb atashgan." },
+      { q: "16. Drakont qonunlari qachon qabul qilingan va undagi yagona jazo qanday edi?", a: "Mil. avv. 621-yilda; yagona jazo o‘lim jazosi bo‘lgan." },
+      { q: "17. Solon islohotlari qachon o‘tkazilgan va u qanday muhim masalani hal qilgan?", a: "Mil. avv. 594-yilda; qarz qulligini bekor qilgan." },
+      { q: "18. «Demokratiya» so‘zining ma’nosi nima?", a: "«Xalq hokimiyati» (demos – xalq, kratos – hokimiyat)." },
+      { q: "19. Afina erkak fuqarolari Xalq majlisida necha yoshdan ishtirok etgan?", a: "20 yoshdan boshlab." },
+      { q: "20. «Perikl asri» qaysi yillarni o‘z ichiga oladi va bu davrda nima joriy etildi?", a: "Mil. avv. 443–429-yillar; davlat lavozimlariga ish haqi to‘lash joriy etildi." },
+      { q: "21. Perikl tashabbusi bilan Akropolda qaysi ibodatxona qurilgan?", a: "Parfenon (ma’buda Afina ibodatxonasi)." },
+      { q: "22. Birinchi yunon-fors jangi qachon va qayerda bo‘ldi?", a: "Mil. avv. 490-yili Marafon tekisligida." },
+      { q: "23. «Marafon yugurishi» sport turi qanday voqeadan kelib chiqqan?", a: "Marafon g‘alabasini xabar qilish uchun 42 km chopib kelib jon bergan jangchi sharafiga." },
+      { q: "24. Kserks yurishi davrida 300 spartalik qaysi darajada qahramonlik ko‘rsatgan?", a: "Fermopil darasida." },
+      { q: "25. Yunonlar va forslar o‘rtasidagi hal qiluvchi dengiz jangi qayerda bo‘ldi?", a: "Salamin bo‘g‘ozida (mil. avv. 480-yilda)." },
+      { q: "26. Yunon-fors urushlari qaysi yildagi sulh bilan yakunlandi?", a: "Mil. avv. 449-yildagi sulh bilan." },
+      { q: "27. Makedoniya armiyasining asosiy zarba beruvchi safi qanday atalgan?", a: "Falanga (16 qatordan iborat piyodalar saflanishi)." },
+      { q: "28. Makedonlarga qarshi kurashish uchun afinaliklarni chaqirgan mashhur notiq kim?", a: "Demosfen." },
+      { q: "29. Xeroniya jangi qachon va kimlarning g‘alabasi bilan yakunlandi?", a: "Mil. avv. 338-yilda makedoniyaliklarning g‘alabasi bilan." },
+      { q: "30. Xeroniya jangidan so‘ng Yunoniston qanday ahvonga tushdi?", a: "Makedoniyaga qaram bo‘lib qoldi." },
+      { q: "31. Qadimgi Yunonistonda yigitlar harbiy ta’limni necha yil olgan va qayerda o‘tagan?", a: "2 yil; Attika chegara qal’alari va Pirey portida." },
+      { q: "32. Birinchi Olimpiya o‘yinlari qachon va qayerda o‘tkazilgan?", a: "Mil. avv. 776-yilda Olimpiya shahrida (Zevs sharafiga)." },
+      { q: "33. Qadimgi Olimpiya o‘yinlari qachon taqiqlangan va qachon qayta tiklangan?", a: "Milodiy 394-yilda taqiqlangan, 1896-yilda qayta tiklangan." },
+      { q: "34. Gomer qaysi mashhur dostonlarni yozgan?", a: "«Iliada» va «Odizseya» dostonlarini." },
+      { q: "35. Troya urushida yunonlarning g‘alaba qozonishiga sabab bo‘lgan hiyla nima edi?", a: "Ichiga jangchilar yashiringan ulkan yog‘och ot — Troya oti." },
+      { q: "36. «Axilles tovoni» va «Troya oti» iboralari nimani anglatadi?", a: "Axilles tovoni — insonning nozik joyi; Troya oti — xosiyatsiz sovg‘a." },
+      { q: "37. Yunon teatrida tragediya va komediyalarning eng mashhur mualliflari kimlar edi?", a: "Sofokl (tragediya) va Aristofan (komediya)." },
+      { q: "38. Akropoldagi Parfenon qurilishiga boshchilik qilgan buyuk haykaltarosh kim?", a: "Fidiy." },
+      { q: "39. «Hamma narsa oqadi, hamma narsa o‘zgaruvchan» degan faylasuf kim?", a: "Geraklit." },
+      { q: "40. Richag qonunini yaratgan va Sirakuzani himoya qilgan buyuk fizik kim?", a: "Arximed." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (40 TA ARALASH TEST - JAVOBLAR 10 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Krit orolidagi ilk qadimiy sivilizatsiya nima deb atalgan?",
+        options: [
+          "Minoy sivilizatsiyasi",
+          "Miken sivilizatsiyasi",
+          "Sparta sivilizatsiyasi",
+          "Attika sivilizatsiyasi"
+        ],
+        correct: 0, // A
+        exp: "Krit orolidagi sivilizatsiya afsonaviy podsho Minos nomi bilan Minoy sivilizatsiyasi deb atalgan."
+      },
+      {
+        q: "2. Qadimgi Afinaning markazida joylashgan «yuqori shahar» qal’asi qanday atalgan?",
+        options: [
+          "Agora",
+          "Akropol",
+          "Palestra",
+          "Pirey"
+        ],
+        correct: 1, // B
+        exp: "Attikaning g‘arbiy qismida yunonlar Akropol, ya’ni «yuqori shahar» deb atalgan qal’a qurishgan."
+      },
+      {
+        q: "3. Spartada qulga aylantirilib, davlat mulki hisoblangan mahalliy aholi kimlar edi?",
+        options: [
+          "Meteklar",
+          "Periyeklar",
+          "Ilotlar",
+          "Goplitlar"
+        ],
+        correct: 2, // C
+        exp: "Spartaliklar qulga aylantirgan mahalliy aholi ilotlar deb atalgan."
+      },
+      {
+        q: "4. Miloddan avvalgi VIII–VI asrlarda O‘rta Yer va Qora dengiz sohillarida yangi yerlarning o‘zlashtirilishi qanday nomlangan?",
+        options: [
+          "Ellinizm davri",
+          "Marafon yurishi",
+          "Kolonizatsiya",
+          "Buyuk Yunon koloniyalashtirishi"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. VIII–VI asrlardagi bu davr tarixda Buyuk Yunon koloniyalashtirishi nomini olgan."
+      },
+      {
+        q: "5. Miloddan avvalgi 621-yilda Afinada o‘ta qattiq va ayovsiz qonunlar yozgan qonunchi kim edi?",
+        options: [
+          "Drakont",
+          "Solon",
+          "Perikl",
+          "Fidiy"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 621-yilda Drakont xalq boshqaruvini bekor qilgan qonunlarni yozadi va bitta jazo — o‘lim jazosini belgilaydi."
+      },
+      {
+        q: "6. Miloddan avvalgi 594-yilda Afinada qarz qulligini bekor qilgan islohotchi hukmdor kim?",
+        options: [
+          "Drakont",
+          "Solon",
+          "Filipp II",
+          "Aleksandr"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. 594-yilda Solon davlatni idora qilish tizimini o‘zgartirib, qarz qulligini bekor qildi."
+      },
+      {
+        q: "7. Qadimgi Afinada qaror topgan boshqaruv shakli bo‘lgan «demokratiya» so‘zining ma’nosi nima?",
+        options: [
+          "Aslzodalar hokimiyati",
+          "Harbiy diktatura",
+          "«Xalq hokimiyati»",
+          "Kohinlar hukumati"
+        ],
+        correct: 2, // C
+        exp: "Demokratiya — bu atama «xalq hokimiyati» degan ma’noni anglatadi."
+      },
+      {
+        q: "8. Miloddan avvalgi 443–429-yillarda Afina demokratiyasi yuksak cho‘qqiga chiqqan davr tarixda qanday ataladi?",
+        options: [
+          "Gomer davri",
+          "Minoy davri",
+          "Drakont davri",
+          "«Perikl asri»"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. 443–429-yillarda 15 marotaba strateg lavozimiga saylangan Perikl hukmronlik davri «Perikl asri» deb atalgan."
+      },
+      {
+        q: "9. Birinchi yunon-fors jangi miloddan avvalgi 490-yilda qayerda bo‘lib o‘tdi?",
+        options: [
+          "Marafon tekisligida",
+          "Salamin bo‘g‘ozida",
+          "Fermopil darasida",
+          "Plateya shahrida"
+        ],
+        correct: 0, // A
+        exp: "Birinchi jang mil. avv. 490-yili Attika yarimorolining Marafon tekisligida bo‘lib o‘tdi."
+      },
+      {
+        q: "10. Fermopil darasida qahramonlik ko‘rsatgan 300 spartalikka boshchilik qilgan shoh kim edi?",
+        options: [
+          "Kserks",
+          "Leonid",
+          "Doro I",
+          "Filipp II"
+        ],
+        correct: 1, // B
+        exp: "Fermopil darasini matonat bilan himoya qilgan qo‘shinga Sparta podshosi Leonid boshchilik qildi."
+      },
+      {
+        q: "11. Yunonistonni bosib olishni rejalashtirgan va falanga armiyasini mukammallashtirgan Makedoniya podshosi kim?",
+        options: [
+          "Aleksandr",
+          "Demosfen",
+          "Filipp II",
+          "Sofokl"
+        ],
+        correct: 2, // C
+        exp: "Makedoniya podshosi Filipp II Yunonistonni bosib olishni ko‘zlagandi va suvoriy hamda piyodalardan iborat falanga tuzdi."
+      },
+      {
+        q: "12. Makedonlarga qarshi kurashish uchun ellinlarni birlashishga chaqirgan mashhur afinalik notiq kim?",
+        options: [
+          "Gerodot",
+          "Fidiy",
+          "Gomer",
+          "Demosfen"
+        ],
+        correct: 3, // D
+        exp: "Mashhur notiq Demosfen Ellada shahar-marazlarini makedonlarga qarshi birlashishga da’vat etdi."
+      },
+      {
+        q: "13. Yunon va makedonlarning asosiy kuchlari Xeroniya shahrining ostonasida qachon to‘qnashdilar?",
+        options: [
+          "Mil. avv. 338-yilda",
+          "Mil. avv. 490-yilda",
+          "Mil. avv. 480-yilda",
+          "Mil. avv. 449-yilda"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 338-yilda yunon va makedonlarning asosiy kuchlari Xeroniya ostonasida to‘qnashdi."
+      },
+      {
+        q: "14. Puldor ota-onalarning o‘g‘il bolalari tahsil olgan xususiy gimnastika maktabi qanday nomlangan?",
+        options: [
+          "Akropol",
+          "Palestra",
+          "Agora",
+          "Pirey"
+        ],
+        correct: 1, // B
+        exp: "Puldor ota-onalarning farzandlari palestra — xususiy gimnastika maktablarida o‘qigan."
+      },
+      {
+        q: "15. Qadimgi Yunonistonda birinchi Olimpiya o‘yinlari qachon o‘tkazilgan?",
+        options: [
+          "Mil. avv. 490-yilda",
+          "Miladiy 394-yilda",
+          "Mil. avv. 776-yilda",
+          "1896-yilda"
+        ],
+        correct: 2, // C
+        exp: "Mil. avv. 776-yilda Olimpiya shahrida birinchi o‘yinlar o‘tkazilgan."
+      },
+      {
+        q: "16. Qadimgi yunon shoiri Gomer qaysi mashhur dostonlarni yozgan?",
+        options: [
+          "«Shohnoma» va «Avesto»",
+          "«Mahabharata» va «Ramayana»",
+          "«Shoh Edip» va «Antigona»",
+          "«Iliada» va «Odizseya»"
+        ],
+        correct: 3, // D
+        exp: "Qadimgi yunon shoiri Gomer «Iliada» va «Odizseya» dostonlarini yozgan."
+      },
+      {
+        q: "17. «Shoh Edip» va «Antigona» tragediyalarining muallifi kim?",
+        options: [
+          "Sofokl",
+          "Aristofan",
+          "Gerodot",
+          "Fidiy"
+        ],
+        correct: 0, // A
+        exp: "Yunon dramaturqi Sofokl «Shoh Edip» va «Antigona» tragediyalarini yozgan."
+      },
+      {
+        q: "18. Inson nuqsonlaridan kuluvchi mashhur komediyalar muallifi kim edi?",
+        options: [
+          "Sofokl",
+          "Aristofan",
+          "Gomer",
+          "Dedal"
+        ],
+        correct: 1, // B
+        exp: "Komediyalarning eng mashhur muallifi Aristofan edi."
+      },
+      {
+        q: "19. Akropoldagi mashhur Parfenon ibodatxonasi qurilishiga boshchilik qilgan buyuk haykaltarosh kim?",
+        options: [
+          "Geraklit",
+          "Demokrit",
+          "Fidiy",
+          "Arximed"
+        ],
+        correct: 2, // C
+        exp: "Yunon haykaltaroshi Fidiy Akropoldagi Parfenon ibodatxonasi qurilishiga boshchilik qilgan."
+      },
+      {
+        q: "20. Ilmiy masala yechimini topib, «Evrika!» («Topdim!») deb qiyqirgan yunon fizigi va matematigi kim?",
+        options: [
+          "Gerodot",
+          "Diogen",
+          "Geraklit",
+          "Arximed"
+        ],
+        correct: 3, // D
+        exp: "Barcha zamonlarda olimlar ilmiy masala yechimini topgan yirik yunon fizigi va matematigi Arximed edi."
+      },
+      {
+        q: "21. Qadimda «tarixning otasi» degan faxriy nom olgan yunon olimi kim?",
+        options: [
+          "Gerodot",
+          "Gomer",
+          "Sofokl",
+          "Aristofan"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. V asrda yashagan Gerodotga «tarixning otasi» degan nom berilgan."
+      },
+      {
+        q: "22. Qadimgi yunon mifologiyasiga ko‘ra, osmonning oliy xudosi kim hisoblangan?",
+        options: [
+          "Poseydon",
+          "Zevs",
+          "Aid",
+          "Gefest"
+        ],
+        correct: 1, // B
+        exp: "Zevs — osmonda hukmronlik qilgan oliy xudo edi."
+      },
+      {
+        q: "23. Qadimgi Yunonistonni shimoldan tashqari qaysi dengizlar o‘rab turgan?",
+        options: [
+          "Qizil va Kaspiy dengizlari",
+          "Boltiq va Shimoliy dengizlar",
+          "O‘rta Yer va Egey dengizlari",
+          "Qora va Orol dengizlari"
+        ],
+        correct: 2, // C
+        exp: "Qadimgi Yunonistonni O‘rta Yer va Egey dengizlari o‘rab turgan."
+      },
+      {
+        q: "24. Afinada meteklar deb kimlarga aytilgan?",
+        options: [
+          "Davlatni boshqaruvchi strateglarga",
+          "Qul qilingan mahalliy aholiga",
+          "Ibodatxona kohinlariga",
+          "To‘la huquqlarga ega bo‘lmagan chet elliklarga"
+        ],
+        correct: 3, // D
+        exp: "Afinada chet elliklar meteklar deb atalgan va ularning siyosiy huquqlari bo‘lmagan."
+      },
+      {
+        q: "25. Sparta davlati qaysi qabilalarning Janubiy Yunonistonga bostirib kirishi natijasida tuzilgan?",
+        options: [
+          "Doriylar",
+          "Axeylar",
+          "Giksoslar",
+          "Skiflar"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. XII asrda doriylar Lakonikaga bostirib kirib, Spartaga asos solgan."
+      },
+      {
+        q: "26. Yunonlar o‘zlarini va vatanlarini qanday atashgan?",
+        options: [
+          "Varvarlar va Attika",
+          "Ellinlar va Ellada",
+          "Goplitlar va Polis",
+          "Meteklar va Lakonika"
+        ],
+        correct: 1, // B
+        exp: "Yunonlar o‘zlarini ellinlar, vatanini esa Ellada deb atagan."
+      },
+      {
+        q: "27. Salamin dengiz jangi qachon va qayerda bo‘lib o‘tdi?",
+        options: [
+          "Mil. avv. 490-yilda Marafon tekisligida",
+          "Mil. avv. 338-yilda Xeroniya ostonasida",
+          "Mil. avv. 480-yilda Salamin bo‘g‘ozida",
+          "Mil. avv. 479-yilda Plateyada"
+        ],
+        correct: 2, // C
+        exp: "Hal qiluvchi dengiz jangi mil. avv. 480-yilda tor Salamin bo‘g‘ozida bo‘lib o‘tdi."
+      },
+      {
+        q: "28. Qadimgi Yunonistonda qasamyod qilgan yigitlar harbiy xizmatning ikkinchi yilida qayerda xizmat o‘taganlar?",
+        options: [
+          "Olimpiya shahrida",
+          "Krit orolida",
+          "Marafon tekisligida",
+          "Attika chegara qal’alari va Pirey portida"
+        ],
+        correct: 3, // D
+        exp: "Ikkinchi yili ayrimlari Attika chegara qal’alarida, boshqalari esa Pirey portida xizmat qilgan."
+      },
+      {
+        q: "29. Qadimgi yunon shoiri Gomerning dostonlarida tilga olingan Troya shahri qayerda joylashgan edi?",
+        options: [
+          "Kichik Osiyoning Egey dengizi qirg‘og‘ida",
+          "Krit orolining markazida",
+          "Peloponnes yarimorolining janubida",
+          "Attika tekisligida"
+        ],
+        correct: 0, // A
+        exp: "Taxminan mil. avv. 1200-yilda Egey dengizi qirg‘og‘idagi Kichik Osiyoda joylashgan Troyaga yurish qilingan."
+      },
+      {
+        q: "30. Arximed o‘zining qaysi kashfiyoti yordamida Sirakuzaga hujum qilgan dushman kemalarini yondirib yuborgan?",
+        options: [
+          "Richag (dastak) yordamida",
+          "O‘t qo‘yuvchi ko‘zgular (yorug‘likni jamlash) yordamida",
+          "Katta tosh otish moslamalari orqali",
+          "Suvosti quvurlari orqali"
+        ],
+        correct: 1, // B
+        exp: "Arximed yorug‘likni ko‘zgu orqali jamlab, rimliklar kemalarini yondirib yuborgan."
+      },
+      {
+        q: "31. Qadimgi yunon mifologiyasida o‘n ikki jasorati bilan tanilgan afsonaviy bahodir kim?",
+        options: [
+          "Axilles",
+          "Odizsey",
+          "Gerakl",
+          "Paris"
+        ],
+        correct: 2, // C
+        exp: "Gerakl o‘n ikki jasorati tufayli xudolar saltanatida faxrli o‘rin egallagan."
+      },
+      {
+        q: "32. Yunon teatrida sahna ko‘rinishlarini yoritish va o‘tkazish vaqti qanday tashkil etilgan?",
+        options: [
+          "Faqat tunda mash’allar ostida",
+          "Faqat qish faslida yopiq zallarda",
+          "Faqat quyosh botgandan keyin",
+          "Ertalabdan boshlangan tomoshalar kun bo‘yi davom etgan"
+        ],
+        correct: 3, // D
+        exp: "Ertandan boshlangan tomoshalar kun bo‘yi davom etardi."
+      },
+      {
+        q: "33. Qadimgi Afinada o‘g‘il bolalar maktabga borishni necha yoshdan boshlaganlar?",
+        options: [
+          "7 yoshdan",
+          "10 yoshdan",
+          "14 yoshdan",
+          "20 yoshdan"
+        ],
+        correct: 0, // A
+        exp: "Yetti yoshdan boshlab bolalarga yozuv va hisob o‘rgatilgan."
+      },
+      {
+        q: "34. «Yer yuzidagi hamma narsa olovdan kelib chiqqan» degan taniqli yunon faylasuvi kim?",
+        options: [
+          "Demokrit",
+          "Geraklit",
+          "Diogen",
+          "Arximed"
+        ],
+        correct: 1, // B
+        exp: "Mashhur yunon faylasuvi Geraklit yer yuzidagi hamma narsa olovdan kelib chiqqan deb uqtirgan."
+      },
+      {
+        q: "35. Qadimgi Yunonistonda qaysi shahar-davlat harbiy lager ko‘rinishida bo‘lib, u yerda san’at va hashamat bo‘lmagan?",
+        options: [
+          "Afina",
+          "Milet",
+          "Sparta",
+          "Efes"
+        ],
+        correct: 2, // C
+        exp: "Sparta urushga tayyorgarlik ko‘rayotgan shaharga o‘xshab qolgandi, hashamatli ibodatxonalar bo‘lmagan."
+      },
+      {
+        q: "36. Yunon-fors urushlari natijasida qaysi shahar-davlatlar iqtisodiy va madaniy yuksalish (Klassik davr) davriga kirdi?",
+        options: [
+          "Faqat Fors shaharlari",
+          "Misr shaharlari",
+          "Krit oroli shahar-davlatlari",
+          "Yunon polislari (jumladan Afina)"
+        ],
+        correct: 3, // D
+        exp: "Yunon-fors urushlaridagi g‘alaba yunon polislari (Afina va boshqalar) uchun yuksalish davrini ochib berdi."
+      },
+      {
+        q: "37. Qadimgi Yunonistonda bolalar mum surkalgan taxtachalarga yozish uchun qaysi quroldan foydalanganlar?",
+        options: [
+          "Stil (bronza tayoqcha)",
+          "Qamish qalam",
+          "Temir qalamcha",
+          "Mo‘yqalam"
+        ],
+        correct: 0, // A
+        exp: "Mum surkalgan taxtachalarga harflarni bronza tayoqcha — stil bilan yozishgan."
+      },
+      {
+        q: "38. Frakiyalik Demokritning asosiy ilmiy-falsafiy g‘oyasi nima edi?",
+        options: [
+          "Olam faqat suvdan iborat",
+          "Dunyo ko‘zga ko‘rinmaydigan mayda zarrachalar — atomlardan tashkil topgan",
+          "Yer olamning markazi hisoblanadi",
+          "Hamma narsa olovdan iborat"
+        ],
+        correct: 1, // B
+        exp: "Demokrit dunyo ko‘zga ko‘rinmaydigan mayda zarrachalar — atomlardan tashkil topgan degan fikrni bayon etgan."
+      },
+      {
+        q: "39. Afina davlatida Xalq majlisida ovoz berish huquqiga ega bo‘lgan shaxslar kimlar edi?",
+        options: [
+          "Barcha aholi, jumladan qullar",
+          "Faqat badavlat chet elliklar",
+          "20 yoshga to‘lgan ozod afinalik erkak fuqarolar",
+          "Barcha yoshdagi ayollar va bolalar"
+        ],
+        correct: 2, // C
+        exp: "Barcha erkak fuqarolar 20 yoshdan boshlab Xalq majlisida ishtirok etardi va ovoz berardi."
+      },
+      {
+        q: "40. Qadimgi Olimpiya o‘yinlari g‘oliblari taqdirlangan muqaddas daraxt novdasi qaysi edi?",
+        options: [
+          "Palma novdasi",
+          "Limon novdasi",
+          "Qayin novdasi",
+          "Zaytun novdasi"
+        ],
+        correct: 3, // D
+        exp: "G‘oliblar muqaddas zaytun daraxti novdalaridan to‘qilgan gulchambar bilan taqdirlangan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 36) fb.innerText = "Mukammal natija! III Bo‘limni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "III Bo‘lim mavzularini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

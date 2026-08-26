@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>25-§. Yunon koloniyalari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (20)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (24)</button>
+    </div>
+
+    <!-- 1. MOSLASH (4 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">4 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va koloniya tushunchalarini muvaffaqiyatli mosladingiz. Endi 20 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (20 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">25-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 20</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">20 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 24 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (24 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">25-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 24</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/24</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Asosiy atamalar va nomlar
+      [
+        { id: 1, left: "Ellinlar", right: "Yunonlar o‘zlarini atagan yagona xalq nomi" },
+        { id: 2, left: "Ellada", right: "Qadimgi yunonlar o‘z vataniga bergan nom" },
+        { id: 3, left: "«Varvarlar»", right: "Yunonlar tevarakda yashovchi yunon bo‘lmagan xalqlarga bergan nom" },
+        { id: 4, left: "Buyuk Yunon koloniyalashtirishi", right: "Mil. avv. VIII–VI asrlarda yangi yerlarni egallash davri" }
+      ],
+      // 2-bosqich: Qora dengiz sohillari va koloniyalar
+      [
+        { id: 5, left: "Olviya, Xersones, Pantikapey", right: "Qora dengiz bo‘ylarida tashkil topgan mashhur yunon koloniyalari" },
+        { id: 6, left: "Sitsiliya va Apennin janubi", right: "Yunonistondan ko‘chib kelganlar dastlab o‘rnashgan hududlar" },
+        { id: 7, left: "Loy surtilgan qamish savatcha", right: "Yunonlar vatan olovini olib ketgan maxsus idish" },
+        { id: 8, left: "Mil. avv. VIII–VI asrlar", right: "Buyuk Yunon koloniyalarining keng tashkil topish davri" }
+      ],
+      // 3-bosqich: Koloniyalarning tuzilishi va sabablari
+      [
+        { id: 9, left: "Ko‘chib ketish sababi", right: "Zodagonlardan qarzdor bo‘lib qolish va yersizlik" },
+        { id: 10, left: "Vatan olovi", right: "Umrbod tark etilgan vatan ramzi sifatida olib ketilgan olov" },
+        { id: 11, left: "Mustaqil shahar-davlatlar", right: "O‘z hokimi, qo‘shini, qonuni va tangasiga ega bo‘lgan koloniyalar" },
+        { id: 12, left: "Polislar bilan aloqa", right: "Koloniyalar va Yunoniston shaharlari o‘rtasidagi doimiy munosabat" }
+      ],
+      // 4-bosqich: Dengizlar va iqtisodiy rivojlanish
+      [
+        { id: 13, left: "O‘rta Yer va Qora dengiz", right: "Yunon koloniyalari bo‘ylarida vujudga kelgan dengizlar" },
+        { id: 14, left: "Qurbonliklar bag‘ishlash", right: "Olis va xavfli dengiz safariga jo‘nash oldidan qilingan odat" },
+        { id: 15, left: "Hunarmandchilik va savdo", right: "Yunon koloniyalarida yuksak rivojlangan xo‘jalik sohalari" },
+        { id: 16, left: "Olis yo‘l xavfi", right: "Begona yurtlarda omadini sinashga majbur qilgan og‘ir hayotiy sabab" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (20 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Qadimgi Yunonistonda odamlar nima sababdan o‘z vatanini tark etib, koloniyalarga ketishga majbur bo‘lgan?", a: "Zodagonlardan qarzdor bo‘lib qolgan, o‘z yer va mulkiga ega bo‘lmaganligi sababli begona yurtlarda omadini sinash uchun." },
+      { q: "2. Yunonlar olis safarga jo‘nab ketish oldidan qanday diniy marosimlarni bajarganlar?", a: "Ma’budlarga atab qurbonliklar bag‘ishlaganlar." },
+      { q: "3. Ko‘chib ketuvchilar o‘zlari bilan qanday o‘ziga xos idishda olov olib ketishgan va bu nimani anglatgan?", a: "Loy surtilgan, qamishdan to‘qilgan savatchalarda olov olishgan; bu ular umrbod tark etgan vatanning bir parchasi edi." },
+      { q: "4. Yunonistondan ko‘chib kelganlar dastlab qaysi hududlarga o‘rnashganlar?", a: "Sitsiliya oroli sohili va Apennin yarimoroli janubiga o‘rnashganlar." },
+      { q: "5. Yunon koloniyalari qaysi dengizlar bo‘ylarida vujudga kelgan?", a: "O‘rta Yer va Qora dengiz bo‘ylarida vujudga kelgan." },
+      { q: "6. Yunon koloniyalarining ichki davlatchilik tuzilishi qanday bo‘lgan?", a: "Ular shahar-davlatlarga aylangan: o‘z hokimlari, qo‘shinlari, qonunlari va tangalariga ega bo‘lgan." },
+      { q: "7. Yunon koloniyalarida xo‘jalikning qaysi sohalari rivojlangan?", a: "Savdo-sotiq va hunarmandchilik rivojlangan." },
+      { q: "8. Koloniyalarning aholisi Yunoniston shaharlari bilan qanday aloqada bo‘lgan?", a: "Yunoniston polislari bilan doimiy iqtisodiy va madaniy aloqada bo‘lgan." },
+      { q: "9. Qadimgi yunonlar o‘zlarini yagona xalq sifatida nima deb atashgan?", a: "«Ellinlar» deb atashgan." },
+      { q: "10. Qadimgi yunonlar o‘z vatanini qanday nom bilan atashgan?", a: "«Ellada» deb atashgan." },
+      { q: "11. Yunonlar o‘zlashtirilgan yerlar tevaragida yashovchi yunon bo‘lmagan xalqlarni kim deb atashgan?", a: "«Varvarlar» deb atashgan." },
+      { q: "12. Buyuk Yunon koloniyalashtirishi qaysi asrlarni o‘z ichiga oladi?", a: "Miloddan avvalgi VIII–VI asrlarni o‘z ichiga oladi." },
+      { q: "13. Qora dengiz sohillarida vujudga kelgan mashhur yunon koloniyalarini sanang.", a: "Olviya, Xersones, Pantikapey shaharlari." },
+      { q: "14. «Buyuk Yunon koloniyalashtirishi» iborasi nimani anglatadi?", a: "Mil. avv. VIII–VI asrlarda yunonlarning O‘rta Yer va Qora dengiz sohillarida ko‘plab yangi shaharlar barpo etish davrini." },
+      { q: "15. Koloniyalarda zarb qilingan tangalarning ahamiyati nimada edi?", a: "Ularning mustaqil iqtisodiyotga va boshqa xalqlar bilan keng savdo aloqalariga ega ekanligini ko‘rsatgan." },
+      { q: "16. Nima uchun yunonlar vatan olovini yangi shaharga olib borganlar?", a: "Yangi joyda vatan o‘chog‘ini yoqish va ajdodlar an’anasini davom ettirish uchun." },
+      { q: "17. Yunon koloniyalarining metropoliya (ona shahar)dan asosiy farqi nimada bo‘lgan?", a: "Ular yangi o‘zlashtirilgan yerlarda joylashgan bo‘lsa-da, to‘la mustaqil shahar-davlat hisoblangan." },
+      { q: "18. «Varvar» so‘zi dastlab qanday tushunchani bildirgan?", a: "Yunon tilida gapirmaydigan, tili tushunarsiz bo‘lgan barcha begona xalqlarni." },
+      { q: "19. Yunon koloniyalari orqali Yunonistonga nimalar keltirilgan?", a: "G‘alla, qoramol, xomashyo, qimmatbaho toshlar va qullar." },
+      { q: "20. Koloniyalardan Yunonistondan nimalar olib kelib sotilgan?", a: "Zaytun moyi, uzum vinosi, nafis sopol idishlar va qurollar." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (24 TA TEST - JAVOBLAR 6 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Qadimgi yunonlar o‘z vatanini nima deb ataganlar?",
+        options: [
+          "Ellada",
+          "Polis",
+          "Attika",
+          "Lakonika"
+        ],
+        correct: 0, // A
+        exp: "Yunonlar o‘z vatanini Ellada deb atagan."
+      },
+      {
+        q: "2. Qora dengiz sohillarida tashkil topgan mashhur yunon koloniyalari qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Tir, Sidon, Ugarit",
+          "Olviya, Xersones, Pantikapey",
+          "Afina, Sparta, Miken",
+          "Suza, Ekbatana, Persepol"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. VIII–VI asrlarda Qora dengiz bo‘ylarida Olviya, Xersones, Pantikapey kabi ko‘pdan ko‘p koloniyalar tashkil topdi."
+      },
+      {
+        q: "3. Yunonlar o‘zlashtirilgan yerlar tevaragida yashovchi yunon bo‘lmagan barcha xalqlarni nima deb atashgan?",
+        options: [
+          "Ellinlar",
+          "Meteklar",
+          "«Varvarlar»",
+          "Ilotlar"
+        ],
+        correct: 2, // C
+        exp: "Yunonlar o‘zlashtirilgan yerlar tevaragida yashovchi yunon bo‘lmagan xalqlarni «varvarlar» deb atagan."
+      },
+      {
+        q: "4. Buyuk Yunon koloniyalashtirishi qaysi asrlarda yuz bergan?",
+        options: [
+          "Miloddan avvalgi XII asrda",
+          "Miloddan avvalgi IV asrda",
+          "Miloddan avvalgi III asrda",
+          "Miloddan avvalgi VIII–VI asrlarda"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. VIII–VI asrlardagi bu davr tarixda Buyuk Yunon koloniyalashtirishi nomini olgan."
+      },
+      {
+        q: "5. Yunonistondan ko‘chib ketuvchilar o‘zlari bilan qanday idishda vatan olovini olib ketishgan?",
+        options: [
+          "Loy surtilgan, qamishdan to‘qilgan savatchalarda",
+          "Sopol xumlarda",
+          "Bronza qozonlarda",
+          "Temir qutilarda"
+        ],
+        correct: 0, // A
+        exp: "O‘zlari bilan birga loy surtilgan, qamishdan to‘qilgan savatchalarda olov ham olishgan."
+      },
+      {
+        q: "6. Qadimgi yunonlar o‘zlarini yagona xalq sifatida qanday nom bilan ataganlar?",
+        options: [
+          "Varvarlar",
+          "Ellinlar",
+          "Goplitlar",
+          "Axeylar"
+        ],
+        correct: 1, // B
+        exp: "Yunonlar o‘zini yagona xalq — ellinlar deb hisoblagan."
+      },
+      {
+        q: "7. Qadimgi Yunonistonda aholining o‘z yurtini tark etib, begona yurtlarga ketishiga asosiy sabab nima edi?",
+        options: [
+          "Faqat yangi o‘yinlar ixtiro qilish istagi",
+          "Begona yurtlarni bosib olib qul qilish",
+          "Zodagonlardan qarzdor bo‘lib qolish, yer va mulkka ega bo‘lmaslik",
+          "Daryolar toshqini sababli"
+        ],
+        correct: 2, // C
+        exp: "Zodagonlardan qarzdor bo‘lib qolgan, o‘z yer va mulkiga ega bo‘lmagan ko‘plab odamlar o‘z vatanini tark etishga majbur bo‘lgan."
+      },
+      {
+        q: "8. Yunonistondan ko‘chib kelganlar dastlab qaysi orol va yarimorolga o‘rnashdilar?",
+        options: [
+          "Krit oroli va Bolqon shimoliga",
+          "Kipr oroli va Sinay yarimoroliga",
+          "Rodos oroli va Kichik Osiyoga",
+          "Sitsiliya oroli sohili va Apennin yarimoroli janubiga"
+        ],
+        correct: 3, // D
+        exp: "Yunonistondan ko‘chib kelganlar Sitsiliya oroli sohili va Apennin yarimoroli janubiga o‘rnashdi."
+      },
+      {
+        q: "9. Yunon koloniyalarining shahar-davlat sifatida mustaqil bo‘lganligini qaysi omillar isbotlaydi?",
+        options: [
+          "O‘z hokimlari, qo‘shinlari, qonunlari va tangalari bo‘lgani",
+          "Faqat bitta podshoga soliq to‘lagani",
+          "Devorlari bo‘lmaganligi",
+          "Yunon tili taqiqlangani"
+        ],
+        correct: 0, // A
+        exp: "Bu shaharlarning o‘z hokimlari, qo‘shinlari, qonunlari va tangalari bo‘lgan."
+      },
+      {
+        q: "10. Yunonlar olis va xavfli dengiz safariga jo‘nashdan oldin qanday marosimni bajarganlar?",
+        options: [
+          "Faqat yangi kemalar yasaganlar",
+          "Ma’budlarga qurbonliklar bag‘ishlaganlar",
+          "Barcha mollarini sotganlar",
+          "Boshqa davlatlar bilan shartnoma tuzganlar"
+        ],
+        correct: 1, // B
+        exp: "Jo‘nab ketish oldidan yunonlar ma’budlarga qurbonliklar bag‘ishlagan."
+      },
+      {
+        q: "11. Yunon ko‘chmachilari olib ketgan olov ular uchun qanday ramziy ma’noga ega edi?",
+        options: [
+          "Faqat ovqat pishirish vositasi",
+          "Yovvoyi hayvonlarni qo‘rqitish quroli",
+          "Umrbod tark etilgan vatanning bir parchasi",
+          "Dushmanlarga qarshi signal"
+        ],
+        correct: 2, // C
+        exp: "Olov ayni mahalda ular umrbod tark etgan vatanning bir parchasi edi."
+      },
+      {
+        q: "12. Yunon koloniyalarida xo‘jalikning qaysi tarmoqlari yuksak darajada rivojlandi?",
+        options: [
+          "Faqat ovchilik va baliqchilik",
+          "Faqat konchilik va qurolsozlik",
+          "Faqat paxtachilik",
+          "Savdo-sotiq va hunarmandchilik"
+        ],
+        correct: 3, // D
+        exp: "Ularda savdo-sotiq va hunarmandchilik rivojlandi."
+      },
+      {
+        q: "13. Yunon koloniyalari asosan qaysi ikki yirik dengiz bo‘ylarida vujudga keldi?",
+        options: [
+          "O‘rta Yer va Qora dengiz bo‘ylarida",
+          "Qizil va Kaspiy dengizlarida",
+          "Boltiq va Shimoliy dengizlarda",
+          "Arabiston va Orol dengizlarida"
+        ],
+        correct: 0, // A
+        exp: "Ularning manzilgohlari O‘rta Yer va Qora dengiz bo‘ylarida ham vujudga keldi."
+      },
+      {
+        q: "14. Koloniyalarning aholisi o‘z ona shaharlari (Yunoniston polislari) bilan qanday munosabatda bo‘lgan?",
+        options: [
+          "Doimiy dushmanlik va urush holatida bo‘lgan",
+          "Doimiy savdo va madaniy aloqada bo‘lgan",
+          "Barcha aloqalarni butunlay uzgan",
+          "Faqat qurol orqali muloqot qilgan"
+        ],
+        correct: 1, // B
+        exp: "Koloniyalarning aholisi Yunoniston shaharlari — polislari bilan doimiy aloqada bo‘lgan."
+      },
+      {
+        q: "15. Xaritada ko‘rsatilgan Pantikapey koloniyasi qaysi dengiz bo‘yida joylashgan?",
+        options: [
+          "Qizil dengiz bo‘yida",
+          "O‘rta Yer dengizi g‘arbida",
+          "Qora dengiz sohilida",
+          "Kaspiy dengizida"
+        ],
+        correct: 2, // C
+        exp: "Xaritadagi ma’lumotga ko‘ra, Pantikapey, Xersones va Olviya Qora dengiz sohillarida joylashgan."
+      },
+      {
+        q: "16. Qadimgi yunonlarning boshqa xalqlarni «varvarlar» deb atashiga asosiy sabab nima edi?",
+        options: [
+          "Ularning kiyimi boshqachaligi",
+          "Ularning boyligi ko‘pligi",
+          "Ularning kemalari yo‘qligi",
+          "Ularning tili yunonlarga tushunarsiz bo‘lgani va yunoncha so‘zlashmagani"
+        ],
+        correct: 3, // D
+        exp: "Yunonlar tevarakdagi yunon bo‘lmagan barcha begona xalqlarni «varvarlar» deb atashgan."
+      },
+      {
+        q: "17. Qora dengiz sohilidagi Xersones shahri qanday maqomga ega bo‘lgan?",
+        options: [
+          "Mustaqil yunon koloniyasi (shahar-davlati)",
+          "Fors davlatining poytaxti",
+          "Misr fir’avni qal’asi",
+          "Spartaning harbiy lageri"
+        ],
+        correct: 0, // A
+        exp: "Xersones Qora dengiz sohilida tashkil topgan mashhur yunon koloniyalaridan biridir."
+      },
+      {
+        q: "18. Olviya koloniyasi qaysi davrda tashkil topgan?",
+        options: [
+          "Miloddan avvalgi 3-mingyillikda",
+          "Miloddan avvalgi VIII–VI asrlarda",
+          "Miloddan avvalgi I asrda",
+          "Milodiy V asrda"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. VIII–VI asrlarda Olviya, Xersones, Pantikapey kabi yunon koloniyalari tashkil topgan."
+      },
+      {
+        q: "19. Apennin yarimorolining janubiy qismiga joylashgan yunon ko‘chmachilari bu hududga qanday ta’sir ko‘rsatdi?",
+        options: [
+          "Hududni butunlay cho‘lga aylantirdi",
+          "U yerda piramidalar qurdirdi",
+          "U yerda rivojlangan shahar-davlatlar va yunon madaniyatini barpo etdi",
+          "Faqat ko‘chmanchi chorvachilik qildi"
+        ],
+        correct: 2, // C
+        exp: "Ko‘chib kelganlar sekin-asta shahar-davlatlarga aylanib, hunarmandchilik va savdo-sotiqni rivojlantirdi."
+      },
+      {
+        q: "20. Yangi hududlarni o‘zlashtirish uchun jo‘nab ketgan yunonlar qanday toifaga mansub edilar?",
+        options: [
+          "Faqat oliy kohinlar",
+          "Faqat boy savdogarlar",
+          "Faqat armiya sarkardalari",
+          "Qarzdor bo‘lib qolgan, yersiz va nochor qolgan oddiy fuqarolar"
+        ],
+        correct: 3, // D
+        exp: "Zodagonlardan qarzdor bo‘lib qolgan, o‘z yer va mulkiga ega bo‘lmagan odamlar vatanini tark etgan."
+      },
+      {
+        q: "21. Yunon koloniyalarida o‘z tangalarining zarb etilishi nimadan dalolat beradi?",
+        options: [
+          "Iqtisodiy mustaqillik va rivojlangan savdo-sotiqdan",
+          "Oltin konlari yo‘qligidan",
+          "Faqat qog‘oz pul ishlatilganidan",
+          "Yunonistondan pul kelishi taqiqlanganidan"
+        ],
+        correct: 0, // A
+        exp: "Bu shaharlarning o‘z qonunlari va tangalari bo‘lib, savdo-sotiq va hunarmandchilik yuksak bo‘lgan."
+      },
+      {
+        q: "22. Qadimgi yunon koloniyalashtirishi davrida qaysi dengiz bo‘yi shaharlari muhim savdo markaziga aylandi?",
+        options: [
+          "Faqat Nil daryosi shaharlari",
+          "O‘rta Yer va Qora dengiz sohillaridagi shaharlar",
+          "Kaspiy va Orol shaharlari",
+          "Qizil dengiz portlari"
+        ],
+        correct: 1, // B
+        exp: "O‘rta Yer va Qora dengiz bo‘ylaridagi manzilgohlar rivojlangan shahar-davlatlarga aylandi."
+      },
+      {
+        q: "23. Qora dengizning shimoliy sohilida joylashgan Pantikapey shahri qanday atalgan hududda barpo etilgan?",
+        options: [
+          "Attika o‘lkasida",
+          "Lakonika o‘lkasida",
+          "Qora dengiz bo‘yida (hozirgi Qrim hududida)",
+          "Peloponnesda"
+        ],
+        correct: 2, // C
+        exp: "Pantikapey Qora dengiz sohilidagi mashhur yunon koloniyasi bo‘lgan."
+      },
+      {
+        q: "24. «Ellada» va «ellinlar» tushunchalari qadimgi dunyoda nimani ifodalagan?",
+        options: [
+          "Faqat bitta shaharni",
+          "Faqat bitta qabilani",
+          "Faqat harbiy ittifoqni",
+          "Barcha yunonlarning umumiy vatanini va yagona xalq sifatidagi o‘zligini"
+        ],
+        correct: 3, // D
+        exp: "Yunonlar o‘zini yagona xalq — ellinlar deb hisoblagan, o‘z vatanini esa Ellada deb atagan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 22) fb.innerText = "Mukammal natija! 25-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

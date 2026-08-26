@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>8-§. Qadimgi Misrda din</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (25)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (25)</button>
+    </div>
+
+    <!-- 1. MOSLASH (4 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">4 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha ma’budlar va diniy tushunchalarni muvaffaqiyatli mosladingiz. Endi 25 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (25 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">8-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">25 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim diniy faktlarni mustahkamlab oldingiz. Endi 25 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (25 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">8-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/25</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Misrning bosh ma’budlari
+      [
+        { id: 1, left: "Ptax", right: "Memfis shahrining bosh ma’budi (olamni yaratuvchi)" },
+        { id: 2, left: "Apis", right: "Ptaxning yerdagi qiyofasi (peshanasida oq qashqasi bor qora ho‘kiz)" },
+        { id: 3, left: "Amon", right: "Dastlab Fiva shahrining homiysi bo‘lgan ma’bud" },
+        { id: 4, left: "Ra", right: "Qadimgi Misrning Quyosh ma’budi" }
+      ],
+      // 2-bosqich: Tabiat va marosim ma’budlari
+      [
+        { id: 5, left: "Amon-Ra", right: "Fir’avnlarning bosh ilohi va homiysi" },
+        { id: 6, left: "Xapi", right: "Nil ma’budi (hayotning birlamchi manbai va posboni)" },
+        { id: 7, left: "Osiris", right: "Yerosti saltanati (narigi dunyo) ma’budi" },
+        { id: 8, left: "Geliopol (Baolbek)", right: "Quyosh ma’budi Ra ibodatxonasi joylashgan shahar" }
+      ],
+      // 3-bosqich: Kohinlar va ularning vazifalari
+      [
+        { id: 9, left: "Kohinlar", right: "Ma’budlar va odamlar o‘rtasidagi vositachilar" },
+        { id: 10, left: "Nil toshqini vaqti", right: "Kohinlar tomonidan aniq hisoblab chiqilgan muddat" },
+        { id: 11, left: "Qurbonliklar", right: "Ma’budlarning marhamatini olish uchun qilingan marosim" },
+        { id: 12, left: "Samoviy ota", right: "Misr fir’avnlari o‘zlarini uning o‘g‘illari deb hisoblagan" }
+      ],
+      // 4-bosqich: Diniy tasavvurlar va e’tiqodlar
+      [
+        { id: 13, left: "Hayvonlar qiyofasi", right: "Mushuk, qo‘y, ho‘kiz, arslon, sigir ko‘rinishidagi ma’budlar" },
+        { id: 14, left: "Ma’budlar joni", right: "Hayvon tanasida yoki uning haykalida yashaydi deb ishonilgan" },
+        { id: 15, left: "Ibodatxona hadyalari", right: "Fir’avnlar tomonidan kohinlarga berilgan boylik va yerlar" },
+        { id: 16, left: "Urug‘ sochish va hosil yig‘ish", right: "Muddati kohinlar bilimi asosida belgilangan qishloq xo‘jalik ishlari" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (25 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Qadimgi misrliklar tasavvurida ma’budlar qanday ko‘rinishda odamlar orasida yashagan?", a: "Hayvonlar (mushuk, qo‘y, ho‘kiz, arslon, sigir) qiyofasiga kirib olib yashaydi deb hisoblashgan." },
+      { q: "2. Misrliklar e’tiqodiga ko‘ra ma’budlarning joni qayerda yashaydi deb o‘ylashgan?", a: "Ulardan biri hayvon tanasida, boshqasi esa uning haykalida yashaydi deb hisoblashgan." },
+      { q: "3. Kohinlar ma’budlarni qanday parvarish qilishadi deb ishonilgan?", a: "Dindorlar in’om tariqasida keltirgan noz-ne’matlar bilan boqishadi deb hisoblangan." },
+      { q: "4. Qadimgi Misr poytaxti Memfis shahrining o‘z ma’budi kim bo‘lgan?", a: "Ptax bo‘lgan." },
+      { q: "5. Misrliklar e’tiqodiga ko‘ra Ptax qanday qudratga ega bo‘lgan?", a: "Olamni yaratayotganida har bir narsaning nomini odamga o‘rgatgan ma’bud hisoblangan." },
+      { q: "6. Nega Ptaxni odamlar asl qiyofasida ko‘ra olmaganlar?", a: "Chunki ma’bud shunchalik qudratli bo‘lganki, uni asl qiyofasida ko‘rishning iloji bo‘lmagan." },
+      { q: "7. Ptax ma’budining Yer yuzidagi qiyofasi qanday nomlangan va u qanday tasavvur qilingan?", a: "Apis bo‘lib, peshanasi va belida oq qashqasi bo‘lgan qora ho‘kiz timsolida tasavvur qilingan." },
+      { q: "8. Misr fir’avnlarining bosh ilohi va homiysi qaysi ma’bud hisoblangan?", a: "Quyosh ma’budi Amon-Ra." },
+      { q: "9. Amon-Ra ma’budi qaysi ikki ma’budning birlashuvidan paydo bo‘lgan?", a: "Fiva shahri homiysi Amon va Quyosh ma’budi Ra ning birlashuvidan." },
+      { q: "10. Quyosh ma’budining asosiy ibodatxonasi qaysi shaharda joylashgan edi?", a: "Geliopolda (Baolbek) joylashgan." },
+      { q: "11. Qadimgi Misrda fir’avnlarning kelib chiqishi qaysi ma’bud bilan bog‘langan?", a: "Fir’avnlar Quyosh ma’budi (samoviy ota)ning o‘g‘illari hisoblangan." },
+      { q: "12. Hukmdorlar davlatdagi har bir ishni kimning amri bilan bajaradi deb qaralgan?", a: "O‘zining samoviy otasi (Quyosh ma’budi)ning amri bilan amalga oshiradi deb hisoblangan." },
+      { q: "13. Nil daryosi ma’budi kim bo‘lgan va u qanday ta’riflangan?", a: "Xapi bo‘lib, Misrdagi hayotning birlamchi manbai va posboni hisoblangan." },
+      { q: "14. Qadimgi Misrda yerosti saltanati (narigi dunyo) ma’budi kim edi?", a: "Osiris yerosti saltanati ma’budi hisoblangan." },
+      { q: "15. Qadimgi Misr dinida Osiris taxtining himoyachisi sanalgan yana bir ma’bud kim edi?", a: "Yana bir Xapi ma’budi bo‘lgan." },
+      { q: "16. Kohinlarning Misr jamiyatidagi asosiy mavqei nima edi?", a: "Ular ma’budlar va odamlar o‘rtasidagi vositachi hisoblangan." },
+      { q: "17. Misrliklar e’tiqodiga ko‘ra Yer yuzida maxsus diniy marosimlar bajarilmasa nima yuz berardi?", a: "Ma’budlar g‘azablanib, odamlarga madad bermay qo‘yadi deb ishonilgan." },
+      { q: "18. Nega kundalik turmushda ham kohinlarsiz biror ish qilish mushkul hisoblangan?", a: "Chunki ular diniy marosimlarni bilgan va qurbonliklarni ado etgan." },
+      { q: "19. Dehqonchilik sohasida kohinlar qanday muhim tabiiy bilimlarga ega bo‘lganlar?", a: "Nil toshqini vaqtini, qachon urug‘lik sochish va hosilni yig‘ishtirib olish muddatini aniq bilganlar." },
+      { q: "20. Misrning har bir «nom»ida nimalar mavjud bo‘lgan?", a: "Har bir nomda o‘z ibodatxonalari bo‘lgan." },
+      { q: "21. Fir’avnlar kohinlarga nima sababdan katta boyliklar va unumdor yerlarni hadya etganlar?", a: "Ularning nufuzi baland bo‘lgani, ma’budlar roziligini olish va o‘z hokimiyatini mustahkamlash uchun." },
+      { q: "22. Diniy marosimlarda ma’budlarga nimalar taqdim etilgan?", a: "Maxsus qurbonliklar va dindorlar keltirgan in’omlar bag‘ishlangan." },
+      { q: "23. Qadimgi Misr dini qanday diniy e’tiqod tizimiga mansub bo‘lgan?", a: "Ko‘p xudolik (politeizm) — tabiat va hayvonlarga sig‘inishga asoslangan dinga." },
+      { q: "24. Kohinlarning tabiat hodisalari haqidagi bilimlari nima bilan bog‘liq edi?", a: "Astronomik kuzatuvlar va Nil toshqinlarining ko‘p yillik davriy hisob-kitoblari bilan." },
+      { q: "25. Papiruslarda tasvirlangan «Osiris sudi» nimani anglatadi?", a: "Vafot etgan insonning narigi dunyoda qilgan yaxshi va yomon amallari tarozida tortilishini." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Qadimgi Misr podsholigining poytaxti Memfis shahrining bosh ma’budi kim hisoblangan?",
+        options: [
+          "Amon",
+          "Ptax",
+          "Ra",
+          "Osiris"
+        ],
+        correct: 1,
+        exp: "Memfis shahrining o‘z ma’budi Ptax bo‘lgan."
+      },
+      {
+        q: "2. Misrliklar e’tiqodiga ko‘ra, olamni yaratayotganida har bir narsaning nomini odamga o‘rgatgan ma’bud kim?",
+        options: [
+          "Xapi",
+          "Ptax",
+          "Amon-Ra",
+          "Apis"
+        ],
+        correct: 1,
+        exp: "Ptax olamni yaratish chog‘ida har bir narsaning nomini odamlarga o‘rgatgan deb hisoblangan."
+      },
+      {
+        q: "3. Ptax ma’budining Yer yuzidagi qiyofasi qaysi hayvon timsolida tasavvur qilingan?",
+        options: [
+          "Qanotli arslon",
+          "Peshanasi va belida oq qashqasi bo‘lgan qora ho‘kiz (Apis)",
+          "Oltin rangli burgut",
+          "Katta oq qo‘chqor"
+        ],
+        correct: 1,
+        exp: "Ptaxning yerdagi timsoli Apis bo‘lib, u peshanasi va belida oq qashqasi bo‘lgan qora ho‘kiz edi."
+      },
+      {
+        q: "4. Dastlab Fiva shahrining homiysi bo‘lgan ma’bud qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Ra",
+          "Amon",
+          "Xapi",
+          "Osiris"
+        ],
+        correct: 1,
+        exp: "Dastlab Amon Fiva shahrining homiysi bo‘lgan."
+      },
+      {
+        q: "5. Qadimgi Misrda Quyosh ma’budi qanday nomlangan?",
+        options: [
+          "Ptax",
+          "Ra",
+          "Apis",
+          "Xapi"
+        ],
+        correct: 1,
+        exp: "Qadimgi Misrda Quyosh ma’budi Ra deb atalgan."
+      },
+      {
+        q: "6. Qaysi ikki ma’budning birlashuvi natijasida fir’avnlarning bosh ilohi va homiysi vujudga kelgan?",
+        options: [
+          "Ptax va Apis",
+          "Amon va Ra",
+          "Osiris va Xapi",
+          "Ra va Ptax"
+        ],
+        correct: 1,
+        exp: "Fiva homiysi Amon va Quyosh ma’budi Ra birlashib, Amon-Ra ga aylangan."
+      },
+      {
+        q: "7. Quyosh ma’budi Ra ning mashhur ibodatxonasi qaysi shaharda joylashgan edi?",
+        options: [
+          "Memfisda",
+          "Geliopolda (Baolbek)",
+          "Fivada",
+          "Luksorda"
+        ],
+        correct: 1,
+        exp: "Uning ibodatxonasi Geliopolda (Baolbek) bo‘lgan."
+      },
+      {
+        q: "8. Misr fir’avnlari o‘zlarini kimning o‘g‘illari deb hisoblashgan?",
+        options: [
+          "Nil ma’budi Xapining",
+          "Quyosh ma’budi (samoviy ota)ning",
+          "Yerosti ma’budi Osirisning",
+          "Memfis ma’budi Ptaxning"
+        ],
+        correct: 1,
+        exp: "Fir’avnlar Quyosh ma’budi o‘g‘illaridir, hamma ishni samoviy otasi amri bilan bajaradi degan qarash mavjud bo‘lgan."
+      },
+      {
+        q: "9. Misrdagi hayotning birlamchi manbai va posboni sanalgan Nil ma’budi qaysi?",
+        options: [
+          "Apis",
+          "Xapi",
+          "Amon",
+          "Osiris"
+        ],
+        correct: 1,
+        exp: "Xapi — Nil ma’budi, Misrdagi hayotning birlamchi manbai va posboni hisoblangan."
+      },
+      {
+        q: "10. Qadimgi Misrda yerosti saltanati ma’budi kim hisoblangan?",
+        options: [
+          "Ptax",
+          "Osiris",
+          "Ra",
+          "Amon"
+        ],
+        correct: 1,
+        exp: "Osiris yerosti saltanati ma’budi hisoblangan."
+      },
+      {
+        q: "11. Misr dinida Osiris taxtining himoyachisi sanalgan ma’bud kim edi?",
+        options: [
+          "Apis",
+          "Xapi",
+          "Ptax",
+          "Amon"
+        ],
+        correct: 1,
+        exp: "Osiris taxtining himoyachisi sanalgan yana bir Xapi ma’budi bor edi."
+      },
+      {
+        q: "12. Qadimgi Misrda ma’budlar va odamlar o‘rtasidagi vositachi kimlar hisoblangan?",
+        options: [
+          "Nomarxlar",
+          "Kohinlar",
+          "Jangchilar",
+          "Zodagonlar"
+        ],
+        correct: 1,
+        exp: "Kohinlar ma’budlar va odamlar o‘rtasida vositachi hisoblangan."
+      },
+      {
+        q: "13. Misrliklar e’tiqodiga ko‘ra, ma’budlar odamlarga madad bermay qo‘yishining sababi nima edi?",
+        options: [
+          "Shaharlar devorlari qurilmasa",
+          "Yer yuzida maxsus diniy marosimlar ado etilmasa",
+          "Begona yurtlarga urush qilinmasa",
+          "Yangi kanallar qazilmasa"
+        ],
+        correct: 1,
+        exp: "Mabodo Yer yuzida maxsus marosimlar ado etilmasa, ma’budlar odamlarga madad bermay qo‘yadi deb ishonilgan."
+      },
+      {
+        q: "14. Qishloq xo‘jaligida Nil toshqini vaqtini va urug‘lik sochish muddatlarini aniq hisoblab beruvchi tabaqa kimlar edi?",
+        options: [
+          "Mirzolar",
+          "Kohinlar",
+          "Ziroatkor oqsoqollar",
+          "Kemasozlar"
+        ],
+        correct: 1,
+        exp: "Kohinlar Nil toshqini vaqtini, qachon urug‘lik sochish va hosilni yig‘ish muddatini aniq bilganlar."
+      },
+      {
+        q: "15. Qadimgi Misrda barcha «nom»larda qanday muhim diniy inshootlar bo‘lgan?",
+        options: [
+          "Faqat piramidalar",
+          "Ibodatxonalar",
+          "Katta qasrlar",
+          "Kutubxonalar"
+        ],
+        correct: 1,
+        exp: "Barcha «nom»larda ibodatxonalar bo‘lgan."
+      },
+      {
+        q: "16. Misr fir’avnlari nima sababdan kohinlarga katta-katta boyliklar va yerlar hadya etganlar?",
+        options: [
+          "Faqat qo‘shni davlatlar bilan urush olib borish uchun",
+          "Ma’budlar roziligini olish va kohinlarning ulkan nufuzi tufayli",
+          "Kohinlar davlat soliqlarini to‘liq to‘lagani uchun",
+          "Qonunlarni faqat kohinlar yozgani uchun"
+        ],
+        correct: 1,
+        exp: "Kohinlarning jamiyatdagi qudratli diniy mavqei tufayli fir’avnlar ularga boylik va yerlar in’om etganlar."
+      },
+      {
+        q: "17. Misrliklar tasavvurida ma’budlar qanday jonivorlar qiyofasiga kirib yashagan deb hisoblangan?",
+        options: [
+          "Fil, jirafa, kiyik",
+          "Mushuk, qo‘y, ho‘kiz, arslon, sigir",
+          "Tulki, bo‘ri, ayiq",
+          "Burgut, qoplon, toshbaqa"
+        ],
+        correct: 1,
+        exp: "Misrliklar ma’budlar mushuk, qo‘y, ho‘kiz, arslon, sigir ko‘rinishida yashaydi deb hisoblashgan."
+      },
+      {
+        q: "18. Ma’budlarning joni qayerlarda makon topadi deb ishonilgan?",
+        options: [
+          "Faqat osmondagi yulduzlarda",
+          "Biri hayvon tanasida, boshqasi esa uning haykalida",
+          "Faqat Nil daryosi tubida",
+          "Faqat fir’avnning toji ichida"
+        ],
+        correct: 1,
+        exp: "Ulardan biri hayvon tanasida, boshqasi esa haykalida yashaydi deb o‘ylangan."
+      },
+      {
+        q: "19. Apis ho‘kizining o‘ziga xos tashqi belgisi qanday tasvirlangan?",
+        options: [
+          "Butunlay oq tusda bo‘lishi",
+          "Peshanasi va belida oq qashqasi bo‘lgan qora rangda bo‘lishi",
+          "Qizil shoxli bo‘lishi",
+          "Oltin tuyoqli bo‘lishi"
+        ],
+        correct: 1,
+        exp: "Apis — peshanasi va belida oq qashqasi bo‘lgan qora ho‘kiz timsolida tasavvur qilingan."
+      },
+      {
+        q: "20. Quyosh ma’budi Ra ga sig‘inish qaysi tushuncha bilan uzviy bog‘liq bo‘lgan?",
+        options: [
+          "Yerosti boyliklari bilan",
+          "Fir’avn hokimiyatining ilohiyligi bilan",
+          "Faqat baliqchilik mavsumi bilan",
+          "Harbiy qurollar yasash bilan"
+        ],
+        correct: 1,
+        exp: "Fir’avnlar Quyosh ma’budi o‘g‘illari deb hisoblanib, davlat boshqaruvi ilohiylashtirilgan."
+      },
+      {
+        q: "21. Kohinlarning Misr kundalik hayotida ajralmas bo‘lib qolishiga asosiy sabab nima edi?",
+        options: [
+          "Ular barcha savdo karvonlarini boshqargan",
+          "Ular diniy marosimlarni bilgan, qurbonliklar keltirgan va xalq e’tiqodini boshqargan",
+          "Ular qo‘shin qo‘mondonlari bo‘lgan",
+          "Ular dehqonchilikda o‘zlari yer haydagan"
+        ],
+        correct: 1,
+        exp: "Kohinlar diniy marosimlarni bajargan, qurbonlik bag‘ishlagan va ularsiz biror ish qilish mushkul edi."
+      },
+      {
+        q: "22. Qadimgi Misrda qaysi shahar Amon ma’budining dastlabki diniy markazi bo‘lgan?",
+        options: [
+          "Memfis",
+          "Fiva",
+          "Geliopol",
+          "Assuan"
+        ],
+        correct: 1,
+        exp: "Dastlab Amon Fiva shahrining homiysi bo‘lgan."
+      },
+      {
+        q: "23. Qadimgi Misr mifologiyasida tiriklik va hosildorlikni ta’minlovchi daryo homiysi kim?",
+        options: [
+          "Osiris",
+          "Xapi",
+          "Ptax",
+          "Apis"
+        ],
+        correct: 1,
+        exp: "Xapi — Nil ma’budi bo‘lib, hayotning birlamchi manbai hisoblangan."
+      },
+      {
+        q: "24. Misrliklar tasavvuridagi «Osiris» qaysi olam ustidan hukmronlik qilgan?",
+        options: [
+          "Quyosh va osmon olami",
+          "Yerosti saltanati (narigi dunyo)",
+          "Faqat suv toshqinlari",
+          "Cho‘l va shamollar"
+        ],
+        correct: 1,
+        exp: "Osiris yerosti saltanati ma’budi hisoblangan."
+      },
+      {
+        q: "25. Darslik matniga ko‘ra, quyidagi ma’budlar va ularning vazifalari to‘g‘ri moslashtirilgan qatorni toping:\n1) Ptax; 2) Xapi; 3) Osiris;\na) Nil ma’budi; b) Yerosti saltanati; c) Memfis bosh ma’budi.",
+        options: [
+          "1-a, 2-b, 3-c",
+          "1-c, 2-a, 3-b",
+          "1-b, 2-c, 3-a",
+          "1-c, 2-b, 3-a"
+        ],
+        correct: 1,
+        exp: "1-c (Ptax - Memfis), 2-a (Xapi - Nil), 3-b (Osiris - yerosti saltanati)."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 23) fb.innerText = "Mukammal natija! 8-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

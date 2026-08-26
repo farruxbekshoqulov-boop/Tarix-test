@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>38–39-§. Qadimgi Xorazm</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va arxeologik yodgorliklarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">38–39-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">38–39-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Xorazm davlati va podshohlar
+      [
+        { id: 1, left: "Mil. avv. IV asr", right: "Xorazm Ahamoniylar davlatidan ajralib chiqib, mustaqil bo‘lgan davr" },
+        { id: 2, left: "Arrian", right: "Makedoniyalik Aleksandr davrida Xorazmda Farasman podsholik qilganini yozgan yunon tarixchisi" },
+        { id: 3, left: "Farasman", right: "Aleksandr huzuriga elchilar yuborgan Qadimgi Xorazm podshosi" },
+        { id: 4, left: "Xiva, Jonbosqal’a, Bozorqal’a", right: "Mil. avv. IV–III asrlarda keng rivojlangan Xorazm shaharlari" }
+      ],
+      // 2-bosqich: Suv xo‘jaligi va dehqonchilik
+      [
+        { id: 5, left: "40–50 kilometr", right: "Amudaryodan chiqarilgan keng sug‘orish kanallarining uzunligi" },
+        { id: 6, left: "Bug‘doy, arpa va tariq", right: "Qadimgi Xorazm dehqonlari ekkan asosiy ekinlar" },
+        { id: 7, left: "Qo‘yqirilganqal’a", right: "Mil. avv. IV–III asrlarga oid noyob muhtasham me’moriy yodgorlik" },
+        { id: 8, left: "G‘alla omborlari", right: "Xorazm alohida qal’alarida don saqlash uchun qurilgan katta joylar" }
+      ],
+      // 3-bosqich: Yozuv va hunarmandchilik
+      [
+        { id: 9, left: "Oybo‘yirqal’a", right: "Mil. avv. V–IV asrlarga oid, xum sirtiga yozuv bitilgan yodgorlik" },
+        { id: 10, left: "Aramey alifbosi", right: "Qadimgi Xorazm yozuvi asoslangan alifbo tizimi (20 ta harfdan iborat)" },
+        { id: 11, left: "Sopol, suyak va charm", right: "Qadimgi xorazmliklar yozuv yozgan yuzalar" },
+        { id: 12, left: "Mil. avv. I asr va mil. boshlari", right: "Xorazmda kumush va mis tangalar zarb qilingan davr"
+      }
+      ],
+      // 4-bosqich: Saroylar va san’at yodgorliklari
+      [
+        { id: 13, left: "Oqchaxon qal’asi", right: "Mil. avv. II–I asrlarga oid, 30 ta qahramon portreti topilgan qal’a" },
+        { id: 14, left: "Tuproqqal’a", right: "Milodiy II–III asrlarda Xorazm hukmdorlarining qarorgohi bo‘lgan shahar" },
+        { id: 15, left: "115 ta loy haykal", right: "Tuproqqal’a zallaridan birida devor bo‘ylab o‘rnatilgan haykallar soni" },
+        { id: 16, left: "Rang-barang rasmlar", right: "Oqchaxon qal’asi devorlarida odamlar, otlar va otliqlar tasvirlari" }
+      ],
+      // 5-bosqich: Ilm-fan va kalendar
+      [
+        { id: 17, left: "Kohin-astronomlar", right: "Qo‘yqirilganqal’a ibodatxonasida osmon jismlarini kuzatgan mutaxassislar" },
+        { id: 18, left: "Amudaryo suv sathi", right: "Xorazmlik kohinlar Nil toshqini singari aniqlab borgan tabiat hodisasi" },
+        { id: 19, left: "Astronomiya va matematika", right: "Xorazmda amaliy bilimlarga asoslanib taraqqiy etgan aniq fanlar" },
+        { id: 20, left: "Mahalliy taqvim", right: "Milodiy I asrda Xorazmda ishlab chiqilib, VIII asrgacha foydalanilgan kalendar" }
+      ],
+      // 6-bosqich: Diniy e’tiqodlar va ossuariylar
+      [
+        { id: 21, left: "Zardushtiylik ta’limoti", right: "Xorazm vohasida keng yoyilgan diniy e’tiqod" },
+        { id: 22, left: "Ossuariylar (suyakdonlar)", right: "Xorazmdan topilgan, dafn marosimlari bilan bog‘liq eng qadimgi sopol idishlar" },
+        { id: 23, left: "Anaxita", right: "Xorazm ko‘hna shaharlaridan topilgan suv va hosildorlik ma’budasi" },
+        { id: 24, left: "Kohin-xattot", right: "Tuproqqal’a devoridagi yozuvli teri o‘ramlarini ko‘tarib turgan shaxs tasviri" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Xorazm qachon Ahamoniylar davlatidan ajralib chiqib, mustaqil davlatga aylandi?", a: "Miloddan avvalgi IV asrda." },
+      { q: "2. Makedoniyalik Aleksandr hukmronligi davrida Xorazm davlati qanday maqomda edi?", a: "Mustaqil edi." },
+      { q: "3. Qadimgi yunon tarixchisi Arrianning yozishicha, bu davrda Xorazmda kim podsholik qilgan?", a: "Farasman." },
+      { q: "4. Xorazmda miloddan avvalgi IV–III asrlarda qaysi yirik shaharlar qurilgan?", a: "Xiva, Jonbosqal’a, Bozorqal’a." },
+      { q: "5. Xorazmda shaharlarning tashqi tuzilishi qanday edi?", a: "Mustahkam mudofaa devorlari bilan o‘ralgan, burchaklarida burjlari bo‘lgan." },
+      { q: "6. Xorazm dehqonchiligi nimaga asoslangan edi?", a: "Sun’iy sug‘orma dehqonchilikka." },
+      { q: "7. Amudaryodan chiqarilgan keng sug‘orish kanallarining uzunligi qanchaga yetgan?", a: "40–50 kilometrga." },
+      { q: "8. Xorazmliklar qanday qishloq xo‘jaligi ekinlarini ekkanlar?", a: "Bug‘doy, arpa va tariq." },
+      { q: "9. Xorazmda hunarmandchilikning qaysi turlari rivojlangan edi?", a: "Kulolchilik, temir va mis asboblar, qurol-yarog‘ hamda zargarlik buyumlari tayyorlash." },
+      { q: "10. Xorazmda kumush va mis tangalar qachondan boshlab zarb qilingan?", a: "Miloddan avvalgi I asrdan va milodiy dastlabki asrlardan boshlab." },
+      { q: "11. Amudaryoning o‘ng qirg‘og‘ida joylashgan va mil. avv. II–I asrlarga oid saroy va ibodatxona qaysi qal’ada edi?", a: "Oqchaxon qal’asida." },
+      { q: "12. Oqchaxon qal’asi devorlaridagi rasmlarda nimalar tasvirlangan edi?", a: "Odamlar, otlar, otliqlar va 30 ta qahramon portreti." },
+      { q: "13. Milodiy II–III asrlarda Xorazm hukmdorlarining qarorgohi bo‘lgan shahar qaysi?", a: "Tuproqqal’a." },
+      { q: "14. Tuproqqal’a saroyining zallaridan birida nechta loy haykal o‘rnatilgan edi?", a: "115 ta loy haykal." },
+      { q: "15. O‘rta Osiyodagi eng qadimgi Xorazm yozuvi qaysi yodgorlikdan topilgan?", a: "Oybo‘yirqal’adan (mil. avv. V–IV asrlar)." },
+      { q: "16. Qadimgi Xorazm yozuvi qaysi alifboga asoslangan va nechta harfdan iborat edi?", a: "Aramey alifbosiga asoslangan bo‘lib, 20 ta harfdan tashkil topgan." },
+      { q: "17. Xorazmda yozuvlar sirtiga nimalarga bitilgan?", a: "Sopol, suyak, yog‘och taxtachalar va charm yuzasiga qora siyohda." },
+      { q: "18. Qaysi yodgorlikda kohinlar osmon jismlarining harakatlarini kuzatgan?", a: "Qo‘yqirilganqal’a ibodatxonasida." },
+      { q: "19. Xorazmlik kohin-astronomlar Misr kohinlari kabi nimani aniqlab berganlar?", a: "Amudaryo suv sathining ko‘tarilishi vaqtini hamda ekin ekish mavsumlarini." },
+      { q: "20. Xorazmda milodiy I asrda ishlab chiqilgan mahalliy taqvimdan qancha vaqt foydalanilgan?", a: "VIII asrga qadar." },
+      { q: "21. Xorazm vohasida qaysi diniy ta’limot keng yoyilgan edi?", a: "Zardushtiylik ta’limoti." },
+      { q: "22. Xorazmdan topilgan dafn marosimlari bilan bog‘liq eng qadimgi suyakdonlar nima deb ataladi?", a: "Ossuariylar." },
+      { q: "23. Xorazm ko‘hna shaharlaridan topilgan sopol haykalchalar nimaning ramzini o‘zida aks ettirgan?", a: "Suv va hosildorlik ma’budasi — Anaxita ramzini." },
+      { q: "24. Tuproqqal’a devoridagi yozuvli teri o‘ramlarini ko‘tarib turgan shaxs kim sifatida tasvirlangan?", a: "Kohin-xattot." },
+      { q: "25. Qo‘yqirilganqal’a qachon qurilgan?", a: "Miloddan avvalgi III–II asrlarda (yoki mil. avv. IV–III asrlarda ham ataladi)." },
+      { q: "26. Xorazm davlatida harbiy ish va hunarmandchilikka qanday e’tibor qaratilgan?", a: "Juda katta e’tibor qaratilgan." },
+      { q: "27. Xorazm shaharlarining markaziy maydonida nimalar joylashgan edi?", a: "Muhtasham saroy va ibodatxonalar." },
+      { q: "28. Qadimgi Xorazm me’morchiligida binolarni qurish uchun asosan nima ishlatilgan?", a: "Xom g‘ishtlar katta miqdorda ishlatilgan." },
+      { q: "29. Xorazm shohlari va jangchilarining qiyofalari qaysi me’moriy yodgorlikdan topilgan devoriy suratlarda saqlangan?", a: "Tuproqqal’a va Oqchaxon qal’asidan." },
+      { q: "30. Xorazm savdo aloqalari qaysi qo‘shni o‘lkalar bilan olib borilgan?", a: "Sug‘diyona, Marg‘iyona, Baqtriya va dasht ko‘chmanchilari bilan." },
+      { q: "31. Qadimgi Xorazm yozuvining shakllanishi va rivojiga nima asos bo‘lgan?", a: "Amaliy bilimlar, aniq fanlar (astronomiya, geometriya, matematika) taraqqiyoti." },
+      { q: "32. Xorazm maktablarida o‘quvchilarga nimalar o‘rgatilgan?", a: "Xat-savod va arifmetika hisobi." },
+      { q: "33. Xorazm hududida topilgan sopol idishlar va xumlar qaysi san’atga misol bo‘ladi?", a: "Kulolchilik va amaliy san’atga." },
+      { q: "34. Xorazmning mustaqil davlatga aylanish davri qaysi asrga to‘g‘ri keladi?", a: "Miloddan avvalgi IV asrga." },
+      { q: "35. Xorazm davlatining siyosiy va madaniy markazlari o‘zgarib, keyinchalik qaysi shaharga ko‘chgan?", a: "Tuproqqal’aga (milodiy II–III asrlarda)." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Xorazm Ahamoniylar davlatidan qachon ajralib chiqib, mustaqil davlatga aylandi?",
+        options: [
+          "Miloddan avvalgi IV asrda",
+          "Miloddan avvalgi VI asrda",
+          "Milodiy II asrda",
+          "Miloddan avvalgi VII asrda"
+        ],
+        correct: 0, // A
+        exp: "Miloddan avvalgi IV asrda Xorazm Ahamoniylar davlatidan ajralib chiqib, mustaqil davlatga aylandi."
+      },
+      {
+        q: "2. Qadimgi yunon tarixchisi Arrianning yozishicha, Makedoniyalik Aleksandr davrida Xorazmda kim podsholik qilgan?",
+        options: [
+          "To‘maris",
+          "Farasman",
+          "Frada",
+          "Shiroq"
+        ],
+        correct: 1, // B
+        exp: "Qadimgi yunon tarixchisi Arrianning yozishicha, bu davrda Xorazmda Farasman podsholik qilgan."
+      },
+      {
+        q: "3. Milodiy II–III asrlarda Xorazm hukmdorlarining qarorgohi bo‘lgan shahar qaysi?",
+        options: [
+          "Xiva",
+          "Jonbosqal’a",
+          "Tuproqqal’a",
+          "Oqchaxon qal’asi"
+        ],
+        correct: 2, // C
+        exp: "Milodiy II–III asrlarda shohona shahar — Xorazm hukmdorlarining qarorgohi Tuproqqal’a bunyod etilgan."
+      },
+      {
+        q: "4. O‘rta Osiyodagi eng qadimgi Xorazm yozuvi qaysi yodgorlikdan topilgan?",
+        options: [
+          "Tuproqqal’adan",
+          "Oqchaxon qal’asidan",
+          "Qo‘yqirilganqal’adan",
+          "Oybo‘yirqal’adan"
+        ],
+        correct: 3, // D
+        exp: "O‘rta Osiyodagi eng qadimgi yozuv Xorazm hududidan — Oybo‘yirqal’adan (mil. avv. V–IV asrlar) topilgan."
+      },
+      {
+        q: "5. Qadimgi Xorazm yozuvi qaysi alifboga asoslangan edi va nechta harfdan iborat bo‘lgan?",
+        options: [
+          "Aramey alifbosiga asoslangan, 20 ta harfdan",
+          "Yunon alifbosiga asoslangan, 24 ta harfdan",
+          "Finikiya alifbosiga asoslangan, 22 ta harfdan",
+          "Lotin alifbosiga asoslangan, 26 ta harfdan"
+        ],
+        correct: 0, // A
+        exp: "Aramey alifbosiga asoslangan qadimgi Xorazm yozuvi 20 ta harfdan tashkil topgan edi."
+      },
+      {
+        q: "6. Xorazmda mil. avv. II–I asrlarga oid, 30 ta qahramon portreti topilgan saroy va ibodatxona joylashgan qal’a qaysi?",
+        options: [
+          "Tuproqqal’a",
+          "Oqchaxon qal’asi",
+          "Bozorqal’a",
+          "Jonbosqal’a"
+        ],
+        correct: 1, // B
+        exp: "Amudaryoning o‘ng qirg‘ig‘idagi Oqchaxon qal’asida (mil. avv. II–I asrlar) saroy va ibodatxona mavjud bo‘lgan."
+      },
+      {
+        q: "7. Qaysi yodgorlikda kohinlar osmon jismlarining harakatlarini kuzatganlar?",
+        options: [
+          "Oybo‘yirqal’a",
+          "Bozorqal’a",
+          "Qo‘yqirilganqal’a",
+          "Xiva"
+        ],
+        correct: 2, // C
+        exp: "Mil. avv. III asrda Xorazmda mustahkam istehkom — Qo‘yqirilganqal’a qurilgan. Qal’a ibodatxonasidan kohinlar osmon jismlarini kuzatgan."
+      },
+      {
+        q: "8. Xorazm ko‘hna shaharlaridan topilgan sopol haykalchalar nimaning ramzini o‘zida aks ettirgan?",
+        options: [
+          "Urush va g‘alaba ma’budining",
+          "Osmon va chaqmoq xudosining",
+          "O‘lim va zulmat xudosining",
+          "Suv va hosildorlik ma’budasi — Anaxita"
+        ],
+        correct: 3, // D
+        exp: "Xorazm ko‘hna shaharlaridan suv va hosildorlik ma’budasi — Anaxita ramzini o‘zida aks ettirgan ko‘plab sopol haykalchalar topilgan."
+      },
+      {
+        q: "9. Xorazm vohasida qaysi diniy ta’limot keng yoyilgan edi?",
+        options: [
+          "Zardushtiylik ta’limoti",
+          "Buddaviylik dini",
+          " Brahmanlik",
+          "Xristianlik"
+        ],
+        correct: 0, // A
+        exp: "Xorazm vohasida zardushtiylik ta’limoti keng yoyilgan."
+      },
+      {
+        q: "10. Xorazmda kumush va mis tangalar qachondan boshlab zarb qilina boshlagan?",
+        options: [
+          "Mil. avv. VI asrda",
+          "Mil. avv. I asrda va milodiy dastlabki asrlarda",
+          "Mil. avv. III asrda",
+          "Milodiy V asrda"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. I asrda va milodiy dastlabki asrlarda Xorazmda kumush va mis tangalar zarb qilingan."
+      },
+      {
+        q: "11. Tuproqqal’a saroyi zallaridan birida devor bo‘ylab nechta loy haykal o‘rnatilgan edi?",
+        options: [
+          "30 ta",
+          "50 ta",
+          "115 ta",
+          "365 ta"
+        ],
+        correct: 2, // C
+        exp: "Zallardan birida devor bo‘ylab supada bo‘lgan loy haykallar o‘rnatilgan bo‘lib, ularning umumiy soni 115 ta bo‘lgan."
+      },
+      {
+        q: "12. Xorazm dehqonlari tomonidan Amudaryodan chiqarilgan keng sug‘orish kanallarining uzunligi qanchaga yetgan?",
+        options: [
+          "5–10 kilometrga",
+          "10–15 kilometrga",
+          "20–30 kilometrga",
+          "40–50 kilometrga"
+        ],
+        correct: 3, // D
+        exp: "Amudaryodan uzunligi 40–50 kilometrga yetadigan keng sug‘orish kanallari chiqarilgan."
+      },
+      {
+        q: "13. Qadimgi Xorazm dafn marosimlari bilan bog‘liq sopol tobutchalar qanday atalgan?",
+        options: [
+          "Ossuariylar (suyakdonlar)",
+          "Sarkofaglar",
+          "Xumlar",
+          "Daxmalar"
+        ],
+        correct: 0, // A
+        exp: "O‘rta Osiyoda zardushtiylik dafn marosimlari bilan bog‘liq eng qadimgi ossuariylar — suyakdonlar Xorazmdan topilgan."
+      },
+      {
+        q: "14. Xorazmlik kohin-astronomlar xuddi qaysi davlat kohinlari singari daryo toshqini vaqtini bilishgan?",
+        options: [
+          "Bobil kohinlari",
+          "Misr kohinlari",
+          "Hind kohinlari",
+          "Yunon kohinlari"
+        ],
+        correct: 1, // B
+        exp: "Misr kohinlari Nil toshqini vaqtini bilishgani singari xorazmlik kohin-astronomlar Amudaryo suv sathining ko‘tarilishi vaqtini belgilab berishgan."
+      },
+      {
+        q: "15. Qadimgi Xorazm yozuvlari sopol, suyak va charm yuzasiga qanday siyohda bitilgan?",
+        options: [
+          "Qizil siyohda",
+          "Ko‘k siyohda",
+          "Qora siyohda",
+          "Yashil siyohda"
+        ],
+        correct: 2, // C
+        exp: "Keyingi davrlarda yozuvlar qora siyohda sopol, suyak, yog‘och taxtachalarga va charm yuzasiga bitilgan."
+      },
+      {
+        q: "16. Tuproqqal’a saroyida topilgan tasvirlar orasida devoriy yozuvli teri o‘ramlarini ko‘tarib turgan kimning tasviri bor?",
+        options: [
+          "Shoh",
+          "Sarkarda",
+          "Dehqon",
+          "Kohin-xattot"
+        ],
+        correct: 3, // D
+        exp: "Tuproqqal’a devoridagi yozuvli teri o‘ramlarini ko‘tarib turgan kohin-xattotning tasviri e’tiborga molik."
+      },
+      {
+        q: "17. Qadimgi Xorazmda mil. avv. IV–III asrlarda qaysi shaharlar qurilgan?",
+        options: [
+          "Xiva, Jonbosqal’a, Bozorqal’a",
+          "Baqtra, Maroqanda, Termiz",
+          "Olviya, Xersones, Pantikapey",
+          "Afina, Sparta, Miken"
+        ],
+        correct: 0, // A
+        exp: "Xorazmning Xiva, Jonbosqal’a, Bozorqal’a va boshqa shaharlarida binokorlik ishlari amalga oshirilgan."
+      },
+      {
+        q: "18. Tuproqqal’a saroy xonalarida kimlarning tasvirlari bezak berilgan edi?",
+        options: [
+          "Faqat hayvonlarning",
+          "Qadimgi ma’budlar, shohlar, jangchilar, musiqachilar va hayvonlar",
+          "Faqat qushlarning",
+          "Faqat chet el elchilarining"
+        ],
+        correct: 1, // B
+        exp: "Saroy xonalari qadimgi ma’budlar, shohlar, jangchilar, musiqachilar, hayvonlar tasvirlari bilan bezatilgan."
+      },
+      {
+        q: "19. Xorazmda rivojlangan aniq fanlar qaysilar edi?",
+        options: [
+          "Kimyo va biologiya",
+          "Tibbiyot va farmakologiya",
+          "Astronomiya, geometriya, matematika",
+          "Falsafa va mantiq"
+        ],
+        correct: 2, // C
+        exp: "Xorazmda astronomiya, geometriya, matematika kabi aniq fanlar taraqqiy etgan."
+      },
+      {
+        q: "20. Xorazmda ishlab chiqilgan mahalliy taqvimdan aholi qachongacha foydalangan?",
+        options: [
+          "Mil. avv. I asrgacha",
+          "Milodiy III asrgacha",
+          "Faqat 10 yil",
+          "VIII asrga qadar"
+        ],
+        correct: 3, // D
+        exp: "Milodiy I asrda Xorazmda ishlab chiqilgan mahalliy taqvimdan xorazmliklar VIII asrga qadar foydalangan."
+      },
+      {
+        q: "21. Qadimgi Xorazm aholisi xo‘jaligining asosini nima tashkil etgan?",
+        options: [
+          "Sun’iy sug‘orma dehqonchilik va chorvachilik",
+          "Dengiz baliqchiligi",
+          "Faqat tog‘ konchiligi",
+          "Ipakchilik"
+        ],
+        correct: 0, // A
+        exp: "Ushbu o‘lka aholisi xo‘jaligining asosini sun’iy sug‘orma dehqonchilik va chorvachilik tashkil etgan."
+      },
+      {
+        q: "22. Xorazm qabilalari va aholisi o‘zaro savdo-sotiqni kimlar bilan olib borganlar?",
+        options: [
+          "Faqat Rimliklar bilan",
+          "Sug‘diyona, Marg‘iyona, Baqtriya va dasht ko‘chmanchilari bilan",
+          "Faqat Misr va Finikiya bilan",
+          "Faqat Mesopotamiya bilan"
+        ],
+        correct: 1, // B
+        exp: "Xorazmliklar Sug‘diyona, Marg‘iyona, Baqtriya va dasht ko‘chmanchilari bilan yaqindan savdo munosabatlarini o‘rnatgan."
+      },
+      {
+        q: "23. Xorazmda maktablarda bolalarga nimalar o‘rgatilgan?",
+        options: [
+          "Faqat jang qilish sirlari",
+          "Chet tillari va she’riyat",
+          "Xat-savod va arifmetika hisobi",
+          "Diniy afsonalarni yodlash"
+        ],
+        correct: 2, // C
+        exp: "Ibodatxonalar qoshidagi maktablarda xat-savod va arifmetika hisobi o‘rgatilgan."
+      },
+      {
+        q: "24. Oqchaxon qal’asining devorlari qanday rasmlar bilan bezatilgan edi?",
+        options: [
+          "Faqat geometrik naqshlar",
+          "Faqat o‘simliklar tasviri",
+          "Faqat yulduzlar xaritasi",
+          "Odamlar, otlar va otliqlar tasvirlari tushirilgan rang-barang rasmlar"
+        ],
+        correct: 3, // D
+        exp: "Ibodatxona yo‘laklarining devorlari odamlar, otlar va otliqlar tasvirlari tushirilgan rang-barang rasmlar bilan qoplangan."
+      },
+      {
+        q: "25. Xorazmda maktablar odatda qayerda tashkil etilgan?",
+        options: [
+          "Ibodatxonalar qoshida",
+          "Bozor maydonlarida",
+          "Harbiy qal’alar ichida",
+          "Dehqon hovlilarida"
+        ],
+        correct: 0, // A
+        exp: "Ibodatxonalar qoshidagi maktablarda xat-savod va arifmetika hisobi o‘rgatilgan."
+      },
+      {
+        q: "26. Qadimgi Xorazm davlatida hunarmandchilikning qaysi turlari yuqori o‘rinda turgan?",
+        options: [
+          "Kemaсоzlik va kiyim tikish",
+          "Kulolchilik, temir va mis asboblar, qurol-yarog‘ hamda zargarlik buyumlari",
+          "Faqat qurolsozlik",
+          "Faqat shoyi to‘qish"
+        ],
+        correct: 1, // B
+        exp: "Xorazmda hunarmandchilik rivojlangan: kulolchilik, temir va mis asboblar, qurol-yarog‘ hamda zargarlik buyumlari tayyorlangan."
+      },
+      {
+        q: "27. Xorazm shohlari va hukmdorlarining qarorgohi bo‘lgan Tuproqqal’a qaysi asrlarga oid?",
+        options: [
+          "Mil. avv. IV–III asrlarga",
+          "Mil. avv. VI–V asrlarga",
+          "Milodiy II–III asrlarga",
+          "Milodiy V–VI asrlarga"
+        ],
+        correct: 2, // C
+        exp: "Milodiy II–III asrlarda shohona shahar — Xorazm hukmdorlarining qarorgohi Tuproqqal’a bunyod etilgan."
+      },
+      {
+        q: "28. Qadimgi Xorazmda davlat darajasida nimalarga katta e’tibor qaratilgan?",
+        options: [
+          "Faqat tashqi savdoga",
+          "Faqat saroy o‘yinlariga",
+          "Faqat chet el sayohatlariga",
+          "Harbiy ish, xo‘jalik va hunarmandchilik sohasiga"
+        ],
+        correct: 3, // D
+        exp: "Xorazm davlatida harbiy ish, xo‘jalik va hunarmandchilik sohasi rivojiga katta e’tibor berilgan."
+      },
+      {
+        q: "29. Xorazm shaharsozligida markaziy maydonda nimalar joylashgan?",
+        options: [
+          "Muhtasham saroy va ibodatxonalar",
+          "Faqat hunarmandlar rastasi",
+          "Katta harbiy kazarmalar",
+          "Kema to‘xtash joyi"
+        ],
+        correct: 0, // A
+        exp: "Markaziy maydonda muhtasham saroy va ibodatxonalar joylashgan."
+      },
+      {
+        q: "30. Qadimgi Xorazm o‘lka aholisi muqaddas deb bilgan tabiat unsurlari qaysilar edi?",
+        options: [
+          "Faqat quyosh va oy",
+          "Yer, suv va olov",
+          "Faqat tog‘lar va o‘rmonlar",
+          "Faqat havo va shamol"
+        ],
+        correct: 1, // B
+        exp: "Xorazmliklar yer, suv va olovga sajda qilib, mazkur muqaddas unsurlarni qadrlagan."
+      },
+      {
+        q: "31. Xorazmda alohida qal’alarda narsalarni saqlash uchun nimalar qurilgan?",
+        options: [
+          "Qurol-yarog‘ omborlari",
+          "Maxsus qamoqxonalar",
+          "G‘alla saqlash uchun katta omborlar",
+          "Zargarlik xazinalari"
+        ],
+        correct: 2, // C
+        exp: "Alohida qal’alarda g‘alla saqlash uchun mo‘ljallangan katta omborlar joylashgan."
+      },
+      {
+        q: "32. Qadimgi Xorazm poytaxti yoki yirik markazlarining binolari qaysi materialdan qurilgan?",
+        options: [
+          "Faqat marmar toshdan",
+          "Faqat qamish va shox-shabbadan",
+          "Faqat temir listlardan",
+          "Xom g‘ishtdan"
+        ],
+        correct: 3, // D
+        exp: "Ushbu binolarni qurish uchun davlatning barcha hududlarida ishlab chiqarilgan xom g‘ishtlar katta miqdorda ishlatilgan."
+      },
+      {
+        q: "33. Xorazm hududidan topilgan eng qadimgi yozuv namunasi qaysi asrlarga tegishli?",
+        options: [
+          "Mil. avv. V–IV asrlarga",
+          "Milodiy I asrga",
+          "Mil. avv. X asrga",
+          "Milodiy III asrga"
+        ],
+        correct: 0, // A
+        exp: "Oybo‘yirqal’a (mil. avv. V–IV asrlar) yodgorligidan topilgan, xum sirtiga bitilgan yozuv namunasi shular jumlasidandir."
+      },
+      {
+        q: "34. Xorazm qo‘shiq va san’atida yoki devoriy rasmlarida uchraydigan 30 ta qahramon portreti qaysi qal’adan topilgan?",
+        options: [
+          "Tuproqqal’adan",
+          "Oqchaxon qal’asidan",
+          "Qo‘yqirilganqal’adan",
+          "Jonbosqal’adan"
+        ],
+        correct: 1, // B
+        exp: "Oqchaxon qal’asida 30 ta qahramon portreti alohida ajralib turadi."
+      },
+      {
+        q: "35. Xorazm vohasida qaysi ma’buda ramzini o‘zida aks ettirgan sopol haykalchalar ko‘plab topilgan?",
+        options: [
+          "Afina",
+          "Ishtar",
+          "Anaxita",
+          "Aten"
+        ],
+        correct: 2, // C
+        exp: "Xorazm ko‘hna shaharlaridan suv va hosildorlik ma’budasi — Anaxita ramzini o‘zida aks ettirgan ko‘plab sopol haykalchalar topilgan."
+      },
+      {
+        q: "36. Qadimgi Xorazm yozuvi nechta harfdan tashkil topgan edi?",
+        options: [
+          "10 ta",
+          "15 ta",
+          "22 ta",
+          "20 ta"
+        ],
+        correct: 3, // D
+        exp: "Aramey alifbosiga asoslangan qadimgi Xorazm yozuvi 20 ta harfdan tashkil topgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! 38–39-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

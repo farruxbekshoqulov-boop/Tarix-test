@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>46-§. Qullar va gladiatorlar</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va Rim quldorligiga oid tushunchalarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">46-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">46-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Quldorlik va qullarning ahvoli
+      [
+        { id: 1, left: "Zafarli yurishlar", right: "Rimda qullar sonining nihoyatda ko‘payishiga sabab bo‘lgan omil" },
+        { id: 2, left: "Buyumdek qul", right: "Rimliklar tasavvurida qul butunlay quldorning ixtiyoridagi narsa bo‘lgani" },
+        { id: 3, left: "Mehnatdan manfaatdorlik", right: "Rim davlatidagi qullarda mutlaqo bo‘lmagan hisisiyot" },
+        { id: 4, left: "Unumdorlikning kamayishi", right: "Qullar o‘z ishiga yomon qaragani sababli kelib chiqqan holat" }
+      ],
+      // 2-bosqich: Kolonlar va kulbali qullar
+      [
+        { id: 5, left: "Kolonlar", right: "Yerlarni ijaraga olib dehqonchilik qilgan erkin kambag‘allar" },
+        { id: 6, left: "Mahsulot ulushi", right: "Kolonlar yer egasiga o‘zi yetishtirgan hosildan to‘lagan to‘lovi" },
+        { id: 7, left: "«Kulbali qullar»", right: "Kichik yerlarni mustaqil yuritishga ruxsat berilgan uy-joyli qullar" },
+        { id: 8, left: "Mazlum aholi", right: "Birgalikda quldorlarga qarshi kurash boshlagan qullar va kolonlar" }
+      ],
+      // 3-bosqich: Gladiatorlar va Amfiteatrlar
+      [
+        { id: 9, left: "Gladiatorlar jangi", right: "Rimliklarning eng sevimli va qonli tomoshalaridan biri" },
+        { id: 10, left: "Yopiq maktablar", right: "Gladiatorlarga maxsus ta’lim berilib, o‘qitilgan joylar" },
+        { id: 11, left: "Amfiteatrlar", right: "Gladiatorlar janglari o‘tkaziladigan ulkan tosh stadionlar" },
+        { id: 12, left: "Kolizey", right: "50 ming tomoshabin sig‘diradigan eng katta Rim amfiteatri" }
+      ],
+      // 4-bosqich: Gladiatorlarning qurollari va raqobati
+      [
+        { id: 13, left: "Teng raqiblar", right: "Gladiatorlar janglari yanada qiziqarli bo‘lishi uchun tanlangan juftliklar" },
+        { id: 14, left: "Qilich va qalqon", right: "Birinchi gladiator turining asosiy qurollari" },
+        { id: 15, left: "To‘r va changak (uch ayrig‘ nayza)", right: "Ikkinchi tur gladiatorlarining o‘ziga xos qurollari" },
+        { id: 16, left: "Yovvoyi hayvonlar", right: "Arslon va qoplonlar bilan gladiatorlar o‘tkazgan janglar" }
+      ],
+      // 5-bosqich: Spartak qo‘zg‘oloni boshlanishi
+      [
+        { id: 17, left: "Mil. avv. 74-yil", right: "Spartak boshchiligidagi qullar qo‘zg‘oloni boshlangan sana" },
+        { id: 18, left: "Kapuya shahri", right: "Spartak gladiatorlik maktabida saqlangan shahar" },
+        { id: 19, left: "Vezuviy tog‘i", right: "Gladiatorlar qochib chiqib egallagan tog‘dagi qoya" },
+        { id: 20, left: "Uch ming kishilik qo‘shin", right: "Qo‘zg‘olonni bostirish uchun yuborilgan dastlabki Rim armiyasi" }
+      ],
+      // 6-bosqich: Spartakning taktikasi va yakuni
+      [
+        { id: 21, left: "Uzum novdalari", right: "Qo‘zg‘olonchilar pastga tushish uchun narvon to‘qigan o‘simlik" },
+        { id: 22, left: "Mark Krass", right: "Spartakka qarshi yuborilgan tajribali Rim sarkardasi" },
+        { id: 23, left: "Mil. avv. 71-yil", right: "Bahorda hal qiluvchi jangda Spartak lashkari tor-mor etilgan sana" },
+        { id: 24, left: "Eng omma-viy qo‘zg‘olon", right: "Qadimgi dunyodagi eng yirik va uyushgan qullar isyoni" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Rimda qullarning soni nima sababdan nihoyatda ko‘payib ketgan?", a: "Zafarli urushlar natijasida." },
+      { q: "2. Qadimgi Misr va Yunonistonga qaraganda Rimda qullar soni qanday bo‘lgan?", a: "Ancha ko‘p bo‘lgan." },
+      { q: "3. Erkin rimliklar tasavvuricha, qul kim edi?", a: "Butunlay quldorning ixtiyorida bo‘lgan bir buyum." },
+      { q: "4. Nima uchun qullarning qadri bo‘lmagan?", a: "Chunki ular judayam arzon turardi." },
+      { q: "5. Rim davlatidagi qullarda nima mutlaqo bo‘lmagan?", a: "Mehnatdan manfaatdorlik hissi (ularga haq to‘lanmas edi)." },
+      { q: "6. Qullar ishga qanday munosabatda bo‘lishgan?", a: "Imkon qadar kamroq va yomonroq ishlashgan." },
+      { q: "7. Quldorlar qullarning unumdorligi kamaygach nima qilishgan?", a: "Yerlarini mayda mulklarga bo‘lib, erkin kambag‘allarga ijaraga bera boshlashgan." },
+      { q: "8. Mayda yer ijarachilari qanday atalgan?", a: "Kolonlar." },
+      { q: "9. Kolonlar yerdan foydalanganlik uchun yer egasiga nima to‘lashgan?", a: "O‘zlari yetishtirgan mahsulot ulushi bilan to‘lov qilishgan." },
+      { q: "10. Ayrim yer egalari qullarga nimaga ruxsat berishgan?", a: "Kichik yerlarni mustaqil yuritishga." },
+      { q: "11. O‘z mehnati qurollari va urug‘ligi bor, oilasi bilan yashaydigan qullar qanday nomlangan?", a: "«Kulbali qullar» (uy-joyli qullar)." },
+      { q: "12. «Kulbali qullar»ning taqdiri kimning qo‘lida bo‘lgan?", a: "Xo‘jayinlarining qo‘lida bo‘lgan." },
+      { q: "13. Rimliklarning sevimli tomoshalaridan biri nima edi?", a: "Gladiatorlar jangi." },
+      { q: "14. Aksariyat gladiatorlar kimlar bo‘lgan?", a: "Qullar yoki jinoyatchilar." },
+      { q: "15. Gladiatorlar qayerda o‘qitilgan va tayyorlangan?", a: "Maxsus yopiq maktablarda." },
+      { q: "16. Gladiatorning tirik qolishini kim hal qilgan?", a: "Tomoshabinlar (bosh barmog‘ini yuqoriga yoki pastga qaratish bilan)." },
+      { q: "17. Gladiatorlar janglari qayerda o‘tkazilgan?", a: "Amfiteatrlarda (ulkan tosh stadionlarda)." },
+      { q: "18. Eng katta amfiteatr qanday atalgan va unga qancha tomoshabin sig‘gan?", a: "Kolizey; 50 ming tomoshabin." },
+      { q: "19. Gladiatorlar janglarining qiziqarli bo‘lishi uchun nima qilingan?", a: "Teng raqiblar o‘rtasida o‘tkazilgan (masalan, biri qin va qalqon, ikkinchisi to‘r va changak bilan)." },
+      { q: "20. Gladiatorlar yana qanday maxluqlar bilan jang qilishgan?", a: "Yovvoyi arslonlar, qoplonlar va darg‘azab ho‘kizlar bilan." },
+      { q: "21. Spartak boshchiligidagi qullar qo‘zg‘oloni qachon boshlangan?", a: "Miloddan avvalgi 74-yilda." },
+      { q: "22. Spartak qayerdagi gladiatorlik maktabidan qochib ketgan?", a: "Kapuya shahridagi." },
+      { q: "23. Qochib ketgan gladiatorlar qayerga chiqib olishgan?", a: "Vezuviy tog‘idagi qoyaga." },
+      { q: "24. Qo‘zg‘olonchilarni tor-mor etish uchun yuborilgan dastlabki Rim qo‘shini necha kishilik edi?", a: "Uch ming kishilik." },
+      { q: "25. Spartak Vezuviy tog‘ida rimliklarni yengish uchun qanday dadil rejani qo‘llagan?", a: "Uzum novdalaridan narvon to‘qib, ko‘rinmaydigan tarafdan pastga tushib hujum qilgan." },
+      { q: "26. Spartakka qarshi keyinchalik yuborilgan tajribali Rim sarkardasi kim edi?", a: "Mark Krass." },
+      { q: "27. Spartak boshchiligidagi qo‘zg‘olon qachon va qanday yakunlandi?", a: "Miloddan avvalgi 71-yil bahorida hal qiluvchi jangda lashkari tor-mor etilib, o‘zi halok bo‘ldi." },
+      { q: "28. Frakiyalik qul Spartak kim bo‘lgan?", a: "Qo‘zg‘olon rahbari va gladiator." },
+      { q: "29. Qullar va kolonlar Rim davlatida qanday qatlam edi?", a: "Eng mazlum aholi." },
+      { q: "30. Gladiatorlar jangida mag‘lub bo‘lib, tomoshabinlar bosh barmog‘ini pastga qilganda nima bo‘lgan?", a: "U o‘ldirilgan." },
+      { q: "31. Qullar bozori har bir Rim shahrida nima uchun mavjud bo‘lgan?", a: "Qullarga talab ko‘p bo‘lgani uchun." },
+      { q: "32. Qaysi tog‘ yaqinida dastlabki Rim harbiy lageri tiklangan edi?", a: "Vezuviy tog‘i yaqinida." },
+      { q: "33. Spartak qo‘zg‘oloni qadimgi dunyoda qanday ta’riflangan?", a: "Eng omma-viy va uyushgan qullar qo‘zg‘oloni sifatida." },
+      { q: "34. Rimliklar qullarga nisbatan qanday munosabatda bo‘lishgan?", a: "Inson sifatida emas, mol-mulk va buyum sifatida qarashgan." },
+      { q: "35. Kolonlar va kulbali qullar qanday umumiy maqsad yo‘lida birlashgan?", a: "Quldorlarga qarshi kurashish uchun." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Rimda qullarning soni nihoyatda ko‘payib ketishiga asosiy sabab nima edi?",
+        options: [
+          "Zafarli urushlar",
+          "Tinchlik bitimlari",
+          "Savdo-sotiqning rivojlanishi",
+          "Tabiiy ko‘payish"
+        ],
+        correct: 0, // A
+        exp: "Zafarli urushlar natijasida Rimda qullar soni nihoyatda ko‘payib ketadi."
+      },
+      {
+        q: "2. Yerlarni ijaraga olib dehqonchilik qilgan erkin kambag‘allar qanday atalgan?",
+        options: [
+          "Patrisiylar",
+          "Kolonlar",
+          "Plebeylar",
+          "Liktorlar"
+        ],
+        correct: 1, // B
+        exp: "Mayda yer ijarachilari kolonlar deb atalgan."
+      },
+      {
+        q: "3. 50 ming tomoshabin sig‘diradigan eng katta Rim amfiteatri qanday nomlangan?",
+        options: [
+          "Pantheon",
+          "Parfenon",
+          "Kolizey",
+          "Forum"
+        ],
+        correct: 2, // C
+        exp: "50 ming tomoshabin sig‘adigan Kolizey eng katta amfiteatr bo‘lgan."
+      },
+      {
+        q: "4. Spartak boshchiligidagi qullar qo‘zg‘oloni qachon boshlangan?",
+        options: [
+          "Mil. avv. 73-yilda",
+          "Mil. avv. 72-yilda",
+          "Mil. avv. 71-yilda",
+          "Mil. avv. 74-yilda"
+        ],
+        correct: 3, // D
+        exp: "Miloddan avvalgi 74-yilda boshlangan Spartak boshchiligidagi qullar qo‘zg‘oloni..."
+      },
+      {
+        q: "5. Spartakka qarshi kurashish uchun yuborilgan tajribali Rim sarkardasi kim edi?",
+        options: [
+          "Mark Krass",
+          "Pompey",
+          "Sezar",
+          "Sulla"
+        ],
+        correct: 0, // A
+        exp: "Spartakka qarshi tajribali sarkarda Mark Krass boshchiligida ko‘p ming sonli qo‘shin jo‘natildi."
+      },
+      {
+        q: "6. Qochib ketgan gladiatorlar o‘zlarini himoya qilish uchun qaysi tog‘dagi qoyaga chiqib olishgan?",
+        options: [
+          "Olimp tog‘iga",
+          "Vezuviy tog‘iga",
+          "Kapitoliy tepaligiga",
+          "Aventin tepaligiga"
+        ],
+        correct: 1, // B
+        exp: "Ular Vezuviy tog‘idagi qoyaga chiqib olishgan."
+      },
+      {
+        q: "7. Qaysi shahrida gladiatorlik maktabidan Spartak va uning tarafdorlari qochib ketishgan?",
+        options: [
+          "Rim",
+          "Karfagen",
+          "Kapuya",
+          "Neapol"
+        ],
+        correct: 2, // C
+        exp: "Kapuya shahridagi gladiatorlik maktabidan qochib ketishgan."
+      },
+      {
+        q: "8. Spartak qo‘zg‘oloni qachon va qanday yakun topdi?",
+        options: [
+          "Mil. avv. 72-yilda qullarning g‘alabasi bilan",
+          "Mil. avv. 73-yilda sulh tuzilishi bilan",
+          "Mil. avv. 74-yilda imperator taxtga o‘tirishi bilan",
+          "Mil. avv. 71-yil bahorida qullar mag‘lubiyatga uchrab, Spartak halok bo‘ldi"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. 71-yil bahorida ro‘y bergan hal qiluvchi jangda Spartak lashkari tor-mor etildi, o‘zi ham halok bo‘ldi."
+      },
+      {
+        q: "9. Qadimgi Rimda gladiatorlar janglari o‘tkaziladigan ulkan tosh stadionlar qanday atalgan?",
+        options: [
+          "Amfiteatrlar",
+          "Palestralar",
+          "Agoralar",
+          "Akropollar"
+        ],
+        correct: 0, // A
+        exp: "Janglar ulkan tosh stadionlar — amfiteatrlarda bo‘lib tardi."
+      },
+      {
+        q: "10. Erkin rimliklar tasavvuricha, qul kim edi?",
+        options: [
+          "Vaqtinchalik yollanma ishchi",
+          "Butunlay quldorning ixtiyorida bo‘lgan bir buyum",
+          "Davlat fuqarosi",
+          "Erkin dehqon"
+        ],
+        correct: 1, // B
+        exp: "Erkin rimliklar tasavvuricha, qul butunlay quldorning ixtiyorida bo‘lgan bir buyumdek edi."
+      },
+      {
+        q: "11. O‘z mehnati qurollari va urug‘ligi bo‘lgan, oilasi bilan yerda ishlaydigan qullar qanday nomlangan?",
+        options: [
+          "Kolonlar",
+          "Patrisiylar",
+          "«Kulbali qullar» (uy-joyli qullar)",
+          "Plebeylar"
+        ],
+        correct: 2, // C
+        exp: "Bunday qullar «kulbali qullar», ya’ni uy-joyli qullar deb nomlangan."
+      },
+      {
+        q: "12. Gladiatorlar jangi paytida ularning tirik qolishini kim hal qilgan?",
+        options: [
+          "Imperator o‘zi",
+          "Maktab rahbari",
+          "Gladiatorning o‘zi",
+          "Tomoshabinlar (bosh barmog‘ini ishora qilish bilan)"
+        ],
+        correct: 3, // D
+        exp: "Jang so‘ngida tomoshabinlar yengilgan gladiatorning tirik qolish-qolmasligini hal qilishardi."
+      },
+      {
+        q: "13. Qadimgi dunyodagi eng omma-viy va uyushgan qullar qo‘zg‘oloni kimning nomi bilan bog‘liq?",
+        options: [
+          "Spartak",
+          "Romul",
+          "Krass",
+          "Tarkviniy"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 74-yilda boshlangan Spartak boshchiligidagi qullar qo‘zg‘oloni qadimgi dunyoda eng ommaviy bo‘lgan."
+      },
+      {
+        q: "14. Zamondoshlar va tarixchilarning yozishicha, qullarda qaysi his-tuyg‘u mutlaqo bo‘lmagan?",
+        options: [
+          "Qo‘rquv",
+          "Mehnatdan manfaatdorlik hissi",
+          "Nafrat",
+          "Sadoqat"
+        ],
+        correct: 1, // B
+        exp: "Rim davlatidagi qullarda mehnatdan manfaatdorlik hissi mutlaqo bo‘lmagan."
+      },
+      {
+        q: "15. Gladiatorlar dushmanga qarshi kurashda qanday qurollardan foydalanishgan?",
+        options: [
+          "Faqat o‘q-yoy va palaxmon",
+          "Faqat tosh va tayoq",
+          "Qilich va qalqon, to‘r va changak",
+          "Faqat temir gurzilar"
+        ],
+        correct: 2, // C
+        exp: "Birida qilich va qalqon bo‘lsa, boshqasida to‘r va changak (uch ayrig‘ nayza) bo‘lgan."
+      },
+      {
+        q: "16. Quldorlar qullarning mehnati samarasiz ekanini ko‘rib nima qilishgan?",
+        options: [
+          "Barcha qullarni ozod qilishgan",
+          "Qullarni ishlatishni butunlay to‘xtatgan",
+          "Qullarni boshqa davlatga sotib yuborgan",
+          "Yerlarini mayda mulklarga bo‘lib, kolonlarga (erkin kambag‘allarga) ijaraga bergan"
+        ],
+        correct: 3, // D
+        exp: "Zandorlar o‘z yerlarini kichik-kichik mulklarga bo‘lib, erkin kambag‘allarga ijaraga bera boshladilar."
+      },
+      {
+        q: "17. Qullar va kolonlar Rim davlatida qanday mavqega ega bo‘lgan?",
+        options: [
+          "Eng mazlum aholi",
+          "Hukmron tabaqa",
+          "Boy savdogarlar",
+          "Davlat rahbarlari"
+        ],
+        correct: 0, // A
+        exp: "Qullar va kolonlar Rim davlatining eng mazlum aholisi bo‘lib qolavergan."
+      },
+      {
+        q: "18. Qadimgi Misr va Yunonistonga qaraganda Rimda qullarning soni qanday bo‘lgan?",
+        options: [
+          "Kamroq bo‘lgan",
+          "Ancha ko‘p bo‘lgan",
+          "Bir xil bo‘lgan",
+          "Umuman bo‘lmagan"
+        ],
+        correct: 1, // B
+        exp: "Misrda ham, Yunonistonda ham qullarning soni Rimdagichalik ko‘p emas edi."
+      },
+      {
+        q: "19. Vezuviy tog‘ida qamal qilingan gladiatorlar pastga tushish uchun nimadan foydalanganlar?",
+        options: [
+          "Temir zinadan",
+          "Arqonlardan",
+          "Uzum novdalaridan to‘qilgan narvondan",
+          "Tog‘ yo‘lagidan"
+        ],
+        correct: 2, // C
+        exp: "Qullar uzum novdalaridan narvon to‘qib, ko‘rinmaydigan tarafdan pastga tushib oldilar."
+      },
+      {
+        q: "20. Aksariyat gladiatorlar kimlar edi?",
+        options: [
+          "Oliy tabaqa vakillari",
+          "Boy savdogarlar",
+          "Ozod qilingan fuqarolar",
+          "Qullar yoki jinoyatchilar"
+        ],
+        correct: 3, // D
+        exp: "Aksariyat gladiatorlar qullar yoki jinoyatchilar bo‘lishgan."
+      },
+      {
+        q: "21. Kolonlar yer egasiga to‘lovni nima bilan to‘lashgan?",
+        options: [
+          "O‘zlari yetishtirgan mahsulot ulushi bilan",
+          "Oltin tangalar bilan",
+          "Qul sotib berish bilan",
+          "Qurol-yarog‘ tayyorlab berish bilan"
+        ],
+        correct: 0, // A
+        exp: "Yerdan foydalanganlik uchun ular yer egasiga o‘zlari yetishtirgan mahsulotlar bilan to‘lov berishardi."
+      },
+      {
+        q: "22. Spartak qo‘zg‘oloni boshlanganda qaysi davlat hududida yuz bergan edi?",
+        options: [
+          "Misrda",
+          "Italiyada",
+          "Gretsiyada",
+          "Kichik Osiyoda"
+        ],
+        correct: 1, // B
+        exp: "Qadimgi Rimda (Italiyada) yuz bergan."
+      },
+      {
+        q: "23. Gladiatorlar janglari o‘tkaziladigan joylar qanday atalgan?",
+        options: [
+          "Ahoralar",
+          "Stadionlar",
+          "Amfiteatrlar",
+          "Gimnaziyalar"
+        ],
+        correct: 2, // C
+        exp: "Janglar ulkan tosh stadionlar — amfiteatrlarda bo‘lib turardi."
+      },
+      {
+        q: "24. Qullarga haq to‘lanmagani va ular buyumdek ko‘rilgani uchun ularda nima pasayib ketgan?",
+        options: [
+          "Jismoniy kuchi",
+          "Qo‘rquvi",
+          "Soni",
+          "Mehnat unumdorligi"
+        ],
+        correct: 3, // D
+        exp: "Bora-bora qullar mehnatining unumdorligi kamayib ketgan."
+      },
+      {
+        q: "25. Frakiyalik qul Spartak qaysi kasb egasi yoki vazifada bo‘lgan?",
+        options: [
+          "Gladiator",
+          "Senator",
+          "Konsul",
+          "Kohin"
+        ],
+        correct: 0, // A
+        exp: "Frakiyalik qul — Spartak, gladiatorlar edi."
+      },
+      {
+        q: "26. Rim shahar va bozorlarida qullarning narxi odatda qanday bo‘lgan?",
+        options: [
+          "Juda qimmat bo‘lgan",
+          "Judayam arzon turardi",
+          "Oltin bilan baholanardi",
+          "Faqat meros berilardi"
+        ],
+        correct: 1, // B
+        exp: "Qullarning qadri bo‘lmagan, negaki ular judayam arzon turardi."
+      },
+      {
+        q: "27. Kolonlar va qullar nima maqsadda birgalikda harakat boshlaganlar?",
+        options: [
+          "Yangi yerlarni zabt etish uchun",
+          "Chet elga savdoga borish uchun",
+          "Quldorlarga qarshi kurashish uchun",
+          "Yangi shahar qurish uchun"
+        ],
+        correct: 2, // C
+        exp: "Qullar va kolonlar Rim davlatining eng mazlum aholisi bo‘lib qolavergan va ular birgalikda quldorlarga qarshi kurash boshlagan."
+      },
+      {
+        q: "28. Kapuya shahridagi maktabdan qancha gladiator qochib chiqqan edi?",
+        options: [
+          "10 ta",
+          "50 ta",
+          "1000 ta",
+          "200 ga yaqin"
+        ],
+        correct: 3, // D
+        exp: "Spartak va uning 200 ga yaqin tarafdorlari qorovullarga hujum qilib qochib ketgan."
+      },
+      {
+        q: "29. Gladiatorlar o‘z janglarida odamlar bilan bir qatorda yana kimlar bilan olishishgan?",
+        options: [
+          "Yovvoyi arslonlar, qoplonlar va darg‘azab ho‘kizlar bilan",
+          "Faqat uy hayvonlari bilan",
+          "Faqat dengiz hayvonlari bilan",
+          "Dushman sarkardalari bilan"
+        ],
+        correct: 0, // A
+        exp: "Gladiatorlar yovvoyi arslonlar, qoplonlar, darg‘azab ho‘kizlar bilan ham janglar o‘tkazgan."
+      },
+      {
+        q: "30. Quldorlar qullarning mehnati foydali emasligini tushungach, qanday yangi tizimga o‘ta boshlaganlar?",
+        options: [
+          "Siyosiy tenglikka",
+          "Yerlarni kolonlarga ijaraga berish tizimiga",
+          "Ishlab chiqarishni yopishga",
+          "Qullarni mutlaqo ozod qilishga"
+        ],
+        correct: 1, // B
+        exp: "Qullar mehnati quldorlar uchun foydali emasligi ma’lum bo‘ladi. Ko‘plab quldorlar qullarni yer ijarachilariga aylantira boshlashdi."
+      },
+      {
+        q: "31. Qadimgi dunyodagi eng yirik qullar isyoni qaysi davlatda sodir bo‘lgan?",
+        options: [
+          "Misrda",
+          "Yunonistonda",
+          "Rimda",
+          "Bobilshohlikda"
+        ],
+        correct: 2, // C
+        exp: "Qadimgi Rimda Spartak boshchiligida qullar qo‘zg‘oloni bo‘lib o‘tgan."
+      },
+      {
+        q: "32. Gladiatorlar maxsus qanday joylarda ta’lim olishgan?",
+        options: [
+          "Ochiq maydonlarda",
+          "Saroy zallarida",
+          "Diniy ibxonalarda",
+          "Maxsus yopiq maktablarda"
+        ],
+        correct: 3, // D
+        exp: "Ularga maxsus yopiq maktablarda ta’lim berishar edi."
+      },
+      {
+        q: "33. Spartak qo‘zg‘oloni boshlangan vaqtda Rimda kimlar hukmronlik qilgan edi?",
+        options: [
+          "Quldorlar va respublika boshqaruvi",
+          "Faqat podshohlar",
+          "Faqat kohinlar",
+          "Chet ellik istilochilar"
+        ],
+        correct: 0, // A
+        exp: "Rim quldorlik tuzumi avj olgan respublika davrida yuz bergan."
+      },
+      {
+        q: "34. «Kulbali qullar»ning asosiy farqi nimada edi?",
+        options: [
+          "Ularning davlati bo‘lgan",
+          "Ularning o‘z uy-joyi va kichik yerini mustaqil yuritish imkoni bo‘lgan",
+          "Ular soliq to‘lamagan",
+          "Ular armiyada sarkarda bo‘lgan"
+        ],
+        correct: 1, // B
+        exp: "Ularning o‘z mehnati qurollari, urug‘ligi bor, kichik yerlarni mustaqil yuritishga ruxsat berilgan edi."
+      },
+      {
+        q: "35. Kolizey amfiteatri Rimda nima uchun qurilgan edi?",
+        options: [
+          "Diniy ibodatlar uchun",
+          "Qurol saqlash uchun",
+          "Gladiatorlar jangi va tomoshalar o‘tkazish uchun",
+          "Senat yig‘ilishlari uchun"
+        ],
+        correct: 2, // C
+        exp: "Kolizey amfiteatri ko‘ngilochar tomoshalar va gladiatorlar janglari uchun mo‘ljallangan edi."
+      },
+      {
+        q: "36. Spartak lashkarining mag‘lubiyatga uchrashiga asosiy sabab nima edi?",
+        options: [
+          "Rimning tajribali sarkardasi Mark Krass boshchiligidagi yirik muntazam qo‘shin bilan kuchlar teng kelmagani",
+          "Qullarda qurol bo‘lmagani",
+          "Ularning och qolgani",
+          "Tog‘da suv tugagani"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. 71-yil bahorida tajribali sarkarda Mark Krass boshchiligidagi kuchlar bilan bo‘lgan hal qiluvchi jangda qullar mag‘lub bo‘ldi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! 46-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

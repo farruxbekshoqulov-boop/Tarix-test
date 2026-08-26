@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>41-§. Kushon davlati</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va Kushon podsholarini muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">41-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">41-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Kushon davlatining tashkil topishi
+      [
+        { id: 1, left: "Mil. avv. 140–130-yillar", right: "Yuechji qabilalari Yunon-Baqtriyani bosib olgan davr" },
+        { id: 2, left: "Milodiy I asr", right: "Yuechjilar orasida Kushon xonodoni yuksalib, davlat asos solingan davr" },
+        { id: 3, left: "Kudzula Kadfiz", right: "Yuechji qabilalarining mulklarini birlashtirgan birinchi kushon hukmdori" },
+        { id: 4, left: "Vima Kadfiz va Kanishka", right: "Kudzuladan keyin hokimiyat tepasiga kelgan mashhur kushon podsholari" }
+      ],
+      // 2-bosqich: Kanishka imperiyasi va parchalanishi
+      [
+        { id: 5, left: "Kanishka davri", right: "Kushon podsholigi ulkan imperiyaga aylangan davr" },
+        { id: 6, left: "Rim, Parfiya, Xitoy", right: "Kushon davlati qatorida turgan qadimgi ulkan imperiyalar" },
+        { id: 7, left: "Milodiy III asr", right: "Tinimsiz urushlar oqibatida Kushon davlati parchalanib ketgan davr" },
+        { id: 8, left: "Kashmir viloyati", right: "Kudzula Kadfiz davrida qo‘shib olingan Hindiston hududi" }
+      ],
+      // 3-bosqich: Xo‘jalik va texnologiya
+      [
+        { id: 9, left: "Vima Kadfiz davri", right: "Hokim nomi bitilgan tanga zarb qilinishi va pul islohoti boshlangan davr" },
+        { id: 10, left: "Chig‘ir", right: "Kushonlar davrida qishloq xo‘jaligida keng foydalanilgan suv chiqaradigan moslama" },
+        { id: 11, left: "Suv tegirmoni", right: "Kushonlar davrida un yanchish va boshqa ishlarda qo‘llanilgan texnika" },
+        { id: 12, left: "Xolchayon, Dalvarzintepa", right: "Kushon davrining eng muhim yodgorlik shaharlari" }
+      ],
+      // 4-bosqich: Yozuv turlari
+      [
+        { id: 13, left: "Kushon-baqtriya alifbosi", right: "Aramey yozuvi asosida shakllangan, o‘zlashtirish oson bo‘lgan yozuv" },
+        { id: 14, left: "Kushon shaklli yozuvi", right: "Harflari burchakli va aylana shaklida yozilgan yozuv tizimi" },
+        { id: 15, left: "Yunon alifbosidagi kushon bitiklari", right: "Surxko‘tal va Kampirtepadan topilgan yozuvlar" },
+        { id: 16, left: "Xorazmiy va sug‘diy yozuvlar", right: "Amudaryoning quyi oqimi, Zarafshon va Qashqadaryoda keng tarqalgan yozuvlar" }
+      ],
+      // 5-bosqich: Diniy e’tiqod va ibodatxonalar
+      [
+        { id: 17, left: "Zardushtiylik va buddaviylik", right: "Kushon davrida O‘rta Osiyo va Hindiston ta’sirida tarqalgan dinlar" },
+        { id: 18, left: "Eski Termiz, Ayritom", right: "Surxon vohasida yirik buddaviylik ibodatxonalari joylashgan maskanlar" },
+        { id: 19, left: "Milodiy VIII asr", right: "Buddaviylik bilan birga zardushtiylik saqlanib qolgan oxirgi chegara davr" },
+        { id: 20, left: "Fayoztepa va Qoratepa", right: "Eski Termiz yaqinidagi mashhur buddaviylik yodgorliklari" }
+      ],
+      // 6-bosqich: Me’morchilik va san’at
+      [
+        { id: 21, left: "Xom g‘ishtdan devorlar", right: "Dalvarzintepa va Eski Termiz shaharlarining mustahkam mudofaasi" },
+        { id: 22, left: "Fil suyagidan shaxmat", right: "Dalvarzintepadan topilgan noyob san’at asari namunasi" },
+        { id: 23, left: "Ellinistik uslub", right: "Kushon san’atida mahalliy an’analar, Qadimgi Sharq va Yunoniston san’atining uyg‘unlashuvi" },
+        { id: 24, left: "Zartepa va Kampirtepa", right: "Kushon davrida o‘rganilgan qadimiy shaharlar va qo‘rg‘onlar" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Yuechji qabilalari Yunon-Baqtriya davlatini qachon bosib oldi?", a: "Miloddan avvalgi 140–130-yillar oralig‘ida." },
+      { q: "2. Kushon xonodoni qachon yuksalib, Kushon davlatiga asos solindi?", a: "Milodiy I asrda yuechjilar orasida." },
+      { q: "3. Yuechji qabilalarining mulklarini birlashtirgan birinchi kushon hukmdori kim?", a: "Kudzula Kadfiz." },
+      { q: "4. Kudzula Kadfiz davrida qaysi viloyat Kushon davlatiga qo‘shib olingan?", a: "Afg‘oniston va Hindiston viloyati — Kashmir." },
+      { q: "5. Kushon podsholigi qaysi podsho davrida ulkan imperiyaga aylandi?", a: "Podsho Kanishka davrida." },
+      { q: "6. Kanishka davrida Kushon imperiyasi tarkibiga qaysi davlatlar bilan bir qatorda yerlar kirdi?", a: "Hindiston, Afg‘oniston va O‘zbekistonning janubigacha bo‘lgan yerlar." },
+      { q: "7. Kushon davlati tinimsiz urushlar oqibatida qachon parchalanib ketdi?", a: "Milodiy III asrda." },
+      { q: "8. Qaysi podsho davridan boshlab hukmdor nomi bitilgan tanga zarb qilina boshlandi?", a: "Vima Kadfiz davridan boshlab." },
+      { q: "9. Kushon davrida qanday yangi sug‘orish va dehqonchilik texnikalari joriy etildi?", a: "Suv tegirmoni va chig‘ir (suv chiqaradigan moslama)." },
+      { q: "10. Kushon davlatining muhim yodgorlik shaharlari qaysilar?", a: "Xolchayon, Dalvarzintepa, Eski Termiz, Zartepa, Kampirtepa." },
+      { q: "11. Kushon davrida qaysi yozuv turi aramey yozuvi asosida rivojlandi?", a: "Kushon-baqtriya yozuvi." },
+      { q: "12. Surxko‘tal (Afg‘oniston) va Kampirtepadan topilgan bitiklar qaysi alifboda yozilgan?", a: "Yunon alifbosidagi kushon bitiklari." },
+      { q: "13. Amudaryoning quyi oqimi, Zarafshon va Qashqadaryoda qaysi yozuvlar keng tarqalgan edi?", a: "Xorazmiy va sug‘diy yozuvlar." },
+      { q: "14. Kushon davlati tashkil topayotganda Baqtriya va Sug‘diyona aholisi asosan qaysi dinchilikda edi?", a: "Zardushtiylik dinida." },
+      { q: "15. Kushon davlatiga Hindistonning qo‘shilishi bilan qaysi din kirib kela boshladi?", a: "Buddaviylik dini." },
+      { q: "16. Surxon vohasida yirik buddaviylik ibodatxonalari joylashgan maskanlar qaysilar?", a: "Eski Termiz, Ayritom, Dalvarzintepa, Fayoztepa va Qoratepa." },
+      { q: "17. Buddaviylik O‘rta Osiyoda qachongacha saqlanib qoldi?", a: "Milodiy VIII asrgacha (zardushtiylik bilan birga)." },
+      { q: "18. Dalvarzintepa shahrining mudofaa devorlari nimadan qurilgan edi?", a: "Xom g‘ishtdan qurilgan mustahkam devorlar." },
+      { q: "19. Dalvarzintepadan topilgan o‘ta noyob san’at asari nima edi?", a: "Fil suyagidan yasalgan shaxmat donalari." },
+      { q: "20. Kushon san’atida qaysi uslublar bir-biri bilan o‘zaro muvofiqlashgan?", a: "Mahalliy an’analar, Qadimgi Sharq va Qadimgi Yunoniston (ellinistik) san’ati." },
+      { q: "21. Kanishka tangalarida uning siymosi qanday aks ettirilgan?", a: "To‘la libosda, qo‘lida tayoq yoki qurol ushlagan holda." },
+      { q: "22. Kushon podsholigida tangalar qaysi metallardan tayyorlangan?", a: "Oltin, kumush va misdan." },
+      { q: "23. Kushon shaklli yozuvning boshqa yozuvlardan farqli jihati nimada edi?", a: "Harflar burchakli va aylana shaklida yozilgan." },
+      { q: "24. Xolchayonda qaysi sulh yoki saroy qoldiqlari o‘rganilgan?", a: "Kushon hukmdorlarining saroyi va haykaltaroshlik namunalari." },
+      { q: "25. Kushon davrida qaysi davlatlar bilan elchilik va savdo aloqalari olib borilgan?", a: "Hindiston, Xitoy va Rim imperiyasi bilan." },
+      { q: "26. Chig‘ir deb nimaga aytiladi?", a: "Suv chiqaradigan maxsus qishloq xo‘jaligi moslamasiga." },
+      { q: "27. Kushon davlatining iqtisodiy rivojlanishiga nima eng ko‘p ta’sir ko‘rsatdi?", a: "Pul islohoti va xalqaro savdo yo‘llari." },
+      { q: "28. Fayoztepa va Qoratepa yodgorliklari qayerda joylashgan?", a: "Eski Termiz yaqinida." },
+      { q: "29. Kushon podsholigining ma’muriy va madaniy markazlari asosan qayerda joylashgan edi?", a: "Baqtriya va Janubiy O‘rta Osiyo hududlarida." },
+      { q: "30. Kushon davrida shaharlar o‘zini qanday tuzilmaga bo‘lgan?", a: "Hukmdor qarorgohi, hunarmandlar mahallalari va turarjoy mavzelariga." },
+      { q: "31. Kushon shaxzodasining boshiga kiygan kiyimi nima bilan ajralib turadi?", a: "Baland va o‘tkir uchi tikilgan maxsus bosh kiyim (qalpoq) bilan." },
+      { q: "32. Ayritom yodgorligidan topilgan san’at namunalarida asosan nimalar tasvirlangan?", a: "Dumbirachi va musiqachilar, cholg‘u asboblarini chalayotgan kishilar." },
+      { q: "33. Kushon davrida qaysi xalqaro yo‘l orqali Rim va Xitoy bilan savdo qilingan?", a: "Buyuk Ipak yo‘li orqali." },
+      { q: "34. Kushon davlati qaysi asrda inqirozga uchrab parchalanib ketdi?", a: "Milodiy III asrda." },
+      { q: "35. Kushon podshosi Vima Kadfiz amalga oshirgan islohot qaysi sohani jonlantirdi?", a: "Pul muomalasi va savdo-sotiqni." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Yuechji qabilalari Yunon-Baqtriya davlatini qachon bosib olgan edilar?",
+        options: [
+          "Miloddan avvalgi 140–130-yillar oralig‘ida",
+          "Miloddan avvalgi III asrda",
+          "Milodiy I asrda",
+          "Milodiy III asrda"
+        ],
+        correct: 0, // A
+        exp: "Miloddan avvalgi 140–130-yillar oralig‘ida ko‘chmanchi yuechji qabilalari Yunon-Baqtriya davlatini bosib oladi."
+      },
+      {
+        q: "2. Yuechji qabilalarining mulklarini birlashtirgan birinchi kushon hukmdori kim edi?",
+        options: [
+          "Kanishka",
+          "Kudzula Kadfiz",
+          "Vima Kadfiz",
+          "Diodot"
+        ],
+        correct: 1, // B
+        exp: "Yuechji qabilalarining mulklarini birlashtirgan birinchi kushon hukmdori Kudzula Kadfiz bo‘lgan."
+      },
+      {
+        q: "3. Kushon podsholigi qaysi podsho davrida yirik va ulkan imperiyaga aylandi?",
+        options: [
+          "Kudzula Kadfiz",
+          "Vima Kadfiz",
+          "Kanishka",
+          "Demetriy"
+        ],
+        correct: 2, // C
+        exp: "Podsho Kanishka davrida Kushon podsholigi ulkan imperiyaga aylandi."
+      },
+      {
+        q: "4. Tinimsiz urushlar oqibatida Kushon davlati qaysi asrda parchalanib ketdi?",
+        options: [
+          "Miloddan avvalgi I asrda",
+          "Milodiy I asrda",
+          "Milodiy II asrda",
+          "Milodiy III asrda"
+        ],
+        correct: 3, // D
+        exp: "Tinimsiz urushlar oqibatida Kushon davlati inqirozga yuz tutib, milodiy III asrda parchalanib ketadi."
+      },
+      {
+        q: "5. Kushon davrida qishloq xo‘jaligida suv chiqarish uchun qanday moslamadan foydalanilgan?",
+        options: [
+          "Chig‘ir",
+          "Zikkurat",
+          "Ombor",
+          "Kanal"
+        ],
+        correct: 0, // A
+        exp: "Kushonlar davrida qishloq xo‘jaligida suv chiqaradigan chig‘ir va suv tegirmonidan foydalanildi."
+      },
+      {
+        q: "6. Surxon vohasida yirik buddaviylik ibodatxonalari joylashgan Eski Termiz yaqinidagi maskanlar qaysilar?",
+        options: [
+          "Xolchayon va Zartepa",
+          "Fayoztepa va Qoratepa",
+          "Dalvarzintepa va Kampirtepa",
+          "Oyxonim va Baqtra"
+        ],
+        correct: 1, // B
+        exp: "Surxon vohasidagi Eski Termiz, Ayritom va Dalvarzintepada, xususan Fayoztepa va Qoratepada yirik buddaviylik ibodatxonalari bor edi."
+      },
+      {
+        q: "7. Dalvarzintepadan arxeologik qazishmalar vaqtida topilgan eng qimmatbaho san’at namunalaridan biri nima?",
+        options: [
+          "Oltin ot-arava",
+          "Mis tangalar",
+          "Fil suyagidan yasalgan shaxmat donalari",
+          "Bronza oybolta"
+        ],
+        correct: 2, // C
+        exp: "Dalvarzintepadan fil suyagidan yasalgan shaxmat donalari topilgan."
+      },
+      {
+        q: "8. Kushon podsholigida hukmdor nomi bitilgan tanga zarb qilish qaysi podsho davridan boshlandi?",
+        options: [
+          "Kudzula Kadfiz",
+          "Kanishka",
+          "Diodot",
+          "Vima Kadfiz"
+        ],
+        correct: 3, // D
+        exp: "Vima Kadfiz davrida Kushon podsholigida hukmdor nomi bitilgan tanga zarb qilish boshlanib, pul islohoti amalga oshiriladi."
+      },
+      {
+        q: "9. Kushon davlatida aramey yozuvi asosida shakllangan yozuv turi qanday atalgan?",
+        options: [
+          "Kushon-baqtriya yozuvi",
+          "Mixxat",
+          "Iyeroglif",
+          "Finikiya alifbosi"
+        ],
+        correct: 0, // A
+        exp: "Kushon davlatidagi aloqalar tufayli aramey yozuvi asosidagi kushon-baqtriya yozuvi rivojlandi."
+      },
+      {
+        q: "10. Surxko‘tal va Kampirtepadan topilgan bitiklar qaysi alifboda yozilgan?",
+        options: [
+          "Lotin alifbosida",
+          "Yunon alifbosidagi kushon bitiklari",
+          "Slavyan alifbosida",
+          "Sanskrit alifbosida"
+        ],
+        correct: 1, // B
+        exp: "Surxko‘tal va Kampirtepadan yodgorlikdan topilgan yunon alifbosidagi kushon bitiklari buni tasdiqlaydi."
+      },
+      {
+        q: "11. Amudaryoning quyi oqimi, Zarafshon va Qashqadaryo vohalarida qaysi yozuvlar keng tarqalgan edi?",
+        options: [
+          "Faqat yunon va lotin",
+          "Faqat mixxat",
+          "Xorazmiy va sug‘diy yozuvlar",
+          "Faqat sanskrit"
+        ],
+        correct: 2, // C
+        exp: "Amudaryoning quyi oqimi zaminida, Zarafshon va Qashqadaryo vohalarida xorazmiy va sug‘diy yozuvlar ham keng tarqalgan edi."
+      },
+      {
+        q: "12. Kushon davlati tashkil topganda Baqtriya va Sug‘diyona aholisi asosan qaysi dinga e’tiqod qilgan?",
+        options: [
+          "Buddaviylik",
+          "Xristianlik",
+          "Islom",
+          "Zardushtiylik"
+        ],
+        correct: 3, // D
+        exp: "Kushon davlati tashkil topayotganda Baqtriya, Sug‘diyona aholisi zardushtiylik dinida edi."
+      },
+      {
+        q: "13. Kushon davrida qaysi davlatlar bilan elchilik va savdo aloqalari o‘rnatilgan?",
+        options: [
+          "Hindiston, Xitoy va Rim imperiyasi bilan",
+          "Faqat Misr va Bobil bilan",
+          "Faqat skiflar bilan",
+          "Faqat orol davlatlari bilan"
+        ],
+        correct: 0, // A
+        exp: "Hindiston, Xitoy va Rim imperiyalari bilan savdo va elchilik munosabatlari o‘rnatilgan edi."
+      },
+      {
+        q: "14. Kushon davlatining yodgorlik shaharlari qatorini aniqlang.",
+        options: [
+          "Afrosiyob, Oyxonim, Zartepa",
+          "Xolchayon, Dalvarzintepa, Zartepa, Kampirtepa",
+          "Jonbosqal’a, Bozorqal’a, Tuproqqal’a",
+          "Ershi, Bityan, Shoshtepa"
+        ],
+        correct: 1, // B
+        exp: "Xolchayon, Dalvarzintepa, qadimiy Termiz, Zartepa, Kampirtepa va boshqalar."
+      },
+      {
+        q: "15. Kushonlar davrida tangalar qaysi metallardan tayyorlangan?",
+        options: [
+          "Faqat temir va misdan",
+          "Faqat mis va qo‘rg‘oshindan",
+          "Oltin, kumush va misdan",
+          "Faqat sof oltindan"
+        ],
+        correct: 2, // C
+        exp: "Zarb qilingan tangalar oltin, kumush va misdan tayyorlangan edi."
+      },
+      {
+        q: "16. Kushon san’atida qaysi madaniyatlar xususiyatlari uyg‘unlashgan?",
+        options: [
+          "Faqat Xitoy va Hindiston",
+          "Faqat Misr va Mesopotamiya",
+          "Faqat mahalliy ko‘chmanchilar",
+          "Mahalliy an’analar, Qadimgi Sharq va Qadimgi Yunoniston (ellinistik) san’ati"
+        ],
+        correct: 3, // D
+        exp: "Kushon san’atida mahalliy an’analar, Qadimgi Sharq va Qadimgi Yunoniston ellinistik san’ati uslublari muvofiqlashgan."
+      },
+      {
+        q: "17. Yuechji qabilalari qaysi davlatni bosib olib, Baqtriya yerlariga o‘rnashganlar?",
+        options: [
+          "Yunon-Baqtriya davlatini",
+          "Ahamoniylar davlatini",
+          "Salavkiylar davlatini",
+          "Qang‘ davlatini"
+        ],
+        correct: 0, // A
+        exp: "Ko‘chmanchi yuechji qabilalari Yunon-Baqtriya davlatini bosib olib, Baqtriya yerlariga o‘rnashadi."
+      },
+      {
+        q: "18. Vima Kadfiz davridagi pul islohoti nima uchun xizmat qildi?",
+        options: [
+          "Pulni muomaladan chiqarishga",
+          "Xo‘jalik va savdo-sotiqning rivojlanishiga",
+          "Faqat xazina to‘plashga",
+          "Chet el savdosini taqiqlashga"
+        ],
+        correct: 1, // B
+        exp: "Vima Kadfiz davrida tanga zarb etish boshlanib, pul islohoti xo‘jalik va savdo-sotiqning rivojiga ko‘maklashgan."
+      },
+      {
+        q: "19. Kushon podsholigi hududiga Hindistonning qo‘shilishi natijasida qaysi din keng tarqala boshladi?",
+        options: [
+          "Zardushtiylik",
+          "Isそう",
+          "Buddaviylik",
+          "Xristianlik"
+        ],
+        correct: 2, // C
+        exp: "Kushon podsholigi tarkibiga Hindistonning shimoliy qismi qo‘shib olingach, buddaviylik dini kirib kela boshladi."
+      },
+      {
+        q: "20. Kushon shaxzodasi tasvirlangan haykalda uning bosh kiyimi qanday shaklda?",
+        options: [
+          "Keng shlyapa",
+          "Draparli salla",
+          "Dumaloq toj",
+          "Baland va o‘tkir uchi tikilgan bosh kiyim"
+        ],
+        correct: 3, // D
+        exp: "Kushon shaxzodasi tasvirlangan haykaltaroshlikda baland va o‘tkir uchi tikilgan bosh kiyim ko‘rsatilgan."
+      },
+      {
+        q: "21. Ayritom yodgorligidan topilgan san’at namunalarida nimalar tasvirlangan?",
+        options: [
+          "Dumbirachi va musiqachilar",
+          "Faqat jangchi otliqlar",
+          "Faqat podsholar portreti",
+          "Diniy kitoblar"
+        ],
+        correct: 0, // A
+        exp: "Ayritomda topilgan dumbirachi va ud cholg‘u asbobini chalayotgan musiqachilar tasvirlari shular jumlasidandir."
+      },
+      {
+        q: "22. Kushon davrida qishloq xo‘jaligining asosi nima edi?",
+        options: [
+          "Lalmikor dehqonchilik",
+          "Sug‘orma dehqonchilik, savdo-sotiq va hunarmandchilik",
+          "Faqat ovchilik",
+          "Baliqchilik"
+        ],
+        correct: 1, // B
+        exp: "Kushon davri xo‘jaligining asosi sug‘orma dehqonchilik, savdo-sotiq va hunarmandchilik tashkil qilgan."
+      },
+      {
+        q: "23. Kushon davrida qaysi ekinlar yetishtirilgan?",
+        options: [
+          "Faqat paxta",
+          "Faqat meva va sabzavotlar",
+          "Bug‘doy, arpa va sholi",
+          "Faqat makkajo‘xori"
+        ],
+        correct: 2, // C
+        exp: "Bug‘doy, arpa va sholi yetishtirilgan."
+      },
+      {
+        q: "24. Kushon davrida yozuvning yana bir turi bo‘lgan «kushon shaklli yozuvi» qanday yozilgan?",
+        options: [
+          "Faqat toshga o‘yib yozilgan",
+          "Faqat charmga chizilgan",
+          "Faqat papirusga yozilgan",
+          "Harflar burchakli va aylana shaklida yozilgan"
+        ],
+        correct: 3, // D
+        exp: "Kushon shaklli yozuvi mavjud bo‘lgan, bunda harflar burchakli va aylana shaklida yozilgan."
+      },
+      {
+        q: "25. Kushon davlati qaysi asrda tashkil topgan edi?",
+        options: [
+          "Milodiy I asrda",
+          "Miloddan avvalgi III asrda",
+          "Miloddan avvalgi V asrda",
+          "Milodiy III asrda"
+        ],
+        correct: 0, // A
+        exp: "Milodiy I asrda yuechjilar orasida Kushon xonodoni yuksalib, Kushon davlatiga asos solinadi."
+      },
+      {
+        q: "26. Kushon davlati qachon parchalanib ketgan?",
+        options: [
+          "Milodiy I asrda",
+          "Milodiy III asrda",
+          "Milodiy V asrda",
+          "Milodiy VIII asrda"
+        ],
+        correct: 1, // B
+        exp: "Milodiy III asrda Kushon davlati parchalanib ketadi."
+      },
+      {
+        q: "27. Kanishka davrida Kushon podsholigi qanday maqomga ega bo‘ldi?",
+        options: [
+          "Kichik viloyatga",
+          "Mustaqil shaharga",
+          "Ulkan imperiyaga",
+          "Chet el mustamlakasiga"
+        ],
+        correct: 2, // C
+        exp: "Podsho Kanishka davrida ulkan imperiyaga aylandi."
+      },
+      {
+        q: "28. Fayoztepa va Qoratepa qanday yodgorliklar sirasiga kiradi?",
+        options: [
+          "Qadimgi qal’alar",
+          "Zardushtiylik daxmalari",
+          "Qadimgi saroylar",
+          "Buddaviylik ibodatxonalari"
+        ],
+        correct: 3, // D
+        exp: "Fayoztepa va Qoratepa — Eski Termiz yaqinidagi mashhur buddaviylik ibodatxonalaridir."
+      },
+      {
+        q: "29. Kushon davlati hududiga qaysi davlatning shimoliy qismi qo‘shib olingan edi?",
+        options: [
+          "Hindistonning",
+          "Xitoyning",
+          "Misrning",
+          "Rimning"
+        ],
+        correct: 0, // A
+        exp: "Kushon podsholigi tarkibiga Hindistonning shimoliy qismi qo‘shib olingan."
+      },
+      {
+        q: "30. Xolchayonda qanday ashyolar o‘rganilgan?",
+        options: [
+          "Faqat tosh bolta va pichoqlar",
+          "Kushon hukmdorlari saroyi va haykaltaroshlik namunalari",
+          "Faqat tangalar xazinasi",
+          "Faqat yozuvli taxtachalar"
+        ],
+        correct: 1, // B
+        exp: "Xolchayonda Kushon hukmdorlari saroyi va devoriy haykaltaroshlik asarlari o‘rganilgan."
+      },
+      {
+        q: "31. Kushon tangalarida asosan nimalar aks ettirilgan?",
+        options: [
+          "Faqat hayvonlar va o‘simliklar",
+          "Faqat geometrik naqshlar",
+          "Hukmdorning siymosi va turli xudolar tasviri",
+          "Faqat xarita chiziqlari"
+        ],
+        correct: 2, // C
+        exp: "Tangalarda hukmdorlarning siymosi va turli xudolar tasvirlari tushirilgan."
+      },
+      {
+        q: "32. Kushon davrida shaharsozlikda shaharlar qanday qismlarga bo‘lingan?",
+        options: [
+          "Faqat bozor maydonlariga",
+          "Faqat qishloqlarga",
+          "Faqat harbiy kazarmalarga",
+          "Hukmdor qarorgohi, hunarmandlar mahallalari va turarjoy mavzelariga"
+        ],
+        correct: 3, // D
+        exp: "Shaharlarning o‘zi hunarmandlar mahallalariga va turarjoy mavzelariga ajratilgan, hukmdor qarorgohi bo‘lgan."
+      },
+      {
+        q: "33. Yuechji qabilalari qaysi davlatni bosib olgan edilar?",
+        options: [
+          "Yunon-Baqtriya davlatini",
+          "Ahamoniylar davlatini",
+          "Salavkiylar davlatini",
+          "Qang‘ davlatini"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 140–130-yillar oralig‘ida ko‘chmanchi yuechji qabilalari Yunon-Baqtriya davlatini bosib oladi."
+      },
+      {
+        q: "34. Kushon davlatining tashkil topishida asosiy rol o‘ynagan xonadon qaysi?",
+        options: [
+          "Ahamoniylar",
+          "Kushon xonodoni",
+          "Salavkiylar",
+          "Arshakiylar"
+        ],
+        correct: 1, // B
+        exp: "Milodiy I asrda yuechjilar orasida Kushon xonodoni yuksalib, Kushon davlatiga asos solinadi."
+      },
+      {
+        q: "35. Kushon davrida qaysi xo‘jalik tarmog‘i yangi texnikalar evaziga rivojlandi?",
+        options: [
+          "Faqat dengiz ovchiligi",
+          "Faqat o‘rmonchilik",
+          "Qishloq xo‘jaligi va dehqonchilik",
+          "Faqat konchilik"
+        ],
+        correct: 2, // C
+        exp: "Chig‘ir va suv tegirmonining joriy etilishi dehqonchilik va qishloq xo‘jaligini rivojlantirdi."
+      },
+      {
+        q: "36. Kushon imperiyasi o‘z qudratiga ko‘ra qaysi qadimgi buyuk davlatlar bilan bir qatorda turgan?",
+        options: [
+          "Faqat kichik qabilalar bilan",
+          "Faqat mahalliy hokimliklar bilan",
+          "Faqat hind knyazliklari bilan",
+          "Rim, Parfiya, Xitoy kabi ulkan imperiyalar qatorida"
+        ],
+        correct: 3, // D
+        exp: "Rim, Parfiya, Xitoy davlatlari qatori Kushon podsholigi ham ulkan imperiyalardan biri bo‘lgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! 41-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

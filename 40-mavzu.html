@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>40-§. Qadimgi Qang‘ va Davan davlatlari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va davlatlarga oid ma’lumotlarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">40-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">40-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Qang‘ davlati asoslari
+      [
+        { id: 1, left: "Mil. avv. III asr", right: "Saklar tomonidan Qang‘ davlatiga asos solingan davr" },
+        { id: 2, left: "Qang‘‘xa (Qang‘ yuy)", right: "Xitoy manbalarida Qang‘ davlatining atalishi" },
+        { id: 3, left: "Qang‘diz (Bityan)", right: "Qang‘ davlatining poytaxti bo‘lgan shahar-qal’a" },
+        { id: 4, left: "O‘rta Sirdaryo sohili", right: "Qang‘ davlati hududlari joylashgan asosiy hudud" }
+      ],
+      // 2-bosqich: Qang‘ xo‘jaligi va Shoshtepa
+      [
+        { id: 5, left: "Toshkent vohasi", right: "Qang‘ davlatining muhim madaniy markazlaridan biri" },
+        { id: 6, left: "Bug‘doy, arpa va sholi", right: "Qang‘ aholisi ekkan asosiy qishloq xo‘jaligi ekinlari" },
+        { id: 7, left: "Shoshtepa", right: "Mil. avv. II asrda doira shaklida qurilgan olov ibodatxonasi joylashgan hudud" },
+        { id: 8, left: "Dumalash shakl", right: "Qang‘ davridagi Shoshtepa ibodatxonasida quyosh ramzi hisoblangan shakl" }
+      ],
+      // 3-bosqich: Qang‘ iqtisodi va parchalanishi
+      [
+        { id: 9, left: "Buyuk Ipak yo‘li", right: "Qang‘ davlati hududidan o‘tgan shimoliy tarmoq" },
+        { id: 10, left: "Milodiy III asr", right: "Qang‘ davlati mayda mulklarga parchalanib ketgan davr" },
+        { id: 11, left: "Qang‘ tamg‘asi", right: "Davlatga oid ramziy belgi" },
+        { id: 12, left: "Kril qabilalari", right: "Qang‘ni tuzgan sak qabilalarining asosi" }
+      ],
+      // 4-bosqich: Davan davlati va Chjan Szyan
+      [
+        { id: 13, left: "Farg‘ona vodiysi", right: "Davan davlati joylashgan tarixiy o‘lka" },
+        { id: 14, left: "Mil. avv. III asr", right: "Davan davlati paydo bo‘lgan taxminiy davr" },
+        { id: 15, left: "Chjan Szyan", right: "Davan haqida ma’lumot bergan Xitoy elchisi" },
+        { id: 16, left: "70 ta katta-kichik shahar", right: "Davan davlatida mavjud bo‘lgan shahar va qishloqlar soni" }
+      ],
+      // 5-bosqich: Ershi poytaxti va «Samoviy otlar»
+      [
+        { id: 17, left: "Ershi", right: "Davan davlatining bosh poytaxti" },
+        { id: 18, left: "«Samoviy otlar»", right: "Farg‘onada parvarish qilingan mashhur nasldor va chopqir otlar" },
+        { id: 19, left: "Tyan-shan", right: "Xitoy tilida «samoviy tog‘lar» deb tarjima qilinuvchi tizma" },
+        { id: 20, left: "Che Lin", right: "Davan davlatiga otlar uchun yuborilgan Xitoy elchisi (pahlavon)" }
+      ],
+      // 6-bosqich: Xitoy yurishlari va shahar xarobalari
+      [
+        { id: 21, left: "60 ming nafar", right: "Xitoy imperatorining Davanga qarshi ikkinchi yurishdagi qo‘shini" },
+        { id: 22, left: "Sho‘rabashot, Axsikent, Uchqo‘rg‘on", right: "Farg‘ona vodiysida o‘rganilgan qadimiy shahar xarobalari" },
+        { id: 23, left: "Milodiy III asr", right: "Davan davlati o‘z faoliyatini to‘xtatgan (barham topgan) davr" },
+        { id: 24, left: "Sulh tuzish", right: "Ershi qamalidan so‘ng Davan va Xitoy o‘rtasidagi kelishuv" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Xitoy manbalarida Qang‘ davlati qanday nomlangan?", a: "Qang‘‘xa (Qang‘ yuy)." },
+      { q: "2. Qang‘ davlatiga qachon va kimlar asos solgan?", a: "Miloddan avvalgi III asrda saklar asos solgan." },
+      { q: "3. Qang‘ davlatining saklarning sobiq poytaxti bo‘lgan shahar-qal’asi qanday atalgan?", a: "Qang‘diz (Xitoy manbalarida Bityan)." },
+      { q: "4. Qang‘ davlati hududlari asosan qayerda joylashgan edi?", a: "O‘rta Sirdaryo sohillari bo‘ylab." },
+      { q: "5. Qang‘ davlati qachon qudratli davlat birlashmasiga aylandi?", a: "Miloddan avvalgi II asr oxirida." },
+      { q: "6. Qang‘ davlatida qaysi o‘simliklar yetishtirilgan?", a: "Bug‘doy, arpa va sholi." },
+      { q: "7. Qang‘ davlatida hunarmandchilikning qaysi turlari rivojlangan edi?", a: "Kulolchilik, qurolsozlik, to‘qimachilik va zargarlik." },
+      { q: "8. Qang‘lilar qaysi tabiat unsurlariga e’tiqod qilib, sig‘inganlar?", a: "Olov va quyoshga." },
+      { q: "9. Miloddan avvalgi II asrda Shoshtepada qanday ibodatxona qurilgan?", a: "Doira shaklidagi olov ibodatxonasi." },
+      { q: "10. Shoshtepadagi doira shaklidagi ibodatxona nimaning ramzi hisoblangan?", a: "Quyosh ramzi." },
+      { q: "11. Qang‘ hududidan Buyuk Ipak yo‘lining qaysi tarmog‘i o‘tgan?", a: "Shimoliy tarmog‘i." },
+      { q: "12. Qang‘ davlati qachon mayda mulklarga parchalanib ketdi?", a: "Milodiy III asrda." },
+      { q: "13. Davan davlati qachon va qayerda paydo bo‘lgan?", a: "Miloddan avvalgi III asrda Farg‘ona vodiysida." },
+      { q: "14. Davan haqida ma’lumot bergan Xitoy elchisi kim edi?", a: "Chjan Szyan." },
+      { q: "15. Chjan Szyanning yozishicha, Davanda nechta katta-kichik shahar bo‘lgan?", a: "70 ta katta-kichik shahar." },
+      { q: "16. Davan davlatining poytaxti qanday atalgan?", a: "Ershi." },
+      { q: "17. Farg‘onada parvarish qilingan mashhur otlar xitoyliklar tomonidan qanday nomlangan?", a: "«Samoviy otlar» (yoki qanotli otlar)." },
+      { q: "18. Tyan-shan tog‘lari xitoy tilida qanday ma’noni bildiradi?", a: "«Samoviy tog‘lar»." },
+      { q: "19. Xitoy imperatori Davan otlarini nima maqsadda qo‘lga kiritmoqchi bo‘lgan?", a: "O‘zining ilohiy nasl-nasabi va zavol bilmasligini xalq ongiga singdirish uchun." },
+      { q: "20. Xitoyning Davanga qarshi ikkinchi yurishidagi qo‘shini qancha edi?", a: "60 ming nafar." },
+      { q: "21. Ershi shahri qamal qilinganda xitoyliklar shaharga keladigan nimani to‘sishgan?", a: "Suv yo‘lini." },
+      { q: "22. Xitoyliklar Ershini egallay olmagach, nima qilib qaytishgan?", a: "Zarur miqdordagi otlardan tovon sifatida olib, vataniga qaytishgan." },
+      { q: "23. Farg‘ona vodiysida qadimgi shahar xarobalari sifatida qaysilar o‘rganilgan?", a: "Sho‘rabashot, Axsikent, Uchqo‘rg‘on." },
+      { q: "24. Davan davlati qachon barham topgan?", a: "Milodiy III asrda." },
+      { q: "25. Qang‘ hukmdorlari o‘zlarining nimalarini zarb qilganlar?", a: "Tangalarini." },
+      { q: "26. Qang‘ davlatining madaniy markazlaridan biri bo‘lgan voha qaysi?", a: "Toshkent vohasi." },
+      { q: "27. Qang‘ va Davan davlatlari tarixida Xitoy manbalarining o‘rni qanday?", a: "Ular bu davlatlar haqida ko‘plab yozma ma’lumotlarni saqlab qolgan." },
+      { q: "28. Davanliklar haqida Chjan Szyan qanday xarakteristika bergan?", a: "Juda mehmonmaysan va ko‘ngli ochiq odamlar deb yozgan." },
+      { q: "29. Xitoy elchisi Che Lin Davanga qanday sovg‘alar bilan kelgan?", a: "Salomlar va oltindan yasalgan ot haykali bilan." },
+      { q: "30. Qang‘ davlatining aholisi chorvachilikda asosan qaysi hayvonlarni boqqan?", a: "Qo‘y-echkilar, tuyalar va yilqichilik bilan shug‘ullangan." },
+      { q: "31. Qang‘ aholisi charm va jun matolardan nimalar tayyorlagan?", a: "Poyabzal, kiyimlar va gilamlar." },
+      { q: "32. Farg‘onada yovvoyi biyalarni qaysi otlar bilan qochirib «samoviy otlar» olingan?", a: "Tog‘larda yashovchi yovvoyi ayg‘irlar bilan." },
+      { q: "33. Xitoyliklarning Davanga qilgan birinchi yurishi qanday tugagan edi?", a: "Mag‘lubiyat bilan." },
+      { q: "34. Qang‘ davlatidan madad yetib kelishidan qo‘rqqan xitoyliklar nima qilishdi?", a: "Davan bilan sulh tuzishga rozi bo‘lishdi." },
+      { q: "35. Arxeologik ma’lumotlarga ko‘ra, Qang‘ davlati qaysi asrlarda mavjud bo‘lgan?", a: "Miloddan avvalgi III asrdan milodiy III asrgacha." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Qang‘ davlatiga qachon va kimlar asos solgan?",
+        options: [
+          "Miloddan avvalgi III asrda saklar",
+          "Miloddan avvalgi I asrda xitoyliklar",
+          "Milodiy I asrda yuechjilar",
+          "Miloddan avvalgi V asrda massagetlar"
+        ],
+        correct: 0, // A
+        exp: "Unga mil. avv. III asrda saklar asos solgan."
+      },
+      {
+        q: "2. Davan davlati qaysi tarixiy hududda joylashgan edi?",
+        options: [
+          "Zarafshon vohasida",
+          "Farg‘ona vodiysida",
+          "Xorazm vohasida",
+          "Surxon vohasida"
+        ],
+        correct: 1, // B
+        exp: "Davan davlati taxminan mil. avv. III asrda paydo bo‘lib, Farg‘ona vodiysida joylashgan."
+      },
+      {
+        q: "3. Qang‘ davlatining poytaxti bo‘lgan shahar-qal’a qanday atalgan?",
+        options: [
+          "Ershi",
+          "Baqtra",
+          "Qang‘diz (Bityan)",
+          "Maroqanda"
+        ],
+        correct: 2, // C
+        exp: "Qang‘ning sobiq poytaxti Qang‘diz bo‘lib, Xitoy manbalarida Bityan deb atalgan."
+      },
+      {
+        q: "4. Davan davlatining bosh poytaxti qaysi shahar edi?",
+        options: [
+          "Axsikent",
+          "Sho‘rabashot",
+          "Uchqo‘rg‘on",
+          "Ershi"
+        ],
+        correct: 3, // D
+        exp: "Davan davlatining poytaxti Ershi edi."
+      },
+      {
+        q: "5. Xitoy manbalarida Qang‘ davlati qanday nom bilan yuritilgan?",
+        options: [
+          "Qang‘‘xa (Qang‘ yuy)",
+          "Davan",
+          "Xorasmiya",
+          "Baqtriya"
+        ],
+        correct: 0, // A
+        exp: "Xitoy manbalarida Qang‘‘xa (Qang‘) davlati Qang‘‘yuy deb atalgan."
+      },
+      {
+        q: "6. Miloddan avvalgi II asrda Shoshtepada qanday inshoot qurilgan edi?",
+        options: [
+          "Ulkan shoh saroyi",
+          "Doira shaklidagi olov ibodatxonasi",
+          "Suv ombori",
+          "Tosh qal’a devori"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. II asrda Shoshtepada doira shaklidagi olov ibodatxonasi qurilgan."
+      },
+      {
+        q: "7. Davan haqida qimmatli ma’lumotlar qoldirgan Xitoy elchisi kim edi?",
+        options: [
+          "Chjan Szyan",
+          "Che Lin",
+          "Farasman",
+          "Dadarshish"
+        ],
+        correct: 2, // C
+        exp: "Davan haqidagi ma’lumotlar xitoy elchisi Chjan Szyan yozuvlarida keng yoritilgan."
+      },
+      {
+        q: "8. Qang‘ davlati qachon mayda mulklarga parchalanib ketdi?",
+        options: [
+          "Mil. avv. II asr oxirida",
+          "Mil. avv. III asrda",
+          "Milodiy I asrda",
+          "Milodiy III asrda"
+        ],
+        correct: 3, // D
+        exp: "Milodiy III asrga kelib Qang‘ davlati mayda mulklarga parchalanib ketadi."
+      },
+      {
+        q: "9. Qang‘ davlati hududlari asosan qaysi daryo o‘rtasidagi sohillar bo‘ylab joylashgan edi?",
+        options: [
+          "Sirdaryo",
+          "Amudaryo",
+          "Zarafshon",
+          "Chirchiq"
+        ],
+        correct: 0, // A
+        exp: "Qang‘ davlati hududlari o‘rta Sirdaryo sohillari bo‘ylab joylashgan."
+      },
+      {
+        q: "10. Xitoy tilida «samoviy tog‘lar» deb tarjima qilinadigan tog‘ tizmasi qaysi?",
+        options: [
+          "Pamir",
+          "Tyan-shan",
+          "Kavkaz",
+          "Alp"
+        ],
+        correct: 1, // B
+        exp: "Tyan-shan xitoy tilida «samoviy tog‘lar» deb tarjima qilinadi."
+      },
+      {
+        q: "11. Xitoy hukmdorlarining e’tiborini tortgan Davan otlari qanday atalgan?",
+        options: [
+          "«Yovvoyi otlar»",
+          "«Tulporlar»",
+          "«Samoviy otlar»",
+          "«Arg‘umoqlar»"
+        ],
+        correct: 2, // C
+        exp: "Davan otlari xitoyliklar tomonidan «samoviy otlar» deb nomlangan."
+      },
+      {
+        q: "12. Shoshtepadagi doira shaklidagi ibodatxonada dumaloq shakl nimaning ramzi hisoblangan?",
+        options: [
+          "Oyning",
+          "Yerning",
+          "Suvning",
+          "Quyoshning"
+        ],
+        correct: 3, // D
+        exp: "Dumaloq shakl quyosh ramzi hisoblangan."
+      },
+      {
+        q: "13. Chjan Szyanning yozishicha, Davanda nechta katta-kichik shahar bo‘lgan?",
+        options: [
+          "70 ta",
+          "12 ta",
+          "40 ta",
+          "100 ta"
+        ],
+        correct: 0, // A
+        exp: "Chjan Szyan: «Davanda 70 ta katta-kichik shahar bor...» deb yozgan."
+      },
+      {
+        q: "14. Xitoyning Davanga qarshi ikkinchi yurishidagi qo‘shini soni qancha edi?",
+        options: [
+          "10 ming",
+          "60 ming",
+          "100 ming",
+          "30 ming"
+        ],
+        correct: 1, // B
+        exp: "Ikkinchi yurishda Xitoy hukmdorining qo‘shinlari 60 ming nafar edi."
+      },
+      {
+        q: "15. Farg‘ona vodiysida o‘rganilgan qadimiy shahar xarobalari qaysilar?",
+        options: [
+          "Afrosiyob, Ko‘ktepa, Qiziltepa",
+          "Xiva, Jonbosqal’a, Tuproqqal’a",
+          "Sho‘rabashot, Axsikent, Uchqo‘rg‘on",
+          "Olviya, Xersones, Pantikapey"
+        ],
+        correct: 2, // C
+        exp: "Farg‘ona vodiysida Sho‘rabashot, Axsikent, Uchqo‘rg‘on kabi shahar xarobalari o‘rganilgan."
+      },
+      {
+        q: "16. Qang‘ hududidan Buyuk Ipak yo‘lining qaysi tarmog‘i o‘tgan edi?",
+        options: [
+          "Janubiy tarmog‘i",
+          "G‘arbiy tarmog‘i",
+          "Sharqiy tarmog‘i",
+          "Shimoliy tarmog‘i"
+        ],
+        correct: 3, // D
+        exp: "Qang‘ hududidan Buyuk Ipak yo‘lining shimoliy tarmog‘i o‘tgan."
+      },
+      {
+        q: "17. Qang‘ davlati qachon qudratli davlat birlashmasiga aylangan?",
+        options: [
+          "Mil. avv. II asr oxirida",
+          "Mil. avv. III asrda",
+          "Milodiy III asrda",
+          "Milodiy I asrda"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. II asr oxirida Qang‘ qudratli davlat birlashmasiga aylangan."
+      },
+      {
+        q: "18. Davan davlati qachon barham topgan?",
+        options: [
+          "Mil. avv. II asrda",
+          "Milodiy III asrda",
+          "Milodiy V asrda",
+          "Mil. avv. I asrda"
+        ],
+        correct: 1, // B
+        exp: "Olimlarning aniqlashicha, milodiy III asrda Davan davlati barham topgan."
+      },
+      {
+        q: "19. Xitoy elchisi Che Lin Davanga borganida o‘zi bilan qanday sovg‘a olib borgan edi?",
+        options: [
+          "Kumush tangalar va matolar",
+          "Qimmatbaho toshlar va qurollar",
+          "Salomlar va oltindan yasalgan ot haykali",
+          "Zaytun moyi va vino"
+        ],
+        correct: 2, // C
+        exp: "Imperator o‘zining Che Lin degan pahlavonini elchi qilib, salomlar va oltindan yasalgan ot haykali bilan Davanga jo‘natdi."
+      },
+      {
+        q: "20. Qang‘ aholisi asosiy dehqonchilik ekinlari sifatida nimalarni ekkan?",
+        options: [
+          "Faqat paxta va tamaki",
+          "Faqat uzum va shakarqamish",
+          "Faqat makkajo‘xori",
+          "Bug‘doy, arpa va sholi"
+        ],
+        correct: 3, // D
+        exp: "Odamlar bug‘doy, arpa va sholi ekishgan."
+      },
+      {
+        q: "21. Qang‘ hukmdorlari o‘z hokimiyatini mustahkamlash uchun nimani amalga oshirganlar?",
+        options: [
+          "O‘z tangalarini zarb qilganlar",
+          "Boshqa davlatlarni sotib olganlar",
+          "Tangalarni butunlay taqiqlaganlar",
+          "Faqat chet el pulidan foydalanganlar"
+        ],
+        correct: 0, // A
+        exp: "Qang‘ davlatida uning hukmdorlari o‘z tangalarini zarb qilgan."
+      },
+      {
+        q: "22. Davan davlatining poytaxti qanday atalgan?",
+        options: [
+          "Bityan",
+          "Ershi",
+          "Baqtra",
+          "Maroqanda"
+        ],
+        correct: 1, // B
+        exp: "Davan davlatining poytaxti Ershi edi."
+      },
+      {
+        q: "23. Qang‘ davlati qaysi asrda barham topib, mayda mulklarga parchalanib ketgan?",
+        options: [
+          "Mil. avv. I asrda",
+          "Mil. avv. II asrda",
+          "Milodiy III asrda",
+          "Milodiy I asrda"
+        ],
+        correct: 2, // C
+        exp: "Milodiy III asrga kelib Qang‘ davlati mayda mulklarga parchalanib ketadi."
+      },
+      {
+        q: "24. Xitoy yilnomasida yozilishicha, Davan shahrida nima mavjudligi haqida xabar kelgan?",
+        options: [
+          "Katta oltin konlari",
+          "Noyob pichoqlar",
+          "Sehrli ko‘zgular",
+          "G‘aroyib otlar («samoviy otlar»)"
+        ],
+        correct: 3, // D
+        exp: "Davan davlatining Ershi shahrida g‘aroyib otlar mavjudligi haqida saroyga xabar keldi."
+      },
+      {
+        q: "25. Qang‘ davlatining madaniy markazlaridan biri bo‘lib xizmat qilgan voha qaysi?",
+        options: [
+          "Toshkent vohasi",
+          "Surxon vohasi",
+          "Zarafshon vohasi",
+          "Xorazm vohasi"
+        ],
+        correct: 0, // A
+        exp: "Davlatning madaniy markazlaridan biri Toshkent vohasi edi."
+      },
+      {
+        q: "26. Qang‘ aholisi olov va quyoshga e’tiqod qilib, qayerda olov ibodatxonasini qurgan?",
+        options: [
+          "Axsikentda",
+          "Shoshtepada",
+          "Ershida",
+          "Bityanda"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. II asrda Shoshtepada doira shaklidagi olov ibodatxonasi qurilgan."
+      },
+      {
+        q: "27. Xitoyliklarning Davanga qarshi birinchi yurishi qanday tugagan edi?",
+        options: [
+          "Xitoyning to‘liq g‘alabasi bilan",
+          "Ershining vayron qilinishi bilan",
+          "Mag‘lubiyat bilan",
+          "Davan taslim bo‘lishi bilan"
+        ],
+        correct: 2, // C
+        exp: "Xitoy lashkarining Davanga birinchi yurishi mag‘lubiyat bilan yakun topdi."
+      },
+      {
+        q: "28. Davan davlati Xitoy va G‘arb o‘rtasidagi xalqaro savdoda qanday o‘rin tutgan?",
+        options: [
+          "Hech qanday ahamiyatga ega bo‘lmagan",
+          "Faqat qurol-yarog‘ sotgan",
+          "Faqat dushmanlik qilgan",
+          "Muhim o‘rin tutgan"
+        ],
+        correct: 3, // D
+        exp: "Davan davlati Xitoy va G‘arb o‘lkalari bilan bo‘ladigan xalqaro savdoda muhim o‘rin tutgan."
+      },
+      {
+        q: "29. Xitoy imperatori tomonidan yuborilgan ikkinchi yurishda lashkar soni qancha edi?",
+        options: [
+          "60 ming nafar",
+          "10 ming nafar",
+          "100 ming nafar",
+          "20 ming nafar"
+        ],
+        correct: 0, // A
+        exp: "Ikkinchi yurishda Xitoy hukmdorining qo‘shinlari 60 ming nafar edi."
+      },
+      {
+        q: "30. Qang‘ davlati hududidan o‘tgan Buyuk Ipak yo‘lining qaysi tarmog‘i iqtisodga ijobiy ta’sir ko‘rsatgan?",
+        options: [
+          "Janubiy tarmoq",
+          "Shimoliy tarmoq",
+          "G‘arbiy tarmoq",
+          "Markaziy tarmoq"
+        ],
+        correct: 1, // B
+        exp: "Qang‘ hududidan Buyuk Ipak yo‘lining shimoliy tarmog‘i o‘tganligi iqtisod va savdoga ijobiy ta’sir ko‘rsatdi."
+      },
+      {
+        q: "31. Davanliklar haqida Chjan Szyan qanday ta’rif bergan?",
+        options: [
+          "Ularni jangovar va bag‘ritosh degan",
+          "Ularni yopiq va shubhali degan",
+          "Ularni juda mehmonmaysan va ko‘ngli ochiq odamlar degan",
+          "Ularni faqat ko‘chmanchi degan"
+        ],
+        correct: 2, // C
+        exp: "Elchi Chjan Szyan davanliklar juda mehmonmaysan va ko‘ngli ochiq odamlar ekanligini yozgan."
+      },
+      {
+        q: "32. Qang‘ davlatida asosiy harbiy istehkomlar va qal’alar qayerda barpo etilgan?",
+        options: [
+          "Faqat cho‘l hududlarida",
+          "Faqat dengiz sohillarida",
+          "Faqat tog‘ cho‘qqilarida",
+          "Tog‘lardan shaharlarga olib boruvchi yo‘llar va hududlarda"
+        ],
+        correct: 3, // D
+        exp: "Qang‘ davlatida harbiy istehkollar, qal’a, ibodatxonalar barpo etilgan, tog‘lardan shaharlarga temir, mis va qalay yetkazib berilgan."
+      },
+      {
+        q: "33. Xitoyliklarning Ershini qamal qilishidagi oxirgi bosqichda nima yuz berdi?",
+        options: [
+          "Qang‘ davlatidan madad kelishidan qo‘rqib, xitoyliklar sulh tuzishga rozi bo‘ldi",
+          "Xitoy qo‘shini butunlay qirib tashlandi",
+          "Davan taslim bo‘lib, shahar buzib tashlandi",
+          "Ershi shahri o‘z-o‘zidan yonib ketdi"
+        ],
+        correct: 0, // A
+        exp: "Qang‘ davlatidan madad yetib kelishidan cho‘chib, xitoyliklar sulhga rozi bo‘ldi."
+      },
+      {
+        q: "34. Xitoy solnomalarida yozilishicha, Davanliklar o‘z shaharlaridagi otlarni nima qilishgan?",
+        options: [
+          "Barchasini sotib yuborishgan",
+          "Samoviy otlarni yashirishgan, elchilariga berishmagan",
+          "Ularni qurbonlik qilishgan",
+          "Ularni cho‘lga haydab yuborishgan"
+        ],
+        correct: 1, // B
+        exp: "Davan davlati bu otlarni yashirdi, Xitoy elchilariga bergisi kelmadi."
+      },
+      {
+        q: "35. Qang‘ davlati qaysi xalq tomonidan barpo etilgan edi?",
+        options: [
+          "Massagetlar",
+          "Yuechjilar",
+          "Saklar",
+          "Ahamoniylar"
+        ],
+        correct: 2, // C
+        exp: "Unga mil. avv. III asrda saklar asos solgan."
+      },
+      {
+        q: "36. Davan davlati tarixiga oid «samoviy otlar» uchun bo‘lgan urushlar taxminan qaysi asrlarga to‘g‘ri keladi?",
+        options: [
+          "Mil. avv. VI asrga",
+          "Milodiy V asrga",
+          "Mil. avv. IV asrga",
+          "Mil. avv. II–I asrlarga"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. II–I asrlarda Davan davlati yuksak taraqqiy etgan va «samoviy otlar» uchun urushlar bo‘lgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! 40-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

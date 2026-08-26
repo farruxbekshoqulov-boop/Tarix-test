@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>18-§. Miloddan avvalgi III asrda Xitoy</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va ilmiy kashfiyotlarni muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">18-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni puxta takrorlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">18-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Sin Shixuandi va uning maqbarasi
+      [
+        { id: 1, left: "Mil. avv. 246-yil", right: "Sin Shixuandi Xitoyni birlashtirishni boshlagan yil" },
+        { id: 2, left: "«Sin Shixuandi» ma’nosi", right: "«Sinning birinchi hukmdori»" },
+        { id: 3, left: "720 ming odam (37 yil)", right: "Sin Shixuandi maqbarasini bunyod etganlar va sarflangan vaqt" },
+        { id: 4, left: "6 mingta sopol askar", right: "Hukmdor maqbarasini «qo‘riqlash» uchun o‘rnatilgan haykallar" }
+      ],
+      // 2-bosqich: Buyuk Xitoy devori parametrlari
+      [
+        { id: 5, left: "Mil. avv. IV asr", right: "Buyuk Xitoy devorini qurish ishlari dastlab boshlangan davr" },
+        { id: 6, left: "Balandligi 6–10 metr", right: "Buyuk Xitoy devorining bo‘yi" },
+        { id: 7, left: "Qalinligi 5–8 metr", right: "Buyuk Xitoy devorining eni" },
+        { id: 8, left: "Qariyb 4000 kilometr", right: "Buyuk Xitoy devorining umumiy uzunligi" }
+      ],
+      // 3-bosqich: Yozuv va ashyolar
+      [
+        { id: 9, left: "Bambuk taxtachalar", right: "Dastlab so‘z va jumlalarni yozish uchun ishlatilgan ashyo" },
+        { id: 10, left: "Shoyi matolar", right: "Bundan 2,5 ming yil muqaddam mo‘yqalam bilan yozishga o‘tilgan mato" },
+        { id: 11, left: "Miloddan avvalgi I asr", right: "Xitoyda qog‘oz ixtiro qilingan davr" },
+        { id: 12, left: "Ko‘chmanchi hunlar", right: "Buyuk Xitoy devori ularning hujumidan himoyalanish uchun qurilgan" }
+      ],
+      // 4-bosqich: Ilmiy kashfiyotlar va ixtirolar
+      [
+        { id: 13, left: "Kompas", right: "Magnitlangan temirdan yasalgan, dastasi doim janubni ko‘rsatuvchi qoshiqsimon asbob" },
+        { id: 14, left: "Seysmograf", right: "Zilzilani oldindan aniqlab beruvchi xitoyliklar ixtiro qilgan asbob" },
+        { id: 15, left: "Zarhallangan yog‘och", right: "Kompas o‘rnatilgan kataklarga ajratilgan asos" },
+        { id: 16, left: "Yuz minglab dehqonlar", right: "Buyuk Xitoy devori qurilishiga majburlab jalb etilganlar" }
+      ],
+      // 5-bosqich: Boshqaruv va madaniyat
+      [
+        { id: 17, left: "Viloyat noiblari", right: "Sin Shixuandi tomonidan hududlarni boshqarish uchun tayinlangan rahbarlar" },
+        { id: 18, left: "Misr piramidalari", right: "Sin Shixuandi maqbarasi hashamatda ular bilan bellasha olgan" },
+        { id: 19, left: "Mo‘yqalam", right: "Shoyi va qog‘ozga iyerogliflar yozish quroli" },
+        { id: 20, left: "Janub tomon", right: "Qadimgi Xitoy kompasining dastasi ko‘rsatib turgan yo‘nalish" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Xitoyni o‘z hokimiyati ostida birlashtirgan Sin Shixuandi nomi qanday ma’noni anglatadi va u qachon taxtga o‘tirdi?", a: "Miloddan avvalgi 246-yilda; «Sinning birinchi hukmdori» degan ma’noni anglatadi." },
+      { q: "2. Sin Shixuandi davlatni boshqarish uchun qanday ma’muriy islohot o‘tkazdi?", a: "Davlat hududini alohida viloyatlarga taqsimlab, har biriga o‘z noiblarini rahbar etib tayinladi." },
+      { q: "3. Sin Shixuandi maqbarasi qancha maydonda joylashgan va uni qurishga qancha odam jalb etilgan?", a: "Bir necha kvadrat kilometr maydonda; uni 720 ming odam 37 yil mobaynida bunyod etgan." },
+      { q: "4. Sin Shixuandi maqbarasidan hukmdorni «qo‘riqlash» uchun o‘rnatilgan nimalar topilgan?", a: "6 mingta sopol askarlar haykallari (Terrakota armiyasi) topilgan." },
+      { q: "5. Buyuk Xitoy devorini qurish ishlari dastlab qachon boshlangan?", a: "Miloddan avvalgi IV asrda boshlangan." },
+      { q: "6. Sin Shixuandi Buyuk Xitoy devorini nima maqsadda yanada mustahkamlashni buyurdi?", a: "Ko‘chmanchi hunlarning hujumlaridan Shimoliy Xitoyni himoya qilish uchun." },
+      { q: "7. Buyuk Xitoy devorining o‘lchamlari (balandligi, qalinligi, uzunligi) qancha bo‘lgan?", a: "Balandligi 6–10 metr, qalinligi 5–8 metr, uzunligi qariyb 4000 kilometr." },
+      { q: "8. Buyuk Xitoy devori dushman qo‘shinlariga qanday to‘siq bo‘lgan?", a: "Otliq qo‘shinlar undan oshib o‘ta olmasdi, qal’alarni zabt etishni ko‘chmanchilar uddalay olmasdi." },
+      { q: "9. Devor qurilishiga kimlar majburan jalb etilgan?", a: "Podsho va amaldorlar yuz minglab dehqonlarni majburan ishlatgan." },
+      { q: "10. Qadimgi Xitoyda dastlab so‘z va jumlalar nimalarga yozilgan?", a: "Bambuk taxtachalarga yozilgan." },
+      { q: "11. Xitoyda yozish uchun shoyi matolardan qachon foydalana boshlandi?", a: "Bundan 2,5 ming yil muqaddam (mo‘yqalam bilan yozilgan)." },
+      { q: "12. Qadimgi Xitoyda qog‘oz qachon ixtiro qilindi?", a: "Miloddan avvalgi I asrda." },
+      { q: "13. Qadimgi Xitoyda ixtiro qilingan kompas qanday tuzilishga ega bo‘lgan?", a: "Magnitlangan temirdan yasalgan uzun dastali katta qoshiqni eslatgan, katakli zarhallangan yog‘ochga o‘rnatilgan." },
+      { q: "14. Qadimgi Xitoy kompasining dastasi doim qaysi tomonni ko‘rsatib turgan?", a: "Hamma vaqt janub tomonni ko‘rsatgan." },
+      { q: "15. Qadimgi Xitoyda zilzilani oldindan aniqlab beruvchi qanday noyob asbob ixtiro qilingan?", a: "Seysmograf asbobi." },
+      { q: "16. Sin Shixuandi maqbarasi hashamati jihatidan qaysi mashhur inshootlar bilan bellasha olgan?", a: "Qadimgi Misr piramidalari bilan." },
+      { q: "17. Qadimgi Xitoy yozuvi qanday belgilar tizimidan iborat bo‘lgan?", a: "So‘z va jumlalarni ifodalovchi iyerogliflardan iborat bo‘lgan." },
+      { q: "18. Qadimgi Xitoyda qaysi fanlar yuksak darajada rivojlangan?", a: "Matematika, astronomiya va geografiya fanlari." },
+      { q: "19. Xitoyliklar bino qurilishi va me’morlikda qanday yutuqlarga erishganlar?", a: "Ko‘p qavatli shahar soqchilari burjlari, saroylar va ulkan mudofaa devorlarini barpo etganlar." },
+      { q: "20. Shoyi matoga yozuv yozishda qanday quroldan foydalanilgan?", a: "Mo‘yqalamdan foydalanilgan." },
+      { q: "21. Buyuk Xitoy devori bo‘ylab qanday inshootlar barpo etilgan?", a: "Kuzatuv minoralari, darvozalar va mudofaa qal’alari." },
+      { q: "22. Qog‘ozning ixtiro qilinishi jahon madaniyatiga qanday ta’sir qildi?", a: "Kitoblar tayyorlashni osonlashtirdi, bilimlarning tez va arzon tarqalishiga yo‘l ochdi." },
+      { q: "23. Kompasning kashf etilishi asosan qaysi sohalarga katta yordam berdi?", a: "Dengizchilik, cho‘llarda yo‘l topish va geografik sayohatlarga." },
+      { q: "24. Sopol askarlar (Terrakota armiyasi)ning har biri qanday xususiyatga ega bo‘lgan?", a: "Har bir askar o‘ziga xos yuz qiyofasi, bo‘y-basti va harbiy qurol-aslahasiga ega bo‘lib yasalgan." },
+      { q: "25. Sin Shixuandi o‘z hokimiyatini mustahkamlashda kimlarga tayangan?", a: "O‘zi tayinlagan viloyat noiblari, amaldorlar va qudratli armiyaga." },
+      { q: "26. Xitoyda bambuk kitoblar qanday shaklda tayyorlangan?", a: "Bambuk qalamchalari bir-biriga ip bilan bog‘lanib, o‘rama yoki buklama holga keltirilgan." },
+      { q: "27. Seysmograf asbobi orqali xitoyliklar nimani aniqlaganlar?", a: "Yer silkinishining kuchi va uning qaysi tomondan kelayotgan yo‘nalishini." },
+      { q: "28. Buyuk Xitoy devori ustidan nimalar harakatlana olgan?", a: "Bir nechta otliq askarlar yoki jang aravalari bemalol yonma-yon yura olgan." },
+      { q: "29. Xitoyliklar qog‘oz ishlab chiqarishda dastlab qanday xomashyolardan foydalanganlar?", a: "Daraxt po‘stlog‘i, ipak chiqindilari, latta va kanop tolalaridan." },
+      { q: "30. Miloddan avvalgi III asrda Xitoyda yuz bergan eng katta siyosiy burilish nima bo‘ldi?", a: "Ko‘p asrlik tarqoqlik tugatilib, yagona markazlashgan imperiya vujudga keldi." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA ARALASH TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Xitoyda zilzilani oldindan aniqlab beruvchi qanday asbob ixtiro qilingan?",
+        options: [
+          "Seysmograf",
+          "Kompas",
+          "Suv soati",
+          "Astrolabiya"
+        ],
+        correct: 0, // A
+        exp: "Xitoyda zilzilani oldindan aniqlab beruvchi seysmograf ham ixtiro qilingan."
+      },
+      {
+        q: "2. Buyuk Xitoy devorini qurish ishlari dastlab qaysi asrda boshlangan edi?",
+        options: [
+          "Miloddan avvalgi I asrda",
+          "Miloddan avvalgi IV asrda",
+          "Miloddan avvalgi 246-yilda",
+          "Miloddan avvalgi VII asrda"
+        ],
+        correct: 1, // B
+        exp: "Devorni qurish ishlari dastlab miloddan avvalgi IV asrda boshlangan."
+      },
+      {
+        q: "3. Qadimgi Xitoyda yozuv uchun qog‘oz qachon ixtiro qilindi?",
+        options: [
+          "Miloddan avvalgi 246-yilda",
+          "Bundan 2,5 ming yil muqaddam",
+          "Miloddan avvalgi I asrda",
+          "Milodiy III asrda"
+        ],
+        correct: 2, // C
+        exp: "Miloddan avvalgi I asrda qog‘oz ixtiro qilindi."
+      },
+      {
+        q: "4. Sin Shixuandi o‘z davlatini qaysi ko‘chmanchilar hujumidan himoya qilish uchun mudofaa devorini mustahkamlashni buyurdi?",
+        options: [
+          "Skiflar",
+          "Giksoslar",
+          "Kassiylar",
+          "Ko‘chmanchi hunlar"
+        ],
+        correct: 3, // D
+        exp: "Sin Shixuandi o‘z davlatini ko‘chmanchi hunlarning hujumlaridan himoya qilish uchun mudofaa devorini yanada mustahkamlashni buyurgan."
+      },
+      {
+        q: "5. «Sin Shixuandi» nomining ma’nosi qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "«Sinning birinchi hukmdori»",
+          "«Osmon ostidagi podsho»",
+          "«Buyuk imperator»",
+          "«To‘rt iqlim sohibi»"
+        ],
+        correct: 0, // A
+        exp: "Bu nom «Sinning birinchi hukmdori» degan ma’noni bildiradi."
+      },
+      {
+        q: "6. Qadimgi Xitoyda ixtiro qilingan kompasning dastasi hamma vaqt qaysi tomonni ko‘rsatib turgan?",
+        options: [
+          "Shimolni",
+          "Janubni",
+          "Sharqni",
+          "G‘arbni"
+        ],
+        correct: 1, // B
+        exp: "Uning dastasi esa hamma vaqt janubni ko‘rsatgan."
+      },
+      {
+        q: "7. Sin Shixuandi maqbarasini necha kishi necha yil mobaynida bunyod etgan?",
+        options: [
+          "500 ming odam; 20 yil",
+          "1 million odam; 50 yil",
+          "720 ming odam; 37 yil",
+          "100 ming odam; 10 yil"
+        ],
+        correct: 2, // C
+        exp: "Maqbarani 720 ming odam 37 yil mobaynida bunyod etgan."
+      },
+      {
+        q: "8. Buyuk Xitoy devorining umumiy uzunligi qariyb qancha kilometrni tashkil etgan?",
+        options: [
+          "6000 kilometrni",
+          "2500 kilometrni",
+          "1000 kilometrni",
+          "4000 kilometrni"
+        ],
+        correct: 3, // D
+        exp: "Uning uzunligi esa qariyb 4000 kilometrni tashkil etadi."
+      },
+      {
+        q: "9. Qadimgi Xitoyda yozuv uchun dastlab qanday ashyodan foydalanilgan?",
+        options: [
+          "Bambuk taxtachalardan",
+          "Papirus o‘ramlaridan",
+          "Loy taxtachalardan",
+          "Qo‘rg‘oshin plitalardan"
+        ],
+        correct: 0, // A
+        exp: "Dastlab xitoyliklar bambuk taxtachalarga yozishgan."
+      },
+      {
+        q: "10. Sin Shixuandi maqbarasidan hukmdorni qo‘riqlash uchun o‘rnatilgan qanday noyob yodgorliklar topilgan?",
+        options: [
+          "Oltin jang aravalari",
+          "6 mingta sopol askarlar haykallari",
+          "Tosh sfinkslar",
+          "Yuzlab oltin qilichlar"
+        ],
+        correct: 1, // B
+        exp: "Sin Shixuandi maqbarasidan hukmdorni «qo‘riqlash» uchun o‘rnatilgan 6 mingta sopol askarlar haykallari topilgan."
+      },
+      {
+        q: "11. Buyuk Xitoy devorining balandligi va qalinligi parametrlari to‘g‘ri berilgan javobni aniqlang.",
+        options: [
+          "Balandligi 20 m, qalinligi 15 m",
+          "Balandligi 3–5 m, qalinligi 2–3 m",
+          "Balandligi 6–10 m, qalinligi 5–8 m",
+          "Balandligi 12–15 m, qalinligi 10 m"
+        ],
+        correct: 2, // C
+        exp: "Uning balandligi 6–10 metr, qalinligi 5–8 metr bo‘lgan."
+      },
+      {
+        q: "12. Xitoyni o‘z hokimiyati ostida birlashtirgan Sin Shixuandi qaysi yilda taxtga chiqqan?",
+        options: [
+          "Mil. avv. 558-yilda",
+          "Mil. avv. 522-yilda",
+          "Mil. avv. IV asrda",
+          "Mil. avv. 246-yilda"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. 246-yilda Xitoyni o‘z hokimiyati ostida birlashtirgan hukmdor Sin Shixuandi nomini olgan."
+      },
+      {
+        q: "13. Xitoyda bundan 2,5 ming yil muqaddam yozish uchun qaysi matodan foydalana boshlandi?",
+        options: [
+          "Shoyi matolardan",
+          "Paxta matodan",
+          "Zig‘ir matodan",
+          "Jun matodan"
+        ],
+        correct: 0, // A
+        exp: "Bundan 2,5 ming yil muqaddam yozish uchun shoyidan foydalanishga o‘tildi. Shoyi matolarga mo‘yqalam bilan yozilgan."
+      },
+      {
+        q: "14. Qadimgi Xitoy kompasining tuzilishi nimani eslatar edi?",
+        options: [
+          "Aylanuvchi oltin diskni",
+          "Magnitlangan temirdan yasalgan uzun dastali katta qoshiqni",
+          "Suvli shisha idishni",
+          "Yulduzlar chizilgan xaritani"
+        ],
+        correct: 1, // B
+        exp: "U magnitlangan temirdan yasalgan uzun dastali katta qoshiqni eslatar edi."
+      },
+      {
+        q: "15. Sin Shixuandi davlatni boshqarishda qanday ma’muriy tuzilma joriy qildi?",
+        options: [
+          "Davlatni faqat kohinlarga topshirdi",
+          "Shaharlarga to‘liq mustaqillik berdi",
+          "Hududni alohida viloyatlarga taqsimlab, har biriga noiblar tayinladi",
+          "Harbiy demokratiya o‘rnatdi"
+        ],
+        correct: 2, // C
+        exp: "O‘z davlati hududini alohida viloyatlarga taqsimlagan hukmdor har biriga noiblarini rahbar etib tayinladi."
+      },
+      {
+        q: "16. Buyuk Xitoy devori qurilishida kimlarning mehnatidan majburan foydalanilgan?",
+        options: [
+          "Faqat chet ellik asirlarning",
+          "Faqat shahar hunarmandlarining",
+          "Faqat harbiy askarlarning",
+          "Yuz minglab dehqonlarning"
+        ],
+        correct: 3, // D
+        exp: "Podsho va amaldorlar devor qurilishida yuz minglab dehqonlarni majburan ishlatgan."
+      },
+      {
+        q: "17. Qadimgi Xitoy kompasining qoshiqsimon qismi qanday asos ustiga o‘rnatilgan edi?",
+        options: [
+          "Kataklarga ajratilgan va zarhallangan yog‘ochga",
+          "Pishiq g‘isht plitasiga",
+          "Bronza doiraga",
+          "Marmar tosh taglikka"
+        ],
+        correct: 0, // A
+        exp: "Bu moslamani kataklarga ajratilgan va zarhallangan yog‘ochga o‘rnatishgan."
+      },
+      {
+        q: "18. Sin Shixuandi maqbarasining hashamati qaysi mashhur inshootlarga qiyoslangan?",
+        options: [
+          "Bobil osma bog‘lariga",
+          "Misr piramidalariga",
+          "Zikkuratlarga",
+          "Afina ibodatxonalariga"
+        ],
+        correct: 1, // B
+        exp: "Hashamati va bezaklari jihatidan bu maqbara Misr piramidalari bilan bellasha oladi."
+      },
+      {
+        q: "19. Buyuk Xitoy devorining asosiy harbiy vazifasi nima edi?",
+        options: [
+          "Savdo soliqlarini yig‘ish",
+          "Daryolar toshqinini to‘sish",
+          "Otliq ko‘chmanchilar hujumiga jiddiy to‘siq bo‘lish",
+          "Poytaxtni chegaralash"
+        ],
+        correct: 2, // C
+        exp: "U qadim zamonlarda dushman qo‘shinlari uchun jiddiy to‘siq bo‘lib xizmat qilgan: otliq qo‘shinlar undan oshib o‘ta olmasdi."
+      },
+      {
+        q: "20. Xitoyda shoyi matolarga qanday qurol yordamida yozilgan?",
+        options: [
+          "Temir qalam bilan",
+          "Suyak tayoqcha bilan",
+          "Qamish parra bilan",
+          "Mo‘yqalam bilan"
+        ],
+        correct: 3, // D
+        exp: "Shoyi matolarga mo‘yqalam bilan yozilgan."
+      },
+      {
+        q: "21. Sin Shixuandi maqbarasi qancha maydonni egallagan?",
+        options: [
+          "Bir necha kvadrat kilometr maydonni",
+          "100 kvadrat metr maydonni",
+          "Faqat bitta saroy xonasini",
+          "Bir gektar yerni"
+        ],
+        correct: 0, // A
+        exp: "Maqbara bir necha kvadrat kilometr maydonda joylashgan."
+      },
+      {
+        q: "22. Qadimgi Xitoyda so‘z va jumlalarni ifodalashda qaysi yozuv turidan foydalanilgan?",
+        options: [
+          "Mixxatdan",
+          "Iyerogliflardan",
+          "Finikiya harflaridan",
+          "Lotin alifbosidan"
+        ],
+        correct: 1, // B
+        exp: "Qadimgi Xitoyda so‘z va jumlalarni ifodalagan iyerogliflar mavjud bo‘lgan."
+      },
+      {
+        q: "23. Qadimgi Xitoy madaniyatida qaysi fanlarning rivojlanishi bevosita ziroatchilik va qurilish bilan bog‘liq edi?",
+        options: [
+          "Falsafa va mantiq",
+          "Kimyo va biologiya",
+          "Matematika, astronomiya va geografiya",
+          "Huquqshunoslik va ilohiyot"
+        ],
+        correct: 2, // C
+        exp: "Mahalliy aholining kundalik hayoti ziroatchilik, bino-korlik bilan bog‘liq bo‘lib, matematika, astronomiya va geografiya fanlari rivoj topgan."
+      },
+      {
+        q: "24. Buyuk Xitoy devori Xitoyning qaysi qismi bo‘ylab barpo etilgan?",
+        options: [
+          "Janubiy Xitoy dengizi bo‘ylab",
+          "G‘arbiy tog‘lar bo‘ylab",
+          "Yanszi daryosi sohili bo‘ylab",
+          "Shimoliy Xitoy bo‘ylab"
+        ],
+        correct: 3, // D
+        exp: "Shimoliy Xitoy bo‘ylab qurilgan mudofaa devorini yanada mustahkamlashni buyurgan."
+      },
+      {
+        q: "25. Sin Shixuandi o‘z maqbarasini qachon qurdirishga farmon bergan edi?",
+        options: [
+          "Tirikligidayoq",
+          "Vafotidan so‘ng o‘g‘li tomonidan",
+          "Faqat urushlar tugagach",
+          "Keksalik yoshiga yetganda"
+        ],
+        correct: 0, // A
+        exp: "Sin Shixuandi tirikligidayoq o‘ziga atab maqbara qurishga farmon bergandi."
+      },
+      {
+        q: "26. Xitoyda kashf etilgan kompasning magnit qoshiqchasi qaysi metalldan tayyorlangan edi?",
+        options: [
+          "Bronzadan",
+          "Magnitlangan temirdan",
+          "Qo‘rg‘oshindan",
+          "Sof oltindan"
+        ],
+        correct: 1, // B
+        exp: "U magnitlangan temirdan yasalgan uzun dastali katta qoshiqni eslatar edi."
+      },
+      {
+        q: "27. Qadimgi Xitoyda qog‘ozning paydo bo‘lishi yozuv vositasi sifatida nimaning o‘rnini egalladi?",
+        options: [
+          "Papirus va terining",
+          "Loy xumlarning",
+          "Bambuk taxtachalar va qimmatbaho shoyining",
+          "Tosh ustunlarning"
+        ],
+        correct: 2, // C
+        exp: "Qog‘oz ixtiro qilinishi bilan og‘ir bambuk taxtachalar va qimmatbaho shoyi o‘rniga yengil qog‘oz ishlatila boshlandi."
+      },
+      {
+        q: "28. Buyuk Xitoy devorining qal’alarini zabt etishda ko‘chmanchilar nima sababdan ojiz edilar?",
+        options: [
+          "Ular qurol ishlatishni bilmagan",
+          "Devor atrofida doim suv toshqini bo‘lgan",
+          "Ularning soni juda kam bo‘lgan",
+          "Qal’alarni hujum bilan zabt etishni ko‘chmanchilar hali uddalay olmasdi"
+        ],
+        correct: 3, // D
+        exp: "Qal’alarni hujum bilan zabt etishni esa ko‘chmanchilar hali uddalay olmasdi."
+      },
+      {
+        q: "29. Xitoy madaniyatining qaysi yutug‘i yer qimirlashlarini o‘rganishda jahonda birinchi bo‘ldi?",
+        options: [
+          "Seysmograf",
+          "Barometr",
+          "Termometr",
+          "Teleskop"
+        ],
+        correct: 0, // A
+        exp: "Zilzilani oldindan aniqlab beruvchi seysmograf ixtirosi Xitoy ilmining buyuk yutug‘i bo‘ldi."
+      },
+      {
+        q: "30. Sin Shixuandi davrida Xitoy qanday davlatga aylandi?",
+        options: [
+          "Mayda podsholiklar ittifoqiga",
+          "Yagona markazlashgan qudratli davlatga",
+          "Chet el mustamlakasiga",
+          "Ko‘chmanchilar davlatiga"
+        ],
+        correct: 1, // B
+        exp: "Sin Shixuandi Xitoyni o‘z hokimiyati ostida birlashtirib, markazlashgan davlat barpo etdi."
+      },
+      {
+        q: "31. Qadimgi Xitoyda bambuk taxtachalarga yozilgan kitoblar qanday ko‘rinishda bo‘lgan?",
+        options: [
+          "Zamonaviy qattiq muqovali kitob",
+          "Yumaloq tosh shaklida",
+          "Bambuk plastinkalari ip bilan bir-biriga bog‘langan holda",
+          "Temir qutiga solingan varaqlar"
+        ],
+        correct: 2, // C
+        exp: "Darslikdagi rasmda ko‘rsatilganidek, bambuk taxtachalar teshilib, o‘zaro ip bilan bog‘langan holda kitob qilingan."
+      },
+      {
+        q: "32. Sin Shixuandi maqbarasidagi 6 mingta sopol askarlarning vazifasi nima deb ishonilgan?",
+        options: [
+          "Ibodatxona xizmatini bajarish",
+          "Maqbara quruvchilarini qo‘riqlash",
+          "Chet ellik mehmonlarni kutib olish",
+          "U dunyoda hukmdorni «qo‘riqlash» va unga xizmat qilish"
+        ],
+        correct: 3, // D
+        exp: "Sopol askarlar haykallari marhum hukmdorni narigi dunyoda «qo‘riqlash» uchun o‘rnatilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 18-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>30-§. Qadimgi Yunoniston madaniyati</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha madaniy atamalar va yozuvchilarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">30-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">30-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Gomer va Troya urushi
+      [
+        { id: 1, left: "Mil. avv. 1200-yil", right: "Yunonlarning Kichik Osiyodagi Troyaga qarshi yurish boshlagan davri" },
+        { id: 2, left: "Gomer", right: "«Iliada» va «Odizseya» dostonlarini yozgan qadimgi yunon shoiri" },
+        { id: 3, left: "«Iliada» dostoni", right: "Troya urushining oxirgi o‘ninchi yili haqida hikoya qiluvchi asar" },
+        { id: 4, left: "Yelena", right: "Sparta podshosining rafiqasi — Sohibjamol" }
+      ],
+      // 2-bosqich: Troya oti va Axilles
+      [
+        { id: 5, left: "Troyacha ot", right: "Ichiga yunon qo‘shinlari yashirinib olgan ulkan yog‘och ot" },
+        { id: 6, left: "«Troya oti» iborasi", right: "Xosiyatsiz sovg‘a-salom ma’nosini anglatuvchi ibora" },
+        { id: 7, left: "Axilles", right: "«Iliada» dostonining bosh qahramoni, jangchi" },
+        { id: 8, left: "«Axilles tovoni»", right: "Insonning nozik joyini anglatuvchi ibora" }
+      ],
+      // 3-bosqich: Teatr va dramalar
+      [
+        { id: 9, left: "«Teatr» so‘zi ma’nosi", right: "Yunonchadan «tomoshalar uchun joy», «tomoshaxona»" },
+        { id: 10, left: "Tragediya", right: "Qahramonlarning o‘zaro kurashi va fojeali yakunlanadigan pyesa" },
+        { id: 11, left: "Sofokl", right: "«Shoh Edip» va «Antigona» tragediyalari muallifi" },
+        { id: 12, left: "Aristofan", right: "Inson nuqsonlaridan kuluvchi mashhur komediyalar muallifi" }
+      ],
+      // 4-bosqich: Arxitektura va materiallar
+      [
+        { id: 13, left: "Tosh va paxsa", right: "Jamoat binolari toshdan, xususiy uylar g‘isht va paxsadan qurilgan" },
+        { id: 14, left: "Kolonnalar", right: "Ibodatxonalarga alohida ko‘rk berib turgan ustunlar" },
+        { id: 15, left: "Pesztoq", right: "Ibodatxona kirish yo‘lining yuqori qismi (ma’budlar haykallari bilan bezatilgan)" },
+        { id: 16, left: "Arzimagan tomosha haqi", right: "Qashshoq fuqarolarga teatrga borishi uchun berilgan pul" }
+      ],
+      // 5-bosqich: Afsonalar va haykaltaroshlik
+      [
+        { id: 17, left: "Dedal", right: "Minos podshosi uchun Labirint saroyini barpo etgan usta" },
+        { id: 18, left: "Fidiy", right: "Akropoldagi Parfenon ibodatxonasi qurilishiga boshchilik qilgan haykaltarosh" },
+        { id: 19, left: "Olimpiya g‘oliblari", right: "Yunon haykaltaroshlari haykallarini yasab abadiylashtirgan sportchilar" },
+        { id: 20, left: "Erkak aktyorlar", right: "Sahnada barcha rollarni ijro etgan shaxslar" }
+      ],
+      // 6-bosqich: Qo‘shimcha faktlar
+      [
+        { id: 21, left: "Paris", right: "Spartadan Sohibjamol Yelenani olib qochgan Troya podshosining o‘g‘li" },
+        { id: 22, left: "Odizsey", right: "Yog‘och ot hiylasini o‘ylab topgan aqlli yunon qahramoni" },
+        { id: 23, left: "Stiks daryosi", right: "Axillesning onasi cho‘miltirgan sirli daryo suvi" },
+        { id: 24, left: "Niqoblar", right: "Teatrlarda aktyorlar o‘z qiyofasini o‘zgartirish uchun foydalangan buyum" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Yunonlar Egey dengizi qirg‘og‘idagi Troyaga qarshi qachon yurish boshlaganlar?", a: "Taxminan miloddan avvalgi 1200-yilda." },
+      { q: "2. Troya urushining kelib chiqish sabablaridan biri sifatida rivoyatlarda nima tilga olinadi?", a: "Troya podshosining o‘g‘li Paris Sparta podshosining rafiqasi Sohibjamol Yelenani olib qochgani." },
+      { q: "3. Yunonlar Troyani qancha vaqt davomida behuda qamal qilganlar?", a: "To‘qqiz yil davomida." },
+      { q: "4. Qadimgi yunon shoiri Gomer qaysi mashhur dostonlarni yozgan?", a: "«Iliada» va «Odizseya» dostonlarini." },
+      { q: "5. «Iliada» dostoni Troya urushining qaysi davri haqida hikoya qiladi?", a: "Urushning oxirgi o‘ninchi yili haqida." },
+      { q: "6. Yunonlar Troyani qanday hiyla bilan egallashgan?", a: "Odizseyning maslahati bilan ichi bo‘m-bo‘sh ulkan yog‘och ot yasab, uning ichiga jangchilarni yashirib kirishgan." },
+      { q: "7. Troyaliklar yog‘och otni qanday qabul qilishgan?", a: "Troya homiysi Afina Palladaga xush kelishi uchun uni ot sovg‘a sifatida shaharga olib kirishgan." },
+      { q: "8. «Troya oti» iborasi bugungi kunda qanday ma’noni anglatadi?", a: "Xosiyatsiz sovg‘a-salom ma’nosini anglatadi." },
+      { q: "9. «Iliada» dostonining bosh qahramoni kim?", a: "Axilles." },
+      { q: "10. Axillesning onasi uni daxlsiz qilish uchun qaysi daryoga cho‘miltirgan?", a: "Stiks daryosiga." },
+      { q: "11. Nima uchun Axilles jangda halok bo‘lgan?", a: "Onasi uni cho‘miltirganda tovonidan ushlab turgani uchun tovoni suv tegmay qolgan va o‘sha joyiga o‘q tekkan." },
+      { q: "12. «Axilles tovoni» iborasi nimani anglatadi?", a: "Insonning nozik va zaif joyini." },
+      { q: "13. «Teatr» so‘zi yunonchadan tarjima qilinganda qanday ma’nolarni bildiradi?", a: "«Tomoshalar uchun joy», «tomoshaxona»." },
+      { q: "14. Qadimgi Yunonistonda teatr tomoshalari qachon uyushtirilgan?", a: "Faqat bayramlarda, kun bo‘yi davom etgan." },
+      { q: "15. Yunon teatrida barcha rollarni kimlar ijro etgan?", a: "Faqat erkaklar (turli niqoblar taqib)." },
+      { q: "16. Qahramonlarning o‘zaro kurashi va fojeali yakunlanadigan pyesalar nima deb atalgan?", a: "Tragediya." },
+      { q: "17. «Shoh Edip» va «Antigona» tragediyalarining muallifi kim?", a: "Sofokl." },
+      { q: "18. Inson nuqsonlaridan kuluvchi mashhur komediyalar muallifi kim?", a: "Aristofan." },
+      { q: "19. Qadimgi Yunonistonda ibodatxonalar va jamoat binolari nimalardan qurilgan?", a: "Toshdan barpo etilgan (xususiy uylar g‘isht va paxsadan bo‘lgan)." },
+      { q: "20. Ibodatxonalarga alohida ko‘rk berib turgan ustunlar nima deb atalgan?", a: "Kolonnalar." },
+      { q: "21. Minos podshosi uchun Labirint saroyini barpo etgan afsonaviy usta kim?", a: "Dedal." },
+      { q: "22. Akropoldagi Parfenon ibodatxonasi qurilishiga boshchilik qilgan haykaltarosh kim?", a: "Fidiy." },
+      { q: "23. Ibodatxona kirish yo‘lining yuqori qismi bo‘lgan peshtoq nimalar bilan bezatilgan?", a: "Yunon ma’budlarining haykallari bilan." },
+      { q: "24. Yunon haykaltaroshlari kimlarning sharafiga haykallar yasaganlar?", a: "Olimpiya o‘yinlari g‘oliblari, olimlar va jangda zafar quchgan qahramonlar sharafiga." },
+      { q: "25. Troya shahri qaysi yarimorol yoki mintaqada joylashgan edi?", a: "Kichik Osiyoning Egey dengizi qirg‘og‘ida." },
+      { q: "26. Qashshoq fuqarolarga teatrga borishi uchun davlat tomonidan nima berilgan?", a: "Arzimagan tomosha haqi (pul) berilgan." },
+      { q: "27. Gomerning «Odizseya» dostoni asosan nimadan hikoya qiladi?", a: "Odizseyning Troya urushidan keyin o‘z vataniga qaytishdagi sarguzashtlari haqida." },
+      { q: "28. Yunon teatrida aktyorlar turli xil hissiyotlarni bildirish uchun nimalardan foydalangan?", a: "Quvnoq, qayg‘uli va yovuz qiyofadagi niqoblardan." },
+      { q: "29. Parfenon ibodatxonasining ustunlari qaysi materialdan yasalgan?", a: "Marmar toshlardan." },
+      { q: "30. Qadimgi Yunoniston arxitekturasi va san’atining eng yuksak namunalari qayerda jamlangan?", a: "Afina Akropolida." },
+      { q: "31. Labirint saroyining o‘ziga xos xususiyati nimada edi?", a: "Unga kirish oson, lekin undan chiqish yo‘lini topib olishning iloji bo‘lmagan." },
+      { q: "32. Yunonlar Troyani egachach nima qildilar?", a: "Shaharni taladilar va o‘ljalar bilan uyga qaytdilar." },
+      { q: "33. Gomerning qoldirgan ijrosi qanday shaklda saqlanib qolgan?", a: "Dostonlar (poema) shaklida." },
+      { q: "34. Komediya janrining asosiy vazifasi qadimgi yunon teatrida nima bo‘lgan?", a: "Inson nuqsonlari ustidan kulish va hajv qilish." },
+      { q: "35. Fidiy va Sofokl qaysi davr madaniyatining namoyandalari hisoblanadi?", a: "Klassik davr Qadimgi Yunoniston madaniyatining." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Qadimgi Yunonistonning «Iliada» va «Odizseya» dostonlarini yozgan mashhur shoir kim?",
+        options: [
+          "Gomer",
+          "Sofokl",
+          "Aristofan",
+          "Fidiy"
+        ],
+        correct: 0, // A
+        exp: "Qadimgi yunon shoiri Gomer «Iliada» va «Odizseya» dostonlarini yozdi."
+      },
+      {
+        q: "2. «Shoh Edip» va «Antigona» kabi mashhur tragediyalarni yozgan yunon dramaturgi kim?",
+        options: [
+          "Gomer",
+          "Sofokl",
+          "Aristofan",
+          "Dedal"
+        ],
+        correct: 1, // B
+        exp: "Yunon dramaturqi Sofokl «Shoh Edip» va «Antigona» singari mashhur tragediyalarni yozgan."
+      },
+      {
+        q: "3. Akropoldagi Parfenon ibodatxonasi qurilishiga boshchilik qilgan mashhur yunon haykaltaroshi kim?",
+        options: [
+          "Sofokl",
+          "Aristofan",
+          "Fidiy",
+          "Gomer"
+        ],
+        correct: 2, // C
+        exp: "Yunon haykaltaroshi Fidiy Akropoldagi ibodatxona — Parfenon qurilishiga boshchilik qilgan."
+      },
+      {
+        q: "4. Inson nuqsonlari ustidan kuluvchi yunon komediyalarining eng mashhur muallifi kim?",
+        options: [
+          "Dedal",
+          "Fidiy",
+          "Sofokl",
+          "Aristofan"
+        ],
+        correct: 3, // D
+        exp: "Komediyalarning eng mashhur muallifi Aristofan edi."
+      },
+      {
+        q: "5. Yunonlar Egey dengizi qirg‘og‘idagi Troyaga qarshi yurishni taxminan qachon boshlaganlar?",
+        options: [
+          "Miloddan avvalgi 1200-yilda",
+          "Miloddan avvalgi 776-yilda",
+          "Miloddan avvalgi 490-yilda",
+          "Miloddan avvalgi 338-yilda"
+        ],
+        correct: 0, // A
+        exp: "Taxminan mil. avv. 1200-yilda yunonlar Egey dengizi qirg‘og‘idagi Troyaga qarshi yurish boshlagan."
+      },
+      {
+        q: "6. «Tezkor» yunonchadan tarjima qilinganda «tomoshalar uchun joy», «tomoshaxona» ma’nosini bildiruvchi so‘z qaysi?",
+        options: [
+          "Agora",
+          "Teatr",
+          "Palestra",
+          "Akropol"
+        ],
+        correct: 1, // B
+        exp: "«Teatr» so‘zini yunonchadan tarjima qilganda «tomoshalar uchun joy», «tomoshaxona» degan ma’nolarni anglatadi."
+      },
+      {
+        q: "7. Minos podshosi uchun Labirint saroyini barpo etgan afsonaviy usta kim?",
+        options: [
+          "Fidiy",
+          "Sofokl",
+          "Dedal",
+          "Gomer"
+        ],
+        correct: 2, // C
+        exp: "Rivoyatlarga ko‘ra, Dedal Minos degan podsho uchun Labirint saroyini barpo etgan."
+      },
+      {
+        q: "8. «Iliada» dostoni Troya urushining qaysi yili voqealari haqida hikoya qiladi?",
+        options: [
+          "Birinchi yili",
+          "Beshinchi yili",
+          "To‘rtinchi yili",
+          "Oxirgi o‘ninchi yili"
+        ],
+        correct: 3, // D
+        exp: "«Iliada» ana shu urushning oxirgi o‘ninchi yili haqida hikoya qiladi."
+      },
+      {
+        q: "9. Qadimgi Yunonistonda teatr namoyishlarida barcha rollarni kimlar ijro etgan?",
+        options: [
+          "Faqat erkaklar",
+          "Faqat ayollar",
+          "Faqat bolalar",
+          "Chet ellik aktyorlar"
+        ],
+        correct: 0, // A
+        exp: "Sahnada barcha rollarni faqat erkaklar ijro etgan."
+      },
+      {
+        q: "10. «Troya oti» iborasi bugungi kunda qanday ma’noni anglatadi?",
+        options: [
+          "Qahramonona yordam",
+          "Xosiyatsiz sovg‘a-salom",
+          "Tezkor safar vositasi",
+          "Qimmatbaho xazina"
+        ],
+        correct: 1, // B
+        exp: "Hozirgi tillarda «Troya oti» iborasi xosiyatsiz sovg‘a-salom ma’nosini anglatadi."
+      },
+      {
+        q: "11. Parfenon ibodatxonasining ustunlari qaysi materialdan barpo etilgan edi?",
+        options: [
+          "Xom g‘ishtdan",
+          "Yog‘och to‘sinlardan",
+          "Marmar toshlardan",
+          "Qora paxsadan"
+        ],
+        correct: 2, // C
+        exp: "Parfenon binosi va uning ustunlari marmar toshlardan qurilgan."
+      },
+      {
+        q: "12. Axillesning tanasi daxlsiz bo‘lmagan yagona nozik joyi nima edi?",
+        options: [
+          "Boshi",
+          "Yuragi",
+          "Qo‘li",
+          "Tovoni"
+        ],
+        correct: 3, // D
+        exp: "Axillesning onasi uni Stiks daryosiga cho‘miltirganda tovonidan ushlagani uchun tovoni suv tegmay qolgan («Axilles tovoni»)."
+      },
+      {
+        q: "13. Qadimgi Yunonistonda ibodatxonalar qanday materialdan qurilgan edi?",
+        options: [
+          "Toshdan barpo etilgan",
+          "Faqat qamishdan",
+          "Temir listlardan",
+          "Mis plitalardan"
+        ],
+        correct: 0, // A
+        exp: "Ibodatxonalar va boshqa jamoat binolari toshdan barpo etilgan."
+      },
+      {
+        q: "14. Qadimgi yunon teatrida aktyorlar obraz yaratish uchun nimalardan foydalanganlar?",
+        options: [
+          "Qimmatbaho toj va kiyimlardan",
+          "Quvnoq, qayg‘uli va yovuz qiyofadagi turli niqoblardan",
+          "Temir dubulg‘alardan",
+          "Hayvon terilaridan"
+        ],
+        correct: 1, // B
+        exp: "Namoyish ishtirokchilari quvnoq, qayg‘uli va yovuz qiyofadagi turli niqoblardan foydalangan."
+      },
+      {
+        q: "15. Qadimgi Yunonistonda xususiy uylar odatda qanday materialdan qurilgan?",
+        options: [
+          "Sof marmardan",
+          "Qimmatbaho oltin plitalardan",
+          "G‘isht va paxsadan",
+          "Shishadan"
+        ],
+        correct: 2, // C
+        exp: "Xususiy uylar esa g‘ishtdan va paxsadan qurilgan."
+      },
+      {
+        q: "16. Qadimgi Yunonistonda teatr tomoshalari qachon o‘tkazilar edi?",
+        options: [
+          "Har kuni kechqurun",
+          "Haftada bir marta",
+          "Faqat qish faslida",
+          "Faqat bayramlarda"
+        ],
+        correct: 3, // D
+        exp: "Tomoshalar faqat bayramlarda uyushtirilgan."
+      },
+      {
+        q: "17. Gomerning «Odizseya» dostoni nimaning bayoni hisoblanadi?",
+        options: [
+          "Odizseyning Troya urushidan keyin vataniga qaytishdagi sarguzashtlari",
+          "Afina shahrining qurilishi",
+          "Olimpiya o‘yinlari tarixi",
+          "Zardushtiylik qonunlari"
+        ],
+        correct: 0, // A
+        exp: "«Odizseya» dostonida qahramonning uzoq sarguzashtlari hikoya qilinadi."
+      },
+      {
+        q: "18. Qadimgi Yunoniston ibodatxonalarining kirish peshtoqi yuqori qismi nima bilan bezatilgan?",
+        options: [
+          "Dengiz hayvonlari tasviri bilan",
+          "Yunon ma’budlarining haykallari bilan",
+          "Qo‘shni podsholar portretlari bilan",
+          "Geometrik naqshlar bilan"
+        ],
+        correct: 1, // B
+        exp: "Qadimda ibodatxonaga kirish yo‘li — peshtoqning yuqori qismi yunon ma’budlarining haykallari bilan bezatilgan."
+      },
+      {
+        q: "19. Qadimgi Yunonistonda qashshoq fuqarolarga teatrga borishi uchun nima berilgan?",
+        options: [
+          "Bepul oziq-ovqat",
+          "Maxsus qurol",
+          "Teatrga borishi uchun pul berilar edi",
+          "Ozodlik guvohnomasi"
+        ],
+        correct: 2, // C
+        exp: "Qashshoq fuqarolarga teatrga borishi uchun pul berilar edi."
+      },
+      {
+        q: "20. Sofokl qaysi adabiy janrda ijod qilgan va uning asarlari qaysilar?",
+        options: [
+          "Komediya; «Lisistrata»",
+          "Epos; «Iliada»",
+          "Lirika; «Quyosh madhi»",
+          "Tragediya; «Shoh Edip» va «Antigona»"
+        ],
+        correct: 3, // D
+        exp: "Yunon dramaturqi Sofokl «Shoh Edip» va «Antigona» singari mashhur tragediyalarni yozgan."
+      },
+      {
+        q: "21. Troya urushi qaysi dengiz qirg‘og‘ida joylashgan hudud uchun olib borilgan?",
+        options: [
+          "Egey dengizi qirg‘og‘idagi Kichik Osiyoda",
+          "Nil daryosi deltasida",
+          "Qizil dengiz sohilida",
+          "Apennin yarimorolida"
+        ],
+        correct: 0, // A
+        exp: "Egey dengizi qirg‘og‘idagi Kichik Osiyoda joylashgan Troyaga mo‘l-ko‘l o‘lja ilinjida yurish boshlangan."
+      },
+      {
+        q: "22. Qadimgi yunon haykaltaroshlari odatda kimlarning sharafiga haykallar yasaganlar?",
+        options: [
+          "Faqat chet el podsholarining",
+          "Olimpiya o‘yinlari g‘oliblari va jangda zafar quchgan qahramonlarning",
+          "Faqat afsonaviy maxluqlarning",
+          "Faqat badavlat savdogarlarning"
+        ],
+        correct: 1, // B
+        exp: "Yunon haykaltaroshlari Olimpiya o‘yinlari g‘oliblari yoki jangda zafar quchgan qahramonlar sharafiga haykallar yasagan."
+      },
+      {
+        q: "23. Labirint saroyi afsonaviy qaysi shoh uchun qurilgan edi?",
+        options: [
+          "Agamemnon",
+          "Leonid",
+          "Minos",
+          "Kserks"
+        ],
+        correct: 2, // C
+        exp: "Rivoyatlarga ko‘ra, Dedal Minos degan podsho uchun Labirint saroyini barpo etgan."
+      },
+      {
+        q: "24. Yunon teatrida sahna ko‘rinishlari qancha vaqt davom etgan?",
+        options: [
+          "Faqat 1 soat",
+          "Faqat tunda",
+          "Faqat 10 daqiqa",
+          "Kun bo‘yi"
+        ],
+        correct: 3, // D
+        exp: "Ertalabdan boshlangan tomoshalar kun bo‘yi davom etardi."
+      },
+      {
+        q: "25. Troyani egallash uchun yunonlar tomonidan o‘ylab topilgan yog‘och ot hiylasining muallifi kim edi?",
+        options: [
+          "Odizsey",
+          "Axilles",
+          "Paris",
+          "Gomer"
+        ],
+        correct: 0, // A
+        exp: "Odizseyning maslahati bilan yunonlar ayyorlikni ishga solib, ichi bo‘m-bo‘sh ulkan yog‘och ot yasashadi."
+      },
+      {
+        q: "26. Qadimgi yunon komediyalarining asosiy vazifasi nima bo‘lgan?",
+        options: [
+          "Faqat diniy marosimlarni o‘tkazish",
+          "Inson nuqsonlari ustidan kulish",
+          "Tarixiy sanalarni yozib qoldirish",
+          "Urush taktikasini o‘rgatish"
+        ],
+        correct: 1, // B
+        exp: "Ajoyib qochiriqlar, quvnoq sahnalar, nozik yumor boy komediyalar esa inson nuqsonlari ustidan kuladi."
+      },
+      {
+        q: "27. Qadimgi Yunoniston ibodatxonalarida ustunlar qanday atalgan?",
+        options: [
+          "Pesztoq",
+          "Akropol",
+          "Kolonnalar",
+          "Agoralar"
+        ],
+        correct: 2, // C
+        exp: "Ibodatxonalarga ustunlar — kolonnalar alohida ko‘rk berib turgan."
+      },
+      {
+        q: "28. Troya podshosining o‘g‘li bo‘lib, Sparta podshosining xotini Yelenani olib qochgan shaxs kim?",
+        options: [
+          "Axilles",
+          "Odizsey",
+          "Agamemnon",
+          "Paris"
+        ],
+        correct: 3, // D
+        exp: "Troya podshosining o‘g‘li Paris Sparta podshosiningigam kelib Sohibjamol Yelenani Troyaga o‘g‘irlab ketadi."
+      },
+      {
+        q: "29. Gomerning dostonlarida tasvirlangan Troya urushi qaysi mintaqada bo‘lib o‘tgan?",
+        options: [
+          "Kichik Osiyoda",
+          "Krit orolida",
+          "Peloponnesda",
+          "Misrda"
+        ],
+        correct: 0, // A
+        exp: "Taxminan mil. avv. 1200-yilda Egey dengizi qirg‘og‘idagi Kichik Osiyoda joylashgan Troyada sodir bo‘lgan."
+      },
+      {
+        q: "30. Sofokl ijod qilgan tragediya janrining mazmuni nimalardan iborat bo‘lgan?",
+        options: [
+          "Faqat quvnoq hazillardan",
+          "Qahramonlarning o‘zaro kurashi va fojeali yakunlanadigan voqealardan",
+          "Faqat hayvonlar sarguzashtidan",
+          "Diniy afsonalarni o‘qishdan"
+        ],
+        correct: 1, // B
+        exp: "Tragediyalarda qahramonlarning o‘zaro kurash namoyish etilgan, pyesalar fojiali tugagan."
+      },
+      {
+        q: "31. Qadimgi Yunoniston haykaltaroshligida eng mashhur san’atkorlardan biri kim bo‘lgan?",
+        options: [
+          "Drakont",
+          "Solon",
+          "Fidiy",
+          "Demosfen"
+        ],
+        correct: 2, // C
+        exp: "Yunon haykaltaroshi Fidiy Akropoldagi ibodatxona — Parfenon qurilishiga boshchilik qilgan."
+      },
+      {
+        q: "32. Qadimgi yunon teatrida barcha qahramonlar rollarini faqat erkaklar ijro etgan bo‘lsa, ayollar rollarini kim o‘ynagan?",
+        options: [
+          "Faqat malakali ma’budalar",
+          "Faqat malika qizlar",
+          "Maxsus chet ellik aktrisalar",
+          "Erkak aktyorlarning o‘zlari niqob taqib o‘ynagan"
+        ],
+        correct: 3, // D
+        exp: "Sahnada barcha rollarni faqat erkaklar ijro etgan, ular ayollar obrazini ham niqob taqib ijro etishgan."
+      },
+      {
+        q: "33. «Iliada» va «Odizseya» dostonlari qaysi qadimgi xalq og‘zaki ijodi va tarixiga asoslangan?",
+        options: [
+          "Qadimgi yunonlarning",
+          "Misrliklarning",
+          "Forslarning",
+          "Rimliklarning"
+        ],
+        correct: 0, // A
+        exp: "Qadimgi yunon shoiri Gomer «Iliada» va «Odizseya» dostonlarini yozgan."
+      },
+      {
+        q: "34. «Axilles tovoni» iborasi mecaziy ma’noda nimani anglatadi?",
+        options: [
+          "Insonning eng kuchli va baquvvat joyini",
+          "Insonning himoyasiz va ojiz (nozik) tomonini",
+          "Tez yugurish qobiliyatini",
+          "Jangdagi g‘alaba ramzini"
+        ],
+        correct: 1, // B
+        exp: "O‘sha kezlardan beri «Axilles tovoni» iborasi nozik joyni anglatadi."
+      },
+      {
+        q: "35. Qadimgi Yunonistonda teatr qurilishining o‘ziga xosligi nimada edi?",
+        options: [
+          "Ular to‘rt devorli yopiq binolarda o‘tkazilgan",
+          "Faqat yer osti g‘orlarida qurilgan",
+          "Ochiq osmon ostida, tevaragi qiyalik bo‘ylab qator o‘rindiqli qilib qurilgan",
+          "Faqat saroylar ichida joylashgan"
+        ],
+        correct: 2, // C
+        exp: "Yunon teatri ochiq osmon ostida, tog‘ qiyaliklarida amfiteatr ko‘rinishida bunyod etilgan."
+      },
+      {
+        q: "36. Gomerning dostonlarida yoritilgan voqealar qadimgi dunyo qaysi davriga tegishli?",
+        options: [
+          "Neolit davriga",
+          "Ellinizm davriga",
+          "Rim imperiyasi davriga",
+          "Klassik va undan oldingi qahramonlik zamoniga (Mil. avv. 2-mingyillik oxirlari)"
+        ],
+        correct: 3, // D
+        exp: "Bu dostonlar qadimgi yunonlarning ilk qahramonlik davri voqealarini o‘z ichiga oladi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! 30-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

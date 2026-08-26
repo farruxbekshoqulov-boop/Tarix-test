@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>12-§. Bobil podsholigi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va tarixiy qonuniyatlarni muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">12-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">12-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Bobil davlati va atamalar
+      [
+        { id: 1, left: "«Bobil» so‘zi ma’nosi", right: "«Xudolar darvozasi»" },
+        { id: 2, left: "Mil. avv. XVIII asr", right: "Xammurapi butun Mesopotamiyani birlashtirgan davr" },
+        { id: 3, left: "Frot va Dajla yaqinlashgan joy", right: "Bobil shahrining qulay geografik o‘rni" },
+        { id: 4, left: "Ishtar darvozasi", right: "Bobil shahrining bosh ko‘chasi boshlangan darvoza" }
+      ],
+      // 2-bosqich: Xammurapi qonunlari
+      [
+        { id: 5, left: "Xammurapi qonunlari", right: "Barcha shaharlarda tosh ustunlarga yozib qo‘yilgan" },
+        { id: 6, left: "Bemor bevaqt vafot etsa", right: "Jarrohlik qilgan shifokorning qo‘llari kesilgan" },
+        { id: 7, left: "Qurilgan uy qulab kishi o‘lsa", right: "Binokor qatl etilishi lozim bo‘lgan" },
+        { id: 8, left: "Yong‘in vaqtida o‘g‘rilik", right: "Ushlangan kimsa o‘sha zahoti olovga tashlangan" }
+      ],
+      // 3-bosqich: Yangi Bobil podsholigi
+      [
+        { id: 9, left: "Mil. avv. VII asr", right: "Yangi Bobil podsholigi vujudga kelgan davr" },
+        { id: 10, left: "Navuxodonosor II", right: "Yangi Bobilni o‘z ravnaqining cho‘qqisiga yetkazgan hukmdor" },
+        { id: 11, left: "Iyerusalim (Quddus)", right: "Navuxodonosor II tomonidan vayron qilingan shahar" },
+        { id: 12, left: "Pishgan g‘isht", right: "Mudofaa devorlari va uylarda ishlatish farmon berilgan ashyo" }
+      ],
+      // 4-bosqich: Shahar tuzilishi va istilo
+      [
+        { id: 13, left: "Sakkizta darvoza", right: "Bobil shahrining bosh ma’budlar nomi bilan atalgan darvozalari" },
+        { id: 14, left: "Mil. avv. 539-yil", right: "Qadimgi forslar Bobilni zabt etgan yil" },
+        { id: 15, left: "Naqshinkor tosh taxtachalar", right: "Ishtar darvozasini bezatgan afsonaviy hayvonlar tasviri" },
+        { id: 16, left: "Ma’budlar xohish-irodasi", right: "Xammurapi qonunlarining jamiyatda talqin etilishi" }
+      ],
+      // 5-bosqich: Bobil madaniyati va fani
+      [
+        { id: 17, left: "Quyosh yili (365 kun)", right: "Shumerliklar va bobilliklar aniqlagan yil davomiyligi" },
+        { id: 18, left: "Oy yili (354 kun)", right: "Mesopotamiyada hisoblab chiqilgan qamariy yil" },
+        { id: 19, left: "Rasadxonalar", right: "Baland zikkuratlar yuqorisidagi maydonchada barpo etilgan" },
+        { id: 20, left: "Dori-darmon dasturulamali", right: "Mesopotamiyada tuzilgan tabobat qo‘llanmasi" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Bobil podsholigi qachon Mesopotamiya janubidagi eng yirik qudratli davlatga aylandi?", a: "Miloddan avvalgi II mingyillikda." },
+      { q: "2. Bobil shahrining geografik joylashuvi qanday afzallikka ega edi?", a: "Frot va Dajla daryolarining o‘zanlari bir-biriga yaqinlashib ketadigan hududda joylashgan, savdo kemalari to‘xtab o‘tgan." },
+      { q: "3. «Bobil» so‘zining o‘zi qanday ma’noni anglatadi?", a: "«Xudolar darvozasi» degan ma’noni anglatadi." },
+      { q: "4. Bobil shahrining bosh ko‘chasi qaysi darvozadan boshlangan?", a: "G‘alaba ma’budasi Ishtar darvozasidan boshlangan." },
+      { q: "5. Butun Mesopotamiyani yagona davlatga birlashtirgan Bobil podshosi kim va bu qachon yuz bergan?", a: "Miloddan avvalgi XVIII asrda podsho Xammurapi tomonidan amalga oshirilgan." },
+      { q: "6. Xammurapi qonunlari matnlari xalqqa qanday yetkazilgan?", a: "Mamlakatning barcha shaharlarida o‘rnatilgan qora tosh ustunlarga yozib qo‘yilgan." },
+      { q: "7. Xammurapi qonunlariga ko‘ra, shifokor operatsiyasi oqibatida bemor vafot etsa qanday jazo berilgan?", a: "Shifokorning qo‘llari kesib tashlanishi shart bo‘lgan." },
+      { q: "8. Qonunga ko‘ra, binokor qurgan uy to‘satdan qulab biror kishini bosib qolsa nima qilingan?", a: "Binokor qatl etilishi lozim bo‘lgan." },
+      { q: "9. Yong‘in vaqtida o‘g‘rilik ustida qo‘lga tushgan kimsaga qanday jazo berilgan?", a: "O‘sha zahoti olovga tashlangan." },
+      { q: "10. Qulfbuzar o‘g‘ri qanday jazoga mahkum etilgan?", a: "O‘zganing mulkiga tajovuz qilgan joyida o‘ldirilib, o‘sha yerning o‘zida ko‘mib yuborilgan." },
+      { q: "11. Xammurapi qonunlari jamiyatda qanday talqin etilgan?", a: "Faqat podshoning qarori emas, balki ma’budlarning xohish-irodasi sifatida talqin etilgan." },
+      { q: "12. Xammurapi qonunlarining jamiyat rivojidagi asosiy ijobiy natijasi nima bo‘ldi?", a: "Talon-tarojlik va o‘g‘rilik kabi jinoyatlar deyarli sodir etilmaydigan bo‘ldi." },
+      { q: "13. Yangi Bobil podsholigi qachon vujudga kelgan?", a: "Miloddan avvalgi VII asrda." },
+      { q: "14. Yangi Bobil podsholigi qaysi hukmdor davrida o‘z ravnaqining cho‘qqisiga erishdi?", a: "Navuxodonosor II hukmronligi davrida." },
+      { q: "15. Navuxodonosor II qaysi mamlakatni Bobilga qo‘shib oldi va qaysi shaharni vayron qildi?", a: "Misrni qo‘shib oldi, Iyerusalim (Quddus) shahrini vayron qilib tashladi." },
+      { q: "16. Navuxodonosor II qurilish bo‘yicha qanday maxsus farmon bergan?", a: "Turarjoy binolari va mudofaa devorlari qurilishida pishgan g‘isht ishlatish to‘g‘risida farmon berdi." },
+      { q: "17. Navuxodonosor II davrida Bobil shahrida nechta darvoza bo‘lgan va ular qanday nomlangan?", a: "Sakkizta darvoza bo‘lib, ularning har biri mamlakat bosh ma’budlaridan birining nomi bilan atalgan." },
+      { q: "18. Ishtar darvozasi qanday bezatilgan edi?", a: "Afsonaviy hayvonlar tasviri tushirilgan naqshinkor tosh taxtachalar bilan juda nafis bezatilgan." },
+      { q: "19. Qadimgi forslar lashkari Bobilga qachon bostirib kirdi va uni zabt etdi?", a: "Miloddan avvalgi 539-yilda." },
+      { q: "20. Forslar istilosidan so‘ng Yangi Bobil podsholigi qaysi davlat tarkibiga kirdi?", a: "Fors davlati (Ahamoniylar imperiyasi) tarkibiga kirdi." },
+      { q: "21. Bobil madaniyatining eng qadimiy o‘choqlari qaysilar hisoblangan?", a: "Shumer va Akkad madaniyatlari." },
+      { q: "22. Bobilda zodagonlar va badavlat oilalarning farzandlari qayerda ta’lim olishgan?", a: "Hukmdorlar saroylari va ibodatxonalarda tashkil qilingan maktablarda." },
+      { q: "23. Maktab o‘quvchilari loy taxtachalarga nimalar bilan yozishgan?", a: "Suyak va yog‘ochdan yasalgan tayoqchalar bilan yozishgan." },
+      { q: "24. Loy taxtachalardan qanday qilib ilk kitoblar tayyorlangan?", a: "Oldin oftobda quritilib, so‘ng xumdonlarda pishirilgan." },
+      { q: "25. O‘quvchilar loy taxtachalarga nimalarni yozib mashq qilishgan?", a: "Asotirlar, afsonalar, o‘simliklar, qushlar, hayvonlar, hasharotlar, shahar va mamlakatlar ro‘yxatini tuzishgan." },
+      { q: "26. Bobilliklar hisoblagan Quyosh va Oy yillarining davomiyligi qancha bo‘lgan?", a: "Quyosh yili 365 kun, Oy yili esa 354 kun etib belgilangan." },
+      { q: "27. Bobillik kohin-munajjimlar astronomik kuzatuvlarni qayerda olib borishgan?", a: "Baland zikkuratlar yuqorisidagi maydonchada barpo etilgan rasadxonalarda." },
+      { q: "28. Mesopotamiyada tabobat bo‘yicha qanday muhim yutuq yaratildi?", a: "Turli-tuman dori-darmonlarni tayyorlash bo‘yicha dasturulamal (qo‘llanma) tuzildi." },
+      { q: "29. Geografiya sohasidagi bilimlar bobilliklarga qanday imkoniyat bergan?", a: "Kemalarda dengiz bo‘ylab uzoq suzish va savdo qilish imkonini bergan." },
+      { q: "30. Olamning yaratilishi haqidagi eng qadimgi asotirlardan biri qayerda paydo bo‘lgan?", a: "Mesopotamiyada paydo bo‘lgan." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Bobil shahrining bosh ko‘chasi qaysi ma’buda nomi bilan atalgan darvozadan boshlangan?",
+        options: [
+          "Ea darvozasidan",
+          "Ishtar darvozasidan",
+          "Sin darvozasidan",
+          "Shamash darvozasidan"
+        ],
+        correct: 1, // B
+        exp: "Bobilning bosh ko‘chasi g‘alaba ma’budasi Ishtar darvozasidan boshlangan."
+      },
+      {
+        q: "2. Xammurapi qonunlariga ko‘ra, yong‘in vaqtida o‘g‘rilik ustida qo‘lga tushgan shaxs qanday jazoga tortilgan?",
+        options: [
+          "Qo‘llari kesib tashlangan",
+          "Katta jarima to‘lagan",
+          "O‘sha zahoti olovga tashlangan",
+          "Mamlakatdan quvg‘in qilingan"
+        ],
+        correct: 2, // C
+        exp: "Yong‘in mahalida o‘g‘rilik ustida qo‘lga tushgan kimsa o‘sha zahoti olovga tashlangan."
+      },
+      {
+        q: "3. Yangi Bobil podsholigi qaysi asrda vujudga kelgan?",
+        options: [
+          "Miloddan avvalgi XVIII asrda",
+          "Miloddan avvalgi XII asrda",
+          "Miloddan avvalgi II mingyillikda",
+          "Miloddan avvalgi VII asrda"
+        ],
+        correct: 3, // D
+        exp: "Miloddan avvalgi VII asrda Yangi Bobil podsholigi vujudga kelgan."
+      },
+      {
+        q: "4. «Bobil» so‘zining lug‘aviy ma’nosi qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "«Xudolar darvozasi»",
+          "«Ikki daryo oralig‘i»",
+          "«Muqaddas shahar»",
+          "«Oltin qal’a»"
+        ],
+        correct: 0, // A
+        exp: "«Bobil» so‘zining o‘zi «xudolar darvozasi» degan ma’noni anglatadi."
+      },
+      {
+        q: "5. Qadimgi forslar lashkari qaysi yilda Bobilga bostirib kirib, uni zabt etdi?",
+        options: [
+          "Mil. avv. 500-yilda",
+          "Mil. avv. 539-yilda",
+          "Mil. avv. 525-yilda",
+          "Mil. avv. 330-yilda"
+        ],
+        correct: 1, // B
+        exp: "Qadimgi forslar lashkari mil. avv. 539-yilda Bobilni zabt etdi."
+      },
+      {
+        q: "6. Bobil kohin-munajjimlari Oy yilining davomiyligini necha kun etib belgilaganlar?",
+        options: [
+          "365 kun",
+          "360 kun",
+          "354 kun",
+          "345 kun"
+        ],
+        correct: 2, // C
+        exp: "Quyosh yili 365 kun, oy yili esa 354 kun etib belgilangan."
+      },
+      {
+        q: "7. Butun Mesopotamiyani yagona davlatga birlashtirgan mashhur Bobil podshosi kim?",
+        options: [
+          "Navuxodonosor II",
+          "Sargon I",
+          "Gilgamish",
+          "Xammurapi"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. XVIII asrda Bobil podshosi Xammurapi butun Mesopotamiyani yagona davlatga birlashtirdi."
+      },
+      {
+        q: "8. Navuxodonosor II turarjoylar va mudofaa devorlari qurilishida qaysi ashyodan foydalanish bo‘yicha farmon berdi?",
+        options: [
+          "Pishgan g‘isht",
+          "Xom g‘isht",
+          "Faqat marmar tosh",
+          "Qamish va loy"
+        ],
+        correct: 0, // A
+        exp: "Navuxodonosor II turarjoy binolari va mudofaa devorlari qurilishida pishgan g‘isht ishlatish to‘g‘risida farmon beradi."
+      },
+      {
+        q: "9. Xammurapi qonunlariga ko‘ra, jarrohlik amaliyoti natijasida bemor bevaqt vafot etsa, tabibga qanday jazo berilgan?",
+        options: [
+          "Qatl etilgan",
+          "Shifokorning qo‘llari kesib tashlangan",
+          "Bemor oilasiga qul qilib berilgan",
+          "Katta miqdorda kumush jarima to‘lagan"
+        ],
+        correct: 1, // B
+        exp: "Bemor bevaqt vafot etsa, shifokorning qo‘llari kesib tashlanishi shart bo‘lgan."
+      },
+      {
+        q: "10. Xammurapi qonunlari matnlari qayerlarga yozib qo‘yilgan edi?",
+        options: [
+          "Faqat podsho saroyi darvozasiga",
+          "Papirus qog‘ozlariga",
+          "Barcha shaharlarda o‘rnatilgan tosh ustunlarga",
+          "Ibodatxona xumdonlariga"
+        ],
+        correct: 2, // C
+        exp: "Qonunlarning matnlari mamlakatning barcha shaharlarida o‘rnatilgan tosh ustunlarga yozib qo‘yilardi."
+      },
+      {
+        q: "11. Yangi Bobil podsholigi davrida Bobil shahrida nechta darvoza bo‘lgan?",
+        options: [
+          "4 ta",
+          "6 ta",
+          "12 ta",
+          "8 ta"
+        ],
+        correct: 3, // D
+        exp: "Bobil shahrining sakkizta darvozasi bo‘lgan, ularning har biri mamlakat bosh ma’budlaridan birining nomi bilan atalgan."
+      },
+      {
+        q: "12. Bobil podsholigi Mesopotamiyaning qaysi qismidagi eng yirik qudratli davlatga aylangan?",
+        options: [
+          "Janubidagi",
+          "Shimolidagi",
+          "G‘arbidagi",
+          "Sharqidagi"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. II mingyillikda Bobil podsholigi Mesopotamiya janubidagi eng yirik qudratli davlatga aylandi."
+      },
+      {
+        q: "13. Yangi Bobil podsholigini o‘z ravnaqining cho‘qqisiga yetkazgan hukmdor kim?",
+        options: [
+          "Xammurapi",
+          "Navuxodonosor II",
+          "Kir II",
+          "Kambiz II"
+        ],
+        correct: 1, // B
+        exp: "Navuxodonosor II hukmronligi davrida Yangi Bobil podsholigi o‘z ravnaqining cho‘qqisiga erishadi."
+      },
+      {
+        q: "14. Bobilda kohin-munajjimlarning rasadxonalari qayerda barpo etilgan?",
+        options: [
+          "Daryo bo‘yidagi kemalarda",
+          "Yer osti g‘orlarida",
+          "Baland zikkuratlar yuqorisidagi maydonchada",
+          "Shahar darvozalari ustida"
+        ],
+        correct: 2, // C
+        exp: "Eng qadimgi rasadxonalar baland, ko‘p zinali ibodatxonalar — zikkuratlar yuqorisidagi maydonchada barpo etilgan."
+      },
+      {
+        q: "15. Xammurapi qonunlariga ko‘ra, qurilgan uy qulab biror kishini bosib o‘ldirsa, kim jazoga tortilgan?",
+        options: [
+          "Uy egasi",
+          "Qurilishda ishlagan qullar",
+          "Shahar hokimi",
+          "Binokor (qatl etilgan)"
+        ],
+        correct: 3, // D
+        exp: "Mabodo binokor qurgan uy to‘satdan qulab, biror kishini bosib qolsa, binokor qatl etilishi lozim bo‘lgan."
+      },
+      {
+        q: "16. Bobil maktablarida o‘quvchilar loy taxtachalarga nimalardan yasalgan tayoqchalar bilan yozishgan?",
+        options: [
+          "Suyak va yog‘ochdan",
+          "Temir va po‘latdan",
+          "Mis va bronzadan",
+          "Qamish va oltindan"
+        ],
+        correct: 0, // A
+        exp: "O‘quvchilar nam loy taxtachalarga suyak va yog‘ochdan yasalgan tayoqchalar bilan yozishgan."
+      },
+      {
+        q: "17. Navuxodonosor II tomonidan butunlay vayron qilib tashlangan shahar qaysi?",
+        options: [
+          "Memfis",
+          "Iyerusalim (Quddus)",
+          "Nineviya",
+          "Tir"
+        ],
+        correct: 1, // B
+        exp: "Bu hukmdor Iyerusalim (Quddus)ni vayron qilib tashlaydi, Bobilni esa mustahkam qal’aga aylantiradi."
+      },
+      {
+        q: "18. Bobil qonunlarining asosiy maqsadi va mohiyati qanday talqin etilgan?",
+        options: [
+          "Faqat kambag‘allarni jazolash vositasi deb",
+          "Boshqa davlatlar bilan savdo qilish sharti deb",
+          "Ma’budlar xohish-irodasi, so‘zsiz bajarilishi shart bo‘lgan qoidalar deb",
+          "Vaqtinchalik harbiy tartib deb"
+        ],
+        correct: 2, // C
+        exp: "Qonunlar ma’budlar xohish-irodasi sifatida talqin etilgan, ularni so‘zsiz, og‘ishmasdan bajarish talab qilingan."
+      },
+      {
+        q: "19. Bobilliklar aniqlagan Quyosh yilining davomiyligi necha kunga teng bo‘lgan?",
+        options: [
+          "360 kun",
+          "354 kun",
+          "366 kun",
+          "365 kun"
+        ],
+        correct: 3, // D
+        exp: "Quyosh yili davomiyligi shumerliklar va bobilliklar tomonidan 365 kun etib belgilangan."
+      },
+      {
+        q: "20. Xammurapi qonunlariga ko‘ra, qulfbuzar o‘g‘riga qanday jazo qo‘llanilgan?",
+        options: [
+          "Tajovuz qilgan joyida o‘ldirilib, o‘sha yerda ko‘mib yuborilgan",
+          "Qo‘li va oyog‘i kesilgan",
+          "Fors davlatiga qul qilib sotilgan",
+          "O‘g‘irlangan molning 10 baravari undirilgan"
+        ],
+        correct: 0, // A
+        exp: "Qulfbuzar o‘g‘ri o‘zganing mulkiga tajovuz qilgan joyida o‘ldirilgan va o‘sha yerning o‘zida ko‘mib yuborilgan."
+      },
+      {
+        q: "21. Bobil shahrining qulay geografik joylashuvi qaysi daryolar bilan bog‘liq edi?",
+        options: [
+          "Nil va Amudaryo",
+          "Frot va Dajla daryolari o‘zanlari yaqinlashgan joy",
+          "Hind va Gang daryolari",
+          "Sirdaryo va Zarafshon"
+        ],
+        correct: 1, // B
+        exp: "Bobil Frot va Dajla daryolarining o‘zanlari bir-biriga yaqinlashib ketadigan hududda joylashgan edi."
+      },
+      {
+        q: "22. Xammurapi butun Mesopotamiyani qaysi asrda yagona davlatga birlashtirdi?",
+        options: [
+          "Miloddan avvalgi VII asrda",
+          "Miloddan avvalgi 3-mingyillikda",
+          "Miloddan avvalgi XVIII asrda",
+          "Miloddan avvalgi 539-yilda"
+        ],
+        correct: 2, // C
+        exp: "Mil. avv. XVIII asrda Bobil podshosi Xammurapi butun Mesopotamiyani birlashtirishga muvaffaq bo‘ldi."
+      },
+      {
+        q: "23. Navuxodonosor II Yangi Bobil davlatiga qaysi yirik mamlakatni qo‘shib oldi?",
+        options: [
+          "Yunonistonni",
+          "Hindistonni",
+          "Eronni",
+          "Misrni"
+        ],
+        correct: 3, // D
+        exp: "Bu hukmdor Misrni Yangi Bobil podsholigiga qo‘shib oladi."
+      },
+      {
+        q: "24. Xammurapi qonunlarining qat’iyligi jamiyatda qanday asosiy natijani berdi?",
+        options: [
+          "Talon-tarojlik va o‘g‘rilik kabi jinoyatlar deyarli sodir etilmasligiga olib keldi",
+          "Xalqning qo‘zg‘olon ko‘tarishiga sabab bo‘ldi",
+          "Shaharlarning bo‘shab qolishiga olib keldi",
+          "Savdo-sotiq butunlay to‘xtab qoldi"
+        ],
+        correct: 0, // A
+        exp: "Qonunlar jamiyat rivojiga katta imkoniyat yaratdi, talon-tarojlik va o‘g‘rilik kabi jinoyatlar deyarli sodir etilmadi."
+      },
+      {
+        q: "25. Bobil madaniyatida ilk kitoblar vazifasini nimalar o‘tagan?",
+        options: [
+          "Teri varaqlar",
+          "Oftobda quritilib, xumdonda pishirilgan loy taxtachalar",
+          "Papirus o‘ramlari",
+          "Yog‘och qutichalar"
+        ],
+        correct: 1, // B
+        exp: "Oftobda quritilib, xumdonlarda pishirilgan loy taxtachalar ilk kitoblar bo‘lgan."
+      },
+      {
+        q: "26. Ishtar darvozasi nimalar bilan nafis bezatilgan edi?",
+        options: [
+          "Oltin quymalar va qimmatbaho javohirlar bilan",
+          "Rangli ipak matolar bilan",
+          "Afsonaviy hayvonlar tasviri tushirilgan naqshinkor tosh taxtachalar bilan",
+          "Temir nayza va qalqonlar bilan"
+        ],
+        correct: 2, // C
+        exp: "Ishtar nomidagi darvoza chiroyli bo‘lib, afsonaviy hayvonlar tasviri tushirilgan naqshinkor tosh taxtachalar bilan bezatilgan."
+      },
+      {
+        q: "27. Mesopotamiyada turli kasalliklarni davolash bo‘yicha qanday tibbiy yutuqqa erishildi?",
+        options: [
+          "Ilk jarrohlik asboblari zavodi qurildi",
+          "Barcha kasalliklar faqat duolar bilan davolandi",
+          "Giyohlardan foydalanish taqiqlandi",
+          "Dori-darmonlarni tayyorlash bo‘yicha maxsus dasturulamal tuzildi"
+        ],
+        correct: 3, // D
+        exp: "Mesopotamiyada turli-tuman dori-darmonlarni tayyorlash bo‘yicha dasturulamal tuzilgan."
+      },
+      {
+        q: "28. Xammurapi qonunlari kimlar uchun majburiy hisoblangan?",
+        options: [
+          "Hamma uchun — badavlat va qashshoq kishilar uchun birdek",
+          "Faqat oddiy fuqarolar va qullar uchun",
+          "Faqat chet ellik savdogarlar uchun",
+          "Faqat harbiy xizmatchilar uchun"
+        ],
+        correct: 0, // A
+        exp: "Xammurapi qonunlari hamma uchun — badavlat va qashshoq kishilar uchun birdek bo‘lgan."
+      },
+      {
+        q: "29. Bobilda zodagonlar va badavlat oilalarning farzandlari ta’lim oladigan maktablar qayerlarda tashkil qilingan?",
+        options: [
+          "Bozor maydonlarida",
+          "Hukmdorlar saroylari va ibodatxonalarda",
+          "Shahar tashqarisidagi lagerlarda",
+          "Harbiy qal’alarda"
+        ],
+        correct: 1, // B
+        exp: "Hukmdorlar saroylari va ibodatxonalarda zodagonlar hamda badavlat oilalarning farzandlari ta’lim oladigan maktablar tashkil qilingan."
+      },
+      {
+        q: "30. Bobilliklar kemalarda dengiz bo‘ylab uzoq suzishlarida qaysi fan bilimlariga tayanganlar?",
+        options: [
+          "Falsafa",
+          "Kimyo",
+          "Geografiya",
+          "Mantiq"
+        ],
+        correct: 2, // C
+        exp: "Geografiya sohasidagi bilimlar shumerliklar va bobilliklarga kemalarda dengiz bo‘ylab suzish imkonini bergan."
+      },
+      {
+        q: "31. Miloddan avvalgi 539-yilda Bobil shahrini zabt etgan davlat qaysi?",
+        options: [
+          "Qadimgi Misr podsholigi",
+          "Rim imperiyasi",
+          "Yunon-Makedoniya davlati",
+          "Fors davlati (Ahamoniylar)"
+        ],
+        correct: 3, // D
+        exp: "Qadimgi forslar lashkari mil. avv. 539-yilda Bobilga bostirib kirib, shaharni zabt etdi."
+      },
+      {
+        q: "32. Bobil yozuvining asosini qaysi xalqlarning madaniy merosi tashkil etgan?",
+        options: [
+          "Shumer va Akkad mixxati",
+          "Misr iyerogliflari",
+          "Finikiya alifbosi",
+          "Xitoy belgilar tizimi"
+        ],
+        correct: 0, // A
+        exp: "Shumer va Akkad Bobil madaniyatining eng qadimiy o‘choqlari edi, Shumer mixxati asos qilib olingan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 12-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

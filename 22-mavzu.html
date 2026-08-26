@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>22-§. Antik tarixning boshlanishi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va qadimgi Yunoniston tarixiy tushunchalarini muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">22-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni puxta takrorlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">22-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Geografiya va tabiat
+      [
+        { id: 1, left: "Olimp tog‘i", right: "Mamlakatning shimoli-sharqidagi eng baland cho‘qqi" },
+        { id: 2, left: "Peloponnes", right: "Ninabargli o‘rmonlar o‘sgan janubiy yarimorol" },
+        { id: 3, left: "O‘rta Yer va Egey", right: "Qadimgi Yunonistonni o‘rab turgan asosiy dengizlar" },
+        { id: 4, left: "Bolqon yarimoroli va orollar", right: "Qadimgi yunon davlatlari joylashgan umumiy hudud" }
+      ],
+      // 2-bosqich: Minoy sivilizatsiyasi va Krit oroli
+      [
+        { id: 5, left: "Minoy sivilizatsiyasi", right: "Krit orolida afsonaviy podsho Minos nomi bilan atalgan sivilizatsiya" },
+        { id: 6, left: "Mil. avv. 2-mingyillik", right: "Krit orolida ilk shahar-davlatlar vujudga kela boshlagan davr" },
+        { id: 7, left: "Zilzila va vulqon otilishi", right: "Krit shaharlarini vayron qilgan dastlabki tabiiy ofatlar" },
+        { id: 8, left: "Axeylar", right: "Minoy sivilizatsiyasi barbod bo‘lishini nihoyasiga yetkazgan jangovar qabilalar" }
+      ],
+      // 3-bosqich: Miken va Sparta davlatlari
+      [
+        { id: 9, left: "Miken sivilizatsiyasi", right: "Janubiy Yunonistonda vujudga kelgan qadimiy madaniyat" },
+        { id: 10, left: "Doriy qabilalari", right: "Miken davlatini tugatib, Sparta davlatiga asos solgan qabilalar" },
+        { id: 11, left: "Sparta davlati", right: "Doriylarning Janubiy Yunonistonga bostirib kirishi natijasida tuzilgan davlat" },
+        { id: 12, left: "«Arslonlar darvozasi»", right: "Miken shahrining mashhur me’moriy yodgorligi" }
+      ],
+      // 4-bosqich: Dengizchilik va sayohatlar
+      [
+        { id: 13, left: "Eshkakli qayiqlar", right: "Yunonlar sohil bo‘ylab suzishda foydalangan kichik kema turi" },
+        { id: 14, left: "Kompasning yo‘qligi", right: "Yunonlarning ochiq dengizga chiqishdan xavfsirashiga sabab bo‘lgan omil" },
+        { id: 15, left: "Oroldan orolga suzish", right: "Ko‘z ilg‘aydigan qisqa masofalarda suzish usuli" },
+        { id: 16, left: "Misr va Qora dengiz sohillari", right: "Tajribali yunon dengizchilari yelkanlarda yetib borgan olis o‘lkalar" }
+      ],
+      // 5-bosqich: Mashg‘ulotlar va san’at buyumlari
+      [
+        { id: 17, left: "Dehqonchilik va chorvachilik", right: "Yunonlarning qadim zamonlardan asosiy mashg‘ulotlari" },
+        { id: 18, left: "Oltin niqob va oltin qadah", right: "Miken madaniyatidan topilgan yuksak zargarlik buyumlari" },
+        { id: 19, left: "Tog‘ daryolari bo‘ylari", right: "Yunonistonda dehqonchilik qilingan serunum dalalar joylashuvi" },
+        { id: 20, left: "Qadimgi Yunoniston", right: "Bolqon va O‘rta Yer dengizi orollaridagi davlatlarning umumiy nomi" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. «Qadimgi Yunoniston» deb qaysi hududlardagi davlatlarning umumiy nomiga aytilgan?", a: "Bolqon yarimoroli va O‘rta Yer dengizi orollarini o‘z ichiga olgan qadimgi yunon davlatlariga." },
+      { q: "2. Qadimgi Yunonistonni shimoldan tashqari qaysi dengizlar o‘rab turgan?", a: "O‘rta Yer va Egey dengizlari o‘rab turgan." },
+      { q: "3. Yunoniston hududining eng baland cho‘qqisi qaysi va u qayerda joylashgan?", a: "Eng baland cho‘qqisi — Olimp tog‘i bo‘lib, u mamlakatning shimoli-sharqida joylashgan." },
+      { q: "4. Peloponnes yarimoroli Yunonistonning qaysi qismida joylashgan va u yerda qanday o‘simliklar o‘sgan?", a: "Yunonistonning janubida joylashgan bo‘lib, ninabargli o‘rmonlar o‘sgan." },
+      { q: "5. Qadimgi yunonlarning asosiy an’anaviy mashg‘ulotlari nimalardan iborat bo‘lgan?", a: "Dehqonchilik va chorvachilik bilan shug‘ullanishgan." },
+      { q: "6. Krit orolidagi sivilizatsiya nima deb atalgan va u qachon vujudga kelgan?", a: "Afsonaviy podsho Minos nomi bilan «Minoy sivilizatsiyasi» deb atalgan; mil. avv. 2-mingyillikda vujudga kelgan." },
+      { q: "7. Krit davlati shahar va manzilgohlariga qanday tabiiy ofatlar talofat yetkazgan?", a: "Zilzila, kuchli dengiz to‘lqinlari va vulqon otilishi oqibatida vayron bo‘lgan (ko‘p o‘tmay qayta tiklangan)." },
+      { q: "8. Minoy sivilizatsiyasining butunlay barbod bo‘lishini qaysi qabilalar nihoyasiga yetkazdi?", a: "Qit’adagi Yunoniston hududidan bostirib kirgan jangovar «axeylar» qabilalari." },
+      { q: "9. Miken davlati qaysi qabilalarning bostirib kirishi natijasida tugatildi?", a: "Doriy qabilalarining Janubiy Yunonistonga bostirib kirishi natijasida." },
+      { q: "10. Doriylarning Janubiy Yunonistonga bostirib kirishi natijasida qaysi yangi davlat vujudga keldi?", a: "Sparta davlati vujudga keldi." },
+      { q: "11. Miken shahrining qaysi mashhur me’moriy yodgorligi darslikda tasvirlangan?", a: "«Arslonlar darvozasi»." },
+      { q: "12. Egey dengizining qanday tabiiy xususiyati dengizchilik rivojlanishiga imkon bergan?", a: "Ko‘p sonli katta-kichik orollar, qulay dengiz qirg‘oqlari va qo‘ltiqlar mavjudligi." },
+      { q: "13. Nima sababdan dastlab yunon dengizchilari sohildan uzoqqa suzib ketishdan xavfsiraganlar?", a: "Chunki ularda hali kompas bo‘lmagan, katta kemalar yo‘qligi va kichik eshkakli qayiqlar xatarli bo‘lgani uchun." },
+      { q: "14. Yunonlar adashib qolmaslik uchun qanday usulda dengizda suzganlar?", a: "Ko‘z ilg‘aydigan qisqa masofalarga — oroldan orolga yoki sohil yaqinida suzganlar." },
+      { q: "15. Tajribali yunon dengizchilari yelkanlar yordamida qaysi olis o‘lkalarga suzib borganlar?", a: "Misrga hamda O‘rta Yer va Qora dengiz sohillaridagi shaharlarga." },
+      { q: "16. Miken madaniyatidan qanday noyob oltin ashyolar topilgan?", a: "Oltin niqob va oltin qadahlar topilgan." },
+      { q: "17. Yunonistonda dehqonchilik maydonlari asosan qayerlarda joylashgan edi?", a: "Tog‘ daryolari bo‘ylaridagi unumdor serunum dalalarda." },
+      { q: "18. Qadimgi yunonlar tasavvurida Olimp tog‘i qanday ahamiyatga ega bo‘lgan?", a: "Bosh xudolar makon topgan muqaddas maskan hisoblangan." },
+      { q: "19. Krit orolining eng mashhur qadimiy shahri qaysi edi?", a: "Knoss shahri." },
+      { q: "20. Minoy sivilizatsiyasi qaysi orolda gullab-yashnagan?", a: "O‘rta Yer dengizidagi Krit orolida." },
+      { q: "21. Miken sivilizatsiyasi Yunonistonning qaysi qismida joylashgan edi?", a: "Janubiy Yunonistonda (Peloponnesda)." },
+      { q: "22. Qadimgi Yunonistonning shimoli qaysi davlatlar yoki hududlar bilan chegaralangan?", a: "Shimoliy Yunoniston tog‘li o‘lkalari va Makedoniya hududlari bilan." },
+      { q: "23. Qadimgi Yunoniston tog‘lari nimalar bilan qoplangan edi?", a: "O‘t-o‘lanlar va butalar bilan qoplangan edi." },
+      { q: "24. Doriylar qanday xalq bo‘lgan va ularning quroli nimadan yasalgan?", a: "Temir qurollarga ega bo‘lgan jangovar ko‘chmanchi-chorvador qabilalar bo‘lgan." },
+      { q: "25. Minos kim bo‘lgan?", a: "Krit orolining afsonaviy qudratli podshosi." },
+      { q: "26. Yunon kemasozligining dastlabki bosqichidagi asosiy vosita nima edi?", a: "Kichik eshkakli qayiqlar." },
+      { q: "27. Egey dengizida suzishning asosiy qulayligi nimada edi?", a: "Orollarning bir-biriga juda yaqin joylashganligida." },
+      { q: "28. Miken davlatining tugatilishi qaysi asrlarga to‘g‘ri keladi?", a: "Miloddan avvalgi XII–XI asrlarga (doriylar istilosi davriga)." },
+      { q: "29. Qadimgi Yunoniston shaharlaridan qaysilari xaritada muhim voqealar sodir bo‘lgan markazlar sifatida ko‘rsatilgan?", a: "Afina, Sparta, Miken, Marafon, Olimpiya, Delf, Efes, Milet." },
+      { q: "30. Qadimgi Yunoniston hududining katta qismini nimalar egallagan?", a: "Tog‘lar va qoyaliklar egallagan." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA ARALASH TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Qadimgi Yunonistonning eng baland cho‘qqisi bo‘lgan Olimp tog‘i mamlakatning qaysi qismida joylashgan?",
+        options: [
+          "Shimoli-sharqida",
+          "Janubi-g‘arbida",
+          "Peloponnes markazida",
+          "Krit orolida"
+        ],
+        correct: 0, // A
+        exp: "Ularning eng baland cho‘qqisi — Olimp tog‘i mamlakatning shimoli-sharqida joylashgan."
+      },
+      {
+        q: "2. Krit orolidagi ilk sivilizatsiya qaysi afsonaviy podsho nomi bilan «Minoy sivilizatsiyasi» deb atalgan?",
+        options: [
+          "Oksiart",
+          "Minos",
+          "Ktesiy",
+          "Menes"
+        ],
+        correct: 1, // B
+        exp: "Krit orolidagi sivilizatsiya afsonaviy podsho Minos nomi bilan Minoy sivilizatsiyasi deb atalgan."
+      },
+      {
+        q: "3. Minoy sivilizatsiyasining barbod bo‘lishini nihoyasiga yetkazgan qit’adan bostirib kirgan qabilalar kimlar edi?",
+        options: [
+          "Doriylar",
+          "Skiflar",
+          "Axeylar",
+          "Giksoslar"
+        ],
+        correct: 2, // C
+        exp: "Qit’adagi Yunoniston hududidan bostirib kirgan axeylar Minoy sivilizatsiyasi barbod bo‘lishini nihoyasiga yetkazgan."
+      },
+      {
+        q: "4. Doriy qabilalarining Janubiy Yunonistonga bostirib kirishi natijasida qaysi mashhur davlat vujudga keldi?",
+        options: [
+          "Afina davlati",
+          "Krit davlati",
+          "Miken davlati",
+          "Sparta davlati"
+        ],
+        correct: 3, // D
+        exp: "Doriy qabilalarining Janubiy Yunonistonga bostirib kirishi Miken davlatining tugatilishi va Sparta davlatining vujudga kelishiga olib keldi."
+      },
+      {
+        q: "5. Qadimgi Yunoniston qaysi yarimorol va orollarni o‘z ichiga olgan?",
+        options: [
+          "Bolqon yarimoroli va O‘rta Yer dengizi orollarini",
+          "Apennin yarimoroli va Sitsiliyani",
+          "Sinay yarimoroli va Qizil dengiz orollarini",
+          "Kichik Osiyo va Kipr orolini"
+        ],
+        correct: 0, // A
+        exp: "Bolqon yarimoroli va O‘rta Yer dengizi orollarini o‘z ichiga olgan qadimgi yunon davlatlarining umumiy nomi Qadimgi Yunoniston deb atalgan."
+      },
+      {
+        q: "6. Ninabargli o‘rmonlar bilan qoplangan yarimorol qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Krit oroli",
+          "Peloponnes yarimoroli",
+          "Apennin yarimoroli",
+          "Bolqonning shimoli"
+        ],
+        correct: 1, // B
+        exp: "Yunonistonning janubidagi Peloponnes yarimorolida ninabargli o‘rmonlar o‘sgan."
+      },
+      {
+        q: "7. Qadimgi yunon dengizchilarining ochiq dengizga chiqishdan xavfsirashlariga asosiy sabab nima edi?",
+        options: [
+          "Dengiz maxluqlaridan qo‘rqishlari",
+          "Kema yog‘ochining yetishmasligi",
+          "Hali kompasning bo‘lmaganligi va adashib qolish xavfi",
+          "Fors floti taqiqlagani"
+        ],
+        correct: 2, // C
+        exp: "Yunonlarda hali kompas bo‘lmagan, adashib qolishdan xavfsirab, ular ko‘z ilg‘aydigan qisqa masofalarga suzgan."
+      },
+      {
+        q: "8. Miken shahrining mashhur me’moriy kirish darvozasi qanday nomlangan?",
+        options: [
+          "«Ishtar darvozasi»",
+          "«Xudolar darvozasi»",
+          "«Quyosh darvozasi»",
+          "«Arslonlar darvozasi»"
+        ],
+        correct: 3, // D
+        exp: "Darslikdagi rasmda Mikendagi «Arslonlar darvozasi» tasvirlangan."
+      },
+      {
+        q: "9. Krit orolida ilk shahar-davlatlar qaysi davrda vujudga kela boshlagan?",
+        options: [
+          "Miloddan avvalgi 2-mingyillikda",
+          "Miloddan avvalgi 4-mingyillikda",
+          "Miloddan avvalgi I asrda",
+          "Milodiy I asrda"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 2-mingyillikda ilk shahar-davlatlar vujudga kela boshlagan Krit orolidagi sivilizatsiya Minoy deb atalgan."
+      },
+      {
+        q: "10. Miken madaniyati yodgorliklaridan qanday zargarlik san’ati namunalari topilgan?",
+        options: [
+          "Lojuvard bilaguzuklar",
+          "Oltin niqob va oltin qadahlar",
+          "Kumush tangalar",
+          "Bronza haykalchalar"
+        ],
+        correct: 1, // B
+        exp: "Darslikdagi rasmlarda Mikendan topilgan oltin niqob va oltin qadah keltirilgan."
+      },
+      {
+        q: "11. Qadimgi Yunonistonni shimoldan tashqari qaysi dengizlar o‘rab turgan?",
+        options: [
+          "Qora va Kaspiy dengizlari",
+          "Qizil va Arabiston dengizlari",
+          "O‘rta Yer va Egey dengizlari",
+          "Boltiq va Shimoliy dengizlar"
+        ],
+        correct: 2, // C
+        exp: "Shimol tarafidan tashqari, Qadimgi Yunonistonni O‘rta Yer va Egey dengizlari o‘rab turgan."
+      },
+      {
+        q: "12. Tajribali yunon dengizchilari yelkanli kemalarda qaysi olis o‘lkalarga suzib borganlar?",
+        options: [
+          "Hindiston va Xitoyga",
+          "Boltiq dengizi sohillariga",
+          "Britaniya orollariga",
+          "Misrga hamda O‘rta Yer va Qora dengiz sohillaridagi shaharlarga"
+        ],
+        correct: 3, // D
+        exp: "Tajribali dengizchilar yelkanlardan foydalanib olis yurtlarga — Misrga hamda O‘rta Yer va Qora dengiz sohillaridagi shaharlarga suzib borgan."
+      },
+      {
+        q: "13. Krit davlati shahar va manzilgohlarining vayron bo‘lishiga dastlab qanday omillar sabab bo‘lgan?",
+        options: [
+          "Zilzila, kuchli dengiz to‘lqinlari va vulqon otilishi",
+          "Qurg‘oqchilik va ocharchilik",
+          "Rim imperiyasi hujumi",
+          "Daryolar toshqini"
+        ],
+        correct: 0, // A
+        exp: "Krit davlatining shahar, manzilgohlari zilzila, kuchli dengiz to‘lqinlari va vulqon otilishi oqibatida vayron bo‘lgan."
+      },
+      {
+        q: "14. Miken davlatini tugatib, uning o‘rnida Sparta davlatini barpo etgan qabilalar kimlar edi?",
+        options: [
+          "Axeylar",
+          "Doriylar",
+          "Skiflar",
+          "Forslar"
+        ],
+        correct: 1, // B
+        exp: "Doriy qabilalarining Janubiy Yunonistonga bostirib kirishi Miken davlatining tugatilishiga va Sparta davlatining vujudga kelishiga olib keldi."
+      },
+      {
+        q: "15. Qadimgi yunonlarning asosiy kundalik mashg‘ulotlari nimalar bo‘lgan?",
+        options: [
+          "Faqat ovchilik va baliqchilik",
+          "Faqat ipakchilik va konchilik",
+          "Dehqonchilik va chorvachilik",
+          "Faqat piramidalar qurish"
+        ],
+        correct: 2, // C
+        exp: "Yunonlar qadim zamonlardan dehqonchilik va chorvachilik bilan shug‘ullangan."
+      },
+      {
+        q: "16. Qadimgi Yunoniston hududining katta qismini nimalar egallagan edi?",
+        options: [
+          "Keng botqoqliklar",
+          "Katta qumli sahrolar",
+          "Qalin tropik o‘rmonlar",
+          "Tog‘lar va qoyaliklar"
+        ],
+        correct: 3, // D
+        exp: "Yunoniston hududining katta qismini tog‘lar egallagan."
+      },
+      {
+        q: "17. Egey dengizida dengizchilikning rivojlanishiga qanday tabiiy sharoit imkon yaratgan?",
+        options: [
+          "Ko‘p sonli katta-kichik orollar, qulay dengiz qirg‘oqlari va qo‘ltiqlar",
+          "Doimiy esuvchi bir xil shamollar",
+          "Dengiz suvining chuchukligi",
+          "To‘lqinlarning umuman bo‘lmasligi"
+        ],
+        correct: 0, // A
+        exp: "Egey dengizidagi ko‘p sonli katta-kichik orollar, qulay dengiz qirg‘oqlari va qo‘ltiqlar dengizchilik rivojiga imkon yaratdi."
+      },
+      {
+        q: "18. Axeylar qabilalari qaysi sivilizatsiyaning barbod bo‘lishida asosiy rol o‘ynagan?",
+        options: [
+          "Miken sivilizatsiyasining",
+          "Minoy (Krit) sivilizatsiyasining",
+          "Sparta sivilizatsiyasining",
+          "Bobil sivilizatsiyasining"
+        ],
+        correct: 1, // B
+        exp: "Aynan axeylar Minoy sivilizatsiyasi barbod bo‘lishini nihoyasiga yetkazgan."
+      },
+      {
+        q: "19. Yunonistonda serunum dehqonchilik dalalari qayerlarda joylashgan edi?",
+        options: [
+          "Olimp tog‘ining eng cho‘qqisida",
+          "Faqat dengiz tubida",
+          "Tog‘ daryolari bo‘ylarida",
+          "Peloponnesning markaziy qoyalarida"
+        ],
+        correct: 2, // C
+        exp: "Tog‘ daryolari bo‘ylarida serunum dalalar joylashgan."
+      },
+      {
+        q: "20. Doriylar qabilasi Yunonistonning qaysi qismiga bostirib kirgan edi?",
+        options: [
+          "Shimoliy Yunonistonga",
+          "Krit oroliga",
+          "Egey dengizi orollariga",
+          "Janubiy Yunonistonga (Peloponnesga)"
+        ],
+        correct: 3, // D
+        exp: "Doriy qabilalarining Janubiy Yunonistonga bostirib kirishi Miken davlatining tugatilishiga olib keldi."
+      },
+      {
+        q: "21. Yunonlar dastlab dengizda qanday suzish vositalaridan foydalanishgan?",
+        options: [
+          "Kichik eshkakli qayiqlardan",
+          "Katta uch qavatli eshkakli kemalardan",
+          "Bug‘li qayiqlardan",
+          "Faqat sol va sallardan"
+        ],
+        correct: 0, // A
+        exp: "Biroq yunonlarda katta kemalar bo‘lmagan, kichik eshkakli qayiqlarda esa sohildan yiroqqa suzish ancha xatarli bo‘lgan."
+      },
+      {
+        q: "22. Qadimgi Minoy sivilizatsiyasi qaysi geografik ob’yektda shakllangan?",
+        options: [
+          "Peloponnes yarimorolida",
+          "Krit orolida",
+          "Kipr orolida",
+          "Rodos orolida"
+        ],
+        correct: 1, // B
+        exp: "Krit orolidagi sivilizatsiya Minoy sivilizatsiyasi deb atalgan."
+      },
+      {
+        q: "23. Qadimgi Yunoniston tog‘lari asosan nimalar bilan qoplangan edi?",
+        options: [
+          "Baland qor qatlamlari bilan",
+          "Qalin bambukzorlar bilan",
+          "O‘t-o‘lanlar va butalar bilan",
+          "Zaharlik botqoqliklar bilan"
+        ],
+        correct: 2, // C
+        exp: "Tog‘lar o‘t-o‘lanlar va butalar bilan qoplangan."
+      },
+      {
+        q: "24. Doriylar istilosi natijasida Miken davlati o‘rnida qaysi yangi shahar-davlat qad ko‘tardi?",
+        options: [
+          "Afina",
+          "Milet",
+          "Efes",
+          "Sparta"
+        ],
+        correct: 3, // D
+        exp: "Doriylar istilosi Miken davlatining tugatilishi va Sparta davlatining vujudga kelishiga olib keladi."
+      },
+      {
+        q: "25. Yunon dengizchilari adashib qolmaslik uchun qanday marshrut bo‘yicha suzishgan?",
+        options: [
+          "Oroldan orolga yoki sohil yaqinida",
+          "Faqat kechalari yulduzlarga qarab to‘g‘ri chiziqda",
+          "Faqat ochiq okean markazidan",
+          "Daryolar oqimiga qarshi"
+        ],
+        correct: 0, // A
+        exp: "Ular ko‘z ilg‘aydigan qisqa masofalarga — oroldan orolga yoki sohil yaqinida suzgan."
+      },
+      {
+        q: "26. Minoy sivilizatsiyasini barbod etgan axeylar qayerdan bostirib kirgan edilar?",
+        options: [
+          "Misrdan",
+          "Qit’adagi Yunoniston hududidan",
+          "Kichik Osiyodan",
+          "Fors davlatidan"
+        ],
+        correct: 1, // B
+        exp: "Qit’adagi Yunoniston hududidan jangovar qabilalar bostirib kiradi, ularni axeylar deyishgan."
+      },
+      {
+        q: "27. Miken sivilizatsiyasi qaysi hududda vujudga kelgan edi?",
+        options: [
+          "Krit orolida",
+          "Shimoliy Yunonistonda",
+          "Janubiy Yunonistonda",
+          "Egey orollarida"
+        ],
+        correct: 2, // C
+        exp: "Miken sivilizatsiyasi Janubiy Yunonistonda vujudga kelgan."
+      },
+      {
+        q: "28. Qadimgi Yunonistonning shimoli-sharqida qaysi mashhur cho‘qqi qad ko‘targan?",
+        options: [
+          "Himolay",
+          "Alp",
+          "Kavkaz",
+          "Olimp tog‘i"
+        ],
+        correct: 3, // D
+        exp: "Ularning eng baland cho‘qqisi — Olimp tog‘i mamlakatning shimoli-sharqida joylashgan."
+      },
+      {
+        q: "29. Qadimgi yunonlar qaysi ashyolardan yuksak san’at asarlari (masalan, niqob va qadah) yaratganlar?",
+        options: [
+          "Oltindan",
+          "Faqat loydan",
+          "Faqat suyakdan",
+          "Yog‘ochdan"
+        ],
+        correct: 0, // A
+        exp: "Miken madaniyatidan oltin niqob va oltin qadahlar topilgan."
+      },
+      {
+        q: "30. Peloponnes yarimoroli qanday o‘rmonlarga boy bo‘lgan?",
+        options: [
+          "Tropik junglilarga",
+          "Ninabargli o‘rmonlarga",
+          "Faqat palma bog‘lariga",
+          "Bambuk o‘rmonlariga"
+        ],
+        correct: 1, // B
+        exp: "Peloponnes yarimorolida ninabargli o‘rmonlar o‘sgan."
+      },
+      {
+        q: "31. Miken davlatining zavolga yuz tutishi qaysi qabilalar bosqini bilan bog‘liq?",
+        options: [
+          "Axeylar",
+          "Giksoslar",
+          "Doriylar",
+          "Skiflar"
+        ],
+        correct: 2, // C
+        exp: "Doriy qabilalarining bostirib kirishi Miken davlatining tugatilishiga sabab bo‘ldi."
+      },
+      {
+        q: "32. Yunoniston tarixi qadimgi dunyoda qanday nom bilan mashhur bo‘lgan?",
+        options: [
+          "Sharq tarixi",
+          "O‘rta asrlar tarixi",
+          "Daryolar sivilizatsiyasi",
+          "Antik tarix"
+        ],
+        correct: 3, // D
+        exp: "III Bo‘lim: «Antik tarixning boshlanishi» — Qadimgi Yunoniston va Rim davri antik tarix deb ataladi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 22-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

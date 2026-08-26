@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>42-§. Buyuk ipak yo‘li</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var------text-muted); max-width: 320px;">
+          Barcha atamalar va Buyuk ipak yo‘liga oid ma’lumotlarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">42-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">42-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Vujudga kelishi va nomi
+      [
+        { id: 1, left: "Mil. avv. II asr", right: "Buyuk ipak yo‘li vujudga kelgan davr" },
+        { id: 2, left: "1877-yil", right: "«Ipak yo‘li» degan nom berilgan sana" },
+        { id: 3, left: "F. Rixtgofen", right: "«Ipak yo‘li» atamasini muomalaga kiritgan nemis geografi" },
+        { id: 4, left: "XVI asrga qadar", right: "Sharq va G‘arb o‘rtasidagi madaniy va savdo aloqalarida muhim o‘ynagan davr" }
+      ],
+      // 2-bosqich: Uzunligi va geografik o‘rni
+      [
+        { id: 5, left: "12 ming kilometr", right: "Buyuk ipak yo‘lining umumiy uzunligi" },
+        { id: 6, left: "Sariq dengiz qirg‘og‘i", right: "Buyuk ipak yo‘li boshlanadigan sharqiy nuqta" },
+        { id: 7, left: "O‘rta Yer dengizi sohillari", right: "Buyuk ipak yo‘li borib taqaladigan g‘arbiy hudud" },
+        { id: 8, left: "O‘rta Osiyo va Qadimgi Sharq", right: "Savdo va madaniy ayirboshlash uchun oldindan foydalanilgan hududlar" }
+      ],
+      // 3-bosqich: Tovar ayirboshlash va mahsulotlar
+      [
+        { id: 9, left: "Sug‘diyona", right: "Xitoyga junli matolar, gilamlar, zeb-ziynat va qimmatbaho toshlar olib borgan o‘lka" },
+        { id: 10, left: "Baqtriya", right: "Buyuk ipak yo‘li orqali tuya olib borgan o‘lka" },
+        { id: 11, left: "Farg‘ona", right: "Zotli otlar yetishtirib eksport qilgan vodiy" },
+        { id: 12, left: "Badaxshon", right: "Lojuvard qimmatbaho toshi olib borilgan o‘lka" }
+      ],
+      // 4-bosqich: Hindiston va Xitoydan mahsulotlar
+      [
+        { id: 13, left: "Hindiston", right: "O‘rta Osiyo viloyatlariga paxtadan matolar va chigit yuborgan o‘lka" },
+        { id: 14, left: "Xitoy", right: "O‘rta Osiyoga guruch, uzum, yong‘oq va anor yetkazib bergan mamlakat" },
+        { id: 15, left: "Chjan Szyan", right: "Xitoy imperatori U-Di tomonidan hunlarga qarshi elchi qilib yuborilgan shaxs" },
+        { id: 16, left: "Tyanshan dovonlari", right: "Chjan Szyan asirlikdan qochib, Issiqko‘lga chiqqan tog‘ yo‘li" }
+      ],
+      // 5-bosqich: Chjan Szyan va «Samoviy otlar»
+      [
+        { id: 17, left: "Farg‘ona otlari", right: "Chjan Szyan Xitoy imperatoriga olib borib tanishtirgan zotli otlar" },
+        { id: 18, left: "Beda urug‘i", right: "Chjan Szyan Xitoyga olib borib ektirgan o‘simlik urug‘i" },
+        { id: 19, left: "Imperator U-Di", right: "Xitoyning shimolini vayron qilgan hunlarga qarshi kurashgan hukmdor" },
+        { id: 20, left: "Norin daryosi bo‘ylab", right: "Chjan Szyan Farg‘ona vodiysiga kirib kelgan daryo vodiysi" }
+      ],
+      // 6-bosqich: Buyuk ipak yo‘lining ahamiyati
+      [
+        { id: 21, left: "Madaniy va savdo aloqalari", right: "Sharq va G‘arb xalqlari o‘rtasida kengaygan munosabatlar" },
+        { id: 22, left: "O‘zaro hamkorlik", right: "Turli madaniyatlar boyishi uchun asos bo‘lgan jarayon" },
+        { id: 23, left: "Tinchlik va taraqqiyot", right: "Buyuk ipak yo‘li xizmat qilgan asosiy insoniy qadriyatlar" },
+        { id: 24, left: "Sayohat va ilm-fan", right: "Savdogarlar, olimlar va san’atkorlar kashf etgan yuksak mintaqa" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Buyuk ipak yo‘li qachon vujudga kelgan?", a: "Miloddan avvalgi II asrda." },
+      { q: "2. «Ipak yo‘li» degan nom qachon va kim tomonidan berilgan?", a: "1877-yilda nemis geografi F. Rixtgofen tomonidan." },
+      { q: "3. XVI asrga qadar Buyuk ipak yo‘li qaysi hududlar o‘rtasidagi aloqalarda muhim o‘rin tutgan?", a: "Sharq va G‘arb o‘rtasidagi madaniy va savdo munosabatlarida." },
+      { q: "4. Buyuk ipak yo‘lining uzunligi qancha?", a: "12 ming kilometr." },
+      { q: "5. Buyuk ipak yo‘li qayerdan boshlanib qayergacha borgan?", a: "Sariq dengiz qirg‘og‘idan boshlanib, O‘rta Yer dengizi sohillarigacha borgan." },
+      { q: "6. Sug‘diyona va Baqtriyadan Xitoyga nimalar olib borilgan?", a: "Junli matolar, gilamlar, zeb-ziynat buyumlari, qimmatbaho toshlar va tuyalar." },
+      { q: "7. Farg‘ona va Badaxshondan nimalar olib borilgan?", a: "Farg‘onadan zotli otlar, Badaxshondan lojuvard olib borilgan." },
+      { q: "8. Hindistondan O‘rta Osiyo viloyatlariga nimalar keltirilgan?", a: "Paxtadan tayyorlangan matolar va chigit." },
+      { q: "9. Xitoydan O‘rta Osiyoga nimalar keltirilgan?", a: "Guruch, uzum, yong‘oq, anor va boshqa dehqonchilik mahsulotlari." },
+      { q: "10. Xitoy imperatori U-Di kimni hunlarga qarshi elchi qilib yuborgan?", a: "Chjan Szyanni." },
+      { q: "11. Chjan Szyan asirlikdan qochib, qaysi ko‘lga chiqqan?", a: "Issiqko‘lga." },
+      { q: "12. Chjan Szyan Norin daryosi bo‘ylab qaysi vodiyga kelgan?", a: "Farg‘ona vodiysiga." },
+      { q: "13. Xitoy imperatori Farg‘ona otlarini nima deb atagan?", a: "«Samoviy otlar»." },
+      { q: "14. Chjan Szyan Xitoyga o‘zi bilan birga nimaning urug‘ini olib ketgan?", a: "Beda urug‘ini." },
+      { q: "15. Buyuk ipak yo‘li sharq va g‘arb xalqlari o‘rtasida nimani kengaytirishga xizmat qilgan?", a: "Madaniy va savdo aloqalarini." },
+      { q: "16. Buyuk ipak yo‘li chorrahasida nima joylashgan edi?", a: "O‘rta Osiyo." },
+      { q: "17. O‘rta Osiyoga turli mamlakatlardan kimlar kelib turgan?", a: "Savdogarlar, hunarmandlar, olimlar va san’atkarlar." },
+      { q: "18. Chjan Szyan hunlar qo‘liga tushib necha yil hibsda yotgan?", a: "O‘n yil." },
+      { q: "19. F. Rixtgofen kim bo‘lgan?", a: "Nemis geografi." },
+      { q: "20. Buyuk ipak yo‘li shakllanishidan oldin nima mavjud bo‘lgan?", a: "O‘rta Osiyo va Qadimgi Sharq hududida savdo va madaniy ayirboshlash uchun turli qadimgi yo‘llar." },
+      { q: "21. Buyuk ipak yo‘lida nimalar joylashgan edi?", a: "Qadimgi shaharlar." },
+      { q: "22. Xitoyda yasalgan g‘arbiy o‘lka savdogarining haykalchasi nimada tasvirlangan?", a: "Tuyada ketayotgan savdogar ko‘rinishida." },
+      { q: "23. Chjan Szyan Xitoy imperatoriga qaytib borib nima haqida so‘zlab bergan?", a: "Ko‘rgan-bilganlari, Farg‘onadagi shaharlar va otlar haqida." },
+      { q: "24. Xitoy imperatori U-Di o‘z saroyi yaqinida nima ektirgan?", a: "Beda." },
+      { q: "25. Buyuk ipak yo‘li nimaning asosini tashkil etgan?", a: "Tinchlik va taraqqiyotning." },
+      { q: "26. O‘rta Osiyo aholisi Buyuk ipak yo‘li orqali qanday hududlarni kashf etgan?", a: "Yuksak taraqqiy etgan mintaqalarni." },
+      { q: "27. Chjan Szyan qaysi hududlarni kesib o‘tib Farg‘onaga kelgan?", a: "Tyanshan dovonlarini." },
+      { q: "28. Hun qabilalari Xitoyning qaysi qismiga tahdid solgan?", a: "Shimoliy qismiga." },
+      { q: "29. Buyuk ipak yo‘li bo‘ylab harakatlangan karvonlar asosan nimani tashiydi?", a: "Qimmatbaho mahsulotlar va xomashyo." },
+      { q: "30. O‘rta Osiyo xalqlari uchun Buyuk ipak yo‘li qanday ahamiyatga ega edi?", a: "Iqtisodiy va madaniy yuksalishga katta turtki bo‘lgan." },
+      { q: "31. Farg‘ona vodiysida ko‘rgan shahar va qishloqlar Chjan Szyanni nima qilgan?", a: "Hayratga tushirgan." },
+      { q: "32. Xitoy yilnomalarida Farg‘ona otlari qanday ta’riflangan?", a: "Qanotli otlar, ter o‘rniga qon tomchilab turadigan chopqir otlar." },
+      { q: "33. Buyuk ipak yo‘lining uzunligi necha kilometrni tashkil etgan?", a: "12 ming kilometrni." },
+      { q: "34. F. Rixtgofen «Ipak yo‘li» atamasini qachon kiritgan?", a: "1877-yilda." },
+      { q: "35. Xitoy elchisi Chjan Szyanning safari qaysi asrda yuz bergan?", a: "Miloddan avvalgi II asrda." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Buyuk ipak yo‘li qachon vujudga kelgan?",
+        options: [
+          "Miloddan avvalgi II asrda",
+          "Milodiy V asrda",
+          "Miloddan avvalgi V asrda",
+          "XVI asrda"
+        ],
+        correct: 0, // A
+        exp: "Buyuk ipak yo‘li miloddan avvalgi II asrda vujudga kelgan."
+      },
+      {
+        q: "2. «Ipak yo‘li» atamasini 1877-yilda fanga kiritgan nemis geografi kim?",
+        options: [
+          "Chjan Szyan",
+          "F. Rixtgofen",
+          "U-Di",
+          "Gerodot"
+        ],
+        correct: 1, // B
+        exp: "Bu yo‘lga «Ipak yo‘li» degan nom 1877-yilda nemis geografi F. Rixtgofen tomonidan berilgan."
+      },
+      {
+        q: "3. Buyuk ipak yo‘lining umumiy uzunligi qancha?",
+        options: [
+          "5 ming kilometr",
+          "8 ming kilometr",
+          "12 ming kilometr",
+          "20 ming kilometr"
+        ],
+        correct: 2, // C
+        exp: "Buyuk ipak yo‘lining uzunligi 12 ming kilometrni tashkil etgan."
+      },
+      {
+        q: "4. Buyuk ipak yo‘li qayerdan boshlanib qayergacha borgan?",
+        options: [
+          "Afinadan Rimga qadar",
+          "Baqtradan Hindistongacha",
+          "Misrdan Bobilga qadar",
+          "Sariq dengiz qirg‘og‘idan O‘rta Yer dengizi sohillarigacha"
+        ],
+        correct: 3, // D
+        exp: "U Sariq dengiz qirg‘og‘idan boshlanib, O‘rta Yer dengizi sohillarigacha borgan."
+      },
+      {
+        q: "5. Xitoy imperatori U-Di hun qabilalariga qarshi elchi qilib kimni yuborgan edi?",
+        options: [
+          "Chjan Szyanni",
+          "Che Linni",
+          "F. Rixtgofenni",
+          "Dadarshishni"
+        ],
+        correct: 0, // A
+        exp: "Xitoy imperatori U-Di hun qabilalariga qarshi ittifoqchi topish uchun elchi Chjan Szyanni yuboridi."
+      },
+      {
+        q: "6. Chjan Szyan asirlikdan qochib chiqib, qaysi ko‘l orqali Farg‘onaga kelgan?",
+        options: [
+          "Orol dengizi",
+          "Issiqko‘l",
+          "Kaspiy dengizi",
+          "Sariq dengiz"
+        ],
+        correct: 1, // B
+        exp: "Asirlikdan qochgan Chjan Szyan Tyanshan dovonlari orqali Issiqko‘lga chiqdi va Norin daryosi bo‘ylab Farg‘ona vodiysiga keldi."
+      },
+      {
+        q: "7. Xitoy imperatori Farg‘ona otlarini nima deb atagan?",
+        options: [
+          "«Tulporlar»",
+          "«Arg‘umoqlar»",
+          "«Samoviy otlar»",
+          "«Qanotli tulporlar»"
+        ],
+        correct: 2, // C
+        exp: "Xitoy hukmdorlari bu nasrli otlarni «samoviy otlar» deb atagan."
+      },
+      {
+        q: "8. Badaxshondan Buyuk ipak yo‘li orqali qanday qimmatbaho tosh olib borilgan?",
+        options: [
+          "Olmos",
+          "Zumrad",
+          "Yoqut",
+          "Lojuvard"
+        ],
+        correct: 3, // D
+        exp: "Badaxshondan lojuvard olib borilgan."
+      },
+      {
+        q: "9. Xitoydan O‘rta Osiyoga nimalar keltirilgan?",
+        options: [
+          "Guruch, uzum, yong‘oq va anor",
+          "Paxta matolari va chigit",
+          "Junli matolar va gilamlar",
+          "Qimmatbaho toshlar"
+        ],
+        correct: 0, // A
+        exp: "Xitoydan guruch, O‘rta Osiyodan Xitoyga uzum, yong‘oq, anor va boshqa dehqonchilik mahsulotlari yetkazilgan."
+      },
+      {
+        q: "10. Hindistondan O‘rta Osiyo viloyatlariga nimalar keltirib turilgan?",
+        options: [
+          "Zotli otlar va lojuvard",
+          "Paxtadan tayyorlangan matolar va chigit",
+          "Guruch va chinni idishlar",
+          "Qimmatbaho ipak matolar"
+        ],
+        correct: 1, // B
+        exp: "Hindistondan O‘rta Osiyo viloyatlariga paxtadan tayyorlangan matolar va chigit ortilgan karvonlar kelgan."
+      },
+      {
+        q: "11. Chjan Szyan hunlar qo‘liga tushib necha yil hibsda yotgan?",
+        options: [
+          "Beshta yil",
+          "Yetti yil",
+          "O‘n yil",
+          "O‘n besh yil"
+        ],
+        correct: 2, // C
+        exp: "Elchi hunlar qo‘liga asir tushadi va o‘n yilcha hibsda yotadi."
+      },
+      {
+        q: "12. Buyuk ipak yo‘lining O‘rta Osiyo hududidan o‘tishi nima uchun xizmat qilgan?",
+        options: [
+          "Faqat soliq yig‘ishga",
+          "Harbiy yurishlarni boshlashga",
+          "Chet el mustamlakasiga aylanishga",
+          "Sharq va G‘arb o‘rtasidagi savdo va madaniy aloqalarni rivojlantirishga"
+        ],
+        correct: 3, // D
+        exp: "Buyuk ipak yo‘li savdo va madaniy aloqalarni yanada rivojlantirishga xizmat qildi."
+      },
+      {
+        q: "13. Farg‘onadan Xitoyga eksport qilingan asosiy jonivor qaysi?",
+        options: [
+          "Zotli otlar",
+          "Tuya",
+          "Qo‘y",
+          "Fil"
+        ],
+        correct: 0, // A
+        exp: "Farg‘onadan zotli otlar olib borilgan."
+      },
+      {
+        q: "14. Chjan Szyan o‘zi bilan birga Xitoyga qaysi o‘simlik urug‘ini olib borib ektirgan?",
+        options: [
+          "Bug‘doy",
+          "Beda",
+          "Sholi",
+          "Arpa"
+        ],
+        correct: 1, // B
+        exp: "U Xitoyga Farg‘ona otlaridan birini va beda urug‘idan olib kelgan edi."
+      },
+      {
+        q: "15. F. Rixtgofen «Ipak yo‘li» atamasini fanga qachon kiritgan?",
+        options: [
+          "1789-yilda",
+          "1905-yilda",
+          "1877-yilda",
+          "1812-yilda"
+        ],
+        correct: 2, // C
+        exp: "Bu yo‘lga «Ipak yo‘li» degan nom 1877-yilda nemis geografi F. Rixtgofen tomonidan berilgan."
+      },
+      {
+        q: "16. Sug‘diyona o‘lkesidan Xitoyga nimalar olib borilgan?",
+        options: [
+          "Faqat sabzavotlar",
+          "Faqat qurol-yarog‘",
+          "Faqat gilamlar",
+          "Junli matolar, gilamlar, zeb-ziynat buyumlari va qimmatbaho toshlar"
+        ],
+        correct: 3, // D
+        exp: "Sug‘diyonadan Xitoyga junli matolar, gilamlar, zeb-ziynat buyumlari va qimmatbaho toshlar olib borilgan."
+      },
+      {
+        q: "17. Buyuk ipak yo‘li chorrahasida qaysi mintaqa joylashgan edi?",
+        options: [
+          "O‘rta Osiyo",
+          "G‘arbiy Yevropa",
+          "Shimoliy Afrika",
+          "Skandinaviya"
+        ],
+        correct: 0, // A
+        exp: "O‘rta Osiyo bu yo‘lning asosiy yo‘nalishlari kesishib o‘tadigan chorrahada joylashgan."
+      },
+      {
+        q: "18. Buyuk ipak yo‘li bo‘ylab O‘rta Osiyoga kelgan shaxslar qatoriga kimlar kiradi?",
+        options: [
+          "Faqat bosqinchi qo‘shinlar",
+          "Savdogarlar, hunarmandlar, olimlar va san’atkarlar",
+          "Faqat siyosiy elchilar",
+          "Faqat qullar"
+        ],
+        correct: 1, // B
+        exp: "Bu yerga turli mamlakatlardan savdogarlar, hunarmandlar, olimlar va san’atkarlar kelib turgan."
+      },
+      {
+        q: "19. Chjan Szyan safaridan so‘ng Xitoy va O‘rta Osiyo o‘rtasidagi munosabatlarda nima o‘zgardi?",
+        options: [
+          "Aloqalar butunlay uzildi",
+          "Faqat urushlar boshlandi",
+          "Elchilik va savdo aloqalari boshlandi",
+          "Chegaralar yopildi"
+        ],
+        correct: 2, // C
+        exp: "Elchining safaridan so‘ng ikki tomonlama o‘zaro madaniy va savdo aloqalari yo‘lga qo‘yildi."
+      },
+      {
+        q: "20. Buyuk ipak yo‘lining tarixiy ahamiyati nimadan iborat?",
+        options: [
+          "Faqat harbiy yurishlarni tezlashtirishdan",
+          "Faqat soliq yig‘ishni osonlashtirishdan",
+          "Faqat ipak sotishdan",
+          "Sharq va G‘arb xalqlari o‘rtasidagi madaniy va savdo aloqalarini kengaytirishdan"
+        ],
+        correct: 3, // D
+        exp: "Buyuk ipak yo‘lining tarixi Sharq va G‘arb xalqlari o‘rtasidagi madaniy va savdo aloqalarini kengaytirishga xizmat qildi."
+      },
+      {
+        q: "21. Baqtriyadan Buyuk ipak yo‘li orqali qanday jonivorlar karvoni olib borilgan?",
+        options: [
+          "Tuyalar",
+          "Otlar",
+          "Fillar",
+          "Ot-aravalar"
+        ],
+        correct: 0, // A
+        exp: "Baqtriyadan tuyalar olib borilgan."
+      },
+      {
+        q: "22. Xitoy imperatori U-Di kim edi?",
+        options: [
+          "Farg‘ona shohi",
+          "Xitoy imperatori",
+          "Hunlar sardori",
+          "Rim imperatori"
+        ],
+        correct: 1, // B
+        exp: "Xitoy imperatori U-Di Xitoyning shimolini vayron qilgan ko‘chmanchi hun qabilalariga qarshi kurashgan."
+      },
+      {
+        q: "23. Chjan Szyan Farg‘ona vodiysiga qaysi daryo vodiysidan kirib kelgan edi?",
+        options: [
+          "Amudaryo",
+          "Sirdaryo",
+          "Norin daryosi",
+          "Zarafshon"
+        ],
+        correct: 2, // C
+        exp: "Norin daryosi bo‘ylab Farg‘ona vodiysiga keldi."
+      },
+      {
+        q: "24. Buyuk ipak yo‘li bo‘ylab sayohat qilgan kishilar nima uchun yuksak taraqqiy etgan mintaqani kashf etganlar?",
+        options: [
+          "Faqat urush qilish uchun",
+          "Faqat oltin izlash uchun",
+          "Yangi yerlarni bosib olish uchun",
+          "Turli mamlakatlarning boy madaniyati va shahar hayotini ko‘rish uchun"
+        ],
+        correct: 3, // D
+        exp: "Ular o‘zlari uchun yuksak taraqqiy etgan mintaqani kashf etganlar."
+      },
+      {
+        q: "25. Buyuk ipak yo‘li shakllangunga qadar qanday yo‘llar mavjud bo‘lgan?",
+        options: [
+          "O‘rta Osiyo va Qadimgi Sharq hududida savdo va madaniy ayirboshlash uchun turli qadimgi yo‘llar",
+          "Faqat dengiz yo‘llari",
+          "Faqat cho‘l bo‘ylab yashirin yo‘llar",
+          "Hech qanday yo‘l bo‘lmagan"
+        ],
+        correct: 0, // A
+        exp: "Buyuk ipak yo‘li shakllanishidan oldin O‘rta Osiyo va Qadimgi Sharq hududida savdo va madaniy ayirboshlash uchun turli qadimgi yo‘llar mavjud bo‘lgan."
+      },
+      {
+        q: "26. Chjan Szyanning Xitoyga qaytishi qaysi hudud orqali amalga oshdi?",
+        options: [
+          "Hindiston orqali",
+          "Oloy vodiysidan o‘tib",
+          "Eron orqali",
+          "Sibir orqali"
+        ],
+        correct: 1, // B
+        exp: "Chjan Szyan Oloy vodiysidan o‘tib vataniga qaytadi."
+      },
+      {
+        q: "27. Xitoyda yasalgan g‘arbiy o‘lka savdogarining haykalchasi qanday jonivor ustida tasvirlangan?",
+        options: [
+          "Otsiz aravada",
+          "Ot ustida",
+          "Tuya ustida",
+          "Fil ustida"
+        ],
+        correct: 2, // C
+        exp: "Xitoyda yasalgan g‘arbiy o‘lka savdogarining haykalchasi tuya ustida tasvirlangan."
+      },
+      {
+        q: "28. Buyuk ipak yo‘li xizmat qilgan asosiy qadriyatlar qaysilar edi?",
+        options: [
+          "Qaramlik va zo‘ravonlik",
+          "Ismsiz boylik va talonchilik",
+          "Yakkahokimlik va urush",
+          "Tinchlik va taraqqiyot asosi"
+        ],
+        correct: 3, // D
+        exp: "Bu o‘zaro hamkorlik va madaniyatlar boyishi bo‘lib, tinchlik va taraqqiyot asosini tashkil etgan."
+      },
+      {
+        q: "29. Buyuk ipak yo‘li qaysi asrga qadar Sharq va G‘arb o‘rtasidagi aloqalarda bosh rol o‘ynagan?",
+        options: [
+          "XVI asrga qadar",
+          "X asrga qadar",
+          "XII asrga qadar",
+          "XIX asrga qadar"
+        ],
+        correct: 0, // A
+        exp: "XVI asrga qadar Sharq va G‘arb o‘rtasidagi madaniy aloqalar va savdo munosabatlari taraqqiyotida Buyuk ipak yo‘li muhim o‘rin tutgan."
+      },
+      {
+        q: "30. Chjan Szyan o‘z elchilik vazifasini bajarish chog‘ida kimlar qo‘liga asir tushgan?",
+        options: [
+          "Farg‘onaliklar",
+          "Hun qabilalari",
+          "Sug‘diylar",
+          "Xorazmliklar"
+        ],
+        correct: 1, // B
+        exp: "Elchi hunlar qo‘liga asir tushadi va o‘n yilcha hibsda yotadi."
+      },
+      {
+        q: "31. Xitoy imperatori saroyi yonida beda ektirilishining asosiy sababi nima edi?",
+        options: [
+          "Faqat hayvonlarni boqish uchun",
+          "Tuproqni unumdor qilish uchun",
+          "«Samoviy otlar»ni o‘stirish va ularga sifatli ozuqa berish uchun",
+          "Chinni idishlar tayyorlash uchun"
+        ],
+        correct: 2, // C
+        exp: "Imperator U-Di o‘z saroyi yaqinida beda ektirgan, chunki bu o‘simlik «samoviy otlar» uchun asosiy ozuqa edi."
+      },
+      {
+        q: "32. Farg‘ona vodiysiga kelgan Chjan Szyan u yerdagi narsalardan nima uchun hayratda qolgan?",
+        options: [
+          "Dengizlarni ko‘rib",
+          "Katta cho‘llarni ko‘rib",
+          "Balaxmon qurollarini ko‘rib",
+          "Ko‘plab qishloq xo‘jaligi ekinlari ekilgan mustahkam shahar va qishloqlarni ko‘rib"
+        ],
+        correct: 3, // D
+        exp: "Bu yerda ko‘plab shaharlarni ko‘rib hayratga tushadi."
+      },
+      {
+        q: "33. Buyuk ipak yo‘li xaritadagi tarmoqlariga ko‘ra qaysi qit’alarni bog‘lab turgan?",
+        options: [
+          "Osiyo va Yevropani",
+          "Faqat Osiyoni",
+          "Amerika va Afrikani",
+          "Faqat Avstraliyani"
+        ],
+        correct: 0, // A
+        exp: "Osiyo (Xitoy, O‘rta Osiyo, Qadimgi Sharq) va Yevropani (O‘rta Yer dengizi) bog‘lagan."
+      },
+      {
+        q: "34. Buyuk ipak yo‘li bo‘ylab harakatlangan karvonlarga xavf tug‘dirgan asosiy holat nima edi?",
+        options: [
+          "Faqat kuchli yomg‘irlar",
+          "Qaroqchilar hujumi va talan-tarojchilik",
+          "Dengiz to‘lqinlari",
+          "Qalin qorlar"
+        ],
+        correct: 1, // B
+        exp: "Karvon yo‘llari bo‘ylab qaroqchilar va xavflar bo‘lgan (garchi muhofaza qilinsa ham)."
+      },
+      {
+        q: "35. Chjan Szyanning sayohati natijasida Xitoy qaysi o‘lka haqida ilk bor to‘liq ma’lumotga ega bo‘ldi?",
+        options: [
+          "Misr",
+          "Rim",
+          "O‘rta Osiyo (Farg‘ona/Davan)",
+          "Skifiya"
+        ],
+        correct: 2, // C
+        exp: "Uning safaridan so‘ng Xitoy O‘rta Osiyo o‘lkalari haqida ilk bor keng miqyosli ma’lumot oldi."
+      },
+      {
+        q: "36. Xitoyda yasalgan g‘arbiy o‘lka savdogarining haykalchasi qaysi darslik mavzusining muzey topilmasi hisoblanadi?",
+        options: [
+          "Qang‘ va Davan",
+          "Kushon davlati",
+          "Qadimgi Xorazm",
+          "Buyuk ipak yo‘li"
+        ],
+        correct: 3, // D
+        exp: "Darslikda «Xitoyda yasalgan g‘arbiy o‘lka savdogarining haykalchasi» Buyuk ipak yo‘li mavzusida berilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! 42-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

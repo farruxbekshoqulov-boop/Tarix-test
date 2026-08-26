@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>7-§. Qadimgi Misr va qo‘shni davlatlar</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (25)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (25)</button>
+    </div>
+
+    <!-- 1. MOSLASH (4 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">4 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalarni muvaffaqiyatli mosladingiz. Endi 25 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (25 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">7-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">25 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 25 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (25 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">7-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/25</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Qo‘shni hududlar va boyliklar
+      [
+        { id: 1, left: "Nubiya", right: "Misrning janubidagi qo‘shnisi (Shimoliy Sudan)" },
+        { id: 2, left: "Liviya", right: "Misr g‘arbidagi cho‘lda yashagan chorvadorlar yurti" },
+        { id: 3, left: "Sinay yarimoroli", right: "Mis konlari joylashgan hudud" },
+        { id: 4, left: "Falastin va Suriya", right: "Mis, temir rudasi va qimmatbaho toshlarga boy o‘lkalar" }
+      ],
+      // 2-bosqich: Istilolar va davlat bosqichlari
+      [
+        { id: 5, left: "Qadimgi podsholik", right: "Sinay yarimoroli bosib olinib, soliq to‘latilgan davr" },
+        { id: 6, left: "O‘rta podsholik", right: "Janubiy Falastin va Nubiya shimoli qo‘shib olingan davr" },
+        { id: 7, left: "Mil. avv. XVIII asr oxiri", right: "Ko‘chmanchi giksos qabilalari Misrga bostirib kirgan vaqt" },
+        { id: 8, left: "Fiva shahri", right: "Giksoslarga bo‘ysunmay, qarshilik ko‘rsatgan markaz" }
+      ],
+      // 3-bosqich: Fir’avnlar va harbiy yurishlar
+      [
+        { id: 9, left: "Fir’avn Yaxmos", right: "Giksoslarni tor-mor etib, Yangi podsholikka asos solgan" },
+        { id: 10, left: "Fir’avn Tutmos II", right: "Falastin, Finikiya va Suriyani istilo qilishni boshlagan" },
+        { id: 11, left: "Fir’avn Tutmos III", right: "Old Osiyoda Misr hukmronligini to‘liq o‘rnatgan" },
+        { id: 12, left: "Mil. avv. VII asr", right: "Misr yana yagona davlatga birlashib, yuksalgan davr" }
+      ],
+      // 4-bosqich: Ahamoniylar istilosi va yakuniy xronologiya
+      [
+        { id: 13, left: "Kir II", right: "Eron forslari podshosi (Kambiz II ning otasi)" },
+        { id: 14, left: "Kambiz II", right: "Ulkan lashkar bilan Misrni zabt etgan forslar shohi" },
+        { id: 15, left: "Mil. avv. 525-yil", right: "Kambiz II tomonidan Misrning bosib olinishi" },
+        { id: 16, left: "Yangi podsholik", right: "Misrning eng qudratli bosqinchilik yurishlari davri" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (25 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Qadimgi Misr janubda qaysi davlat (hudud) bilan chegaradosh bo‘lgan?", a: "Nubiya (hozirgi Shimoliy Sudan) bilan chegaradosh bo‘lgan." },
+      { q: "2. Misrning g‘arbidagi cho‘lda joylashgan mamlakat qanday nomlangan va aholisi kimlardan iborat edi?", a: "Liviya deb atalgan bo‘lib, aholisi ko‘chmanchi chorvadorlar edi." },
+      { q: "3. Quyi Misrdagi Memfis shahri orqali o‘tgan yo‘l qayerga olib borgan va u yerda nima qazib olingan?", a: "Sinay yarimoroliga olib borgan, u yerda mis qazib olingan." },
+      { q: "4. Sinay yarimorolidan shimolroqda va uning yonida qaysi mamlakatlar joylashgan edi?", a: "Falastin va uning yonida Suriya joylashgan edi." },
+      { q: "5. Falastin va Suriya qanday boyliklarga boy bo‘lgan?", a: "Mis va temir rudasiga hamda boshqa foydali qazilmalarga boy bo‘lgan." },
+      { q: "6. Misrliklar Falastin va Suriyadan nimalar keltirishgan?", a: "Hunarmandlar yasagan nodir buyumlar va qimmatbaho toshlarni olib kelishgan." },
+      { q: "7. Qadimgi podsholik davrida Misr fir’avnlari qaysi hududni bosib olib, aholisini soliq to‘lashga majbur qildi?", a: "Sinay yarimorolini bosib olib, mahalliy qabilalarga soliq soldilar." },
+      { q: "8. Qadimgi podsholik fir’avnlari Nubiya va Liviyaga nima maqsadda yurish qilishgan?", a: "Shaharlarni talash, asirlar, chorva mollari va boshqa boyliklarni qo‘lga kiritish uchun." },
+      { q: "9. O‘rta podsholik fir’avnlari qaysi hududlarni Misrga qo‘shib olishga muvaffaq bo‘lishdi?", a: "Janubiy Falastin yerlari va Nubiyaning shimolini." },
+      { q: "10. Misrga ko‘chmanchi giksos qabilalari qachon bostirib kirdi?", a: "Miloddan avvalgi XVIII asr oxirida." },
+      { q: "11. Giksoslar Misrni bosib olgach, qanday xatti-harakatlarni amalga oshirdilar?", a: "Quyi Misrni egallab, shaharlar va qishloqlarni ayovsiz taladilar, odamlarni asirlikka haydab ketdilar." },
+      { q: "12. Giksoslar istilosi davrida Misrning ichki siyosiy holati qanday edi?", a: "Ko‘plab mayda «nom»larga bo‘linib ketgan va ular giksoslarga soliq to‘lab turgan." },
+      { q: "13. Giksoslar hukmronligi davrida ularga itoat etmagan yagona shahar qaysi edi?", a: "Faqat Fiva shahri hukmdorlarigina giksoslarga bo‘ysunmadi." },
+      { q: "14. Bosqinchilar zulmidan xalos bo‘lish uchun nomlar qaysi shahar va hukmdor atrofiga birlasha boshladi?", a: "Fiva shahri va Yuqori Misrning Fiva «nom»i fir’avni atrofiga birlashdilar." },
+      { q: "15. Giksoslarni tor-mor etib, Misrdan haydab chiqargan fir’avn kim?", a: "Fir’avn Yaxmos." },
+      { q: "16. Fir’avn Yaxmos davridan Misr tarixida qaysi davr boshlandi?", a: "Yangi podsholik davri boshlandi (Yaxmos yangi sulolaga asos soldi)." },
+      { q: "17. Yangi podsholik hukmdorlari qaysi yo‘nalishlarda bosqinchilik yurishlarini boshladilar?", a: "Nubiya va Old Osiyo mamlakatlariga." },
+      { q: "18. Falastin, Finikiya va Suriyani istilo qilish qaysi fir’avn davrida boshlandi?", a: "Fir’avn Tutmos II davrida." },
+      { q: "19. Tutmos II boshlagan yurishlarni kim davom ettirdi va qanday natijaga erishdi?", a: "Fir’avn Tutmos III davom ettirdi va Old Osiyoda Misr hukmronligini o‘rnatdi." },
+      { q: "20. Yangi podsholik istilolari natijasida Misrga qanday boyliklar oqib kelgan?", a: "Ko‘plab harbiy asirlar (qullar), oltin, qimmatbaho toshlar, xomashyo va o‘lponlar." },
+      { q: "21. Misr qaysi asrda yana yagona davlatga birlashdi va uning iqtisodiyoti yuksaldi?", a: "Miloddan avvalgi VII asrda." },
+      { q: "22. Miloddan avvalgi VI asrda Misrga qaysi yangi dushman bostirib kirdi?", a: "Forslar podsholigi (Ahamoniylar davlati)." },
+      { q: "23. Misrni bosib olgan fors shohi kim edi va u kimning o‘g‘li bo‘lgan?", a: "Kambiz II bo‘lib, u shoh Kir II ning o‘g‘li edi." },
+      { q: "24. Fors shohi Kambiz II Misrni qaysi yilda bosib oldi?", a: "Miloddan avvalgi 525-yilda." },
+      { q: "25. Tutmos II va Tutmos III istilo qilgan Old Osiyo hududlarini sanang.", a: "Falastin, Finikiya va Suriya hududlari." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Qadimgi Misr janubida qaysi mamlakat bilan chegaradosh bo‘lgan?",
+        options: [
+          "Liviya",
+          "Nubiya (Shimoliy Sudan)",
+          "Suriya",
+          "Finikiya"
+        ],
+        correct: 1,
+        exp: "Misr janubda Nubiya (Shimoliy Sudan) bilan chegaradosh bo‘lgan."
+      },
+      {
+        q: "2. Misr g‘arbidagi cho‘lda joylashgan mamlakat va uning aholisi qanday atalgan?",
+        options: [
+          "Nubiya — dehqonlar",
+          "Liviya — ko‘chmanchi chorvadorlar",
+          "Falastin — dengizchilar",
+          "Sinay — konchilar"
+        ],
+        correct: 1,
+        exp: "Misr g‘arbida Liviya cho‘li joylashgan bo‘lib, aholisi ko‘chmanchi chorvadorlar edi."
+      },
+      {
+        q: "3. Memfis shahri orqali o‘tadigan yo‘l qaysi boy metall koni joylashgan hududga olib borgan?",
+        options: [
+          "Oltin koniga boy Nubiyaga",
+          "Mis qazib olinadigan Sinay yarimoroliga",
+          "Kumush koniga boy Bobilga",
+          "Qalay koniga boy Kichik Osiyoga"
+        ],
+        correct: 1,
+        exp: "Memfis orqali o‘tgan yo‘l mis qazib olinadigan Sinay yarimoroliga olib borgan."
+      },
+      {
+        q: "4. Mis va temir rudasiga hamda boshqa foydali qazilmalarga boy bo‘lgan Misrning shimoli-sharqiy qo‘shnilari qaysilar?",
+        options: [
+          "Liviya va Nubiya",
+          "Falastin va Suriya",
+          "Eron va Bobil",
+          "Yunoniston va Rim"
+        ],
+        correct: 1,
+        exp: "Sinaydan shimolroqda joylashgan Falastin va Suriya mis hamda temir rudalariga boy bo‘lgan."
+      },
+      {
+        q: "5. Qadimgi podsholik davrida Misr fir’avnlari tomonidan qaysi hudud bosib olinib, soliq to‘lashga majbur qilindi?",
+        options: [
+          "Suriya davlati",
+          "Sinay yarimoroli qabilalari",
+          "Finikiya shaharlari",
+          "Butun Eron hududi"
+        ],
+        correct: 1,
+        exp: "Qadimgi podsholik davrida Sinay yarimoroli bosib olinib, mahalliy qabilalar soliq to‘lay boshladi."
+      },
+      {
+        q: "6. O‘rta podsholik fir’avnlari qaysi hududlarni Misr davlatiga qo‘shib olishga erishdilar?",
+        options: [
+          "Liviya cho‘lini butunlay",
+          "Janubiy Falastin yerlari va Nubiya shimolini",
+          "Kichik Osiyo va Bobilni",
+          "Assuriya va Baqtriyani"
+        ],
+        correct: 1,
+        exp: "O‘rta podsholik davrida Janubiy Falastin yerlari va Nubiya shimoli Misrga qo‘shib olindi."
+      },
+      {
+        q: "7. Qadimgi Misrga ko‘chmanchi giksos qabilalari qaysi davrda bostirib kirdi?",
+        options: [
+          "Mil. avv. 3000-yilda",
+          "Mil. avv. XVIII asr oxirida",
+          "Mil. avv. VII asrda",
+          "Mil. avv. 525-yilda"
+        ],
+        correct: 1,
+        exp: "Miloddan avvalgi XVIII asr oxirida ko‘chmanchi giksos qabilalari Misrga hujum qildi."
+      },
+      {
+        q: "8. Giksoslar istilosi davrida Misrning qaysi qismi bosib olinib, talandi?",
+        options: [
+          "Faqat Fiva shahri",
+          "Quyi Misr hududlari",
+          "Janubiy Nubiya",
+          "Faqat Sinay tog‘lari"
+        ],
+        correct: 1,
+        exp: "Quyi Misrni bosib olgan giksoslar shahar va qishloqlarni ayovsiz taladilar."
+      },
+      {
+        q: "9. Giksoslar hukmronligi davrida ularga bo‘ysunmagan va soliq to‘lamagan yagona markaz qaysi edi?",
+        options: [
+          "Memfis shahri",
+          "Fiva shahri hukmdorlari",
+          "Sinay qabilalari",
+          "Sakkara shahri"
+        ],
+        correct: 1,
+        exp: "Faqat Fiva shahri hukmdorlarigina giksoslarga itoat qilmadi."
+      },
+      {
+        q: "10. Bosqinchilarga qarshi kurashda Misrning barcha nomlari kimning atrofiga birlasha boshladi?",
+        options: [
+          "Memfis nomarxlari atrofiga",
+          "Yuqori Misrning Fiva «nom»i fir’avni atrofiga",
+          "Liviya qabila boshliqlari atrofiga",
+          "Fors lashkarboshilari atrofiga"
+        ],
+        correct: 1,
+        exp: "Yuqori Misrning barcha «nom»lari Fiva fir’avni atrofiga birlashdi."
+      },
+      {
+        q: "11. Giksoslarni tor-mor etib, ularni mamlakatdan quvib chiqargan fir’avn kim?",
+        options: [
+          "Menes",
+          "Yaxmos",
+          "Tutmos II",
+          "Kambiz II"
+        ],
+        correct: 1,
+        exp: "Fir’avn Yaxmos bir qancha janglarda giksoslarni tor-mor etib, mamlakatdan haydab chiqardi."
+      },
+      {
+        q: "12. Fir’avn Yaxmos hukmronligi boshlanishi bilan Misr tarixida qaysi davr boshlandi?",
+        options: [
+          "Qadimgi podsholik",
+          "O‘rta podsholik",
+          "Yangi podsholik",
+          "So‘nggi podsholik"
+        ],
+        correct: 2,
+        exp: "Yaxmos yangi sulolaga asos solib, Yangi podsholik davrini boshlab berdi."
+      },
+      {
+        q: "13. Falastin, Finikiya va Suriyani istilo qilish dastlab qaysi fir’avn davrida boshlangan?",
+        options: [
+          "Menes davrida",
+          "Yaxmos davrida",
+          "Tutmos II davrida",
+          "Tutmos III davrida"
+        ],
+        correct: 2,
+        exp: "Fir’avn Tutmos II davrida Falastin, Finikiya va Suriyani istilo qilish boshlandi."
+      },
+      {
+        q: "14. Old Osiyoda Misr hukmronligini uzil-kesil o‘rnatgan fir’avn kim?",
+        options: [
+          "Tutmos II",
+          "Tutmos III",
+          "Yaxmos",
+          "Kir II"
+        ],
+        correct: 1,
+        exp: "Tutmos II dan keyin fir’avn Tutmos III yurishlarni davom ettirib, Old Osiyoda Misr hukmronligini o‘rnatdi."
+      },
+      {
+        q: "15. Yangi podsholik davrida Misr fir’avnlari asosiy bosqinchilik yurishlarini qaysi hududlarga qaratdilar?",
+        options: [
+          "Faqat Yevropa davlatlariga",
+          "Nubiya va Old Osiyo mamlakatlariga",
+          "Faqat Hindiston va Xitoyga",
+          "Kichik Osiyo va Yunonistonga"
+        ],
+        correct: 1,
+        exp: "Fir’avnlar Nubiya va Old Osiyo mamlakatlariga hujumni boshlab yubordilar."
+      },
+      {
+        q: "16. Misr uzoq tanaffusdan keyin yana yagona davlatga birlashib, iqtisodiyoti va madaniyati yuksala boshlagan davr?",
+        options: [
+          "Mil. avv. XVIII asr",
+          "Mil. avv. VII asr",
+          "Mil. avv. IV asr",
+          "Mil. avv. 525-yil"
+        ],
+        correct: 1,
+        exp: "Miloddan avvalgi VII asrda Misr yana yagona davlatga birlashdi."
+      },
+      {
+        q: "17. Forslar shohi Kir II ning o‘g‘li Kambiz II Misrga qachon bostirib kirdi va uni bosib oldi?",
+        options: [
+          "Mil. avv. 3000-yilda",
+          "Mil. avv. 525-yilda",
+          "Mil. avv. VII asrda",
+          "Mil. avv. XVIII asrda"
+        ],
+        correct: 1,
+        exp: "Kambiz II miloddan avvalgi 525-yilda Misrni bosib oldi."
+      },
+      {
+        q: "18. Miloddan avvalgi 525-yilda Misrni bosib olgan hukmdor kim edi?",
+        options: [
+          "Shoh Kir II",
+          "Shoh Kambiz II",
+          "Doro I",
+          "Kserks"
+        ],
+        correct: 1,
+        exp: "Shoh Kir II ning o‘g‘li Kambiz II Misrni zabt etdi."
+      },
+      {
+        q: "19. Qadimgi Misr fir’avnlari Falastin va Suriyadan asosan qanday tovarlarni olib kelishgan?",
+        options: [
+          "Ipak matolar va choy",
+          "Nodir hunarmandlik buyumlari va qimmatbaho toshlar",
+          "Qog‘oz va chinni idishlar",
+          "Ziravorlar va paxta"
+        ],
+        correct: 1,
+        exp: "Misrliklar bu o‘lkalardan nodir buyumlar va qimmatbaho toshlarni olib kelganlar."
+      },
+      {
+        q: "20. Quyidagi qaysi hudud Qadimgi Misr bilan to‘g‘ridan-to‘g‘ri quruqlik orqali chegaradosh bo‘lmagan?",
+        options: [
+          "Nubiya",
+          "Liviya",
+          "Finikiya",
+          "Sinay yarimoroli"
+        ],
+        correct: 2,
+        exp: "Finikiya Old Osiyoda (O‘rta dengiz bo‘yida) joylashgan bo‘lib, to‘g‘ridan-to‘g‘ri chegaradosh bo‘lmagan, keyinchalik istilo qilingan."
+      },
+      {
+        q: "21. Giksoslar istilosi davrida Misr mustaqilligining saqlanib qolgan tayanchi qaysi hudud edi?",
+        options: [
+          "Quyi Misr",
+          "Yuqori Misr (Fiva)",
+          "Sinay yarimoroli",
+          "Liviya cho‘li"
+        ],
+        correct: 1,
+        exp: "Yuqori Misrdagi Fiva shahri giksoslarga qarshi kurash markazi bo‘ldi."
+      },
+      {
+        q: "22. Qadimgi podsholik davrida fir’avnlarning Nubiya va Liviyaga qilgan yurishlarining asosiy oqibati nima bo‘lgan?",
+        options: [
+          "Bu hududlar bilan do‘stona savdo aloqalari o‘rnatildi",
+          "Shaharlar talanib, ko‘plab asirlar va chorva mollari haydab ketildi",
+          "Misr o‘z mustaqilligini yo‘qotdi",
+          "U yerlarda doimiy Misr shaharlari barpo etildi"
+        ],
+        correct: 1,
+        exp: "Fir’avnlar bu o‘lkalarni talab, asirlar va chorva mollarini egallab qaytishgan."
+      },
+      {
+        q: "23. Tutmos III ning harbiy yurishlari natijasida Misr qaysi mintaqada o‘z gegemonligini (hukmronligini) o‘rnatdi?",
+        options: [
+          "O‘rta Osiyoda",
+          "Old Osiyoda",
+          "G‘arbiy Yevropada",
+          "Janubiy Afrikada"
+        ],
+        correct: 1,
+        exp: "Tutmos III Old Osiyoda Misr hukmronligini o‘rnatdi."
+      },
+      {
+        q: "24. Ko‘chmanchi giksoslar zulmidan xalos bo‘lish uchun kurash qayerdan boshlandi?",
+        options: [
+          "Memfisdan",
+          "Fivadan",
+          "Sinaydan",
+          "Nubiyadan"
+        ],
+        correct: 1,
+        exp: "Giksoslarga qarshi ozodlik harakati Fiva shahridan boshlandi."
+      },
+      {
+        q: "25. Quyidagi voqealar xronologik tartibda to‘g‘ri ko‘rsatilgan qatorni aniqlang:\n1) Kambiz II ning Misrni bosib olishi;\n2) Giksoslarning Misrga bostirib kirishi;\n3) Yaxmos tomonidan Yangi podsholikka asos solinishi.",
+        options: [
+          "1, 2, 3",
+          "2, 3, 1",
+          "3, 2, 1",
+          "2, 1, 3"
+        ],
+        correct: 1,
+        exp: "2 (mil. avv. XVIII asr oxiri) -> 3 (giksoslar quvilgach) -> 1 (mil. avv. 525-yil)."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 23) fb.innerText = "Mukammal natija! 7-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

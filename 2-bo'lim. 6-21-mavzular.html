@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>II Bo‘lim: Qadimgi Sharq va O‘rta Osiyo — Umumiy Takrorlash</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (40)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (40)</button>
+    </div>
+
+    <!-- 1. MOSLASH (8 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 8</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">II Bo‘lim bo‘yicha 8 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha qadimgi Sharq va O‘rta Osiyo atamalarini muvaffaqiyatli mosladingiz. Endi 40 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (40 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">II Bo‘lim Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">40 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          II Bo‘limning barcha asosiy mavzularini takrorlab oldingiz. Endi 40 talik Katta Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Katta Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (40 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">II Bo‘lim Katta Test</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/40</div>
+        <h2 style="font-size: 20px; font-weight: 800;">II Bo‘lim Yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (8 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Qadimgi Misr
+      [
+        { id: 1, left: "Mil. avv. 3000-yil", right: "Menes tomonidan Quyi va Yuqori Misrning birlashtirilishi" },
+        { id: 2, left: "Xufu (Xeops)", right: "Balandligi 147 metr bo‘lgan eng katta piramida egasi" },
+        { id: 3, left: "Jak-Fransua Shampolyon", right: "1822-yilda Rozett toshi orqali Misr iyerogliflarini o‘qigan olim" },
+        { id: 4, left: "Amon-Ra", right: "Qadimgi Misr fir’avnlarining bosh ilohi va homiysi" }
+      ],
+      // 2-bosqich: Mesopotamiya va Shumer
+      [
+        { id: 5, left: "Mesopotamiya", right: "Dajla va Frot daryolari oralig‘idagi qadimiy o‘lka" },
+        { id: 6, left: "Mixxat", right: "Shumerlar ixtiro qilgan loy taxtachalarga yoziluvchi yozuv" },
+        { id: 7, left: "Zikkurat", right: "Mesopotamiyadagi xom g‘ishtdan terilgan zinapoyali ibodatxona" },
+        { id: 8, left: "Sargon I", right: "Jahonda birinchi bo‘lib 5400 kishilik muntazam qo‘shin tuzgan hukmdor" }
+      ],
+      // 3-bosqich: Bobil podsholigi
+      [
+        { id: 9, left: "Xammurapi", right: "Mil. avv. XVIII asrda Mesopotamiyani birlashtirib, qat’iy qonunlar tuzgan shoh" },
+        { id: 10, left: "«Bobil» so‘zi ma’nosi", right: "«Xudolar darvozasi»" },
+        { id: 11, left: "Navuxodonosor II", right: "Misrni qo‘shib olgan va Iyerusalimni vayron qilgan Yangi Bobil shohi" },
+        { id: 12, left: "Mil. avv. 539-yil", right: "Forslar lashkari tomonidan Bobil shahrining zabt etilishi" }
+      ],
+      // 4-bosqich: Old Osiyo davlatlari
+      [
+        { id: 13, left: "Ashshurbanipal", right: "Nineviyada sopol taxtachalardan ulkan kutubxona jamlagan Ossuriya podshosi" },
+        { id: 14, left: "Tushpa", right: "Kavkazortidagi Qadimgi Urartu davlatining poytaxti" },
+        { id: 15, left: "Finikiya alifbosi", right: "Mil. avv. X asrda yaratilgan 22 ta undosh harfdan iborat ilk alifbo" },
+        { id: 16, left: "Mil. avv. 605-yil", right: "Midiya va Bobil ittifoqi tomonidan Ossuriyaning tor-mor etilishi" }
+      ],
+      // 5-bosqich: Ahamoniylar davlati
+      [
+        { id: 17, left: "Kir II", right: "Mil. avv. 558-yilda barcha forslarni birlashtirgan sulola asoschisi" },
+        { id: 18, left: "Doro I", right: "Darik oltin tangasini joriy etib, satrapiyalar tuzgan shoh" },
+        { id: 19, left: "Shoh yo‘li", right: "Persepoldan O‘rta Yer dengiziga qadar qurilgan savdo yo‘li" },
+        { id: 20, left: "Behistun va Naqshi Rustam", right: "Fors shohlarining g‘alabalari aks etgan mashhur qoyatosh bitiklari" }
+      ],
+      // 6-bosqich: Qadimgi Hindiston
+      [
+        { id: 21, left: "Mohenjodaro va Xarappa", right: "Hind daryosi havzasidagi eng yirik qadimgi shaharlar" },
+        { id: 22, left: "Shaxmat", right: "Hindlar «qo‘shinlarning to‘rt turi» deb atagan intellektual o‘yin" },
+        { id: 23, left: "Sanskrit", right: "«Mahabharata» va «Ramayana» dostonlari bitilgan adabiy til" },
+        { id: 24, left: "Siddhartha Gautama", right: "Mil. avv. VI asrda buddaviylik diniga asos solgan Budda" }
+      ],
+      // 7-bosqich: Qadimgi Xitoy
+      [
+        { id: 25, left: "«Osmon ostidagi podsholik»", right: "Ulkan hududlarni egallagan Qadimgi Chjou davlati" },
+        { id: 26, left: "Sin Shixuandi", right: "Mil. avv. III asrda Xitoyni birlashtirgan birinchi hukmdor" },
+        { id: 27, left: "Buyuk Xitoy devori", right: "Ko‘chmanchi hunlardan himoyalanish uchun qurilgan 4000 km lik devor" },
+        { id: 28, left: "Kompas va seysmograf", right: "Qadimgi Xitoyda ixtiro qilingan buyuk asboblar" }
+      ],
+      // 8-bosqich: O‘zbekiston va Zardushtiylik
+      [
+        { id: 29, left: "Baqtriya davlati", right: "Mil. avv. VII asrda tashkil topgan, poytaxti Baqtra bo‘lgan davlat" },
+        { id: 30, left: "Ko‘zaliqir", right: "Xorazmdagi mil. avv. VI asrga oid yirik saroy va qal’a" },
+        { id: 31, left: "«Avesto»", right: "«Qat’iy belgilangan qonun-qoidalar» ma’nosidagi muqaddas kitob" },
+        { id: 32, left: "Ossuariy", right: "Oftobda poklangan suyaklar saqlanadigan sopol tobutcha (suyakdon)" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (40 TA INTEGRATSIYALASHGAN SAVOL) ---
+    const flashcards = [
+      { q: "1. Nil vodiysida Quyi va Yuqori Misr qachon, kim tomonidan yagona davlatga birlashtirildi?", a: "Miloddan avvalgi 3000-yilda Yuqori Misr hukmdori Menes tomonidan (poytaxti Memfis)." },
+      { q: "2. Giksoslarni tor-mor etib, Misrda Yangi podsholik davrini boshlab bergan fir’avn kim?", a: "Fir’avn Yaxmos." },
+      { q: "3. Qadimgi Misrda Quyosh ma’budi ibodatxonasi qaysi shaharda bo‘lgan va fir’avnlarning bosh ilohi qanday atalgan?", a: "Geliopolda (Baolbek) bo‘lgan; bosh iloh Amon-Ra deb atalgan." },
+      { q: "4. Misrdagi eng katta Xufu piramidasining balandligi va qurilgan sanasi qanday?", a: "Mil. avv. 2600-yil atrofida qurilgan, balandligi 147 metr bo‘lgan." },
+      { q: "5. Qadimgi Misr yozuvi necha iyeroglifdan iborat bo‘lgan va ularni 1822-yilda kim o‘qigan?", a: "750 ta iyeroglifdan iborat bo‘lgan; fransuz olimi Jak-Fransua Shampolyon o‘qigan." },
+      { q: "6. «Mesopotamiya» atamasi qanday ma’noni anglatadi va u qaysi daryolar oralig‘ida joylashgan?", a: "Yunoncha «ikki daryo oralig‘i» degani; Dajla va Frot daryolari oralig‘ida." },
+      { q: "7. Shumerlar qanday yozuv turini ixtiro qilishgan va u nimalarga yozilgan?", a: "Mixxat yozuvini ixtiro qilishgan; uchi o‘tkir tayoqcha bilan xom loy taxtachalarga yozilgan." },
+      { q: "8. Jahon tarixida birinchi bo‘lib 5400 kishilik doimiy muntazam qo‘shin tuzgan shoh kim?", a: "Akkad podshosi Sargon I." },
+      { q: "9. Butun Mesopotamiyani birlashtirib, tosh ustunlarga qonunlar yozdirgan Bobil shohi kim?", a: "Xammurapi (mil. avv. XVIII asrda)." },
+      { q: "10. Yangi Bobil podsholigi qachon vujudga keldi va qaysi hukmdor davrida o‘z cho‘qqisiga erishdi?", a: "Mil. avv. VII asrda vujudga keldi; Navuxodonosor II davrida cho‘qqisiga chiqdi." },
+      { q: "11. Bobil shahrining bosh ko‘chasi qaysi darvozadan boshlangan va shaharda jami nechta darvoza bo‘lgan?", a: "Ishtar darvozasidan boshlangan; jami 8 ta darvozasi bo‘lgan." },
+      { q: "12. Bobil qachon va qaysi davlat tomonidan bosib olindi?", a: "Miloddan avvalgi 539-yilda forslar (Ahamoniylar) tomonidan zabt etildi." },
+      { q: "13. Ossuriya davlatining poytaxtlari qaysi shaharlar bo‘lgan va ulkan kutubxona kim tomonidan tuzilgan?", a: "Avval Ashshur, keyin Nineviya; kutubxona podsho Ashshurbanipal tomonidan tuzilgan." },
+      { q: "14. Ossuriya davlati qachon va kimlar tomonidan tor-mor etildi?", a: "Miloddan avvalgi 605-yilda Midiya va Bobil qo‘shinlari tomonidan." },
+      { q: "15. Qadimgi Urartu davlati qayerda joylashgan, poytaxti qaysi shahar bo‘lgan?", a: "Kavkazortida (Turkiya sharqi va Armanistonda); poytaxti Tushpa shahri bo‘lgan." },
+      { q: "16. Finikiyaliklar qachon ilk alifboni yaratdilar va u nechta harfdan iborat edi?", a: "Miloddan avvalgi X asrda yaratilgan bo‘lib, 22 ta undosh harfdan iborat edi." },
+      { q: "17. Qadimgi yahudiylarning diniy kitoblari va rivoyatlari to‘plami nima deb ataladi?", a: "«Bibliya» deb ataladi (yunoncha «kitob» degani)." },
+      { q: "18. Ahamoniylar davlatiga kim, qachon asos soldi va uning vorislari kimlar edi?", a: "Mil. avv. 558-yilda Kir II asos soldi; vorislari Kambiz II va Doro I bo‘lgan." },
+      { q: "19. Shoh Doro I qanday yagona pul birligi va savdo yo‘lini joriy qildi?", a: "«Darik» oltin tangasini hamda Persepoldan O‘rta Yer dengiziga qadar «Shoh yo‘li»ni joriy etdi." },
+      { q: "20. Fors shohlarining g‘alabalari qaysi mashhur qoyatoshlarga o‘yib yozilgan?", a: "Behistun va Naqshi Rustam qoyalariga." },
+      { q: "21. Ahamoniylar saltanati qachon va kim tomonidan tugatildi?", a: "Miloddan avvalgi 330-yilda Makedoniyalik Aleksandr tomonidan." },
+      { q: "22. Hind daryosi havzasidagi eng yirik qadimgi sivilizatsiya shaharlari qaysilar?", a: "Mohenjodaro va Xarappa shaharlari (mil. avv. 3-mingyillik)." },
+      { q: "23. Qadimgi hindlar qaysi o‘simliklarni yetishtirishgan va qaysi hayvonni muqaddas sanashgan?", a: "Shakarqamish va paxtani yetishtirishgan; sigirni muqaddas hisoblashgan." },
+      { q: "24. Hind kasta (varna) tizimida qanday 4 ta asosiy tabaqa bo‘lgan?", a: "Brahmanlar (kohinlar), Kshatriylar (jangchilar), Vayshiylar (mehnatkashlar) va Shudralar (xizmatkorlar)." },
+      { q: "25. Hindistonda kastalarga kirmaydigan eng quyi toifa kimlar edi?", a: "«Chandallar» («hazar qilinadiganlar»)." },
+      { q: "26. Buddaviylik diniga qachon, kim asos soldi va uning ma’nosi nima?", a: "Mil. avv. VI asrda Siddhartha Gautama (Budda – «Ma’rifatga erishgan») asos solgan." },
+      { q: "27. Qadimgi hind madaniyatida yaratilgan dostonlar va mashhur intellektual o‘yin qaysi?", a: "«Mahabharata» va «Ramayana» dostonlari (sanskritda) hamda shaxmat o‘yini." },
+      { q: "28. Qadimgi Xitoyda ilk sivilizatsiya qaysi daryolar bo‘ylarida vujudga kelgan?", a: "Xuanxe va Yanszi daryolari bo‘ylarida." },
+      { q: "29. Xitoyda «Osmon ostidagi podsholik» deb atalgan va butun Shimoliy Xitoyni birlashtirgan davlat qaysi?", a: "Chjou davlati." },
+      { q: "30. Qadimgi Xitoyda ipakchilik va to‘qimachilik nimalar asosida yo‘lga qo‘yilgan?", a: "Tut daraxti barglari bilan ipak qurti boqilib, pilladan shoyi matosi to‘qilgan." },
+      { q: "31. Xitoyni mil. avv. III asrda (mil. avv. 246-yildan) yagona markazlashgan imperiyaga birlashtirgan hukmdor kim?", a: "Sin Shixuandi («Sinning birinchi hukmdori»)." },
+      { q: "32. Buyuk Xitoy devorining uzunligi, balandligi va maqsadi qanday bo‘lgan?", a: "Uzunligi qariyb 4000 km, balandligi 6–10 m; ko‘chmanchi hunlar hujumidan himoyalanish uchun qurilgan." },
+      { q: "33. Qadimgi Xitoy madaniyatining 4 ta buyuk ixtirosi va yutug‘ini ayting.", a: "Shoyi, qog‘oz (mil. avv. I asr), kompas va seysmograf." },
+      { q: "34. Mil. avv. VII–VI asrlarda O‘zbekiston hududida yashagan asosiy o‘troq va ko‘chmanchi elatlarni ayting.", a: "O‘troq: sug‘diylar, baqtriyaliklar, xorazmliklar; Ko‘chmanchi: saklar va massagetlar." },
+      { q: "35. Zarafshon, Qashqadaryo va Surxondaryo vohalaridagi qadimgi shaharlarni sanang.", a: "Zarafshonda: Afrosiyob, Ko‘ktepa; Qashqadaryoda: Yerqo‘rg‘on, Uzunqir; Surxondaryoda: Qiziltepa." },
+      { q: "36. Baqtriya tog‘laridan qazib olingan va Ossuriya manbalarida tilga olingan qimmatbaho tosh qaysi?", a: "Lojuvard (la’l) toshi." },
+      { q: "37. Qadimgi Baqtriya davlati qachon vujudga kelgan va poytaxti qaysi shahar bo‘lgan?", a: "Mil. avv. VII asrda tashkil topgan; poytaxti Baqtra shahri bo‘lgan." },
+      { q: "38. Baqtriya podshosi Oksiart qaysi bosqinchi davlatning 100 ming askarini qirib tashlagan?", a: "Ossuriya podshosi Nin qo‘shinini." },
+      { q: "39. Xorazm vohasida mil. avv. VI asrga oid yog‘och ustunli saroy va omborxona qaysi qal’adan topilgan?", a: "Ko‘zaliqir qal’asidan." },
+      { q: "40. Zardushtiylik dinining muqaddas kitobi «Avesto»dagi bosh ma’budlar kimlar va suyaklar nimalarda dafn etilgan?", a: "Bosh xudo Ahuramazda, Quyosh ma’budi Mitra, yovuzlik ma’budi Ahriman; suyaklar ossuariylarda dafn etilgan." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (40 TA ARALASH TEST - JAVOBLAR 10 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Miloddan avvalgi 3000-yilda Qadimgi Misrni yagona davlatga birlashtirgan hukmdor kim edi?",
+        options: [
+          "Menes",
+          "Xufu",
+          "Yaxmos",
+          "Tutmos III"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 3000-yilda Yuqori Misr hukmdori Menes ikkala davlatni birlashtirdi va birinchi fir’avn bo‘ldi."
+      },
+      {
+        q: "2. Jahon tarixida birinchi bo‘lib 5400 nafar jangchidan iborat doimiy muntazam qo‘shin tuzgan podsho kim?",
+        options: [
+          "Xammurapi",
+          "Sargon I",
+          "Doro I",
+          "Sin Shixuandi"
+        ],
+        correct: 1, // B
+        exp: "Akkad podshosi Sargon I jahonda birinchi bo‘lib 5400 nafar jangchidan iborat muntazam qo‘shin tuzgan."
+      },
+      {
+        q: "3. Butun Mesopotamiyani birlashtirib, barcha shaharlarda tosh ustunlarga qonunlar yozdirgan hukmdor kim?",
+        options: [
+          "Navuxodonosor II",
+          "Gilgamish",
+          "Xammurapi",
+          "Ashshurbanipal"
+        ],
+        correct: 2, // C
+        exp: "Mil. avv. XVIII asrda Bobil podshosi Xammurapi butun Mesopotamiyani birlashtirib, qat’iy qonunlar to‘plamini yaratdi."
+      },
+      {
+        q: "4. Nineviya shahrida sopol taxtachalardan iborat ulkan kutubxona jamlagan Ossuriya podshosi kim?",
+        options: [
+          "Nin",
+          "Oksiart",
+          "Kiaksar",
+          "Ashshurbanipal"
+        ],
+        correct: 3, // D
+        exp: "Ashshurbanipal hukmronligi yillarida Nineviyada sopol taxtachalardan iborat yirik kutubxona jamlangan."
+      },
+      {
+        q: "5. Miloddan avvalgi X asrda 22 ta undosh harfdan iborat ilk alifboni yaratgan xalq qaysi?",
+        options: [
+          "Finikiyaliklar",
+          "Misrliklar",
+          "Shumerlar",
+          "Xitoyliklar"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. X asrda Finikiyada 22 undosh harfdan iborat ilk alifbo yaratildi."
+      },
+      {
+        q: "6. Ahamoniylar davlatida butun mamlakat uchun yagona oltin tanga — «darik»ni muomalaga kiritgan shoh kim?",
+        options: [
+          "Kir II",
+          "Doro I",
+          "Kambiz II",
+          "Kserks"
+        ],
+        correct: 1, // B
+        exp: "Doro I butun mamlakat uchun «darik» deb nomlangan yagona oltin tangani muomalaga kiritdi."
+      },
+      {
+        q: "7. Qadimgi Hindistonda vujudga kelgan buddaviylik dinining asoschisi kim?",
+        options: [
+          "Brahma",
+          "Indra",
+          "Siddhartha Gautama (Budda)",
+          "Zardusht"
+        ],
+        correct: 2, // C
+        exp: "Mil. avv. VI asrda buddaviylik diniga shahzoda Siddhartha Gautama (Budda) asos soldi."
+      },
+      {
+        q: "8. Miloddan avvalgi III asrda Xitoyni yagona markazlashgan imperiyaga birlashtirgan hukmdor kim?",
+        options: [
+          "Konfutsiy",
+          "Chjou",
+          "Shan",
+          "Sin Shixuandi"
+        ],
+        correct: 3, // D
+        exp: "Sin Shixuandi («Sinning birinchi hukmdori») Xitoyni o‘z hokimiyati ostida yagona davlatga birlashtirdi."
+      },
+      {
+        q: "9. Baqtriya tog‘laridan qazib olingan va zargarlikda yuksak qadrlangan ko‘k qimmatbaho tosh qaysi?",
+        options: [
+          "Lojuvard (la’l)",
+          "Yoqut",
+          "Feruza",
+          "Zumrad"
+        ],
+        correct: 0, // A
+        exp: "Lojuvard (la’l) toshi Baqtriya tog‘laridan qazib olingan."
+      },
+      {
+        q: "10. Zardushtiylik dinining muqaddas kitobi «Avesto»da oliy yaratuvchi donishmand xudo kim deb e’tiqod qilingan?",
+        options: [
+          "Mitra",
+          "Ahuramazda",
+          "Ahriman",
+          "Anaxita"
+        ],
+        correct: 1, // B
+        exp: "Ahuramazda — zardushtiylarning ulug‘ va donishmand oliy xudosi hisoblangan."
+      },
+      {
+        q: "11. Misrdagi eng ulkan piramida qaysi fir’avn uchun qurilgan va uning balandligi qancha bo‘lgan?",
+        options: [
+          "Xafra; 130 metr",
+          "Menkaura; 100 metr",
+          "Xufu (Xeops); 147 metr",
+          "Tutanxamon; 120 metr"
+        ],
+        correct: 2, // C
+        exp: "Eng katta piramida fir’avn Xufu (Xeops) uchun qurilgan bo‘lib, balandligi 147 metr bo‘lgan."
+      },
+      {
+        q: "12. «Bobil» so‘zining lug‘aviy ma’nosi nima?",
+        options: [
+          "«Ikki daryo oralig‘i»",
+          "«Muqaddas shahar»",
+          "«Oltin vodiy»",
+          "«Xudolar darvozasi»"
+        ],
+        correct: 3, // D
+        exp: "«Bobil» so‘zining o‘zi «xudolar darvozasi» degan ma’noni anglatadi."
+      },
+      {
+        q: "13. Ko‘chmanchi skif qabilalari tomonidan qaysi Urartu shahar-qal’asi vayron qilingan?",
+        options: [
+          "Teyshebaini",
+          "Tushpa",
+          "Nineviya",
+          "Ugarit"
+        ],
+        correct: 0, // A
+        exp: "Urartuning Teyshebaini qal’asi ko‘chmanchi skif qabilalari tomonidan ishg‘ol etilib, vayron qilingan."
+      },
+      {
+        q: "14. Qadimgi Fors davlatida Persepoldan O‘rta Yer dengiziga qadar qurilgan mashhur savdo yo‘li qanday atalgan?",
+        options: [
+          "«Buyuk Ipak yo‘li»",
+          "«Shoh yo‘li»",
+          "«Nil yo‘li»",
+          "«Zardo‘zlik yo‘li»"
+        ],
+        correct: 1, // B
+        exp: "Doro I qarorgohi Persepol shahridan O‘rta Yer dengiziga qadar «shoh yo‘li» savdo yo‘lini qurdirdi."
+      },
+      {
+        q: "15. Qadimgi Hindistonda vayshiylar tabaqasiga kimlar kirgan?",
+        options: [
+          "Faqat kohinlar",
+          "Faqat jangchilar va amaldorlar",
+          "Dehqonlar, hunarmandlar va savdogarlar",
+          "Xizmatkorlar va qullar"
+        ],
+        correct: 2, // C
+        exp: "Dehqon, hunarmand va savdogarlar vayshiylar tabaqasini tashkil etgan."
+      },
+      {
+        q: "16. Buyuk Xitoy devori qaysi ko‘chmanchi xalqning doimiy hujumlaridan himoyalanish uchun barpo etilgan?",
+        options: [
+          "Skiflar",
+          "Massagetlar",
+          "Giksoslar",
+          "Hunlar"
+        ],
+        correct: 3, // D
+        exp: "Devor ko‘chmanchi hunlarning hujumlaridan Shimoliy Xitoyni himoya qilish uchun mustahkamlangan."
+      },
+      {
+        q: "17. Surxondaryo vohasida joylashgan Baqtriya davriga oid qadimiy shahar-qo‘rg‘on qaysi?",
+        options: [
+          "Qiziltepa",
+          "Ko‘zaliqir",
+          "Afrosiyob",
+          "Yerqo‘rg‘on"
+        ],
+        correct: 0, // A
+        exp: "Surxondaryo vohasida Qiziltepa qadimiy shahar-qo‘rg‘oni o‘rganilgan."
+      },
+      {
+        q: "18. Zardushtiylikda yorug‘lik va Quyosh ma’budi kim hisoblangan?",
+        options: [
+          "Ahuramazda",
+          "Mitra",
+          "Ahriman",
+          "Anaxita"
+        ],
+        correct: 1, // B
+        exp: "Mitra — Quyosh va yorug‘lik ma’budidir."
+      },
+      {
+        q: "19. Qadimgi Misr iyerogliflarini 1822-yilda o‘qishga muvaffaq bo‘lgan fransuz olimi kim?",
+        options: [
+          "Genrix Shliman",
+          "Artur Evans",
+          "Jak-Fransua Shampolyon",
+          "Ktesiy"
+        ],
+        correct: 2, // C
+        exp: "Fransuz olimi Jak-Fransua Shampolyon 1822-yilda Misr iyerogliflarini o‘qidi."
+      },
+      {
+        q: "20. Shumerlarning zinapoyali muhtasham ibodatxonalari nima deb atalgan?",
+        options: [
+          "Piramida",
+          "Panteon",
+          "Sarkofag",
+          "Zikkurat"
+        ],
+        correct: 3, // D
+        exp: "Mesopotamiyaning qadimiy ibodatxonalari — zikkuratlar xom g‘ishtdan terilgan zinapoyali inshoot bo‘lgan."
+      },
+      {
+        q: "21. Qadimgi forslar lashkari Bobil shahrini qaysi yilda zabt etdi?",
+        options: [
+          "Miloddan avvalgi 539-yilda",
+          "Miloddan avvalgi 525-yilda",
+          "Miloddan avvalgi 605-yilda",
+          "Miloddan avvalgi 330-yilda"
+        ],
+        correct: 0, // A
+        exp: "Qadimgi forslar lashkari mil. avv. 539-yilda Bobilni zabt etdi."
+      },
+      {
+        q: "22. Yunoniston va Rim muarrixlari Surxon vohasi, shimoliy Afg‘oniston va janubiy Tojikiston hududini qanday atashgan?",
+        options: [
+          "Sug‘diyona",
+          "Baqtriya (Baqtriana)",
+          "Xorasmiya",
+          "Marg‘iyona"
+        ],
+        correct: 1, // B
+        exp: "Yunon-rim muarrixlari ushbu hududlarni Baqtriana yoki Baqtriya deb atagan."
+      },
+      {
+        q: "23. Qadimgi Xitoyda qog‘oz qachon ixtiro qilingan?",
+        options: [
+          "Miloddan avvalgi IV asrda",
+          "Miloddan avvalgi 246-yilda",
+          "Miloddan avvalgi I asrda",
+          "Milodiy III asrda"
+        ],
+        correct: 2, // C
+        exp: "Xitoyda miloddan avvalgi I asrda qog‘oz ixtiro qilindi."
+      },
+      {
+        q: "24. Qadimgi Hindistonda vujudga kelgan «qo‘shinlarning to‘rt turi» deb atalgan mashhur o‘yin qaysi?",
+        options: [
+          "Narda",
+          "Chavgon",
+          "Shashka",
+          "Shaxmat"
+        ],
+        correct: 3, // D
+        exp: "Hindistonda ixtiro qilingan shaxmat dastlab «qo‘shinlarning to‘rt turi» deb atalgan."
+      },
+      {
+        q: "25. Xorazm vohasidagi miloddan avvalgi VI asrga oid yirik saroy va g‘alla omborxonasi joylashgan qal’a qaysi?",
+        options: [
+          "Ko‘zaliqir",
+          "Uzunqir",
+          "Ko‘ktepa",
+          "Qiziltepa"
+        ],
+        correct: 0, // A
+        exp: "Xorazm vohasining yirik markazlaridan biri Ko‘zaliqir qal’asi bo‘lgan."
+      },
+      {
+        q: "26. Zardushtiylik ta’limotiga ko‘ra, yovuzlik va o‘lim ma’budi kim?",
+        options: [
+          "Mitra",
+          "Ahriman",
+          "Ahuramazda",
+          "Anaxita"
+        ],
+        correct: 1, // B
+        exp: "Ahriman — yovuzlik va o‘lim ma’budidir."
+      },
+      {
+        q: "27. Qadimgi Misr podshosi Menes asos solgan birlashgan davlatning birinchi poytaxti qaysi shahar edi?",
+        options: [
+          "Fiva",
+          "Geliopol",
+          "Memfis",
+          "Assuan"
+        ],
+        correct: 2, // C
+        exp: "Yagona va birlashgan davlat uchun yangi poytaxt Memfis shahri barpo etildi."
+      },
+      {
+        q: "28. Fors shohi Kir II barcha forslarni qachon o‘z hokimiyati ostida birlashtirdi?",
+        options: [
+          "Miloddan avvalgi 522-yilda",
+          "Miloddan avvalgi 525-yilda",
+          "Miloddan avvalgi 330-yilda",
+          "Miloddan avvalgi 558-yilda"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. 558-yilda podsho Kir II barcha forslarni o‘z hokimiyati ostida birlashtirdi."
+      },
+      {
+        q: "29. Qadimgi Xitoyda yerlari ulkanligi sababli «Osmon ostidagi podsholik» deb atalgan davlat qaysi?",
+        options: [
+          "Chjou davlati",
+          "Shan davlati",
+          "Sin davlati",
+          "Xan davlati"
+        ],
+        correct: 0, // A
+        exp: "Chjou davlati yerlarining kengligi tufayli «Osmon ostidagi podsholik» deb atalgan."
+      },
+      {
+        q: "30. Qadimgi Hindistonda sanskrit tilida yozilgan qahramonlik dostonlari qaysi javobda to‘g‘ri berilgan?",
+        options: [
+          "«Iliada» va «Odisseya»",
+          "«Mahabharata» va «Ramayana»",
+          "«Shohnoma» va «Avesto»",
+          "«Gilgamish» va «Enkidu»"
+        ],
+        correct: 1, // B
+        exp: "«Mahabharata» va «Ramayana» dostonlari sanskrit tilida yozilgan."
+      },
+      {
+        q: "31. Qadimgi Baqtriya podshosi Oksiart qaysi davlat podshosi Ninning qo‘shiniga qarshi mardonavor jang qilgan?",
+        options: [
+          "Misr",
+          "Bobil",
+          "Ossuriya",
+          "Midiya"
+        ],
+        correct: 2, // C
+        exp: "Ossuriya podshosi Nin Baqtriyaga yurish qilganda, podsho Oksiart unga qarshi jang olib boradi."
+      },
+      {
+        q: "32. «Avesto»da voyaga yetmagan bolalarni ota-onasidan ayirish va qarzni qaytarmaslik qanday baholangan?",
+        options: [
+          "Oddiy kamchilik deb",
+          "Faqat jarima bilan jazolangan deb",
+          "Jazosiz qoldirilgan deb",
+          "Qat’iy qoralangan va og‘ir gunoh (o‘g‘rilik) deb"
+        ],
+        correct: 3, // D
+        exp: "«Avesto»da qarzni qaytarmaslik o‘g‘rilikka tenglashtirilgan va bolalar huquqlari qat’iy himoyalangan."
+      },
+      {
+        q: "33. Qadimgi Xitoyda zilzilani oldindan aniqlab beruvchi qanday asbob ixtiro qilingan?",
+        options: [
+          "Seysmograf",
+          "Kompas",
+          "Barometr",
+          "Astrolabiya"
+        ],
+        correct: 0, // A
+        exp: "Zilzilani oldindan aniqlab beruvchi seysmograf Xitoyda ixtiro qilingan."
+      },
+      {
+        q: "34. Zarafshon vohasida joylashgan qadimgi Sug‘d shaharlari qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Yerqo‘rg‘on va Uzunqir",
+          "Afrosiyob va Ko‘ktepa",
+          "Qiziltepa va Ko‘zaliqir",
+          "Baqtra va Suza"
+        ],
+        correct: 1, // B
+        exp: "Zarafshon vohasida Afrosiyob (Samarqand) va Ko‘ktepa shaharlari joylashgan."
+      },
+      {
+        q: "35. Sin Shixuandi maqbarasidan hukmdorni «qo‘riqlash» uchun o‘rnatilgan qanday noyob haykallar topilgan?",
+        options: [
+          "Oltin jang aravalari",
+          "Tosh sfinkslar",
+          "6 mingta sopol askarlar haykallari",
+          "Bronza otlar"
+        ],
+        correct: 2, // C
+        exp: "Sin Shixuandi maqbarasidan 6 mingta sopol askarlar haykallari (Terrakota armiyasi) topilgan."
+      },
+      {
+        q: "36. Qadimgi Hindistonda oliy ma’bud Brahmaning tovonidan yaratilgan deb hisoblangan tabaqa qaysi?",
+        options: [
+          "Brahmanlar",
+          "Kshatriylar",
+          "Vayshiylar",
+          "Shudralar"
+        ],
+        correct: 3, // D
+        exp: "Xizmatkorlar va qullar — shudralar Brahmaning tovonidan yaratilgan deb qaralgan."
+      },
+      {
+        q: "37. Zardushtiylikda oftobda tozalangan suyaklar saqlanadigan sopol idishlar nima deb atalgan?",
+        options: [
+          "Ossuariylar (suyakdonlar)",
+          "Sarkofaglar",
+          "Xumlar",
+          "Daxmalar"
+        ],
+        correct: 0, // A
+        exp: "Poklangan suyaklar maxsus sopol tobutchalar — ossuariylarda dafn etilgan."
+      },
+      {
+        q: "38. Qadimgi Finikiyaning O‘rta Yer dengizi sohilidagi mashhur shahar-davlatlari qaysilar edi?",
+        options: [
+          "Nineviya, Ashshur, Tushpa",
+          "Tir, Sidon, Ugarit",
+          "Bobil, Uruk, Ur",
+          "Memfis, Fiva, Sakkara"
+        ],
+        correct: 1, // B
+        exp: "O‘rta Yer dengizi sohilida Tir, Sidon, Ugarit kabi yirik dengizbo‘yi shaharlari bo‘lgan."
+      },
+      {
+        q: "39. Xammurapi qonunlariga ko‘ra, qurilgan uy qulab biror kishini bosib o‘ldirsa, kim qatl etilgan?",
+        options: [
+          "Uy egasi",
+          "Shahar hokimi",
+          "Binokor",
+          "Qurilish quli"
+        ],
+        correct: 2, // C
+        exp: "Mabodo binokor qurgan uy qulab kishini bosib qolsa, binokor qatl etilishi shart bo‘lgan."
+      },
+      {
+        q: "40. Qadimgi Eronning janubi-g‘arbida vujudga kelgan eng qadimiy yozuv o‘choqlaridan biri bo‘lgan davlat qaysi?",
+        options: [
+          "Midiya",
+          "Fors",
+          "Bobil",
+          "Elam (poytaxti Suza)"
+        ],
+        correct: 3, // D
+        exp: "Eronning janubi-g‘arbida vujudga kelgan Elam davlatida jahondagi eng qadimgi yozuvlardan biri yaratilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 36) fb.innerText = "Mukammal natija! II Bo‘limni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "II Bo‘lim mavzularini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

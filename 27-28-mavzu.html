@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>27–28-§. Yunon-fors urushlari. Makedoniyaning Yunonistonni bosib olishi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha urushlar, sanalar va sarkardalarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">27–28-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30+5 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim tarixiy sanalar va sarkardalarni takrorlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">27–28-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Doro I va Marafon jangi
+      [
+        { id: 1, left: "Mil. avv. V asr boshlari", right: "Yunonistonga forslar tahdid sola boshlagan davr" },
+        { id: 2, left: "Mil. avv. 490-yil", right: "Attika yarimorolining Marafon tekisligida jang bo‘lgan sana" },
+        { id: 3, left: "Marafon yugurishi", right: "Afina jangarisi 42 km chopib kelib jon bergan voqeadan kelib chiqqan sport" },
+        { id: 4, left: "Doro I", right: "Kichik Osiyodagi yunon shaharlarini bosib olib, Yunonistonga yurish qilgan shoh" }
+      ],
+      // 2-bosqich: Kserks va Fermopil jangi
+      [
+        { id: 5, left: "Mil. avv. 480-yil", right: "Kserks Yunonistonga qarshi yurish boshlagan sana" },
+        { id: 6, left: "Fermopil darasi", right: "Yunoniston shimolidan janubiga olib boradigan birdan-bir yo‘l" },
+        { id: 7, left: "Leonid", right: "Fermopil darasini matonat bilan himoya qilgan Sparta podshosi" },
+        { id: 8, left: "«Uch yuz spartalik jasorati»", right: "Fermopil darasidagi qahramonlik tarixi" }
+      ],
+      // 3-bosqich: Salamin va Plateya janglari
+      [
+        { id: 9, left: "Salamin bo‘g‘ozi", right: "Mil. avv. 480-yilda hal qiluvchi dengiz jangi bo‘lib o‘tgan joy" },
+        { id: 10, left: "Mil. avv. 479-yil", right: "Plateya shahri yaqinida fors qo‘shinlari tor-mor etilgan sana" },
+        { id: 11, left: "Mil. avv. 449-yil", right: "Yunon-fors urushlari to‘liq g‘alaba bilan yakunlangan sulh tuzilgan sana" },
+        { id: 12, left: "Flot ustunligi", right: "Yunon shahar-davlatlarining dengizdagi ustunlik sababi" }
+      ],
+      // 4-bosqich: Filipp II va Makedoniya armiyasi
+      [
+        { id: 13, left: "Filipp II", right: "Yunonistonni bosib olishni ko‘zlagan Makedoniya podshosi" },
+        { id: 14, left: "Suvoriylar va piyodalar", right: "Makedoniya qo‘shinining asosiy qismlari" },
+        { id: 15, left: "Falanga (Makedoniya)", right: "16 qatordan iborat, oltinchi qator nayzalari birinchisini himoya qilgan saf" },
+        { id: 16, left: "Demosfen", right: "Ellada aholisinimakedonlarga qarshi birlashishga chaqirgan mashhur notiq" }
+      ],
+      // 5-bosqich: Xeroniya jangi
+      [
+        { id: 17, left: "Mil. avv. 338-yil", right: "Xeroniya ostonasida yunonlar va makedonlar asosiy kuchlari to‘qnashgan sana" },
+        { id: 18, left: "Aleksandr", right: "Filipp II ning suvoriy qo‘shiniga qo‘mondonlik qilgan o‘g‘li" },
+        { id: 19, left: "Yevro-makedon qaramligi", right: "Xeroniya jangidagi mag‘lubiyatdan keyin Yunonistonning ahvoli" },
+        { id: 20, left: "Ommaviy dafn", right: "Xeroniya ostonasida halok bo‘lgan yunonlar birga dafn etilgan marosim" }
+      ],
+      // 6-bosqich: Korinf kongressi va o‘zgarishlar
+      [
+        { id: 21, left: "Korinf", right: "Barcha yunon shahar-davlatlari vakillari yig‘ilgan shahar" },
+        { id: 22, left: "Forslarga qarshi ittifoq", right: "Makedoniya hokimiyati ostida tuzilgan yunon shaharlari ittifoqi" },
+        { id: 23, left: "Xoinlarcha o‘ldirilish", right: "Filipp II forslarga qarshi yurish boshlay olmasidan oldin sodir bo‘lgan voqea" },
+        { id: 24, left: "Makedoniyalik Aleksandr", right: "Filipp II vafotidan so‘ng taxtga o‘tirgan buyuk sarkarda hukmdor" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Yunon-fors urushlari qachon boshlangan va unga kim boshchilik qilgan?", a: "Miloddan avvalgi V asr boshlarida Fors shohi Doro I boshchiligida boshlangan." },
+      { q: "2. Birinchi yirik yunon-fors jangi qachon va qayerda bo‘lib o‘tdi?", a: "Miloddan avvalgi 490-yili Attika yarimorolining Marafon tekisligida bo‘ldi." },
+      { q: "3. «Marafon yugurishi» sport turi qanday tarixiy voqeadan kelib chiqqan?", a: "Marafon jangidagi g‘alaba xabarini Afinaga yetkazish uchun 42 km chopib kelib jon bergan jangchi sharafiga." },
+      { q: "4. Doro I vafotidan so‘ng Yunonistonga qarshi yurish boshlagan fors shohi kim?", a: "Doro I ning o‘g‘li Kserks (mil. avv. 480-yilda)." },
+      { q: "5. Fermopil darasi Yunoniston uchun qanday strategik ahamiyatga ega edi?", a: "Yunoniston shimolidan janubiga olib boradigan birdan-bir yo‘l edi." },
+      { q: "6. Fermopil darasida yunon qo‘shiniga kim boshchilik qildi va bu voqea qanday nomlandi?", a: "Sparta podshosi Leonid boshchilik qildi; bu voqea «Uch yuz spartalik jasorati» deb nomlangan." },
+      { q: "7. Yunonlar va forslar o‘rtasidagi hal qiluvchi dengiz jangi qachon va qayerda bo‘ldi?", a: "Miloddan avvalgi 480-yilda Salamin bo‘g‘ozida." },
+      { q: "8. Salamin dengiz jangida kim g‘alaba qozondi va Kserks nima qilishga majbur bo‘ldi?", a: "Yunonlar g‘alaba qozondi; Kserks flot qoldiqlari bilan Yunonistonni tark etishga majbur bo‘ldi." },
+      { q: "9. Plateya shahri yaqinida fors qo‘shinlari qachon tor-mor etildi?", a: "Miloddan avvalgi 479-yilda." },
+      { q: "10. Yunon-fors urushlari qaysi yildagi sulh bilan qanday natijada yakunlandi?", a: "Miloddan avvalgi 449-yildagi sulh bilan yunonlarning to‘liq g‘alabasi bilan yakunlandi." },
+      { q: "11. Yunoniston shaharlari zaiflashgan paytda ularni bosib olishni ko‘zlagan Makedoniya podshosi kim?", a: "Filipp II." },
+      { q: "12. Makedoniya armiyasining asosiy tuzilishi nimadan iborat edi?", a: "Suvoriylar va piyodalar (falanga)dan iborat edi." },
+      { q: "13. Makedon falangasining tuzilishi qanday edi?", a: "16 qatordan iborat bo‘lib, oltinchi qatorning uzun nayzalari oldingi qatordagilarni himoya qilgan." },
+      { q: "14. Mashhur notiq Demosfen Ellada xalqini nimalarga da’vat etgan?", a: "Makedonlarga qarshi kurashish uchun barcha shahar-davlatlarni birlashishga da’vat etgan." },
+      { q: "15. Xeroniya ostonasidagi hal qiluvchi jang qachon va qayerda bo‘lib o‘tdi?", a: "Miloddan avvalgi 338-yilda Beotiyadagi Xeroniya shahri yaqinida." },
+      { q: "16. Xeroniya jangida makedon suvoriy qo‘shiniga kim qo‘mondonlik qilgan?", a: "Filipp II ning o‘g‘li Aleksandr qo‘mondonlik qilgan." },
+      { q: "17. Xeroniya jangidan so‘ng Yunonistonning taqdiri qanday kechdi?", a: "Yunoniston Makedoniyaga qaram bo‘lib qoldi." },
+      { q: "18. Xeroniya ostonasida halok bo‘lgan yunonlar qanday dafn etildi?", a: "Vatan ozodligi yo‘lida halok bo‘lganlar birgalikda ommaviy dafn qilindi." },
+      { q: "19. Filipp II Yunonistonni bo‘ysundirgach o‘zini qanday tutdi?", a: "O‘zini yunonlar podshosi deb e’lon qilmadi, balki forsga qarshi ittifoq tuzdi." },
+      { q: "20. Korinf shahrida o‘tkazilgan yig‘ilishda qanday qaror qabul qilindi?", a: "Makedoniya hokimiyati ostida forslarga qarshi yurish maqsadida yunon shaharlar-davlatlari ittifoqi tuzildi." },
+      { q: "21. Filipp II forslarga qarshi yurishni boshlay olishidan oldin nima bo‘ldi?", a: "U xoinlarcha o‘ldirildi." },
+      { q: "22. Filipp IIvafotidan so‘ng Makedoniya taxtiga kim o‘tirdi?", a: "Uning o‘g‘li Makedoniyalik Aleksandr hukmdor bo‘ldi." },
+      { q: "23. Marafon jangida qaysi tomon g‘alaba qozondi?", a: "Yunon qo‘shinlari g‘alaba qozondi." },
+      { q: "24. Kserksning yurishi paytida spartaliklar darajada nima uchun qahramonlik ko‘rsatdilar?", a: "Fermopil darasini oxirigacha himoya qilib, dushman yo‘lini to‘sish uchun." },
+      { q: "25. Salamin dengiz jangida yunonlarning ustunligi nimada edi?", a: "Birlashgan floti forslarnikidan kuchli va epchil edi." },
+      { q: "26. Makedoniya armiyasining falangasi dushman nazarida nimaga o‘xshatilgan?", a: "Zirlangan temir maxluqotga o‘xshatilgan." },
+      { q: "27. Filipp II ning asosiy maqsadi nima edi?", a: "Tarqoq yunon shahar-davlatlarini o‘z hovuchiga olib, ularni yagona kuch sifatida birlashtirish va forslarga zarba berish." },
+      { q: "28. Demosfenning ma’ruzalari va chaqiriqlari tarixda qanday nom olgan?", a: "«Filippiklar» nomi bilan mashhur bo‘lib, makedonlarga qarshi ruhlantirgan." },
+      { q: "29. Xeroniya jangida yunonlarning mag‘lub bo‘lishiga asosiy sabab nima edi?", a: "Yunonlar o‘rtasida o‘zaro nifaq borligi va makedon falangasining harbiy ustunligi." },
+      { q: "30. Korinf kongressida yunon shahar-davlatlari o‘zaro munosabatda qanday kelishuvga erishdilar?", a: "Tinch-totuv yashash, o‘zaro urushlar qilmaslik va ichki ishlarga aralashmaslik to‘g‘risida." },
+      { q: "31. Yunon-fors urushlarining tugashi qadimgi dunyo sivilizatsiyasiga qanday ta’sir qildi?", a: "Yunon polislari iqtisodiy va madaniy yuksalish (Klassik davr) davriga kirdi." },
+      { q: "32. Makedoniya qayerda joylashgan edi?", a: "Yunonistonning shimolida joylashgan hudud edi." },
+      { q: "33. Xeroniya ostonasidagi jangdagi g‘alaba kimlarning qo‘liga o‘tdi?", a: "Makedoniyaliklarga." },
+      { q: "34. Filipp II ning vafotidan so‘ng uning ishini davom ettirgan shaxs kim?", a: "Buyuk sarkarda Makedoniyalik Aleksandr." },
+      { q: "35. Salamin bo‘g‘ozidagi jang qaysi qit’alar tutashgan dengizda yuz berdi?", a: "Yevropa va Osiyo oralig‘idagi Egey dengizi havzasida." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Birinchi yirik yunon-fors jangi qachon va qayerda bo‘lib o‘tdi?",
+        options: [
+          "Mil. avv. 490-yilda Marafon tekisligida",
+          "Mil. avv. 480-yilda Salamin bo‘g‘ozida",
+          "Mil. avv. 338-yilda Xeroniya ostonasida",
+          "Mil. avv. 479-yilda Plateyada"
+        ],
+        correct: 0, // A
+        exp: "Birinchi jang mil. avv. 490-yili Attika yarimorolining Marafon tekisligida bo‘lib o‘tdi."
+      },
+      {
+        q: "2. Qaysi Makedoniya podshosi Yunonistonni bosib olishni rejalashtirgan va falanga armiyasini tuzgan?",
+        options: [
+          "Kserks",
+          "Filipp II",
+          "Doro I",
+          "Aleksandr"
+        ],
+        correct: 1, // B
+        exp: "Makedoniya podshosi Filipp II Yunonistonni bosib olishni ko‘zlagandi va falangani kuchaytirgan."
+      },
+      {
+        q: "3. Yunonlar va forslar o‘rtasidagi hal qiluvchi dengiz jangi qachon va qayerda bo‘ldi?",
+        options: [
+          "Mil. avv. 490-yilda Marafon tekisligida",
+          "Mil. avv. 338-yilda Xeroniya shahrida",
+          "Mil. avv. 480-yilda Salamin bo‘g‘ozida",
+          "Mil. avv. 449-yilda Plateyada"
+        ],
+        correct: 2, // C
+        exp: "Yuzaga kelgan hal qiluvchi dengiz jangi mil. avv. 480-yilda tor Salamin bo‘g‘ozida bo‘lib o‘tdi."
+      },
+      {
+        q: "4. Yunon-fors urushlari to‘liq g‘alaba bilan qaysi yildagi sulh natijasida yakunlandi?",
+        options: [
+          "Mil. avv. 480-yilda",
+          "Mil. avv. 338-yilda",
+          "Mil. avv. 490-yilda",
+          "Mil. avv. 449-yilda"
+        ],
+        correct: 3, // D
+        exp: "Yunon-fors urushlari yunonlarning to‘liq g‘alabasi bilan mil. avv. 449-yildagi sulh natijasida yakunlandi."
+      },
+      {
+        q: "5. Fermopil darasida yunon qo‘shiniga boshchilik qilgan va qahramonlarcha halok bo‘lgan Sparta podshosi kim?",
+        options: [
+          "Leonid",
+          "Filipp II",
+          "Demosfen",
+          "Kserks"
+        ],
+        correct: 0, // A
+        exp: "Fermopil darasini himoya qilishga Sparta podshosi Leonid boshchilik qildi."
+      },
+      {
+        q: "6. Ellada shahar-davlatlarini makedonlarga qarshi kurashish uchun birlashishga chaqirgan mashhur notiq kim?",
+        options: [
+          "Gerodot",
+          "Demosfen",
+          "Ktesiy",
+          "Solon"
+        ],
+        correct: 1, // B
+        exp: "Mashhur notiq Demosfen Ellada shaharlarini makedonlarga qarshi kurashish uchun birlashishga da’vat etdi."
+      },
+      {
+        q: "7. Yunonlar va makedonlarning asosiy kuchlari Xeroniya shahrining ostonasida qachon to‘qnashdilar?",
+        options: [
+          "Mil. avv. 490-yilda",
+          "Mil. avv. 480-yilda",
+          "Mil. avv. 338-yilda",
+          "Mil. avv. 449-yilda"
+        ],
+        correct: 2, // C
+        exp: "Mil. avv. 338-yilda yunon va makedonlarning asosiy kuchlari Xeroniya shahri yaqinidagi Beotiyada to‘qnashadi."
+      },
+      {
+        q: "8. Xeroniya jangida Filipp II ning suvoriy qo‘shiniga kim qo‘mondonlik qilgan edi?",
+        options: [
+          "Doro I",
+          "Leonid",
+          "Kserks",
+          "Uning o‘g‘li Aleksandr"
+        ],
+        correct: 3, // D
+        exp: "Filipp II ning o‘g‘li Aleksandr qo‘mondonlik qilayotgan suvoriylar qo‘shini qaqshatqich zarba berdi."
+      },
+      {
+        q: "9. Marafon jangidagi g‘alaba xabarini Afinaga yetkazish uchun chopib kelib jon bergan afinalik jangchi sharafiga qaysi sport turi yuzaga keldi?",
+        options: [
+          "Marafon yugurishi",
+          "Disk uloqtirish",
+          "Pentatlon",
+          "Olimpiya kurashi"
+        ],
+        correct: 0, // A
+        exp: "Naq 42 kilometr yo‘lni chopib o‘tgan jangchi «G‘alaba!» deb jon bergan. Keyinchalik sport musobaqalariga Marafon yugurishi deya nom berildi."
+      },
+      {
+        q: "10. Kserks Yunonistonga qarshi qachon yurish boshlagan edi?",
+        options: [
+          "Mil. avv. 490-yilda",
+          "Mil. avv. 480-yilda",
+          "Mil. avv. 338-yilda",
+          "Mil. avv. 522-yilda"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. 480-yilda Yunonistonga qarshi Doro I ning o‘g‘li Kserks yurish boshladi."
+      },
+      {
+        q: "11. Filipp II vafotidan so‘ng Makedoniya taxtiga o‘tirib, jahonni zabt etishni boshlagan buyuk sarkarda kim?",
+        options: [
+          "Demosfen",
+          "Leonid",
+          "Makedoniyalik Aleksandr",
+          "Fidiy"
+        ],
+        correct: 2, // C
+        exp: "Filipp II xoinlarcha o‘ldirilgach, uning o‘g‘li Makedoniyalik Aleksandr hukmdor bo‘ldi."
+      },
+      {
+        q: "12. Makedoniya armiyasining falangasi necha qatordan iborat bo‘lgan?",
+        options: [
+          "4 qatordan",
+          "8 qatordan",
+          "12 qatordan",
+          "16 qatordan"
+        ],
+        correct: 3, // D
+        exp: "Piyodalar 16 qatordan iborat falangada saflanardi."
+      },
+      {
+        q: "13. Filipp II vafotidan so‘ng barcha yunon shahar-davlatlari vakillari qaysi shaharda yig‘ilib ittifoq tuzdilar?",
+        options: [
+          "Korinfda",
+          "Spartada",
+          "Afinada",
+          "Xeroniyada"
+        ],
+        correct: 0, // A
+        exp: "Barcha yunon shahar-davlatlarining vakillari Korinfga yig‘iladi va forslarga qarshi yurish maqsadida ittifoq tuzadi."
+      },
+      {
+        q: "14. Plateya shahri yaqinida fors qo‘shinlari qaysi yilda tor-mor etilgan edi?",
+        options: [
+          "Mil. avv. 490-yilda",
+          "Mil. avv. 479-yilda",
+          "Mil. avv. 480-yilda",
+          "Mil. avv. 338-yilda"
+        ],
+        correct: 1, // B
+        exp: "Mil. avv. 479-yilda Plateya shahri yaqinida fors qo‘shinlari tor-mor etildi."
+      },
+      {
+        q: "15. Yunon-fors urushlari boshlanishiga qaysi davlat shohi sabab bo‘lgan?",
+        options: [
+          "Kserks",
+          "Artakserks",
+          "Doro I",
+          "Kir II"
+        ],
+        correct: 2, // C
+        exp: "Fors shohi Doro I dastlab Kichik Osiyodagi yunon shaharlarini bosib olib, Yunonistonga yurish qiladi."
+      },
+      {
+        q: "16. Xeroniya ostonasidagi mag‘lubiyatdan so‘ng Yunoniston qaysi davlatga qaram bo‘lib qoldi?",
+        options: [
+          "Bobilga",
+          "Ossuriyaga",
+          "Fors imperiyasiga",
+          "Makedoniyaga"
+        ],
+        correct: 3, // D
+        exp: "Xeroniya ostonasidagi jangdan so‘ng mag‘lubiyat oqibatida Yunoniston Makedoniyaga qaram bo‘lib qoldi."
+      },
+      {
+        q: "17. Qaysi jang tariximizda «Uch yuz spartalik jasorati» nomi bilan saqlanib qolgan?",
+        options: [
+          "Fermopil jangi",
+          "Marafon jangi",
+          "Salamin jangi",
+          "Plateya jangi"
+        ],
+        correct: 0, // A
+        exp: "Fermopil darasini matonat bilan himoya qilgan Leonid va 300 spartaliklar jasorati tarixda qolgan."
+      },
+      {
+        q: "18. Makedoniya armiyasining falangasida oltinchi qatordagi jangchining vazifasi nima edi?",
+        options: [
+          "Otliq qo‘shinlarni boshqarish",
+          "Uzun nayzalari bilan birinchi qatordagi jangchini muhofaza qilish",
+          "Dushmanni ta’qib qilish",
+          "Bayroqni saqlash"
+        ],
+        correct: 1, // B
+        exp: "Falanganing oltinchi qatordagi nayzasi birinchi qatordagi jangchini muhofaza etardi."
+      },
+      {
+        q: "19. Filipp II ning asosiy maqsadi nima edi?",
+        options: [
+          "Misrni zabt etish",
+          "Italiyani egallash",
+          "Yunonistonni bosib olish",
+          "Hindistonga borish"
+        ],
+        correct: 2, // C
+        exp: "Makedoniya podshosi Filipp II Yunonistonni bosib olishni ko‘zlagandi."
+      },
+      {
+        q: "20. Salamin dengiz jangi qaysi yilda bo‘lib o‘tgan?",
+        options: [
+          "Mil. avv. 490-yilda",
+          "Mil. avv. 479-yilda",
+          "Mil. avv. 338-yilda",
+          "Mil. avv. 480-yilda"
+        ],
+        correct: 3, // D
+        exp: "Yunonlar va forslar o‘rtasidagi hal qiluvchi dengiz jangi mil. avv. 480-yilda tor Salamin bo‘g‘ozida bo‘lib o‘tdi."
+      },
+      {
+        q: "21. Fermopil darasi Yunonistonning qaysi qismida joylashgan edi?",
+        options: [
+          "Yunonistonni shimoldan janubga olib boruvchi tog‘ yo‘li",
+          "Krit orolining markazi",
+          "Peloponnes yarimoroli janubi",
+          "Attika qirg‘og‘i"
+        ],
+        correct: 0, // A
+        exp: "Fermopil darasi Yunoniston shimolidan janubiga olib boradigan birdan-bir yo‘l edi."
+      },
+      {
+        q: "22. Xeroniya jangida yunonlarning mag‘lub bo‘lishiga qanday omil sabab bo‘ldi?",
+        options: [
+          "Forslarning yordam berishi",
+          "Makedon suvoriylarining qaqshatqich zarbasi va yunonlarning ikkiga bo‘linib ketishi",
+          "Qattiq zilzila bo‘lishi",
+          "Yunonlarda qurol bo‘lmagani"
+        ],
+        correct: 1, // B
+        exp: "Yunon qo‘shinlari ikkiga bo‘linib ketdi va Filipp II o‘g‘li Aleksandr boshchiligidagi suvoriy qo‘shin qaqshatqich zarba berdi."
+      },
+      {
+        q: "23. Marafon jangi qaysi yilda bo‘lib o‘tgan?",
+        options: [
+          "Mil. avv. 480-yilda",
+          "Mil. avv. 449-yilda",
+          "Mil. avv. 490-yilda",
+          "Mil. avv. 338-yilda"
+        ],
+        correct: 2, // C
+        exp: "Birinchi jang mil. avv. 490-yili Attika yarimorolining Marafon tekisligida bo‘ldi."
+      },
+      {
+        q: "24. Makedoniya armiyasining asosiy zarba beruvchi kuchlaridan biri nima edi?",
+        options: [
+          "Faqat dengiz floti",
+          "Jangovar filchalar",
+          "Kamonchilar otryadi",
+          "Suvoriylar va falanga"
+        ],
+        correct: 3, // D
+        exp: "Makedoniya qo‘shinlari suvoriylar va piyodalar (falanga)dan tashkil topgandi."
+      },
+      {
+        q: "25. Yunon-fors urushlari davrida Afina va Sparta qanday siyosiy munosabatda bo‘lgan?",
+        options: [
+          "Tashqi dushmanga qarshi o‘zaro birlashgan",
+          "Doimiy urush holatida bo‘lgan",
+          "Forslar bilan birga Afinaga hujum qilgan",
+          "Bir-birini tan olmagan"
+        ],
+        correct: 0, // A
+        exp: "Forslar tahdidiga qarshi yunon shahar-davlatlari o‘zaro birlashib kurashgan."
+      },
+      {
+        q: "26. Salamin dengiz jangida yunonlarning g‘alaba qozonishiga nima sabab bo‘ldi?",
+        options: [
+          "Fors floti juda qadimgi bo‘lgani",
+          "Yunon shahar-davlatlarining birlashgan floti forslarnikidan kuchli va epchil bo‘lgani",
+          "Forslar dengizdan qo‘rqqani",
+          "Kserksning o‘z qo‘shinini o‘zi o‘ldirgani"
+        ],
+        correct: 1, // B
+        exp: "Yunon shahar-davlatlarining birlashgan floti forslarning harbiy flotidan kuchli va epchil edi."
+      },
+      {
+        q: "27. Filipp II Yunonistonni egallagach, tashqi siyosatda qanday reja tuzdi?",
+        options: [
+          "Yunonlarni butunlay qul qilishni",
+          "Hamma shaharlarni yer bilan yakson qilishni",
+          "Forslarga qarshi umumiy yurish uyushtirishni",
+          "Misrni bo‘ysundirishni"
+        ],
+        correct: 2, // C
+        exp: "Korinfda yig‘ilganlar bilan Makedoniya hokimiyati ostida forslarga qarshi yurish maqsadida ittifoq tuzdi."
+      },
+      {
+        q: "28. Demosfenning makedonlarga qarshi kurashishga chaqirgan nutqlari va da’vatlari qanday atalgan?",
+        options: [
+          "«Avesto»",
+          "«Iliada»",
+          "«Mahabharata»",
+          "«Filippiklar»"
+        ],
+        correct: 3, // D
+        exp: "Notiq Demosfenning makedonlarga qarshi nutqlari tarixda «filippiklar» deb nomlangan."
+      },
+      {
+        q: "29. Plateya jangi qaysi yilda bo‘lib o‘tgan?",
+        options: [
+          "Mil. avv. 479-yilda",
+          "Mil. avv. 490-yilda",
+          "Mil. avv. 480-yilda",
+          "Mil. avv. 338-yilda"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 479-yilda Plateya shahri yaqinida fors qo‘shinlari tor-mor etildi."
+      },
+      {
+        q: "30. Xeroniya jangida makedon falangasining harakati dushmanga nisbatan nimaga o‘xshatilgan?",
+        options: [
+          "Yengil qush parvoziga",
+          "Zirlangan temir maxluqotga",
+          "Tez oqadigan daryoga",
+          "Quyosh nurlariga"
+        ],
+        correct: 1, // B
+        exp: "Jang paytida butun falanga zirlangan temir maxluqotga o‘xshab qolar edi."
+      },
+      {
+        q: "31. Korinf kongressida yunon shahar-davlatlari qanday qarorga kelishdi?",
+        options: [
+          "Faqat savdo qilishga",
+          "Bir-birining hududini bosib olishga",
+          "Tinch-totuv yashash, o‘zaro urushlar qilmaslik va ichki ishlarga aralashmaslik",
+          "Makedoniyaga soliq to‘lamaslikka"
+        ],
+        correct: 2, // C
+        exp: "Ular tinch-totuv yashash, o‘zaro urushlar olib bormaslik va bir-birining ichki ishlariga aralashmaslik to‘g‘risida kelishdilar."
+      },
+      {
+        q: "32. Filipp II vafotidan so‘ng uning o‘rniga hokimiyatga kelgan shaxs kim?",
+        options: [
+          "Doro I",
+          "Kserks",
+          "Leonid",
+          "Makedoniyalik Aleksandr"
+        ],
+        correct: 3, // D
+        exp: "Uning o‘g‘li Makedoniyalik Aleksandr hukmdor bo‘ldi."
+      },
+      {
+        q: "33. Yunon-fors urushlarining boshlanishiga asosiy sabab nima edi?",
+        options: [
+          "Fors shohi Doro I ning Kichik Osiyodagi yunon shaharlarini bosib olib, Yunonistonga tahdid solishi",
+          "Yunonlarning Bobilni egallashi",
+          "Makedoniyaning forslar bilan urush boshlashi",
+          "Kserksning Misrni qul qilishi"
+        ],
+        correct: 0, // A
+        exp: "Fors shohi Doro I dastlab Kichik Osiyodagi yunon shaharlarini bosib olib, Yunonistonga yurish qiladi."
+      },
+      {
+        q: "34. Xeroniya jangida mag‘lubiyatga uchragan yunonlar kimga qaram bo‘lib qoldilar?",
+        options: [
+          "Forslarga",
+          "Makedoniyaga",
+          "Misrga",
+          "Rimga"
+        ],
+        correct: 1, // B
+        exp: "Xeroniya ostonasidagi jangdan so‘ng mag‘lubiyat oqibatida Yunoniston Makedoniyaga qaram bo‘lib qoldi."
+      },
+      {
+        q: "35. Salamin dengiz jangida mag‘lub bo‘lgach, Kserks nima qildi?",
+        options: [
+          "Afina shahrini poytaxt qildi",
+          "Sparta bilan tinchlik shartnomasini imzoladi",
+          "Flot qoldiqlari bilan Yunonistonni tark etishga majbur bo‘ldi",
+          "Makedoniya bilan ittifoq tuzdi"
+        ],
+        correct: 2, // C
+        exp: "Ushbu mag‘lubiyatdan so‘ng Kserks flot qoldiqlari bilan Yunonistonni tark etishga majbur bo‘lardi."
+      },
+      {
+        q: "36. Makedoniya falangasining qanotlarini qaysi qo‘shin qismi himoya qilgan?",
+        options: [
+          "Kamonchilar",
+          "Dengiz floti",
+          "Piyoda askarlar",
+          "Otliqlar (suvoriylar)"
+        ],
+        correct: 3, // D
+        exp: "Falanga qanotlarini otliqlar (suvoriylar) himoya qilardi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! 27–28-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

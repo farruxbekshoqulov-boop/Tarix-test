@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>48-§. G‘arbiy Rim imperiyasining tanazzuli va halokati</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va Rim tanazzuliga oid ma’lumotlarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">48-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">48-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Milodiy III asr", right: "Rim imperiyasining kuch-qudrati zaifasha boshlagan davr" },
+        { id: 2, left: "Varvarlar", right: "Dastlab yunonlar tillari tushunarsiz qabilalarga bergan nom, keyinchalik quyi bosqichdagi xalqlar" },
+        { id: 3, left: "Trayan davridan so‘ng", right: "Rimliklar yirik bosqinchilik yurishlarini olib borolmagan vaqt" },
+        { id: 4, left: "Imperator armiyasi", right: "Sayar bo‘lib, o‘z ichida turli guruhlar kurash olib borgan kuch" }
+      ],
+      [
+        { id: 5, left: "Milodiy 330-yil", right: "Vizantiy (Konstantinopol) shahri Rim imperiyasining poytaxti etib e’lon qilingan yil" },
+        { id: 6, left: "Konstantinopol", right: "Imperator Konstantin sharafiga atab qayta qurilgan poytaxt shahar" },
+        { id: 7, left: "Milodiy 395-yil", right: "Imperator Feodosiy o‘limidan so‘ng Rim imperiyasi ikkiga bo‘lingan sana" },
+        { id: 8, left: "G‘arbiy va Sharqiy qismlar", right: "Rim imperiyasi ikkiga bo‘lingan hududlar (Italiya/G‘arbiy Yevropa va Bolqon/Kichik Osiyo/Misr)" }
+      ],
+      [
+        { id: 9, left: "Milodiy 410-yil", right: "Alarix boshchiligidagi german qabilalari — gotlar Rimni qurshab olgan yil" },
+        { id: 10, left: "Qullar isyoni", right: "Tunda Rim darvozalarini ochib berib, bosqinchilarni kiritgan ichki kuch" },
+        { id: 11, left: "Bebaho kitoblar", right: "Gotlar Rimni talaganda yo‘q qilib, yondirib yuborgan madaniy boyliklar" },
+        { id: 12, left: "«Boqiy shahar»", right: "Rimni shunday deb ta’riflab, uning zavoliga ishonmagan shahar aholisi" }
+      ],
+      [
+        { id: 13, left: "Attila", right: "Rimning undan ham dahshatliroq dushmani bo‘lgan hun qabilalari boshlig‘i" },
+        { id: 14, left: "Milodiy 452-yil", right: "Attila boshchiligidagi hun qabilalari paydo bo‘lib, hujum uyushtirgan yil" },
+        { id: 15, left: "Milodiy 455-yil", right: "Germanning vandal qabilalari Rimga hujum qilib, ikki hafta davomida talagan sana" },
+        { id: 16, left: "Vandallar", right: "Rim shahrini ikki hafta davomida talab, hamma narsani nobub qilgan qabilalar" }
+      ],
+      [
+        { id: 17, left: "Odoakr", right: "German qabilalarining Rimdagi yollanma qo‘shini sarkardasi" },
+        { id: 18, left: "Milodiy 476-yil", right: "Odoakr oxirgi imperator Romulni taxtdan ag‘darib, G‘arbiy Rim imperiyasini qulatgan yil" },
+        { id: 19, left: "Romul", right: "G‘arbiy Rim imperiyasining taxtdan ag‘darilgan oxirgi imperatori" },
+        { id: 20, left: "Konstantinopolga jo‘natish", right: "Odoakr imperator unvoni nishonini yuborgan sharqiy poytaxt" }
+      ],
+      [
+        { id: 21, left: "O‘rta asrlar tarixi", right: "Milodiy 476-yildan boshlab boshlangan yangi davr tarixi" },
+        { id: 22, left: "German qabilalari", right: "G‘arbiy Rim imperiyasining sharqiy va g‘arbiy hududlarini egallab olgan xalqlar" },
+        { id: 23, left: "Teatralar va kutubxonalar", right: "Savodsiz bo‘lgan germanlar ko‘rishmagan va qadrlamagan madaniy maskanlar" },
+        { id: 24, left: "Tosh-taxtachalar", right: "Germanlar devorlarni mustahkamlash uchun ibodatxonalardan ko‘chirib ketgan buyumlar" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      const stageBadge = document.getElementById('match-stage-badge');
+      const matchCounter = document.getElementById('match-counter');
+      const matchProgress = document.getElementById('match-progress');
+      
+      if (stageBadge) stageBadge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (matchProgress) matchProgress.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      if (!container) return;
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          
+          const matchCounter = document.getElementById('match-counter');
+          if (matchCounter) matchCounter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                const matchProgress = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (matchProgress) matchProgress.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Imperator Trayandan so‘ng rimliklar qanday urushlarni olib borolmagan?", a: "Yirik bosqinchilik urushlarini." },
+      { q: "2. Rim imperiyasining kuch-qudrati qachondan boshlab zaifasha boshladi?", a: "Milodiy III asrdan." },
+      { q: "3. Dastlab yunonlar tillari tushunarsiz bo‘lgan qabilalarni qanday atashgan?", a: "«Varvarlar»." },
+      { q: "4. Keyinchalik rimliklar kimlarni «varvarlar» deb nomlashgan?", a: "Madaniy taraqqiyotning ancha quyi pog‘onasida turuvchi xalqlarni." },
+      { q: "5. Imperator Konstantin zamonida milodiy 330-yilda qaysi shahar Rim imperiyasining poytaxti deb e’lon qilindi?", a: "Vizantiy (Konstantinopol)." },
+      { q: "6. Vizantiy shahri imperator sharafiga qanday nomlana boshlandi?", a: "Konstantinopol." },
+      { q: "7. Imperator Feodosiy o‘limidan so‘ng milodiy 395-yilda Rim imperiyasi nechta qismga bo‘lindi?", a: "Ikki qismga: G‘arbiy va Sharqiy Rim imperiyalariga." },
+      { q: "8. G‘arbiy Rim imperiyasi tarkibiga qaysi hududlar kirdi?", a: "Italiya, G‘arbiy Yevropa va Shimoliy Afrikadagi viloyatlar." },
+      { q: "9. Sharqiy Rim imperiyasi tarkibiga qaysi hududlar kirdi?", a: "Bolqon yarimoroli, Kichik Osiyo va Misr yerlari." },
+      { q: "10. Qaysi qismda imperatorning yagona hokimiyati saqlanib qoldi?", a: "Sharqiy Rim imperiyasida." },
+      { q: "11. G‘arbiy Rim imperiyasi nima bo‘ldi?", a: "Alohida davlatlarga parchalana boshladi." },
+      { q: "12. Milodiy 410-yilda Alarix boshchiligidagi qaysi german qabilalari Rimni qurshab oldi?", a: "Gotlar." },
+      { q: "13. Gotlar Rimni egallashiga nima sabab bo‘ldi?", a: "Tunda qullar shahar darvozalarini ichkaridan ochib berdi." },
+      { q: "14. Gotlar Rimda nimalarni yo‘q qilishdi?", a: "Haykallarni yo‘q qilib, bebaho kitoblarni yondirdilar va shaharni uch kun taladilar." },
+      { q: "15. Rimliklar o‘z shahrini qanday ta’riflashgan edi?", a: "«Boqiy shahar»." },
+      { q: "16. Alarixdan keyin Rimga dahshat solgan hun qabilalari boshlig‘i kim edi?", a: "Attila." },
+      { q: "17. Attila boshchiligidagi hun qabilalari qachon paydo bo‘ldi?", a: "Milodiy 452-yilda." },
+      { q: "18. Milodiy 455-yilda Rimga germanlarning qaysi qabilasi hujum qildi?", a: "Vandallar." },
+      { q: "19. Vandallar Rimni necha hafta davomida taladilar?", a: "Ikki hafta davomida." },
+      { q: "20. Milodiy 476-yilda german qabilalarining yollanma qo‘shin sarkardasi kim edi?", a: "Odoakr." },
+      { q: "21. Odoakr oxirgi imperator Romulni nima qildi?", a: "Taxtdan ag‘dardi va imperator unvoni nishonini Konstantinopolga jo‘natdi." },
+      { q: "22. G‘arbiy Rim imperiyasining qulashi bilan qaysi davr boshlandi?", a: "O‘rta asrlar tarixi." },
+      { q: "23. G‘arbiy Rim sarhadlarini qaysi qabilalar egallab olishdi?", a: "German qabilalari." },
+      { q: "24. Germanlar madaniyat borasida qanday ahvolda edi?", a: "Savodsiz bo‘lib, teatr va kutubxonalarni ko‘rishmagan edi." },
+      { q: "25. Germanlar devorlarni mustahkamlash uchun qayerdagi tosh-taxtalarni ko‘chirib ketishgan?", a: "Rim ibodatxonalari va kutubxonalaridan." },
+      { q: "26. G‘arbiy Rim imperiyasining qulashi qaysi yilga to‘g‘ri keladi?", a: "Milodiy 476-yilga." },
+      { q: "27. Qadimgi dunyo tarixi qachon o‘z nihoyasiga yetdi?", a: "Milodiy 476-yilda G‘arbiy Rim imperiyasi qulagach." },
+      { q: "28. Gotlar va vandallar kabi qabilalar tarixga qanday nom bilan kirgan?", a: "Varvar qabilalari." },
+      { q: "29. Alarix boshchiligidagi gotlar Rimni necha kun davomida tinimsiz talagan?", a: "Roppa-rosa uch kun." },
+      { q: "30. Avgust oyining qorong‘i tunida qullar nima qilishgan?", a: "Rimning 12 darvozasidan birini ichkaridan ochishgan." },
+      { q: "31. Germanlar Rimning me’morchiligi va haykallariga qanday munosabatda bo‘lishdi?", a: "Ularning go‘zalligini tushunmay, shafqatsizlarcha yo‘q qilib yuborishdi." },
+      { q: "32. Imperator Konstantin zamonida poytaxt qayerga ko‘chirildi?", a: "Bosfor bo‘g‘ozidagi Vizantiy shahriga." },
+      { q: "33. Sharqiy Rim imperiyasida kimning yagona hokimiyati saqlanib qolgan edi?", a: "Imperatorning." },
+      { q: "34. G‘arbiy Rim imperiyasining so‘nggi imperatori kim edi?", a: "Romul." },
+      { q: "35. Odoakr imperatorlik nishonini qayerga jo‘natib yubordi?", a: "Konstantinopolga." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Rim imperiyasining kuch-qudrati qachondan boshlab zaifasha boshladi?",
+        options: [
+          "Milodiy III asrdan",
+          "Mil. avv. I asrdan",
+          "Milodiy V asrdan",
+          "Milodiy II asr boshidan"
+        ],
+        correct: 0, // A
+        exp: "Milodiy III asrda Rim imperiyasining kuch-qudrati zaifasha boshladi."
+      },
+      {
+        q: "2. Imperator Konstantin zamonida milodiy 330-yilda Rim imperiyasining poytaxti etib qaysi shahar e’lon qilindi?",
+        options: [
+          "Karfagen",
+          "Vizantiy (Konstantinopol)",
+          "Afinas",
+          "Aleksandriya"
+        ],
+        correct: 1, // B
+        exp: "Milodiy 330-yilda Bosfor bo‘g‘ozidagi Vizantiy shahri Rim imperiyasining poytaxti deb e’lon qilindi."
+      },
+      {
+        q: "3. Imperator Feodosiy o‘limidan so‘ng milodiy 395-yilda Rim imperiyasi nechta qismga bo‘lindi?",
+        options: [
+          "Uchta qismga",
+          "To‘rtta qismga",
+          "Ikki qismga (G‘arbiy va Sharqiy)",
+          "Beshita qismga"
+        ],
+        correct: 2, // C
+        exp: "Milodiy 395-yilda Rim imperiyasi uning ikki o‘rtasida G‘arbiy va Sharqiy qismlarga bo‘linib olindi."
+      },
+      {
+        q: "4. Alarix boshchiligidagi german qabilalari — gotlar Rimni qaysi yilda qurshab olib talaganlar?",
+        options: [
+          "Milodiy 330-yilda",
+          "Milodiy 395-yilda",
+          "Milodiy 455-yilda",
+          "Milodiy 410-yilda"
+        ],
+        correct: 3, // D
+        exp: "Milodiy 410-yilda Alarix boshchiligidagi german qabilalari — gotlar Rimni qurshab oldi."
+      },
+      {
+        q: "5. Milodiy 455-yilda Rimga hujum qilib, ikki hafta davomida shaharni nobub qilgan german qabilalari kimlar edi?",
+        options: [
+          "Vandallar",
+          "Gotlar",
+          "Hunlar",
+          "Italiklar"
+        ],
+        correct: 0, // A
+        exp: "Milodiy 455-yilda Rimga germanlarning vandal qabilalari hujum qildi."
+      },
+      {
+        q: "6. German qabilalarining yollanma qo‘shini sarkardasi Odoakr oxirgi imperator Romulni qachon taxtdan ag‘dargan?",
+        options: [
+          "Milodiy 410-yilda",
+          "Milodiy 476-yilda",
+          "Milodiy 455-yilda",
+          "Milodiy 395-yilda"
+        ],
+        correct: 1, // B
+        exp: "Milodiy 476-yilda Odoakr so‘nggi imperator Romulni taxtdan ag‘dardi."
+      },
+      {
+        q: "7. G‘arbiy Rim imperiyasining qulashi bilan tarixda qaysi davr boshlandi?",
+        options: [
+          "Qadimgi dunyo tarixi",
+          "Yangi davr tarixi",
+          "O‘rta asrlar tarixi",
+          "Eng yangi davr"
+        ],
+        correct: 2, // C
+        exp: "Mazkur sanadan boshlab o‘rta asrlar tarixi boshlandi."
+      },
+      {
+        q: "8. Attila boshchiligidagi hun qabilalari Rim imperiyasiga qarshi qachon hujum uyushtira boshladi?",
+        options: [
+          "Milodiy 330-yilda",
+          "Milodiy 410-yilda",
+          "Milodiy 476-yilda",
+          "Milodiy 452-yilda"
+        ],
+        correct: 3, // D
+        exp: "Attila boshchiligidagi hun qabilalari 452-yilda paydo bo‘lib, hujum uyushtira boshladi."
+      },
+      {
+        q: "9. Dastlab yunonlar tillari tushunarsiz bo‘lgan barcha qabila va xalqlarni qanday atashgan?",
+        options: [
+          "«Varvarlar»",
+          "«Patrisiy»",
+          "«Kolon»",
+          "«Plebey»"
+        ],
+        correct: 0, // A
+        exp: "Dastlab yunonlar tillari o‘zlari uchun tushunarsiz bo‘lgan barcha qabila va xalqlarni «varvarlar» deb atashgan."
+      },
+      {
+        q: "10. Sharqiy Rim imperiyasida qanday hokimiyat saqlanib qolgan edi?",
+        options: [
+          "Respublika boshqaruvi",
+          "Imperatorning yagona hokimiyati",
+          "Kengash boshqaruvi",
+          "Demokratik saylovlar"
+        ],
+        correct: 1, // B
+        exp: "Sharqiy Rim imperiyasida imperatorning yagona hokimiyati saqlanib qolgan."
+      },
+      {
+        q: "11. Gotlar Rimni egallaganda shaharga qanday kirib borishgan?",
+        options: [
+          "Kema orqali daryodan",
+          "Tog‘ oshib yashirincha",
+          "Tunda qullar shahar darvozalarini ochib berishi natijasida",
+          "Devorlarni portlatib"
+        ],
+        correct: 2, // C
+        exp: "Ammo tunda qullar shahar darvozalarini ochib beradi, bosqinchilar yopirilib kiradi."
+      },
+      {
+        q: "12. G‘arbiy Rim imperiyasining qulashi va Qadimgi dunyo tarixining yakunlanish sanasi qaysi?",
+        options: [
+          "Milodiy 330-yil",
+          "Milodiy 395-yil",
+          "Milodiy 410-yil",
+          "Milodiy 476-yil"
+        ],
+        correct: 3, // D
+        exp: "Milodiy 476-yilda G‘arbiy Rim imperiyasining qulashi va qadimgi dunyo tarixining yakunlanish sanasi sifatida tarixga kirdi."
+      },
+      {
+        q: "13. Imperator Trayan davridan so‘ng rimliklar qanday urushlarni olib borolmagan?",
+        options: [
+          "Yirik bosqinchilik urushlarini",
+          "Himoya urushlarini",
+          "Dengiz janglarini",
+          "Fuqarolar urushlarini"
+        ],
+        correct: 0, // A
+        exp: "Imperator Trayan davridan so‘ng rimliklar yirik bosqinchilik urushlarini olib borolmagan."
+      },
+      {
+        q: "14. Vizantiy shahri poytaxt etib e’lon qilingach kimning sharafiga nomlangan?",
+        options: [
+          "Trayan",
+          "Konstantin",
+          "Feodosiy",
+          "Romul"
+        ],
+        correct: 1, // B
+        exp: "Shahar imperator sharafiga Konstantinopol deb atala boshlandi."
+      },
+      {
+        q: "15. G‘arbiy Rim imperiyasi parchalangach qaysi hududlarni o‘z ichiga olgan edi?",
+        options: [
+          "Bolqon, Kichik Osiyo va Misr",
+          "Faqat Italiya",
+          "Italiya, G‘arbiy Yevropa va Shimoliy Afrika",
+          "Faqat Mesopotamiya va Suriya"
+        ],
+        correct: 2, // C
+        exp: "G‘arbiy qismga Italiya, G‘arbiy Yevropa va Shimoliy Afrikadagi viloyatlar kirgan."
+      },
+      {
+        q: "16. Rimliklar o‘z shahrini qanday nom bilan atashar edi?",
+        options: [
+          "Buyuk shahar",
+          "Markaziy shahar",
+          "Sohibqiron shahar",
+          "«Boqiy shahar»"
+        ],
+        correct: 3, // D
+        exp: "Rimni esa «boqiy shahar» deya ta’riflashgan."
+      },
+      {
+        q: "17. German qabilalari madaniy yodgorliklarga qanday munosabatda bo‘lishgan?",
+        options: [
+          "Ularni saqlab qolishga harakat qilishgan",
+          "Teatr va kutubxonalarni tushunmay, shafqatsizlarcha yo‘q qilishgan",
+          "Ularni boshqa shaharga ko‘chirgan",
+          "Ulardan soliq undirishgan"
+        ],
+        correct: 0, // A
+        exp: "Bularning barini shafqatsizlarcha yo‘q qilib tashladilar, kutubxonalardan taxtalarni ko‘chirib ketishdi."
+      },
+      {
+        q: "18. Odoakr oxirgi imperator Romulni taxtdan ag‘dargach imperator unvoni nishonini qayerga jo‘natdi?",
+        options: [
+          "Karfagenga",
+          "Konstantinopolga",
+          "Afinaga",
+          "Ispaniyaga"
+        ],
+        correct: 1, // B
+        exp: "Odoakr so‘nggi imperator Romulni taxtdan ag‘darib va imperator unvoni nishonini Konstantinopolga jo‘natdi."
+      },
+      {
+        q: "19. Milodiy III asrda Rim imperiyasida armiyaning ahvoli qanday edi?",
+        options: [
+          "Juda kuchli va intizomli edi",
+          "Butunlay tugatilgan edi",
+          "Armiya sayar bo‘lib, uning o‘zida turli guruhlar o‘rtasida kurash borar edi",
+          "Faqat chet elliklardan iborat edi"
+        ],
+        correct: 2, // C
+        exp: "Imperatorni endi armiya saylar, armiyaning o‘zida ham turli guruhlar o‘rtasida kurash borar edi."
+      },
+      {
+        q: "20. Germanlar devorlarni mustahkamlash uchun nimalarni ko‘chirib olib ketishgan?",
+        options: [
+          "Uylarning eshiklarini",
+          "Ko‘prik toshlarini",
+          "Rim saroylari ustunlarini",
+          "Rim ibodatxonalari va kutubxonalari binolaridan tosh-taxtalarni"
+        ],
+        correct: 3, // D
+        exp: "Rim ibodatxonalari va kutubxonalari binolaridan tosh-taxtalarni ko‘chirib olib ketishlar."
+      },
+      {
+        q: "21. G‘arbiy Rim imperiyasining qulash yili qaysi javobda to‘g‘ri ko‘rsatilgan?",
+        options: [
+          "Milodiy 476-yil",
+          "Milodiy 395-yil",
+          "Milodiy 410-yil",
+          "Milodiy 330-yil"
+        ],
+        correct: 0, // A
+        exp: "Milodiy 476-yilda G‘arbiy Rim imperiyasining qulashi yuz berdi."
+      },
+      {
+        q: "22. Sharqiy Rim imperiyasining hududlariga qaysilar kirgan?",
+        options: [
+          "Ispaniya va Galliya",
+          "Bolqon yarimoroli, Kichik Osiyo va Misr",
+          "Shimoliy Afrika va Italiya",
+          "Britaniya va Iliriya"
+        ],
+        correct: 1, // B
+        exp: "Sharqiy qismga esa Bolqon yarimoroli, Kichik Osiyo va Misr yerlari kirgan."
+      },
+      {
+        q: "23. Gotlar Rimni egallab olgach shaharni qancha vaqt davomida talaganlar?",
+        options: [
+          "Bir oy",
+          "Bir hafta",
+          "Roppa-rosa uch kun",
+          "Ikki hafta"
+        ],
+        correct: 2, // C
+        exp: "Talon-taroj qilingan Rim shahri huvullab qoldi, roppa-rosa uch kun taladilar."
+      },
+      {
+        q: "24. Rim shahriga vandallar qachon hujum qilganlar?",
+        options: [
+          "Milodiy 410-yilda",
+          "Milodiy 395-yilda",
+          "Milodiy 452-yilda",
+          "Milodiy 455-yilda"
+        ],
+        correct: 3, // D
+        exp: "Milodiy 455-yilda Rimga germanlarning vandal qabilalari hujum qildi."
+      },
+      {
+        q: "25. Rimliklar chegarada nima uchun katta armiya saqlab turishga majbur bo‘lishgan?",
+        options: [
+          "Shimoli-g‘arbda paydo bo‘lgan ko‘chmanchi qabilalar (varvarlar) xavfi tufayli",
+          "Yangi yerlarni zabt etish uchun",
+          "Ichki isyonlarni bostirish uchun",
+          "Savdo yo‘llarini qo‘riqlash uchun"
+        ],
+        correct: 0, // A
+        exp: "Ayni paytda imperiya chegaralarining shimoli-g‘arbiy tomonida ko‘chmanchi qabilalar paydo bo‘lib, chegarada katta armiya saqlashga majbur qilishgan."
+      },
+      {
+        q: "26. G‘arbiy Rim imperiyasi qulagandan so‘ng uning o‘rnida nima yuz berdi?",
+        options: [
+          "Yangi yagona imperiya tuzildi",
+          "Alohida german davlatlari parchalana boshladi",
+          "Barcha yerlar Sharqiy Rimga o‘tdi",
+          "Hududlar kimsasiz cho‘lga aylandi"
+        ],
+        correct: 1, // B
+        exp: "G‘arbiy Rim imperiyasi sarhadlarini german qabilalari egallab olishdi."
+      },
+      {
+        q: "27. Alarix kimning boshlig‘i edi?",
+        options: [
+          "Hun qabilalarining",
+          "Vandal qabilalarining",
+          "Got (german) qabilalarining",
+          "Italiklarning"
+        ],
+        correct: 2, // C
+        exp: "Milodiy 410-yilda Alarix boshchiligidagi german qabilalari — gotlar..."
+      },
+      {
+        q: "28. Odoakr kim edi?",
+        options: [
+          "Rimning oxirgi imperatori",
+          "Hunlar shohi",
+          "Sharqiy Rim imperatori",
+          "German qabilalarining yollanma qo‘shini sarkardasi"
+        ],
+        correct: 3, // D
+        exp: "Milodiy 476-yilda german qabilalarining Rimdagi yollanma qo‘shini sarkardasi Odoakr..."
+      },
+      {
+        q: "29. Rim ahlining ko‘pchiligi Rim zavolga yuz tutishi bilan nimaga ishonar edi?",
+        options: [
+          "Butun jahon nest-nobud bo‘lib ketishiga",
+          "Yangi respublika qurilishiga",
+          "Varvarlar bilan do‘stlashishga",
+          "Sharqiy Rim yordam berishiga"
+        ],
+        correct: 0, // A
+        exp: "Rim ahlining ko‘pchiligi Rim zavolga yuz tutishi bilan butun jahon nest-nobud bo‘lib ketishiga ishonar edi."
+      },
+      {
+        q: "30. Avgust oyining qorong‘i tunida Rim shahrida nima sodir bo‘ldi?",
+        options: [
+          "Kuchli zilzila bo‘ldi",
+          "Qullar Rimning 12 darvozasidan birini ichkaridan ochishdi",
+          "Saroyda yong‘in chiqdi",
+          "Varvarlar o‘z-o‘zidan chekindi"
+        ],
+        correct: 1, // B
+        exp: "Avgust oyining qorong‘i tunida qullar Rimning 12 darvozasidan birini ichkaridan ochadi."
+      },
+      {
+        q: "31. G‘arbiy Rim imperiyasining ikkiga bo‘linishi qaysi yilda yuz berdi?",
+        options: [
+          "Milodiy 330-yilda",
+          "Milodiy 476-yilda",
+          "Milodiy 395-yilda",
+          "Milodiy 410-yilda"
+        ],
+        correct: 2, // C
+        exp: "Imparator Feodosiy o‘limidan so‘ng milodiy 395-yili Rim imperiyasi ikkiga bo‘lindi."
+      },
+      {
+        q: "32. Germanlar savodsiz bo‘lib, nimani ko‘rishmagan edi?",
+        options: [
+          "Uy va qishloqlarni",
+          "Qurol-yarog‘larni",
+          "Dengiz va kemalarni",
+          "Teatrlar va kutubxonalarni"
+        ],
+        correct: 3, // D
+        exp: "Germanlar savodsiz bo‘lib, teatrlar, kutubxonalarni ko‘rishmagan edi."
+      },
+      {
+        q: "33. Sharqiy Rim imperiyasining poytaxti qaysi shahar bo‘lgan?",
+        options: [
+          "Konstantinopol",
+          "Rim",
+          "Karfagen",
+          "Aleksandriya"
+        ],
+        correct: 0, // A
+        exp: "Sharqiy qismga... Konstantinopol asosiy markaz bo‘lgan."
+      },
+      {
+        q: "34. Attila boshchiligidagi hunlar qaysi qismga hujum uyushtira boshladi?",
+        options: [
+          "Faqat Shimoliy Afrikaga",
+          "Sharqiy Rim imperiyasiga",
+          "Faqat Ispaniyaga",
+          "Britaniyaga"
+        ],
+        correct: 1, // B
+        exp: "Attila boshchiligidagi hun qabilalari 452-yilda paydo bo‘lib, Sharqiy Rim imperiyasiga hujum uyushtira boshladi."
+      },
+      {
+        q: "35. G‘arbiy Rim imperiyasining qulashi qaysi asrda sodir bo‘ldi?",
+        options: [
+          "Milodiy II asrda",
+          "Milodiy III asrda",
+          "Milodiy V asrda",
+          "Milodiy I asrda"
+        ],
+        correct: 2, // C
+        exp: "Milodiy 476-yil — V asr oxiriga to‘g‘ri keladi."
+      },
+      {
+        q: "36. Vandallar Rimni talon-taroj qilib nima qilishdi?",
+        options: [
+          "Shaharni o‘zlariga poytaxt qilishdi",
+          "Hamma narsani olib ketmay nobub qildilar",
+          "Barcha qullarni ozod qilishdi",
+          "Rimliklar bilan sulh tuzishdi"
+        ],
+        correct: 3, // D
+        exp: "Vandallar o‘zlari bilan olib ketolmaydigan hamma narsani nobub qildilar."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const progress = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (progress) progress.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      if (!optBox) return;
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const qScore = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 32) fb.innerText = "Mukammal natija! 48-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+        else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+        else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

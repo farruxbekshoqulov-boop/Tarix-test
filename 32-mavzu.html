@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>32-§. Qadimgi Yunoniston afsonalari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 5px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (20)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (24)</button>
+    </div>
+
+    <!-- 1. MOSLASH (4 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">4 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha mifologik tushunchalar va xudolarni muvaffaqiyatli mosladingiz. Endi 20 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (20 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">32-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 20</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">20 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim afsonaviy faktlarni mustahkamlab oldingiz. Endi 24 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (24 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">32-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 24</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/24</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Afsona va titanlar
+      [
+        { id: 1, left: "Mif", right: "Yunon tilida «afsona» degan ma’noni anglatuvchi so‘z" },
+        { id: 2, left: "Okean", right: "Yer hamma tomondan o‘rab turgan dengizlarning dastlabki hukmdor titani" },
+        { id: 3, left: "Atlant", right: "Ulkan osmon gumbazini yelkasida suyab turgan titan" },
+        { id: 4, left: "Olimp tog‘i", right: "Yunon ma’budlari yashagan deb tasavvur qilingan muqaddas tog‘" }
+      ],
+      // 2-bosqich: Olimp xudolari
+      [
+        { id: 5, left: "Zevs", right: "Osmonning oliy xudosi" },
+        { id: 6, left: "Poseydon", right: "Dengizlarning hukmdor xudosi" },
+        { id: 7, left: "Aid", right: "Marhumlar saltanatining hukmdori" },
+        { id: 8, left: "Gerakl", right: "O‘n ikki jasorati tufayli xudolar safiga qo‘shilgan bahodir" }
+      ],
+      // 3-bosqich: Afsonaviy maxluqlar
+      [
+        { id: 9, left: "Sirenlar", right: "Yarim qush, yarim ayollar qiyofasidagi afsonaviy mavjudotlar" },
+        { id: 10, left: "Kentavrlar", right: "Yarim ot, yarim odam qiyofasidagi maxluqlar" },
+        { id: 11, left: "Sikloplar", right: "Peshonasida bitta ko‘zi bo‘lgan baqaybat mavjudotlar" },
+        { id: 12, left: "Satirlar va nimfalar", right: "O‘rmonlar, daryolar va tog‘larda yashaydigan ikkinchi darajali ma’budlar" }
+      ],
+      // 4-bosqich: Ma’budlarning fe’l-atvori va hayoti
+      [
+        { id: 13, left: "Odamlardek qizg‘onchiq va shafqatsiz", right: "Yunonlar tasavvuridagi ma’budlarning fe’l-atvori" },
+        { id: 14, left: "Kun bazmi va o‘yin-kulgi", right: "Ma’budlar Olimp tog‘ida o‘tkazadigan mashg‘ulot" },
+        { id: 15, left: "Qurbonliklar", right: "Yunonlar ma’budlar sharafiga ibodatxonalarda qilgan amallari" },
+        { id: 16, left: "Axilles", right: "Qadimgi yunon afsonalaridagi mashhur bahodir qahramon" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (20 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. «Afsona» so‘zi yunon tilida qanday ma’noni anglatadi?", a: "«Mif» degan ma’noni anglatadi." },
+      { q: "2. Qadimgi yunon afsonalari qanday mavzulardan hikoya qiladi?", a: "Olamning yaratilishi, yer yuzida hayot va odamning paydo bo‘lishi, qahramonlar jasorati va dengiz sayohatlari haqida." },
+      { q: "3. Afsonalarga ko‘ra, azalda Yer nima bilan o‘ralgan edi?", a: "Hamma tomondan dengizlar bilan o‘ralgan edi." },
+      { q: "4. Dastlabki dengizlar hukmdori bo‘lgan titan kim edi?", a: "Okean." },
+      { q: "5. Ulkan osmon gumbazini o‘z yelkasida suyab turgan titan kim?", a: "Atlant." },
+      { q: "6. Qadimgi yunon afsonalaridagi eng mashhur bahodir qahramonlarni ayting.", a: "Gerakl va Axilles." },
+      { q: "7. Gerakl nechta jasorati tufayli Olimp tog‘idagi xudolar saltanatida faxrli o‘ringa ega bo‘lgan?", a: "O‘n ikki jasorati tufayli." },
+      { q: "8. Qadimgi yunonlar o‘z hayoti va tevarak-olamni kimlarga tobe deb o‘ylashgan?", a: "Ko‘rinmas sirli kuchlarga — xudolarga tobe deb o‘ylashgan." },
+      { q: "9. Qadimgi yunonlar uchta ilohiy olamga kimlar hukmronlik qiladi deb aytishgan?", a: "Zevs — osmonda, Poseydon — dengizda, Aid — marhumlar saltanatida." },
+      { q: "10. Boshqa ma’budlar nimalarning homiylari hisoblangan?", a: "Dehqonchilik va hunarmandchilik, san’at va she’riyat, muhabbat va go‘zallik, urush, adolat va tongi shafaqning." },
+      { q: "11. Ikkinchi darajali ma’budlar bo‘lgan satirlar va nimfalar qayerlarda yashagan deb tasavvur qilingan?", a: "O‘rmonlar, daryolar va tog‘larda." },
+      { q: "12. Ma’budlar qayerda yashagan deb tasavvur qilingan?", a: "Shimoliy Yunonistondagi Olimp tog‘ida." },
+      { q: "13. Yunon ma’budlarining fe’l-atvori qanday tasvirlangan?", a: "Odamlardek qizg‘onchiq va shafqatsiz, kun bazmi qiladigan, tortishadigan va xohishiga qarshi borganlarni jazolaydigan." },
+      { q: "14. Yunonlar o‘zlari yaratgan xudolarga hurmat yuzasidan nima qilishgan?", a: "Ko‘plab ibodatxonalar barpo etib, qurbonliklar qilishgan." },
+      { q: "15. Sirenlar qanday mavjudotlar edi?", a: "Yarim qush, yarim ayol qiyofasidagi afsonaviy mavjudotlar." },
+      { q: "16. Kentavrlar qanday maxluqlar edi?", a: "Yarim ot, yarim odam qiyofasidagi maxluqlar." },
+      { q: "17. Sikloplar qanday mavjudotlar edi?", a: "Peshonasida bitta ko‘zi bo‘lgan baqaybat mavjudotlar." },
+      { q: "18. Geraklning asosiy fazilatlari nimalardan iborat edi?", a: "Matonat, kuch-qudrat va aql-zakovat." },
+      { q: "19. Yunonlar tabiatdagi turli hodisalarni nima orqali tushuntirishga harakat qilishgan?", a: "Afsonalar va xudolarning irodasi orqali." },
+      { q: "20. Aid qaysi olamning hukmdori edi?", a: "Marhumlar saltanatining." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (24 TA ARALASH TEST - JAVOBLAR 6 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. «Afsona» so‘zi yunon tilida qanday nomlanadi va nimani anglatadi?",
+        options: [
+          "«Mif» — afsona",
+          "«Polis» — shahar",
+          "«Ellada» — vatan",
+          "«Agora» — maydon"
+        ],
+        correct: 0, // A
+        exp: "Afsonalar (yunon tilida «mif») yunonlar tarixidagi qadimgi davr haqida ko‘p narsalarni bilishga imkon beradi."
+      },
+      {
+        q: "2. Qadimgi yunon afsonalariga ko‘ra, osmon gumbazini o‘z yelkasida suyab turgan titan kim?",
+        options: [
+          "Okean",
+          "Atlant",
+          "Gerakl",
+          "Zevs"
+        ],
+        correct: 1, // B
+        exp: "Atlant degan titan ulkan osmon gumbazini yelkasida suyab turgan."
+      },
+      {
+        q: "3. Qadimgi yunonlarning tasavvuriga ko‘ra, marhumlar saltanatiga hukmronlik qilgan oliy xudo kim edi?",
+        options: [
+          "Zevs",
+          "Poseydon",
+          "Aid",
+          "Gefest"
+        ],
+        correct: 2, // C
+        exp: "Aid — marhumlar saltanatida hukmronlik qilgan."
+      },
+      {
+        q: "4. O‘n ikki jasorati tufayli Olimp tog‘idagi xudolar saltanatida faxrli o‘ringa ega bo‘lgan qahramon kim?",
+        options: [
+          "Axilles",
+          "Odizsey",
+          "Paris",
+          "Gerakl"
+        ],
+        correct: 3, // D
+        exp: "O‘n ikki jasorati tufayli Gerakl Olimp tog‘idagi xudolar saltanatida faxrli o‘ringa ega bo‘lgan."
+      },
+      {
+        q: "5. Qadimgi yunon afsonalarida dengizlar hukmdori bo‘lgan oliy xudo kim?",
+        options: [
+          "Poseydon",
+          "Zevs",
+          "Aid",
+          "Germes"
+        ],
+        correct: 0, // A
+        exp: "Poseydon — dengizda hukmronlik qilgan."
+      },
+      {
+        q: "6. Qadimgi yunonlarning e’tiqodiga ko‘ra, ma’budlarning makoni bo‘lgan muqaddas tog‘ qaysi?",
+        options: [
+          "Himolay tog‘i",
+          "Olimp tog‘i",
+          "Kavkaz tog‘i",
+          "Alp tog‘i"
+        ],
+        correct: 1, // B
+        exp: "Yunonlarning tasavvurlariga ko‘ra, ma’budlar Shimoliy Yunonistondagi Olimp tog‘ida yashagan."
+      },
+      {
+        q: "7. Qadimgi yunon mifologiyasida peshonasida bitta ko‘zi bo‘lgan baqaybat mavjudotlar qanday atalgan?",
+        options: [
+          "Kentavrlar",
+          "Sirenlar",
+          "Sikloplar",
+          "Satirlar"
+        ],
+        correct: 2, // C
+        exp: "Sikloplar (peshonasida bitta ko‘zi bo‘lgan baqaybat mavjudotlar) deb tasavvur qilingan."
+      },
+      {
+        q: "8. Qadimgi yunon mifologiyasida osmonning oliy xudosi kim hisoblangan?",
+        options: [
+          "Poseydon",
+          "Aid",
+          "Apollon",
+          "Zevs"
+        ],
+        correct: 3, // D
+        exp: "Oliy xudo deb hisoblangan Zevs — osmonda hukmronlik qilgan."
+      },
+      {
+        q: "9. Yarim qush, yarim ayollar qiyofasidagi afsonaviy afsungar mavjudotlar qanday nomlangan?",
+        options: [
+          "Sirenlar",
+          "Nimfalar",
+          "Satirlar",
+          "Kentavrlar"
+        ],
+        correct: 0, // A
+        exp: "Sirenlar (yarim qush, yarim ayollar) afsonalarda tilga olingan."
+      },
+      {
+        q: "10. Yarim ot, yarim odam qiyofasidagi afsonaviy maxluqlar qanday atalgan?",
+        options: [
+          "Sikloplar",
+          "Kentavrlar",
+          "Titanlar",
+          "Atlantlar"
+        ],
+        correct: 1, // B
+        exp: "Kentavrlar (yarim ot, yarim odam) afsonalarda mavjud bo‘lgan."
+      },
+      {
+        q: "11. Azalda Yer hamma tomondan nima bilan o‘ralgan edi deb tasavvur qilingan?",
+        options: [
+          "Qalin o‘rmonlar bilan",
+          "Ulkan tog‘lar bilan",
+          "Dengizlar bilan",
+          "Cheksiz sahrolar bilan"
+        ],
+        correct: 2, // C
+        exp: "Afsonalarda aytilishicha, azalda Yer hamma tomondan dengizlar bilan o‘ralgan edi."
+      },
+      {
+        q: "12. Dastlabki dengizlar hukmdori bo‘lgan titan kim edi?",
+        options: [
+          "Atlant",
+          "Gerakl",
+          "Zevs",
+          "Okean"
+        ],
+        correct: 3, // D
+        exp: "Dastlab ularning hukmdori Okean degan titan bo‘lgan."
+      },
+      {
+        q: "13. Qadimgi yunon mifologiyasida o‘rmonlar, daryolar va tog‘larda yashaydigan ikkinchi darajali ma’budlar kimlar edi?",
+        options: [
+          "Satirlar va nimfalar",
+          "Sikloplar va sirenlar",
+          "Kentavrlar va titanlar",
+          "Atlantlar va o‘liklar"
+        ],
+        correct: 0, // A
+        exp: "Ikkinchi darajali satirlar va nimfalar — o‘rmonlar, daryolar va tog‘larda yashaydigan ma’budlar bo‘lgan."
+      },
+      {
+        q: "14. Qadimgi yunon afsonalari tarixni o‘rganishda nima uchun muhim ahamiyatga ega?",
+        options: [
+          "Ular aniq ilmiy hisob-kitoblarga asoslangani uchun",
+          "Yunonlar tarixidagi qadimgi davr haqida ko‘p narsalarni bilishga imkon bergani uchun",
+          "Faqat geografik xaritalarni tuzishda yordam bergani uchun",
+          "Barcha qonunlarni hujjatlashtirgani uchun"
+        ],
+        correct: 1, // B
+        exp: "Afsonalar yunonlar tarixidagi qadimgi davr haqida ko‘p narsalarni bilishga imkon beradi."
+      },
+      {
+        q: "15. Qadimgi yunonlar o‘z hayotini nimalarga tobe deb o‘ylashgan?",
+        options: [
+          "Tabiat qonunlariga",
+          "Iqtisodiy islohotlarga",
+          "Ko‘rinmas sirli kuchlarga — xudolarga",
+          "Chet el hukmdorlariga"
+        ],
+        correct: 2, // C
+        exp: "Ularning hayoti va tevarak-olam ko‘rinmas sirli kuchlarga tobe ekanligiga ishonishgan."
+      },
+      {
+        q: "16. Yunon xudolarining fe’l-atvori haqidagi tasavvurlar qanday bo‘lgan?",
+        options: [
+          "Ular mutlaqo adolatli va xatosiz bo‘lgan",
+          "Ular faqat xayrli ishlar qilgan",
+          "Ular odamlarga yordam bermagan",
+          "Odamlardek qizg‘onchiq, shafqatsiz va xohishiga qarshi borganlarni jazolaydigan"
+        ],
+        correct: 3, // D
+        exp: "Ma’budlar odamlardek qizg‘onchiq va shafqatsiz, tortishadi va xohish-irodasiga qarshi borganlarni shafqatsiz jazokeydi."
+      },
+      {
+        q: "17. Qadimgi yunon afsonalarida xudolarning sharafiga nima qilingan?",
+        options: [
+          "Ko‘plab ibodatxonalar barpo etib, qurbonliklar qilingan",
+          "Faqat o‘yinlar uyushtirilgan",
+          "Ularga soliq to‘langan",
+          "Yangi shaharlar qurilgan"
+        ],
+        correct: 0, // A
+        exp: "Yunonlar xudolarning sharafiga ko‘plab ibodatxonalar barpo etib, qurbonliklar qilgan."
+      },
+      {
+        q: "18. Qadimgi yunon afsonalarida qahramonlar qanday fazilatlarga ega bo‘lgan?",
+        options: [
+          "Faqat boylik va unvonga",
+          "Matonat, kuch-qudrat va aql-zakovatga",
+          "Faqat sehrgarlik qobiliyatiga",
+          "Dengiz floti qudratiga"
+        ],
+        correct: 1, // B
+        exp: "Qahramonlarning barchasi matonat, kuch-qudrat va aql-zakovat kabi fazilatlarga ega bo‘lgan."
+      },
+      {
+        q: "19. Yunonlar o‘zlarining yaratgan xudolariga hurmat ko‘rsatish uchun nima barpo etganlar?",
+        options: [
+          "Savdo markazlari",
+          "Katta portlar",
+          "Ibodatxonalar",
+          "Mustahkam qasrlar"
+        ],
+        correct: 2, // C
+        exp: "Ular o‘zlari yaratgan xudolardan qo‘rqqan, sharafiga ko‘plab ibodatxonalar barpo etib, qurbonliklar qilgan."
+      },
+      {
+        q: "20. Axilles va Gerakl qadimgi yunon mifologiyasida kimlar sifatida tanilgan?",
+        options: [
+          "Oliy xudolar",
+          "Qudratli titanlar",
+          "Afsonaviy maxluqlar",
+          "Bahodir qahramonlar"
+        ],
+        correct: 3, // D
+        exp: "Yunonlarning rivoyatlari Gerakl, Axilles singari bahodir qahramonlar jasorati haqida hikoya qiladi."
+      },
+      {
+        q: "21. Zevs, Poseydon va Aid o‘rtasidagi asosiy qarindoshlik yoki bog‘liqlik nimadan iborat edi?",
+        options: [
+          "Ular uchala ilohiy olamga (osmon, dengiz, marhumlar saltanati) hukmronlik qilgan uch aka-uka edi",
+          "Ular bir-biriga dushman titanlar bo‘lgan",
+          "Ular Krit orolining podsholari bo‘lgan",
+          "Ular faqat yer ostida yashagan"
+        ],
+        correct: 0, // A
+        exp: "Qadimgi yunonlarning uch ilohiy olamga hukmronlik qilar edi: Zevs — osmonda, Poseydon — dengizda, Aid — marhumlar saltanatida."
+      },
+      {
+        q: "22. Qadimgi yunonlar Olimp tog‘idagi xudolarning hayotini qanday tasavvur qilishgan?",
+        options: [
+          "Doimiy mehnat va ibodat bilan o‘tadi deb",
+          "Qizg‘onchiq, shafqatsiz, kun bazmi va o‘yin-kulgi bilan o‘tadi deb",
+          "Faqat kitob o‘qish va ilm bilan o‘tadi deb",
+          "Qashshoqlikda o‘tadi deb"
+        ],
+        correct: 1, // B
+        exp: "Olimp ma’budlarini odamlardek qizg‘onchiq va shafqatsiz, kunni bazmi va o‘yin-kulgida o‘tkazadi deb tasavvur qilishgan."
+      },
+      {
+        q: "23. Qadimgi yunon mifologiyasida dengizlar hukmroni bo‘lgan xudo kim?",
+        options: [
+          "Zevs",
+          "Aid",
+          "Poseydon",
+          "Gerakl"
+        ],
+        correct: 2, // C
+        exp: "Poseydon — dengizda hukmronlik qilgan."
+      },
+      {
+        q: "24. Qadimgi yunon mifologiyasiga ko‘ra, Olimp tog‘ida yashagan oliy osmon xudosi kim edi?",
+        options: [
+          "Atlant",
+          "Okean",
+          "Gefest",
+          "Zevs"
+        ],
+        correct: 3, // D
+        exp: "Oliy xudo deb hisoblangan Zevs — osmonda hukmronlik qilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 22) fb.innerText = "Mukammal natija! 32-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

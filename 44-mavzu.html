@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>44-§. Rim respublikasi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va Rim respublikasi tushunchalarini muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">44-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">35 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">44-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (6 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Xalq majlisi va Senat
+      [
+        { id: 1, left: "Xalq majlisi", right: "Urush e’lon qilib, sulh tuzib, qonunlarni tasdiqlagan organ" },
+        { id: 2, left: "Senat", right: "Lotinchadan tarjima qilinganda «oqsoqollar kengashi»" },
+        { id: 3, left: " Patrisiyalar", right: "Rimning tub aholisi" },
+        { id: 4, left: "Plebeylar", right: "Rimga ko‘chib kelgan odamlar va ularning avlodlari" }
+      ],
+      // 2-bosqich: Respublika atamasi va konsullar
+      [
+        { id: 5, left: "Mil. avv. VI asr oxiri", right: "Rim davlati respublika deb yuritila boshlangan davr" },
+        { id: 6, left: "«Respublika» so‘zi", right: "Lotincha «xalq ishi, umumiy ish» (res – ish, publika – xalq)" },
+        { id: 7, left: "Konsullar", right: "Xalq majlisi bir yil muddatga hokim qilib saylagan ikki kishi" },
+        { id: 8, left: "«Kandida»", right: "Nomzodlar kiyib olgan oq harir libos (bugungi «kandidat» so‘zi shundan)" }
+      ],
+      // 3-bosqich: Diktator va liktorlar
+      [
+        { id: 9, left: "Diktator", right: "Urush boshlanganda cheklanmagan hokimiyat bilan tayinlanadigan boshliq" },
+        { id: 10, left: "Olti oydan ko‘p emas", right: "Diktator o‘z lavozimida tura oladigan eng ko‘p muddat" },
+        { id: 11, left: "Liktorlar", right: "Har bir konsulni qo‘riqlab yurgan 12 tadan faxriy qorovul" },
+        { id: 12, left: "Boltacha bor bog‘lama", right: "Liktorlar yelkasiga taqib yurgan xivich bog‘lama o‘rtasidagi belgi" }
+      ],
+      // 4-bosqich: Xalq tribuni va Veto
+      [
+        { id: 13, left: "Xalq tribuni", right: "Qashshoq rimliklar manfaatlarini ifoda etgan lavozim" },
+        { id: 14, left: "Yashirin ovoz", right: "Xalq tribunlari saylangan ovoz berish tartibi" },
+        { id: 15, left: "«Veto» so‘zi", right: "«Taqiqlayman» degan ma’noni anglatuvchi so‘z" },
+        { id: 16, left: "Senator", right: "Tajribali kishilar Senatda umrbod o‘rin egallab olgan mavqei" }
+      ],
+      // 5-bosqich: 12 jadval qonunlari
+      [
+        { id: 17, left: "12 jadval qonunlari", right: "Plebeylar talabi bilan qonunlarning yozma majmuasi" },
+        { id: 18, left: "Mis lavhalar", right: "Qonunlar o‘yib yozilgan material" },
+        { id: 19, left: "Forum", right: "Qonunlar osib qo‘yilgan Rimning the markaziy maydoni" },
+        { id: 20, left: "Muqaddas tog‘", right: "Plebeylar isyon ko‘tarib chiqib ketgan Rim atrofi" }
+      ],
+      // 6-bosqich: Qonunlar va tenglik
+      [
+        { id: 21, left: "Xususiy mulk", right: "«12 jadval qonunlari»da daxsiz deb e’lon qilingan narsa" },
+        { id: 22, left: "Mil. avv. III asr boshlari", right: "Rimning barcha fuqarolari qonun oldida teng deb e’lon qilingan davr" },
+        { id: 23, left: "Beqiyos saylov", right: "Badavlat odamlar ovoz yutish uchun tarqatgan sovg‘alar va bepul tushliklar" },
+        { id: 24, left: "Mil. avv. 509-yil", right: "Podsho hokimiyati ag‘darilib, Rim respublikasi asos solingan sana" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Rim hukmdorlari muhim masalalarni muhokama qilish uchun qaysi organni chaqirganlar?", a: "Xalq majlisini." },
+      { q: "2. Xalq majlisi qanday muhim vazifalarni bajargan?", a: "Urush e’lon qilgan, sulh tuzgan, qonunlarni tasdiqlagan va bekor qilgan, muhim mansabdor shaxslarni tayinlagan." },
+      { q: "3. Xalq majlisining qarorini qaysi organ tasdiqlagan?", a: "Senat." },
+      { q: "4. «Senat» so‘zi lotinchadan tarjima qilinganda qanday ma’noni anglatadi?", a: "«Oqsoqollar kengashi»." },
+      { q: "5. Rimning tub aholisi kimlar deb atalgan?", a: "Patrisiyalar." },
+      { q: "6. Rimga ko‘chib kelgan odamlar va ularning avlodlari kimlar deb atalgan?", a: "Plebeylar." },
+      { q: "7. Rim boshqaruvida dastlab faqat kimlar ishtirok eta olgan?", a: "Patrisiyalar." },
+      { q: "8. Rim davlati respublika deb qachondan boshlab yuritila boshlangan?", a: "Miloddan avvalgi VI asr oxiridan." },
+      { q: "9. «Respublika» so‘zi lotinchadan tarjima qilinganda qanday ma’noni anglatadi?", a: "«Xalq ishi, umumiy ish» (res – ish, publika – xalq)." },
+      { q: "10. Xalq majlisi patrisiy va plebeylardan necha kishini bir yil muddatga hokim qilib saylagan?", a: "Ikki kishini (konsullar)." },
+      { q: "11. Badavlat odamlar saylovchilarni o‘z tarafga og‘dirish uchun nima qilishgan?", a: "Bepul tushlik uyushtirgan, sovg‘a-salom tarqatgan." },
+      { q: "12. «Kandida» so‘zi nimani anglatgan va hozirgi qaysi so‘zning kelib chiqishi hisoblanadi?", a: "Nomzodlar kiygan oq harir libos; «kandidat» so‘zining kelib chiqishi." },
+      { q: "13. Qadimda eng tajribali va hurmatli kishilar Senatda o‘rin egallagach qanday mavqega erishganlar?", a: "Senatning umrbod a’zosi — senatorga aylanishgan." },
+      { q: "14. Urush boshlangan taqdirda yoki xalq qo‘zg‘oloni ro‘y berganda kim tayinlangan?", a: "Diktator va uning o‘rinbosari (otliq qo‘shinlar boshlig‘i)." },
+      { q: "15. Diktator qancha muddatga cheklanmagan hokimiyatga ega bo‘lgan?", a: "Olti oydan ko‘p bo‘lmagan muddatga." },
+      { q: "16. Har bir konsulni necha nafar faxriy qorovul — liktorlar qo‘riqlab yurgan?", a: "12 kishidan iborat liktorlar." },
+      { q: "17. Liktorlar yelkalariga taqib yurgan xivich bog‘lamaning o‘rtasida nima bo‘lgan?", a: "Boltacha." },
+      { q: "18. Konsullar muhim masalani hal etayotganda nima qilishlari kerak edi?", a: "Bir-birlari bilan maslahatlashib olishlari kerak edi." },
+      { q: "19. Rim respublikasida qashshoq rimliklar manfaatlarini ifoda etgan lavozim qaysi?", a: "Xalq tribuni." },
+      { q: "20. Xalq tribunlari qanday saylangan?", a: "Majlislarda barcha fuqarolarning teng va yashirin ovozi bilan." },
+      { q: "21. Xalq tribuni aytishi mumkin bo‘lgan «veto» so‘zi nimani anglatadi?", a: "«Taqiqlayman» (bunday holda qonun qabul qilinmas edi)." },
+      { q: "22. Qadimgi Rim qonunchiligi dastlab nimalarga asoslangan edi?", a: "Odat qonunlariga." },
+      { q: "23. Patrisiy sudyalar sud majlislarida nima qilishgan?", a: "Ko‘pincha patrisiychada adolatsiz qarorlar chiqarishgan." },
+      { q: "24. Plebeylar talabiga ko‘ra qonunlarning yozma majmuasini yaratish uchun kimlardan iborat hay’at tuzilgan?", a: "O‘nta patrisiydan iborat hay’at." },
+      { q: "25. «12 jadval qonunlari» qayerga o‘yib yozilgan?", a: "Mis lavhalarga (Rimning markaziy maydoni — forumga joylashtirilgan)." },
+      { q: "26. Plebeylar norozilik sifatida Rim atrofidagi qaysi tog‘ga ketib qolishgan?", a: "Muqaddas tog‘ga." },
+      { q: "27. «12 jadval qonunlari»da nima daxlsiz deb e’lon qilindi?", a: "Xususiy mulk." },
+      { q: "28. Rimning barcha fuqarolari qonun oldida teng deb qachon e’lon qilingan?", a: "Miloddan avvalgi III asr boshlariga kelib." },
+      { q: "29. Rim respublikasida har yili kimlarga hisobot berilgan?", a: "Xalq majlisiga hisobot berilgan." },
+      { q: "30. Konsullar tinchlik davrida nima ishlar bilan shug‘ullangan?", a: "Rim respublikasini boshqarib, rimliklarni sud qilgan." },
+      { q: "31. Oq rang nomzodning libosida nimani bildirgan?", a: "Vijdonining beg‘ubor va pokiza ekanligini." },
+      { q: "32. Rim respublikasi qachon e’lon qilingan?", a: "Miloddan avvalgi 509-yilda." },
+      { q: "33. Senatda qaysi masala muhokama qilinmasdan turib Xalq majlisiga kiritilmagan?", a: "Birorta ham qonun." },
+      { q: "34. Konsul jinoyatchilarni jazosiz qoldirmasligining ramzi nima edi?", a: "Liktorlarning xivich bog‘lamasidagi boltacha." },
+      { q: "35. Plebeylar va patrisiylar o‘rtasidagi tengsizlik qaysi qonunlar bilan qisman yumshatildi?", a: "«12 jadval qonunlari» bilan." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA ARALASH TEST - JAVOBLAR 9 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Lotinchadan tarjima qilinganda «senat» so‘zi qanday ma’noni anglatadi?",
+        options: [
+          "«Oqsoqollar kengashi»",
+          "«Xalq ishi»",
+          "«Harbiy kengash»",
+          "«Sudyalar palatasi»"
+        ],
+        correct: 0, // A
+        exp: "Lotinchadan tarjima qilinganda «senat» so‘zi «oqsoqollar kengashi» degan ma’noni anglatadi."
+      },
+      {
+        q: "2. Rimning tub aholisi qanday nomlangan?",
+        options: [
+          "Plebeylar",
+          "Patrisiyalar",
+          "Konsullar",
+          "Liktorlar"
+        ],
+        correct: 1, // B
+        exp: "Rimning tub aholisi patrisiyalar deb atalgan."
+      },
+      {
+        q: "3. Rim davlati respublika deb qaysi asr oxiridan yuritila boshlangan?",
+        options: [
+          "Mil. avv. III asr oxiridan",
+          "Mil. avv. IV asr oxiridan",
+          "Mil. avv. VI asr oxiridan",
+          "Mil. avv. I asr oxiridan"
+        ],
+        correct: 2, // C
+        exp: "Mil. avv. VI asr oxiridan Rim davlati respublika deb yuritila boshlangan."
+      },
+      {
+        q: "4. «Respublika» so‘zi lotinchadan tarjima qilinganda qanday ma’noni anglatadi?",
+        options: [
+          "«Podsho hokimiyati»",
+          "«Harbiy kengash»",
+          "«Senat qarori»",
+          "«Xalq ishi, umumiy ish»"
+        ],
+        correct: 3, // D
+        exp: "Lotinchadan tarjima qilinganda «respublika» so‘zi «xalq ishi, umumiy ish» degan ma’noni anglatadi."
+      },
+      {
+        q: "5. Xalq majlisi tomonidan bir yil muddatga hokim qilib saylangan ikki kishi qanday atalgan?",
+        options: [
+          "Konsullar",
+          "Diktatorlar",
+          "Liktorlar",
+          "Senatorlar"
+        ],
+        correct: 0, // A
+        exp: "Xalq majlisi patrisiy va plebeylardan ikki kishini bir yil muddatga hokim qilib saylagan — konsullar."
+      },
+      {
+        q: "6. Urush boshlangan taqdirda yoki xalq qo‘zg‘oloni paytida cheklanmagan hokimiyat bilan tayinlanadigan boshliq kim?",
+        options: [
+          "Xalq tribuni",
+          "Diktator",
+          "Konsul",
+          "Kohin"
+        ],
+        correct: 1, // B
+        exp: "Urush boshlangan taqdirda yoki xalq qo‘zg‘oloni ro‘y berganda diktator tayinlanar edi."
+      },
+      {
+        q: "7. Har bir konsulni necha nafar faxriy qorovul qo‘riqlab yurgan?",
+        options: [
+          "5 nafar",
+          "10 nafar",
+          "12 nafar",
+          "20 nafar"
+        ],
+        correct: 2, // C
+        exp: "Har bir konsulni 12 kishidan iborat faxriy qorovul — liktorlar qo‘riqlab yurar edi."
+      },
+      {
+        q: "8. Rim respublikasida qashshoq rimliklar manfaatlarini ifoda etgan va «veto» huquqiga ega bo‘lgan lavozim?",
+        options: [
+          "Konsul",
+          "Diktator",
+          "Senat raisi",
+          "Xalq tribuni"
+        ],
+        correct: 3, // D
+        exp: "Rim respublikasida xalq tribuni lavozimi ta’sis etilgan bo‘lib, ular «veto» huquqiga ega bo‘lgan."
+      },
+      {
+        q: "9. Plebeylar talabiga ko‘ra qonunlarning yozma majmuasi qanday nomlangan?",
+        options: [
+          "«12 jadval qonunlari»",
+          "«Hamurapi qonunlari»",
+          "«Drakont qonunlari»",
+          "«Solon qonunlari»"
+        ],
+        correct: 0, // A
+        exp: "Plebeylar talabiga ko‘ra, qonunlarning yozma majmuasini yaratish uchun hay’at tuzilib, 12 jadval qonunlari yaratildi."
+      },
+      {
+        q: "10. «12 jadval qonunlari» o‘yib yozilgan mis lavhalar qayerga osib qo‘yilgan?",
+        options: [
+          "Kapitoliy qal’asiga",
+          "Rimning markaziy maydoni — forumga",
+          "Senat binosining ichiga",
+          "Tibr daryosi qirg‘og‘iga"
+        ],
+        correct: 1, // B
+        exp: "12 ta mis lavhaga o‘yib yozilgan qonunlar hamma ko‘rishi uchun Rimning markaziy maydoni — forumga joylashtirildi."
+      },
+      {
+        q: "11. Rimga ko‘chib kelgan odamlar va ularning avlodlari qanday atalgan?",
+        options: [
+          "Patrisiyalar",
+          "Konsullar",
+          "Plebeylar",
+          "Liktorlar"
+        ],
+        correct: 2, // C
+        exp: "Rimga ko‘chib kelgan odamlar va ularning avlodlari plebeylar deb atalgan."
+      },
+      {
+        q: "12. Diktator o‘z lavozimida eng ko‘pi bilan qancha muddat tura olgan?",
+        options: [
+          "Bir oy",
+          "Bir yil",
+          "Uch yil",
+          "Olti oydan ko‘p emas"
+        ],
+        correct: 3, // D
+        exp: "Diktator cheklanmagan hokimiyatga ega bo‘lgan, ammo u hokimiyatda olti oydan ko‘p tura olmas edi."
+      },
+      {
+        q: "13. Rim respublikasi qaysi yilda tashkil topgan?",
+        options: [
+          "Mil. avv. 509-yilda",
+          "Mil. avv. 753-yilda",
+          "Mil. avv. VI asr boshida",
+          "Mil. avv. III asrda"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 509-yilda podsho hokimiyatining ag‘darilishi Rim respublikasi asosini yaratdi."
+      },
+      {
+        q: "14. Xalq tribunlari tomonidan aytiladigan «veto» so‘zi qanday ma’noni anglatadi?",
+        options: [
+          "«Tasdiqlayman»",
+          "«Taqiqlayman»",
+          "«Urush boshlaymiz»",
+          "«Saylov o‘tkazamiz»"
+        ],
+        correct: 1, // B
+        exp: "Xalq tribuni «veto» («taqiqlayman») so‘zini aytishi mumkin bo‘lgan, bunday holda qonun qabul qilinmas edi."
+      },
+      {
+        q: "15. «Kandida» so‘zi qanday ma’noni anglatib, qanday libosdan kelib chiqqan?",
+        options: [
+          "Qora libos — motam ramzi",
+          "Qizil libos — harbiy libos",
+          "Oq harir libos — pokiza niyat ramzi",
+          "Havoriy libos — boylik ramzi"
+        ],
+        correct: 2, // C
+        exp: "Badavlat odamlar o‘z nomzodini qo‘ygan «kandida» deb ataluvchi oq harir libos kiyishgan."
+      },
+      {
+        q: "16. Plebeylar o‘z huquqlari uchun kurashib Rim atrofidagi qaysi joyga chiqib ketishgan edi?",
+        options: [
+          "Olimp tog‘iga",
+          "Kapitoliy tepaligiga",
+          "Aventin tepaligiga",
+          "Muqaddas tog‘ga"
+        ],
+        correct: 3, // D
+        exp: "Plebeylar Rim atrofidagi Muqaddas tog‘ga ketib qolib, isyon ko‘tarishgan."
+      },
+      {
+        q: "17. Qadimgi Rimda Senatda o‘rin egallagan eng tajribali kishilar qanday nomlangan?",
+        options: [
+          "Senator",
+          "Konsul",
+          "Diktator",
+          "Liktor"
+        ],
+        correct: 0, // A
+        exp: "Senatda o‘rin egallagan kishilar umrbod a’zosi — senatorga aylanishgan."
+      },
+      {
+        q: "18. Rimda muhim masalalarni hal qilish uchun chaqirilgan asosiy organ nima edi?",
+        options: [
+          "Senat",
+          "Xalq majlisi",
+          "Sud hay’ati",
+          "Diktatura kengashi"
+        ],
+        correct: 1, // B
+        exp: "Rim hukmdorlari muhim masalalarni muhokama qilish uchun Xalq majlisini chaqirganlar."
+      },
+      {
+        q: "19. «12 jadval qonunlari»da qaysi muhim tushuncha daxlsiz deb e’lon qilindi?",
+        options: [
+          "Davlat xazinasi",
+          "Podsho saroyi",
+          "Xususiy mulk",
+          "Senat binosi"
+        ],
+        correct: 2, // C
+        exp: "Muzkur qonunlar xususiy mulkni daxlsiz deb e’lon qildi."
+      },
+      {
+        q: "20. Rim respublikasida xalq tribunlari qanday saylanar edi?",
+        options: [
+          "Faqat patrisiylar yig‘ilishida",
+          "Senat tayinlovi bilan",
+          "Diktator buyrug‘i bilan",
+          "Barcha fuqarolarning teng va yashirin ovozi bilan"
+        ],
+        correct: 3, // D
+        exp: "Xalq tribunlari majlislarda barcha fuqarolarning teng va yashirin ovozi bilan saylanar edi."
+      },
+      {
+        q: "21. Mag‘rur Tarkviniy Rimda kim edi?",
+        options: [
+          "Saylab qo‘yilgan hukmdorni o‘ldirib hokimiyatni egallagan shafqatsiz shaxs",
+          "Ilk xalq tribuni",
+          "Birinchi diktator",
+          "Rimning asoschisi"
+        ],
+        correct: 0, // A
+        exp: "Mag‘rur Tarkviniy laqabli kishi mamlakatga saylab qo‘yilgan hukmdorni o‘ldirib, hokimiyatni egallab oldi."
+      },
+      {
+        q: "22. Qadimgi Rimda konsullar yil davomida nima ishlar qilgan?",
+        options: [
+          "Faqat ibodatxonalar qurgan",
+          "Rim respublikasini boshqarib, rimliklarni sud qilgan va qo‘shinga qo‘mondonlik qilgan",
+          "Faqat chet elga elchi bo‘lib borgan",
+          "Faqat qonun yozgan"
+        ],
+        correct: 1, // B
+        exp: "Konsullar yil davomida Rim respublikasini boshqarib, rimliklarni sud qilar edi. Harbiy davrlarda esa qo‘shinga qo‘mondonlik qilgan."
+      },
+      {
+        q: "23. Qadimgi Rimda liktorlarning xivich bog‘lamasiga o‘rnatilgan boltacha nimani anglatgan?",
+        options: [
+          "Dehqonchilik belgisi",
+          "Dengiz floti ramzi",
+          "Konsul jinoyatchilarni jazosiz qoldirmaslik imkoniyatiga egaligi alomati",
+          "Tinchlik elchisi"
+        ],
+        correct: 2, // C
+        exp: "Konsul jinoyatchilarni jazosiz qoldirish imkoniyatiga egaligi alomati sifatida liktorlar boltacha olib yurishgan."
+      },
+      {
+        q: "24. Miloddan avvalgi III asr boshlariga kelib Rimda qanday huquqiy o‘zgarish yuz berdi?",
+        options: [
+          "Respublika tugatilib podshohlik tiklandi",
+          "Patrisiylar huquqlari cheklandi",
+          "Plebeylarning siyosiy huquqlari tortib olindi",
+          "Rimning barcha fuqarolari qonun oldida teng deb e’lon qilindi"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. III asr boshlariga kelib Rimning barcha fuqarolari mavqeidan qat’i nazar qonun oldida teng deb hisoblanadigan qonunlar qabul qilindi."
+      },
+      {
+        q: "25. Xalq majlisining qarorlarini qaysi organ tasdiqlashi shart edi?",
+        options: [
+          "Senat",
+          "Konsul",
+          "Diktator",
+          "Xalq tribuni"
+        ],
+        correct: 0, // A
+        exp: "Bu majlisning qarorini Senat tasdiqlagan."
+      },
+      {
+        q: "26. Rim respublikasida har yili kimlarga hisobot berib turilgan?",
+        options: [
+          "Diktatorga",
+          "Xalq majlisiga",
+          "Faqat senatorlarga",
+          "Chet el elchilariga"
+        ],
+        correct: 1, // B
+        exp: "Har yili ular Xalq majlisiga hisobot berar edi."
+      },
+      {
+        q: "27. Qadimgi Rimda Senatning mavqei qanday edi?",
+        options: [
+          "U hech qanday huquqqa ega emas edi",
+          "U faqat bayramlar uyushtirar edi",
+          "Mamlakatda katta hokimiyatga ega bo‘lib, qonunlar Senatda muhokama etilmasdan turib Xalq majlisiga kiritilmas edi",
+          "U faqat sud vazifasini bajarar edi"
+        ],
+        correct: 2, // C
+        exp: "Senat mamlakatda katta hokimiyatga ega bo‘lgan. Birorta ham qonun Senatda muhokama etilmasdan turib, Xalq majlisi tomonidan kabul qilinmas edi."
+      },
+      {
+        q: "28. Qadimgi Rimda plebeylar va patrisiylar o‘rtasidagi ziddiyatni yumshatish uchun nima qilindi?",
+        options: [
+          "Barcha plebeylar shahardan haydaldi",
+          "Patrisiylar barcha yeridan mahrum qilindi",
+          "Diktatura butunlay tugatildi",
+          "«12 jadval qonunlari» yaratildi"
+        ],
+        correct: 3, // D
+        exp: "Plebeylar talabiga ko‘ra, qonunlarning yozma majmuasini yaratish uchun Senat o‘nta patrisiydan iborat hay’at tuzishga majbur bo‘lgan."
+      },
+      {
+        q: "29. Rim respublikasida konsullik lavozimiga saylanish muddati qancha edi?",
+        options: [
+          "Bir yil",
+          "Olti oy",
+          "Beshta yil",
+          "Umrbod"
+        ],
+        correct: 0, // A
+        exp: "Xalq majlisi patrisiy va plebeylardan ikki kishini bir yil muddatga hokim qilib saylagan."
+      },
+      {
+        q: "30. Qadimgi Rimda xalq tribunlari qanday huquq orqali qonunlar qabul qilinishiga qarshilik ko‘rsata olgan?",
+        options: [
+          "Isyon ko‘tarish",
+          "«Veto» («taqiqlayman») so‘zini aytish",
+          "Senatni tarqatib yuborish",
+          "Konsullarni qamoqqa olish"
+        ],
+        correct: 1, // B
+        exp: "Xalq tribuni «veto» («taqiqlayman») so‘zini aytishi mumkin bo‘lgan, bunday holda qonun qabul qilinmas edi."
+      },
+      {
+        q: "31. Qadimgi Rim ijtimoiy tuzumida qullardan yuqoriroq turgan, ammo to‘la huquqli bo‘lmagan toifa kimlar edi?",
+        options: [
+          "Senatorlar",
+          "Patrisiyalar",
+          "Ozod qilingan qullar",
+          "Konsullar"
+        ],
+        correct: 2, // C
+        exp: "Darslikdagi ijtimoiy tabaqalar piramidasida qullardan keyin «ozod qilingan qullar» turadi."
+      },
+      {
+        q: "32. Rimda davlat boshqaruv shakli sifatida respublika qaysi asrda o‘rnatilgan?",
+        options: [
+          "Mil. avv. VIII asrda",
+          "Mil. avv. III asrda",
+          "Mil. avv. II asrda",
+          "Mil. avv. VI asr oxirida"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. VI asr oxiridan Rim davlati respublika deb yuritila boshlangan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 44-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

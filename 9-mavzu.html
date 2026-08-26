@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>9-§. Piramidalar va daxmalar</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (25)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (25)</button>
+    </div>
+
+    <!-- 1. MOSLASH (4 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">4 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va me’moriy faktlarni muvaffaqiyatli mosladingiz. Endi 25 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (25 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">9-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">25 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim me’moriy va diniy faktlarni mustahkamlab oldingiz. Endi 25 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (25 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">9-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/25</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Mashhur piramidalar va o‘lchamlar
+      [
+        { id: 1, left: "Xufu (Xeops) piramidasi", right: "Balandligi 147 metr bo‘lgan eng ulkan piramida" },
+        { id: 2, left: "Mil. avv. 2600-yil atrofi", right: "Eng katta Xeops piramidasi qurilgan davr" },
+        { id: 3, left: "2,5 million dona tosh", right: "Xufu piramidasini tashkil etgan tosh bo‘laklari soni" },
+        { id: 4, left: "0,5 millimetr", right: "Toshlar orasidagi eng katta yoriq o‘lchami" }
+      ],
+      // 2-bosqich: Haykallar va me’moriy inshootlar
+      [
+        { id: 5, left: "Sfinks haykali", right: "Tanasi sher, boshi odamniki bo‘lgan 20 metrlik haykal" },
+        { id: 6, left: "«Sahro shohi»", right: "Toshdan ishlangan ulkan Sfinks haykalining unvoni" },
+        { id: 7, left: "Sarkofag", right: "Fir’avnning mumiyolangan jasadi solingan toshtobut" },
+        { id: 8, left: "Giza (Memfis yaqini)", right: "Xufu, Xafra va Menkaura piramidalari joylashgan hudud" }
+      ],
+      // 3-bosqich: Daxmalar va Yangi podsholik
+      [
+        { id: 9, left: "Yangi podsholik davri", right: "Piramida qurish to‘xtatilib, tog‘larga dafn etilgan davr" },
+        { id: 10, left: "Shohlar vodiysi", right: "Tog‘larga o‘yib fir’avnlar maqbaralari qurilgan joy" },
+        { id: 11, left: "Tutanxamon maqbarasi", right: "Behisob boyliklari butun holda yetib kelgan maqbara" },
+        { id: 12, left: "Daxma bitiklari", right: "Fir’avnni himoya qiluvchi munojot va qarg‘ish yozuvlari" }
+      ],
+      // 4-bosqich: Mumiyolash va narigi dunyo sudi
+      [
+        { id: 13, left: "70 kun", right: "Misrda murdani mumiyolash jarayoni davomiyligi" },
+        { id: 14, left: "Kohin-tabiblar", right: "Inson jasadini mumiyolash bilan shug‘ullangan mutaxassislar" },
+        { id: 15, left: "Osiris sudi tarozisi", right: "Bir pallasiga yurak, ikkinchisiga qush pati qo‘yilgan tarozi" },
+        { id: 16, left: "Tumorlar", right: "Mumiyo matolari qatiga qo‘yilgan omad keltiruvchi bezaklar" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (25 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Misrda piramidalar qaysi podsholiklar davrida barpo etilgan va ular qanday maqsadda xizmat qilgan?", a: "Qadimgi va O‘rta podsholiklar davrida barpo etilgan bo‘lib, fir’avnlar dafn etiladigan joy — maqbaralar bo‘lgan." },
+      { q: "2. «Hamma narsa vaqtdan qo‘rqadi, vaqt esa piramidalardan!» iborasi nimani anglatadi?", a: "To‘rt ming yildan oshiq vaqt davomida boshqa binolar xarobaga aylangan bo‘lsa-da, faqat piramidalar o‘zgarmasdan saqlanib turganini." },
+      { q: "3. Memfis shahri yaqinida qaysi uch fir’avn uchun eng mashhur piramidalar bunyod etilgan?", a: "Xufu, Xafra va Menkauralar uchun." },
+      { q: "4. Misrdagi eng katta piramida qaysi fir’avn uchun qurilgan va yunonlar uni kim deb atashgan?", a: "Xufu uchun qurilgan bo‘lib, yunonlar uni Xeops deb atashgan." },
+      { q: "5. Xufu (Xeops) piramidasi qachon qurilgan va uning balandligi qancha bo‘lgan?", a: "Miloddan avvalgi 2600-yil atrofida qurilgan, balandligi 147 metr bo‘lgan." },
+      { q: "6. Xufu piramidasi nechta tosh bo‘laklaridan tashkil topgan va toshlarning og‘irligi qancha?", a: "Har biri ikki tonnadan og‘irroq bo‘lgan 2,5 million dona tosh bo‘laklaridan tashkil topgan." },
+      { q: "7. Xufu piramidasidagi toshlar qanchalik darajada taroshlangan?", a: "Toshlar shunchalik tekis terilganki, ular orasidagi yoriq 0,5 millimetrdan oshmaydi." },
+      { q: "8. Piramida ichida nimalar joylashgan?", a: "Dahliz bilan tutashtirilgan bir qancha xonalar, ulardan birida fir’avnning sarkofagi (toshtobuti) joylashgan." },
+      { q: "9. Sarkofag nima?", a: "Fir’avnning mumiyolangan jasadi solingan toshtobut." },
+      { q: "10. Daxmalar ichidagi bitiklarda nimalar yozilgan va ulardan maqsad nima edi?", a: "Munojotlar va qarg‘ishlar yozilgan bo‘lib, fir’avnni himoya qilish va o‘zga hayotga o‘tishiga yordam berishi kerak bo‘lgan." },
+      { q: "11. Sfinks haykali qanday tasvirlangan?", a: "Tanasi sher, boshi odamniki bo‘lgan toshdan ishlangan ulkan haykal." },
+      { q: "12. «Sahro shohi» deb atalgan Sfinks haykalining balandligi qancha?", a: "Balandligi 20 metrga teng." },
+      { q: "13. Yangi podsholik davrida dafn marosimlarida qanday katta o‘zgarish yuz berdi?", a: "Piramidalar qurishni to‘xtatib, fir’avnlarni tog‘lardagi o‘yilgan tosh maqbaralarga (Shohlar vodiysiga) dafn eta boshladilar." },
+      { q: "14. Yangi podsholik davriga oid eng mashhur, boyliklari buzilmay yetib kelgan maqbara kimga tegishli?", a: "Fir’avn Tutanxamonga tegishli." },
+      { q: "15. Misrliklar tasavvurida inson vafot etgach qayerga ketadi deb ishonilgan?", a: "Marhumlar saltanatiga ketadi va o‘sha yerda umrini davom ettiradi deb hisoblangan." },
+      { q: "16. Marhumlar saltanatidagi hayot nimaga bog‘liq deb hisoblangan?", a: "Osiris sudining natijalariga bog‘liq bo‘lgan." },
+      { q: "17. Osiris sudida tarozi pallasiga nimalar qo‘yilgan?", a: "Tarozining bir pallasiga marhumning yuragi, boshqasiga esa qush pati qo‘yilgan." },
+      { q: "18. Agar tarozi pallalari tenglashsa bu nimani anglatgan?", a: "Inson bu dunyoda faqat ezgu ishlar qilganini va ajoyib sharoitda umrini davom ettirishini." },
+      { q: "19. Agar yurak og‘irroq kelsa qanday jazo kutilgan?", a: "Inson ko‘p yomon ishlar qilgan bo‘lib chiqib, badbashara maxluqlarga yemish bo‘lgan." },
+      { q: "20. Nima sababdan misrliklar inson jasadini mumiyolashgan?", a: "Osiris qarshisida go‘zal qiyofada qad rostlash uchun." },
+      { q: "21. Mumiyolash ishlari bilan kimlar shug‘ullangan?", a: "Misr kohin-tabiblari shug‘ullangan." },
+      { q: "22. Mumiyolash jarayoni odatda necha kun davom etgan?", a: "Qariyb 70 kun davom etgan." },
+      { q: "23. Jasadga maxsus ishlov berilgach nima qilingan?", a: "Ko‘pdan ko‘p matolar bilan o‘rab-chirmashgan va matolar qatiga tumorlar qo‘yilgan." },
+      { q: "24. Mumiyo matolari qatiga nima sababdan tumorlar qo‘yilgan?", a: "Marhumga narigi dunyoda omad keltirishi uchun." },
+      { q: "25. Mumiyolash marosimi jamiyatning qaysi tabaqasiga nasib etgan?", a: "Faqat marhumning ortida qolgan boy-badavlat qarindoshlarigina bunga qodir bo‘lgan." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Misrda ulkan piramidalar asosan qaysi davrlarda barpo etilgan?",
+        options: [
+          "Faqat Yangi podsholik davrida",
+          "Qadimgi va O‘rta podsholiklar davrida",
+          "So‘nggi podsholik va forslar davrida",
+          "Giksoslar hukmronligi davrida"
+        ],
+        correct: 1,
+        exp: "Piramidalar Qadimgi va O‘rta podsholiklar davrida fir’avnlar uchun maqbara sifatida qurilgan."
+      },
+      {
+        q: "2. Qadimgi Misrda barpo etilgan eng katta piramida qaysi fir’avn sharafiga qurilgan?",
+        options: [
+          "Xafra",
+          "Xufu (Xeops)",
+          "Menkaura",
+          "Tutanxamon"
+        ],
+        correct: 1,
+        exp: "Eng katta piramida fir’avn Xufu (Xeops) uchun bunyod etilgan."
+      },
+      {
+        q: "3. Xufu (Xeops) piramidasi qachon qurilgan va uning balandligi necha metr bo‘lgan?",
+        options: [
+          "Mil. avv. 3000-yil; 120 metr",
+          "Mil. avv. 2600-yil atrofi; 147 metr",
+          "Mil. avv. 2000-yil; 150 metr",
+          "Mil. avv. XVIII asr; 200 metr"
+        ],
+        correct: 1,
+        exp: "Xufu piramidasi mil. avv. 2600-yil atrofida qurilgan bo‘lib, balandligi 147 metr bo‘lgan."
+      },
+      {
+        q: "4. Xufu piramidasi necha dona tosh blokdan tashkil topgan va ularning o‘rtacha og‘irligi qancha bo‘lgan?",
+        options: [
+          "1 million dona; 500 kg dan",
+          "2,5 million dona; 2 tonnadan ortiq",
+          "5 million dona; 1 tonnadan",
+          "500 ming dona; 10 tonnadan"
+        ],
+        correct: 1,
+        exp: "Piramida har biri 2 tonnadan og‘irroq bo‘lgan 2,5 million dona tosh bo‘laklaridan tashkil topgan."
+      },
+      {
+        q: "5. Xufu piramidasidagi toshlar orasidagi yoriq qalinligi qanchadan oshmaydi?",
+        options: [
+          "5 santimetrdan",
+          "0,5 millimetrdan",
+          "2 millimetrdan",
+          "1 santimetrdan"
+        ],
+        correct: 1,
+        exp: "Toshlar shunchalik tekis taroshlanganki, ular orasidagi yoriq 0,5 mm dan oshmaydi."
+      },
+      {
+        q: "6. Memfis shahri yaqinida quyidagi qaysi uch fir’avn uchun ulkan piramidalar bunyod etilgan?",
+        options: [
+          "Yaxmos, Tutmos II, Tutmos III",
+          "Xufu, Xafra, Menkaura",
+          "Menes, Doro I, Kambiz",
+          "Tutanxamon, Ramses, Ptax"
+        ],
+        correct: 1,
+        exp: "Memfis yaqinida Xufu, Xafra va Menkaura piramidalari qad ko‘targan."
+      },
+      {
+        q: "7. Piramida ichida fir’avnning mumiyolangan jasadi solingan toshtobut qanday nomlanadi?",
+        options: [
+          "Kripta",
+          "Sarkofag",
+          "Obelisk",
+          "Kromlex"
+        ],
+        correct: 1,
+        exp: "Fir’avnning mumiyolangan jasadi solingan toshtobut — sarkofag deyiladi."
+      },
+      {
+        q: "8. Daxmalar ichidagi devoriy yozuvlar (munojot va qarg‘ishlar) qanday maqsadga xizmat qilgan?",
+        options: [
+          "Quruvchilarning ismlarini saqlash uchun",
+          "Fir’avnni himoya qilish va narigi hayotga o‘tishiga yordam berish uchun",
+          "Kelajak avlodga soliqlar hisobini qoldirish uchun",
+          "Davlat qonunlarini e’lon qilish uchun"
+        ],
+        correct: 1,
+        exp: "Bitiklar fir’avnni himoya qilishi va o‘zga hayotga o‘tayotganida madad berishi kerak bo‘lgan."
+      },
+      {
+        q: "9. «Sahro shohi» deb atalgan ulkan Sfinks haykalining tuzilishi va balandligi qanday?",
+        options: [
+          "Tanasi odam, boshi sher; balandligi 50 metr",
+          "Tanasi sher, boshi odamniki; balandligi 20 metr",
+          "Tanasi ho‘kiz, boshi burgut; balandligi 15 metr",
+          "Tanasi timsoh, boshi arslon; balandligi 30 metr"
+        ],
+        correct: 1,
+        exp: "Sfinks — tanasi sher, boshi odamniki bo‘lgan tosh haykal bo‘lib, balandligi 20 metrga teng."
+      },
+      {
+        q: "10. Yangi podsholik davriga kelib fir’avnlarni dafn etish an’anasida qanday o‘zgarish sodir bo‘ldi?",
+        options: [
+          "Piramida qurish to‘xtatilib, tog‘lardagi o‘yilgan tosh maqbaralarga dafn etila boshlandi",
+          "Ularni Nil daryosi tubiga ko‘ma boshladilar",
+          "Faqat ibodatxona xumdonlarida kuydirish boshlandi",
+          "Oddiy loy uylarga dafn etishga o‘tildi"
+        ],
+        correct: 0,
+        exp: "Yangi podsholikda piramida qurmay qo‘yishdi va fir’avnlarni tog‘lardagi o‘yilgan maqbaralarga dafn etishdi."
+      },
+      {
+        q: "11. Tog‘larga o‘yib ishlangan, behisob boyliklari butun holda bizgacha yetib kelgan mashhur maqbara kimga tegishli?",
+        options: [
+          "Xufu",
+          "Tutanxamon",
+          "Xafra",
+          "Yaxmos"
+        ],
+        correct: 1,
+        exp: "Eng mashhur daxma fir’avn Tutanxamonga tegishli bo‘lib, tasavvurga sig‘maydigan boyliklari saqlanib qolgan."
+      },
+      {
+        q: "12. Misrliklar tasavvurida marhumlar saltanatidagi taqdir kimning sudiga bog‘liq bo‘lgan?",
+        options: [
+          "Ptax sudiga",
+          "Osiris sudiga",
+          "Amon-Ra sudiga",
+          "Xapi sudiga"
+        ],
+        correct: 1,
+        exp: "Marhumlar saltanatidagi hayot Osiris sudining natijalariga bog‘liq bo‘lgan."
+      },
+      {
+        q: "13. Osiris sudida adolat tarozisining bir pallasiga marhumning yuragi, ikkinchisiga nima qo‘yilgan?",
+        options: [
+          "Oltin qum",
+          "Qush pati",
+          "Muqaddas tosh",
+          "Don boshoqlari"
+        ],
+        correct: 1,
+        exp: "Tarozining bir pallasiga yurak, ikkinchisiga esa qush pati qo‘yilgan."
+      },
+      {
+        q: "14. Osiris sudida tarozi pallalari tenglashsa, marhumning taqdiri qanday kechgan?",
+        options: [
+          "Qayta Yer yuziga qaytarilgan",
+          "Bu dunyoda ezgu ishlar qilgani ma’lum bo‘lib, ajoyib sharoitda umrini davom ettirgan",
+          "Yirtqichlarga yemish qilingan",
+          "Nil daryosiga tashlangan"
+        ],
+        correct: 1,
+        exp: "Pallalar tenglashsa, marhum ezgu ishlar qilgani ma’lum bo‘lib, narigi dunyoda ajoyib hayot kechirgan."
+      },
+      {
+        q: "15. Agar Osiris sudida marhumning yuragi og‘irroq kelsa nima sodir bo‘lgan?",
+        options: [
+          "Yana qayta taroziga qo‘yilgan",
+          "Yomon ishlari fosh bo‘lib, badbashara maxluqlarga yemish bo‘lgan",
+          "Unga ikkinchi imkoniyat berilgan",
+          "Ibodatxonaga xizmatkor qilib yuborilgan"
+        ],
+        correct: 1,
+        exp: "Yurak og‘ir kelsa, inson yomon amallar qilgan deb topilib, maxluqlarga yem bo‘lgan."
+      },
+      {
+        q: "16. Inson jasadini mumiyolashdan asosiy maqsad nima edi?",
+        options: [
+          "Jasadni muzlatib saqlash uchun",
+          "Osiris qarshisida go‘zal qiyofada qad rostlash uchun",
+          "Shaharda kasallik tarqalmasligi uchun",
+          "Faqat tabobatni rivojlantirish uchun"
+        ],
+        correct: 1,
+        exp: "Osiris qarshisida go‘zal qiyofada qad rostlash uchun jasad mumiyolangan."
+      },
+      {
+        q: "17. Qadimgi Misrda mumiyolash san’ati bilan maxsus shug‘ullangan tabaqa kimlar bo‘lgan?",
+        options: [
+          "Kemasozlar",
+          "Kohin-tabiblar",
+          "Zargarlar",
+          "Harbiy sarkardalar"
+        ],
+        correct: 1,
+        exp: "Mumiyolash bilan Misr kohin-tabiblari shug‘ullangan."
+      },
+      {
+        q: "18. Misrda murdani to‘liq mumiyolash jarayoni odatda necha kun davom etgan?",
+        options: [
+          "30 kun",
+          "Qariyb 70 kun",
+          "40 kun",
+          "100 kun"
+        ],
+        correct: 1,
+        exp: "Odatda mumiyolash qariyb 70 kun davom etgan."
+      },
+      {
+        q: "19. Mumiyolangan jasad matolar bilan o‘ralayotganda uning qatiga nimalar qo‘yib chiqilgan?",
+        options: [
+          "Qimmatbaho qurollar",
+          "Omad keltiruvchi tumorlar",
+          "Xurmo mevalari",
+          "Oltin tangalar"
+        ],
+        correct: 1,
+        exp: "Matolar qati orasiga omad keltiruvchi tumorlar qo‘yilgan."
+      },
+      {
+        q: "20. Mumiyolash marosimi qadimgi Misrda kimlarga nasib etgan?",
+        options: [
+          "Barcha oddiy dehqon va qullarga",
+          "Faqat ortida boy-badavlat qarindoshlari qolgan shaxslarga",
+          "Faqat urushda halok bo‘lgan askarlarga",
+          "Faqat chet ellik savdogarlarga"
+        ],
+        correct: 1,
+        exp: "Mumiyolash juda qimmat bo‘lgani uchun faqat boy-badavlat kishilargagina nasib etgan."
+      },
+      {
+        q: "21. Xufu piramidasining qadimgi dunyo yetti mo‘jizasi qatoriga kirishiga sabab nima?",
+        options: [
+          "U oltindan qurilgani uchun",
+          "O‘z davrining eng ulkan va benuqson mahorat bilan qurilgan inshooti bo‘lgani uchun",
+          "U yer ostida joylashgani uchun",
+          "U dengiz bo‘yida qurilgani uchun"
+        ],
+        correct: 1,
+        exp: "Ulkan hajmi va mukammal aniqlikdagi muhandislik yutug‘i sababli u jahon mo‘jizasi sanaladi."
+      },
+      {
+        q: "22. Xafra va Menkaura piramidalari qaysi qadimgi shahar yaqinida joylashgan?",
+        options: [
+          "Fiva",
+          "Memfis (Giza)",
+          "Assuan",
+          "Luksor"
+        ],
+        correct: 1,
+        exp: "Bu piramidalar Memfis shahri yaqinida joylashgan."
+      },
+      {
+        q: "23. Qadimgi Misr me’morchiligida toshlarni joylashtirishda qo‘llangan yuqori aniqlik nimadan dalolat beradi?",
+        options: [
+          "Qurilishda temir texnikalar ishlatilganidan",
+          "Misrliklarning yuksak geometrik va muhandislik bilimiga ega bo‘lganidan",
+          "Faqat qullar kuchi ko‘pligidan",
+          "Toshlar o‘z-o‘zidan erib birikkanidan"
+        ],
+        correct: 1,
+        exp: "Yoriqlarning 0,5 mm dan oshmasligi yuksak hisob-kitob va taroshlash mahoratini ko‘rsatadi."
+      },
+      {
+        q: "24. «Shohlar vodiysi» iborasi qaysi davr dafn inshootlari majmuasiga nisbatan qo‘llanadi?",
+        options: [
+          "Ilk podsholik davri qabristoniga",
+          "Yangi podsholik davri fir’avnlari maqbaralariga",
+          "Giksoslar hukmdorlari dafn joyiga",
+          "Sinay mis konlariga"
+        ],
+        correct: 1,
+        exp: "Yangi podsholik davrida fir’avnlar tog‘larga o‘yib ishlangan Shohlar vodiysiga dafn etilgan."
+      },
+      {
+        q: "25. Quyidagi atamalarning qaysi biri fir’avnlar jasadi saqlanadigan tosh qutini bildiradi?",
+        options: [
+          "Piramida",
+          "Sarkofag",
+          "Sfinks",
+          "Obelisk"
+        ],
+        correct: 1,
+        exp: "Sarkofag — fir’avnning toshdan yasalgan tobutidir."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 23) fb.innerText = "Mukammal natija! 9-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

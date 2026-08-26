@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>14-§. Ahamoniylar davlati</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH (5 BOSQICH) -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        <div class="match-grid" id="match-container"></div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏆</div>
+        <h2 style="font-size: 20px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha atamalar va tarixiy qonuniyatlarni muvaffaqiyatli mosladingiz. Endi 30 talik Savol-Javob qismiga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (30 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="badge">14-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🎉</div>
+        <h2 style="font-size: 20px; font-weight: 800;">30 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA ARALASH TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="badge">14-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH) ---
+    const matchStages = [
+      // 1-bosqich: Qadimgi Eron xalqlari va ilk davlatlar
+      [
+        { id: 1, left: "Kassiylar va elamiylar", right: "Qadimgi Eron hududida yashagan ilk qabilalar" },
+        { id: 2, left: "Elam davlati", right: "Poytaxti Suza shahri bo‘lgan janubi-g‘arbdagi davlat" },
+        { id: 3, left: "Kiaksar", right: "Mil. avv. VII asrda Midiyani qudratli davlatga aylantirgan podsho" },
+        { id: 4, left: "Fors viloyati", right: "Fors qo‘ltig‘iga tutash, forslar o‘rnashgan o‘lka" }
+      ],
+      // 2-bosqich: Ahamoniylar davlati tashkil topishi
+      [
+        { id: 5, left: "Mil. avv. 558-yil", right: "Kir II barcha forslarni o‘z hokimiyati ostida birlashtirgan sana" },
+        { id: 6, left: "Kir II", right: "Armaniston, Midiya va Bobilni zabt etgan fors hukmdori" },
+        { id: 7, left: "Kambiz II", right: "Misrni zabt etib, davlat hududini kengaytirgan podsho" },
+        { id: 8, left: "Mil. avv. 522-yil", right: "Shoh Doro I Ahamoniylar davlati taxtiga chiqqan sana" }
+      ],
+      // 3-bosqich: Doro I islohotlari
+      [
+        { id: 9, left: "Darik", right: "Doro I tomonidan muomalaga kiritilgan yagona oltin tanga" },
+        { id: 10, left: "Shoh yo‘li", right: "Persepoldan O‘rta Yer dengiziga qadar qurilgan savdo yo‘li" },
+        { id: 11, left: "Satrapiyalar", right: "Ahamoniylar saltanati bo‘lingan harbiy-ma’muriy o‘lkalar" },
+        { id: 12, left: "Skiflar", right: "Doro I Qora dengiz bo‘ylarida ularga qarshi yurish qilgan xalq" }
+      ],
+      // 4-bosqich: Madaniyat va qoyatosh bitiklari
+      [
+        { id: 13, left: "Persepol", right: "Yuz ustunli zali bo‘lgan hashamatli saroy joylashgan shahar" },
+        { id: 14, left: "Behistun va Naqshi Rustam", right: "Fors shohlari bitiklari o‘yib yozilgan mashhur qoyatoshlar" },
+        { id: 15, left: "Suza va Ekbatana", right: "Ahamoniylar davlatidagi muhim savdo markazlari" },
+        { id: 16, left: "Mixxat belgi-yozuvi", right: "Qadimgi forslar foydalangan yozuv turi" }
+      ],
+      // 5-bosqich: Davlatning qulashi va xronologiya
+      [
+        { id: 17, left: "Mil. avv. VI asr", right: "Ahamoniylar sulolasi davlati tashkil topgan asr" },
+        { id: 18, left: "Mil. avv. 330-yil", right: "Makedoniyalik Aleksandr Fors davlatini bosib olgan sana" },
+        { id: 19, left: "Kserks", right: "Persepol saroyida xonalar va zallar qurdirgan shoh" },
+        { id: 20, left: "Frakiya", right: "Doro I tomonidan bosib olingan Bolqon yarimoroli sharqidagi o‘lka" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let cards = [];
+      pool.forEach(p => {
+        cards.push({ id: p.id, text: p.left });
+        cards.push({ id: p.id, text: p.right });
+      });
+      cards.sort(() => 0.5 - Math.random());
+
+      const container = document.getElementById('match-container');
+      container.innerHTML = '';
+      cards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (30 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Hozirgi Eron hududida qadimda qaysi qabilalar yashagan?", a: "Kassiylar, elamiylar, keyinchalik esa midiyaliklar va forslar yashagan." },
+      { q: "2. Qadimgi Eronda aholining asosiy mashg‘ulotlari nimalardan iborat bo‘lgan?", a: "Tog‘oldi vodiylarda dehqonchilik, dasht mintaqalarida chorvachilik bilan shug‘ullanishgan." },
+      { q: "3. Eronning janubi-g‘arbida, Mesopotamiya bilan chegarada vujudga kelgan davlat qaysi va uning poytaxti qayer bo‘lgan?", a: "Elam davlati bo‘lib, uning poytaxti Suza shahri bo‘lgan." },
+      { q: "4. Kaspiy dengizidan janubi-g‘arbda joylashgan Midiya davlati qachon va kimning davrida qudratli davlatga aylandi?", a: "Miloddan avvalgi VII asrda podsho Kiaksar hukmronligi davrida." },
+      { q: "5. Midiya davlati qaysi davlat bilan ittifoq tuzib Ossuriyani bosib olgan?", a: "Bobil davlati bilan ittifoq tuzib." },
+      { q: "6. Fors podsholigi qayerda vujudga kelgan?", a: "Eronning janubida, Fors ko‘rfaziga tutashib ketgan Fors viloyatida." },
+      { q: "7. Ahamoniylar sulolasidan bo‘lgan podsho Kir II barcha forslarni qachon o‘z hokimiyati ostida birlashtirdi?", a: "Miloddan avvalgi 558-yilda." },
+      { q: "8. Kir II dastlab qaysi davlatni bo‘ysundirdi va keyin qaysi o‘lkalarni zabt etdi?", a: "Midiyani bo‘ysundirdi, so‘ng Armaniston, Bobil, Falastin va Finikiyani zabt etdi." },
+      { q: "9. Kir II ning vorisi Kambiz II qaysi mamlakatni zabt etib, davlat hududini kengaytirdi?", a: "Misrni zabt etdi (mil. avv. 525-yilda)." },
+      { q: "10. Shoh Doro I qachon qadimgi Fors davlati taxtiga chiqdi?", a: "Miloddan avvalgi 522-yilda." },
+      { q: "11. Doro I taxtga chiqqan dastlabki paytda mamlakatdagi vaziyat qanday edi?", a: "Bosib olingan barcha mamlakatlarda qo‘zg‘olonlar alangalangan edi." },
+      { q: "12. Doro I Qora dengiz bo‘ylarida yashovchi qaysi xalq ustiga harbiy yurish qildi?", a: "Skiflar ustiga yurish qildi." },
+      { q: "13. Yunon-fors urushlarining boshlanib ketishiga qanday omil sabab bo‘ldi?", a: "Doro I ning Kichik Osiyodagi yunon koloniyalari va Bolqondagi Frakiyani bosib olishi." },
+      { q: "14. Doro I davrida Ahamoniylar davlati hududi qayerdan qayergacha cho‘zilgan edi?", a: "Hindiston shimolidan to O‘rta Yer dengiziga qadar cho‘zilgan." },
+      { q: "15. Doro I butun mamlakat uchun qanday yagona oltin tangani muomalaga kiritdi?", a: "«Darik» deb nomlangan yagona oltin tangani." },
+      { q: "16. Doro I qurdorgan «shoh yo‘li» qayerdan qayergacha olib borgan?", a: "Qarorgoh Persepol shahridan O‘rta Yer dengiziga qadar olib borgan." },
+      { q: "17. Doro I saltanatni boshqarish uchun qanday ma’muriy islohot o‘tkazdi?", a: "Saltanatni «satrapiyalar» deb nomlangan alohida harbiy-ma’muriy o‘lkalarga bo‘lib chiqdi." },
+      { q: "18. Ahamoniylar davlatining muhim savdo markazlari bo‘lgan shaharlarni ayting.", a: "Suza, Ekbatana va Persepol shaharlari." },
+      { q: "19. Persepol shahridagi qaysi shohlarning saroylari qoldiqlari saqlanib qolgan?", a: "Doro I va Kserksning saroylari qoldiqlari." },
+      { q: "20. Persepol saroyi qanday o‘ziga xos me’moriy tuzilishga ega bo‘lgan?", a: "Yuz ustunli ulkan zali bo‘lgan va afsonaviy qushlar tasviri bilan bezatilgan." },
+      { q: "21. Persepol saroyi devorlaridagi bo‘rtma naqshlarda nimalar tasvirlangan?", a: "Bo‘ysundirilgan ko‘pgina elatlarning fors shohlariga o‘lpon keltirayotgan holati." },
+      { q: "22. Qadimgi forslar qanday yozuv turidan foydalanishgan?", a: "Mixxat belgi-yozuvidan foydalanishgan." },
+      { q: "23. Fors shohlarining g‘alabalari va faoliyati bitilgan mashhur qoyatosh bitiklari qaysilar?", a: "Behistun va Naqshi Rustam qoyatosh bitiklari." },
+      { q: "24. Behistun bitiklarida qanday voqealar haqida so‘z boradi?", a: "Harbiy yurishlar, qo‘zg‘olonlar va davlat hayotidagi muhim voqealar haqida." },
+      { q: "25. Ahamoniylar (Fors) davlatini kim va qachon butunlay bosib oldi?", a: "Makedoniyalik Aleksandr miloddan avvalgi 330-yilda bosib oldi." },
+      { q: "26. Ahamoniylar sulolasi Fors podsholigida qaysi asrlarda hukmronlik qilgan?", a: "Miloddan avvalgi VI–IV asrlarda." },
+      { q: "27. Elam davlatining jahon madaniyatidagi o‘rni nimada?", a: "U yerda jahondagi eng qadimgi yozuvlardan biri yaratilgan." },
+      { q: "28. Satrapiyalarni boshqargan amaldorlar kim deb atalgan?", a: "Satrap (noib) deb atalgan." },
+      { q: "29. Doro I qo‘shinida qanday islohot o‘tkazdi?", a: "Qo‘shinlarni qaytadan tartibga solib, yangi harbiy tuzilma joriy qildi." },
+      { q: "30. Shoh yo‘lining qurilishi davlatga qanday iqtisodiy foyda keltirdi?", a: "Savdo-sotiqni yuksaltirdi, choparlar va qo‘shinlar harakatini tezlashtirdi." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA ARALASH TEST - JAVOBLAR 8 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    const testQuestions = [
+      {
+        q: "1. Fors shohi Doro I tomonidan butun mamlakat uchun muomalaga kiritilgan yagona oltin tanga nima deb atalgan?",
+        options: [
+          "Darik",
+          "Mino",
+          "Dirham",
+          "Talant"
+        ],
+        correct: 0, // A
+        exp: "Doro I butun mamlakat uchun «darik» deb nomlangan yagona oltin tangani muomalaga kiritadi."
+      },
+      {
+        q: "2. Qadimgi Elam davlatining poytaxti qaysi shahar bo‘lgan?",
+        options: [
+          "Persepol",
+          "Suza",
+          "Ekbatana",
+          "Bobil"
+        ],
+        correct: 1, // B
+        exp: "Eronning janubi-g‘arbida vujudga kelgan Elam davlatining poytaxti Suza shahri bo‘lgan."
+      },
+      {
+        q: "3. Ahamoniylar (Fors) davlatini miloddan avvalgi 330-yilda butunlay zabt etgan sarkarda kim?",
+        options: [
+          "Kiaksar",
+          "Kambiz II",
+          "Makedoniyalik Aleksandr",
+          "Kir II"
+        ],
+        correct: 2, // C
+        exp: "Makedoniyalik Aleksandr mil. avv. 330-yilda Fors davlatini bosib oldi."
+      },
+      {
+        q: "4. Doro I saltanatni boshqarishni osonlashtirish maqsadida uni qanday harbiy-ma’muriy birliklarga bo‘lib chiqdi?",
+        options: [
+          "Nomlarga",
+          "Viloyatlarga",
+          "Polislarga",
+          "Satrapiyalarga"
+        ],
+        correct: 3, // D
+        exp: "Saltanatni satrapiyalar deb nomlangan alohida harbiy-ma’muriy o‘lkalarga bo‘lib chiqdi."
+      },
+      {
+        q: "5. Ahamoniylar sulolasidan bo‘lgan podsho Kir II barcha forslarni qaysi yilda o‘z hokimiyati ostida birlashtirdi?",
+        options: [
+          "Miloddan avvalgi 558-yilda",
+          "Miloddan avvalgi 522-yilda",
+          "Miloddan avvalgi 525-yilda",
+          "Miloddan avvalgi VII asrda"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 558-yilda Ahamoniylar sulolasidan bo‘lmish podsho Kir II barcha forslarni o‘z hokimiyati ostiga birlashtirdi."
+      },
+      {
+        q: "6. Doro I ning «shoh yo‘li» deb ataluvchi savdo yo‘li qaysi shahardan O‘rta Yer dengiziga qadar qurilgan edi?",
+        options: [
+          "Suzadan",
+          "Persepoldan",
+          "Ekbatanadan",
+          "Nineviyadan"
+        ],
+        correct: 1, // B
+        exp: "Doro I qarorgohi Persepol shahridan O‘rta Yer dengiziga qadar «shoh yo‘li» savdo yo‘lini qurdirdi."
+      },
+      {
+        q: "7. Fors shohlarining g‘alabalari va yurishlari aks ettirilgan mashhur qoyatosh bitiklari qaysilar?",
+        options: [
+          "Rozett va Urxun bitiklari",
+          "Kultepa va Zarautsoy bitiklari",
+          "Behistun va Naqshi Rustam bitiklari",
+          "Piramida daxma yozuvlari"
+        ],
+        correct: 2, // C
+        exp: "Fors shohlarining bitiklari Behistun va Naqshi Rustam qoyalariga o‘yib yozilgan."
+      },
+      {
+        q: "8. Miloddan avvalgi VII asrda podsho Kiaksar hukmronligi davrida qudratli davlatga aylangan mamlakat qaysi?",
+        options: [
+          "Elam",
+          "Fors",
+          "Ossuriya",
+          "Midiya"
+        ],
+        correct: 3, // D
+        exp: "Mil. avv. VII asrda podsho Kiaksar hukmronligi davrida Midiya qudratli davlatga aylandi."
+      },
+      {
+        q: "9. Shoh Doro I qachon qadimgi Fors davlati taxtiga o‘tirdi?",
+        options: [
+          "Miloddan avvalgi 522-yilda",
+          "Miloddan avvalgi 558-yilda",
+          "Miloddan avvalgi 539-yilda",
+          "Miloddan avvalgi 330-yilda"
+        ],
+        correct: 0, // A
+        exp: "Mil. avv. 522-yilda shoh Doro I qadimgi Fors davlati taxtiga chiqdi."
+      },
+      {
+        q: "10. Kir II ning istilochilik siyosatini davom ettirib, Misrni zabt etgan fors hukmdori kim?",
+        options: [
+          "Doro I",
+          "Kambiz II",
+          "Kserks",
+          "Kiaksar"
+        ],
+        correct: 1, // B
+        exp: "Kir II ning vorislari — Kambiz II va Doro I siyosatni davom ettirdi. Kambiz II Misrni zabt etdi."
+      },
+      {
+        q: "11. Doro I hukmronligi davrida Ahamoniylar davlati hududlari qaysi mintaqalargacha kengaytirildi?",
+        options: [
+          "Faqat Eron va Bobil bilan cheklandi",
+          "Faqat Kichik Osiyo hududlari egallandi",
+          "Hindiston shimolidan O‘rta Yer dengiziga qadar",
+          "Dunyo bo‘ylab barcha qit’alar bosib olindi"
+        ],
+        correct: 2, // C
+        exp: "Doro I hukmronligi davrida Hindiston shimolidan O‘rta Yer dengiziga qadar yastangan ulkan davlat barpo etildi."
+      },
+      {
+        q: "12. Persepol shahridagi yuz ustunli zali bo‘lgan hashamatli saroy qaysi shohlar davrida qurilgan?",
+        options: [
+          "Kir II va Kambiz",
+          "Kiaksar va Aleksandr",
+          "Sargon va Xammurapi",
+          "Doro I va Kserks"
+        ],
+        correct: 3, // D
+        exp: "Persepol shahrida Doro I va Kserksning turli xonalar va yuz ustunli zali bo‘lgan saroyi qoldiqlari saqlanib qolgan."
+      },
+      {
+        q: "13. Doro I ning qaysi hududlarni bosib olishi yunon-fors urushlarining boshlanib ketishiga sabab bo‘ldi?",
+        options: [
+          "Kichik Osiyodagi yunon koloniyalari va Bolqondagi Frakiyani",
+          "Misr va Nubiyani",
+          "Hindiston va Xitoyni",
+          "Faqat Bobil shahrini"
+        ],
+        correct: 0, // A
+        exp: "Kichik Osiyodagi yunon koloniyalari va Bolqon sharqidagi Frakiyani bosib olishi yunon-fors urushlariga sabab bo‘ldi."
+      },
+      {
+        q: "14. Qadimgi forslar qanday yozuv belgilari tizimidan foydalanishgan?",
+        options: [
+          "Misr iyerogliflaridan",
+          "Mixxat belgi-yozuvidan",
+          "Finikiya alifbosidan",
+          "Runa yozuvidan"
+        ],
+        correct: 1, // B
+        exp: "Qadimgi forslar mixxat belgi-yozuvidan foydalangan."
+      },
+      {
+        q: "15. Hozirgi Eron hududida yashagan qadimgi aholining tog‘oldi va dashtlardagi mashg‘ulotlari to‘g‘ri berilgan javobni toping.",
+        options: [
+          "Faqat baliqchilik va dengizchilik",
+          "Faqat konchilik va qurolsozlik",
+          "Tog‘oldi vodiylarda dehqonchilik, dashtlarda chorvachilik",
+          "Faqat hunarmandchilik va to‘quvchilik"
+        ],
+        correct: 2, // C
+        exp: "Tog‘oldi vodiylarda aholi dehqonchilik bilan shug‘ullangan, dasht mintaqalarida chorvadorlar kun kechirgan."
+      },
+      {
+        q: "16. Midiya davlati qaysi dengizdan janubi-g‘arbda joylashgan edi?",
+        options: [
+          "Qora dengizdan",
+          "O‘rta Yer dengizidan",
+          "Qizil dengizdan",
+          "Kaspiy dengizidan"
+        ],
+        correct: 3, // D
+        exp: "Kaspiy dengizidan janubi-g‘arbda Midiya joylashgan."
+      },
+      {
+        q: "17. Persepol saroyi devorlaridagi bo‘rtma naqshlarda asosan qanday lavha tasvirlangan?",
+        options: [
+          "Bo‘ysundirilgan elatlarning fors shohlariga o‘lpon keltirayotgan holati",
+          "Dengizdagi kemalar jangi",
+          "Piramidalar qurilishi manzarasi",
+          "Astronomik yulduzlar xaritasi"
+        ],
+        correct: 0, // A
+        exp: "Bo‘rtma naqshlarda bo‘ysundirilgan ko‘pgina elatlarning fors shohlariga o‘lpon keltirayotgan holati tasvirlangan."
+      },
+      {
+        q: "18. Doro I Qora dengiz bo‘ylaridagi qaysi ko‘chmanchi xalq ustiga harbiy yurish uyushtirgan?",
+        options: [
+          "Giksoslar",
+          "Skiflar",
+          "Elamiylar",
+          "Urartlar"
+        ],
+        correct: 1, // B
+        exp: "Doro I Qora dengiz bo‘ylarida yashovchi skiflar ustiga yurish qildi."
+      },
+      {
+        q: "19. Ahamoniylar davlatida savdo-sotiq markazlari bo‘lgan shaharlar qatorini aniqlang.",
+        options: [
+          "Memfis, Fiva, Tushpa",
+          "Tir, Sidon, Ugarit",
+          "Suza, Ekbatana, Persepol",
+          "Afina, Sparta, Rim"
+        ],
+        correct: 2, // C
+        exp: "Suza, Ekbatana va boshqa shaharlar Ahamoniylar davlatidagi muhim savdo markazlari bo‘lgan."
+      },
+      {
+        q: "20. Kir II qaysi davlatlarni bosib olish orqali O‘rta Yer dengizi sohiliga chiqdi?",
+        options: [
+          "Hindiston va Xitoyni",
+          "Faqat Misrni",
+          "Faqat Skiflar yerini",
+          "Armaniston, Midiya, Bobil, Falastin va Finikiyani"
+        ],
+        correct: 3, // D
+        exp: "Armaniston, Midiya va Bobil zabt etildi. Forslar O‘rta Yer dengizi sohiliga chiqib, Falastin va Finikiyani bo‘ysundirdi."
+      },
+      {
+        q: "21. Midiya davlati kim bilan ittifoq tuzib, qudratli Ossuriya davlatini tor-mor etgan?",
+        options: [
+          "Bobil bilan ittifoq bo‘lib",
+          "Misr bilan ittifoq bo‘lib",
+          "Skiflar bilan ittifoq bo‘lib",
+          "Yunoniston bilan ittifoq bo‘lib"
+        ],
+        correct: 0, // A
+        exp: "Midiya davlati Bobil bilan ittifoq bo‘lib, Ossuriyani bosib oladi."
+      },
+      {
+        q: "22. Fors podsholigi qachon va qaysi sulola tomonidan tashkil topgan?",
+        options: [
+          "Mil. avv. VII asrda; Kassiylar sulolasi",
+          "Mil. avv. VI asrda; Ahamoniylar sulolasi",
+          "Mil. avv. IV asrda; Salavkiylar sulolasi",
+          "Mil. avv. 330-yilda; Sosoniylar sulolasi"
+        ],
+        correct: 1, // B
+        exp: "Miloddan avvalgi VI asrda Ahamoniylar sulolasi Fors podsholigiga asos soldi."
+      },
+      {
+        q: "23. Doro I hokimiyat tepasiga kelganida dastlab qanday qiyinchilikka duch keldi?",
+        options: [
+          "Daryolar toshqini sababli ekinlar nobud bo‘ldi",
+          "Aleksandr qo‘shinlari bostirib kirdi",
+          "Bosib olingan barcha mamlakatlarda qo‘zg‘olonlar alangalangan edi",
+          "Oltin konlari tugab qoldi"
+        ],
+        correct: 2, // C
+        exp: "Bu paytda bosib olingan barcha mamlakatlarda qo‘zg‘olonlar alangalanib ketdi. Doro I ularni bostirishga kirishdi."
+      },
+      {
+        q: "24. Fors qabilalari dastlab Eronning qaysi hududiga kelib o‘rnashgan edilar?",
+        options: [
+          "Kaspiy dengizi shimoliga",
+          "Kavkaz tog‘lari cho‘qqilariga",
+          "Mesopotamiya markaziga",
+          "Eron janubidagi Fors ko‘rfaziga tutash Fors viloyatiga"
+        ],
+        correct: 3, // D
+        exp: "Eronning janubida, Fors ko‘rfaziga tutashib ketgan yerlarda, Fors viloyatida forslar o‘rnashgan."
+      },
+      {
+        q: "25. Shoh yo‘lining o‘tkazilishi Fors saltanatiga qanday asosiy qulaylikni berdi?",
+        options: [
+          "Persepoldan O‘rta Yer dengizigacha savdo va harbiy aloqalarni tezlashtirdi",
+          "Faqat oltin tashish uchun xizmat qildi",
+          "Dengizdagi kemalar harakatini to‘xtatdi",
+          "Boshqa davlatlar bilan chegarani butunlay yopdi"
+        ],
+        correct: 0, // A
+        exp: "Savdo yo‘li Persepol va O‘rta Yer dengizi o‘rtasidagi savdo-sotiq va aloqani nihoyatda rivojlantirdi."
+      },
+      {
+        q: "26. Ahamoniylar davlati saroylarining devorlariga tushirilgan bezaklar qanday xususiyatga ega edi?",
+        options: [
+          "Faqat geometrik chiziqlardan iborat edi",
+          "Afsonaviy va xayoliy qushlar tasviri bilan bezatilgan edi",
+          "Faqat baliqlar surati chizilgan edi",
+          "Hech qanday naqshsiz tekis qoldirilgan edi"
+        ],
+        correct: 1, // B
+        exp: "Saroy afsonaviy va xayoliy qushlar tasviri bilan bezatilgan edi."
+      },
+      {
+        q: "27. Qadimgi Elam davlatining eng buyuk madaniy yutug‘i nima edi?",
+        options: [
+          "Ulkan piramidalar qurilishi",
+          "G‘ildirakning kashf etilishi",
+          "Jahondagi eng qadimgi yozuvlardan birining yaratilishi",
+          "Oltin tangalarning kashf etilishi"
+        ],
+        correct: 2, // C
+        exp: "Elamda jahondagi eng qadimgi yozuvlardan biri yaratilgan."
+      },
+      {
+        q: "28. Fors podshosi Kir II Midiyani bo‘ysundirgach nima qildi?",
+        options: [
+          "Barcha shaharlarni butunlay buzib tashladi",
+          "Hokimiyatni Aleksandrga topshirdi",
+          "Urushlarni butunlay to‘xtatdi",
+          "Ulkan lashkar tuzib, bosqinchilik yurishlarini davom ettirdi"
+        ],
+        correct: 3, // D
+        exp: "Midiya podsholigini bo‘ysundirganidan so‘ng Kir II ulkan lashkar tuzdi va bosqinchilik yurishlarini davom ettirdi."
+      },
+      {
+        q: "29. Doro I ning harbiy-ma’muriy islohoti (satrapiyalar) qanday maqsadga xizmat qilgan?",
+        options: [
+          "Keng hududli saltanatni mustahkam idora qilish va soliqlarni muntazam yig‘ishga",
+          "Mamlakatni mayda mustaqil davlatlarga bo‘lib yuborishga",
+          "Faqat forslarni soliqdan ozod qilishga",
+          "Qo‘shinni butunlay tarqatib yuborishga"
+        ],
+        correct: 0, // A
+        exp: "Satrapiyalarga bo‘lish ulkan saltanat ustidan qat’iy markaziy boshqaruvni o‘rnatishga xizmat qildi."
+      },
+      {
+        q: "30. Behistun qoyatosh yozuvlari buyurtmachisi kim bo‘lgan?",
+        options: [
+          "Kir II",
+          "Doro I",
+          "Kserks",
+          "Kambiz II"
+        ],
+        correct: 1, // B
+        exp: "Behistun qoyatosh bitiklari fors shohi Doro I buyrug‘i bilan o‘yib yozilgan."
+      },
+      {
+        q: "31. Quyidagi hukmdorlardan qaysi biri Misrni Ahamoniylar davlati tarkibiga qo‘shib oldi?",
+        options: [
+          "Kiaksar",
+          "Kir II",
+          "Kambiz II",
+          "Kserks"
+        ],
+        correct: 2, // C
+        exp: "Kambiz II Misrni zabt etish orqali Fors davlati hududini nihoyatda kengaytirdi."
+      },
+      {
+        q: "32. Ahamoniylar sulolasi qulashining asosiy tashqi sababi nima bo‘ldi?",
+        options: [
+          "Skiflarning to‘liq g‘alabasi",
+          "Misr qo‘zg‘olonlari",
+          "Rim imperiyasining istilosi",
+          "Makedoniyalik Aleksandrning harbiy yurishlari"
+        ],
+        correct: 3, // D
+        exp: "Makedoniyalik Aleksandr mil. avv. 330-yilda Fors davlatini butunlay bosib oldi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 29) fb.innerText = "Mukammal natija! 14-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dastlabki ishga tushirish
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

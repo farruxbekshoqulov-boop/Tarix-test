@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>22-23-mavzular. Qarluqlar, o'g'uzlar, tohiriylar</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 14.5px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 13px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 5px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 4px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #291104;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 65px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 190px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.45;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 16.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>22-23-mavzular. Qarluqlar, o'g'uzlar, tohiriylar</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (38)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (38)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 5 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">📜</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Qarluqlar, o'g'uzlar va tohiriylarga oid atamalarni muvaffaqiyatli mosladingiz. Endi 38 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (38 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">22-23-mavzular Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏰</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">38 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Mavzuning barcha jihatlarini to'la o'rganib chiqdingiz. Endi 38 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (38 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">22-23-mavzular Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/38</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: har birida 5 tadan, jami 20 ta) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Qarluqlar", right: "Qadimda Oltoyning g'arbida, so'ngra Irtish daryosi o'rtasida yashagan turkiy qabila" },
+        { id: 2, left: "Suyab shahri", right: "VIII asr o'rtalarida Yettisuv o'lkasida tashkil topgan Qarluq davlatining poytaxti" },
+        { id: 3, left: "Yabg'u (yabgu)", right: "Qarluqlar davlati hukmdoriga berilgan unvon" },
+        { id: 4, left: "O'g'uzlar", right: "G'arbiy Turk xoqonligi tanazzulidan keyin yirik etnik uyushma hosil qilgan turkiy elat (guz)" },
+        { id: 5, left: "Yangikent shahri", right: "Sirdaryo quyi oqimida joylashgan O'g'uz davlatining poytaxti" }
+      ],
+      [
+        { id: 6, left: "Tohiriylar", right: "Xurosonda hukmronlik qilgan, 821-yilda Tohir ibn Husayn asos solgan sulola" },
+        { id: 7, left: "Tohir ibn Husayn", right: "811-yilda xalifa Aminning sarkardasini yengib, «Zul yaminayn» unvonini olgan sarkarda" },
+        { id: 8, left: "821-yil", right: "Tohir ibn Husayn Xuroson va Movarounnahr noibi etib tayinlangan yil" },
+        { id: 9, left: "822-yil", right: "Tohiriylar davrida xalifa nomi xutbadan chiqarilgan yil" },
+        { id: 10, left: "Safforiylar", right: "873-yilda Tohiriylar hukmronligiga barham berib hokimiyatni egallagan sulola" }
+      ],
+      [
+        { id: 11, left: "Ya'qub ibn Lays", right: "Safforiylar sulolasining asoschisi (Saffor — misgar ma'nosida)" },
+        { id: 12, left: "Harun ar-Rashid", right: "786–809-yillarda hukmronlik qilgan va vafotidan so'ng taxt talashish boshlangan xalifa" },
+        { id: 13, left: "Ma'mun va Amin", right: "Harun ar-Rashidning o'g'illari bo'lib, taxt uchun o'zaro kurash olib borganlar" },
+        { id: 14, left: "Harsama A'yayn", right: "Rofe ibn Laysga qarshi yuborilgan va keyinchalik Ma'munga qo'shilgan sarkarda" },
+        { id: 15, left: "Nuh ibn Asad", right: "Samarqand viloyati boshqarig'i topshirilgan asad ibn Somonxudotning nabirasi" }
+      ],
+      [
+        { id: 16, left: "G'oziylar", right: "Xalifalik zulmiga qarshi kurashgan xalq qo'zg'olonchilari" },
+        { id: 17, left: "Chigil qabilasi", right: "Qarluqlar tarkibiga kirgan va Elsuvi daryosi vodiysigacha yaylovlari bo'lgan qabila" },
+        { id: 18, left: "Jun va junli mahsulotlar", right: "Qarluqlar o'troq aholiga chetga asosan sotgan narsalar (gilam, sholcha, namat)" },
+        { id: 19, left: "X asr boshi", right: "O'g'uzlar davlatiga asos solingan davr (IX asr oxiri va X asr boshi)" },
+        { id: 20, left: "813-yil", right: "Tohir ibn Husayn va uning qo'shini Bag'dodni egallab, Ma'munni taxtga o'tirgizgan yil" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 5;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      colLeft.innerHTML = '';
+      colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (38 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Movarounnahr va Xurosonda tinimsiz qo'zg'olonlar va ziddiyatlar xalifalik boshqaruviga qanday ta'sir ko'rsatdi?", a: "Hokimiyatni zaiflashtirdi va mustaqil davlatlarning paydo bo'lishiga olib keldi." },
+      { q: "2. Qarluqlar qadimda qayerda yashagan turkiy qabilalar edi?", a: "Oltoyning g'arbida, so'ngra Irtish daryosining o'rta oqimida." },
+      { q: "3. Qarluqlar VI–VII asrlarda qaysi davlat tarkibida bo'lgan?", a: "Turk xoqonligi." },
+      { q: "4. VIII asr o'rtalarida Yettisuv o'lkasida qanday davlat tashkil topdi?", a: "Qarluqlar davlati." },
+      { q: "5. Qarluqlar davlatining poytaxti qaysi shahar edi?", a: "Suyab shahri." },
+      { q: "6. Qarluqlar davlati hukmdori qanday unvon bilan yuritilgan?", a: "«Yabg'u» yoki «jabg'u»." },
+      { q: "7. X asr o'rtalariga kelib qarluqlarning qaysi qismi musulmon bo'lgan?", a: "Kattagina qismi." },
+      { q: "8. Qarluqlar davlati sharqdan qayergacha cho'zilgan?", a: "Elsuvi daryosi vodiysigacha (chigil qabilasi yaylovlarigacha)." },
+      { q: "9. Qarluqlar o'troq aholiga chetdan qanday mahsulotlar olib chiqib sotgan?", a: "Jun va junli mahsulotlar: gilam, sholcha, namat." },
+      { q: "10. X asrda qarluqlar Movarounnahrning qaysi hududlarini egallagan?", a: "Shimoliy hududlarini (Shosh atrofi, Farg'ona va Zarafshon vodiylariga kelib o'rnashgan)." },
+      { q: "11. O'g'uzlar qaysi davlat tanazzulidan keyin yirik etnik uyushma hosil qilgan?", a: "G'arbiy Turk xoqonligining." },
+      { q: "12. Arab-fors manbalarida o'g'uzlar yana qanday nomlangan?", a: "«Guz»." },
+      { q: "13. O'g'uzlarning qaysi qismi Sirdaryo havzasi va Orol dengizi bo'yida muqim o'rnashgan?", a: "Kattagina qismi." },
+      { q: "14. O'g'uzlar davlatiga qachon asos solingan?", a: "IX asr oxiri va X asr boshida." },
+      { q: "15. O'g'uz davlatining poytaxti qaysi shahar bo'lgan?", a: "Sirdaryo quyi oqimidagi Yangikent shahri." },
+      { q: "16. O'g'uzlar qachondan boshlab islom dinini qabul qila boshlaganlar?", a: "X asrdan boshlab." },
+      { q: "17. X asrning birinchi choragida o'g'uzlar davlati shimoldan kimlarning qaqshatqich zarbasiga uchradi?", a: "Qipchoqlar." },
+      { q: "18. Qipchoqlar zarbasidan bo'lingan o'g'uzlarning bir qismi qayerga borib o'rnashdi?", a: "Shimoliy Kavkaz dashtlariga." },
+      { q: "19. O'g'uzlarning ikkinchi qismi qayerga kirib keldi?", a: "Movarounnahrga." },
+      { q: "20. Xurosonda hukmronlik qilgan Tohiriylar davlatiga kim asos solgan?", a: "Tohir ibn Husayn (821-yilda)." },
+      { q: "21. Tohiriylar davlati rasman kimga qaram bo'lgan?", a: "Abbosiylar xalifaligiga." },
+      { q: "22. Tohir ibn Husayn 811-yilda xalifa Aminning sarkardasini yenggach qanday faxriy unvon olgan?", a: "«Zul yaminayn» («Ikki qo'lda kurashuvchi»)." },
+      { q: "23. Tohir ibn Husayn Bag'dodni egallab, xalifa Ma'munni taxtga o'tirgach qayerga noib etib tayinlangan?", a: "Xuroson va Movarounnahrga (821-yil)." },
+      { q: "24. Tohiriylar davrida xalifa nomi xutbadan qachon chiqarib yuborilgan?", a: "822-yilda." },
+      { q: "25. Harun ar-Rashid vafotidan so'ng uning qaysi o'g'illari o'rtasida taxt uchun kurash ketdi?", a: "Ma'mun va Amin." },
+      { q: "26. Ma'munga qarshi kurashda Hirot viloyatining zodagonlaridan kim yordam bergan?", a: "Tohir ibn Husayn." },
+      { q: "27. Ma'mun Xuroson noibi bo'lgach, Somonxudotning nabiralariga qanday vazifalar bergan?", a: "Nuhga Samarqand, Ahmadga Farg'ona, Yahyoga Shosh va Ustrushana, Ilyosga Hirot berilgan." },
+      { q: "28. Tohiriylar orqali Movarounnahr xirojining katta qismi qayerga yuborib turilgan?", a: "Xalifa xazinasiga." },
+      { q: "29. Xalifalik zulmidan bezor bo'lgan xalq qo'zg'olonchilari o'zlarini qanday ataganlar?", a: "«G'oziylar»." },
+      { q: "30. Qo'zg'olonga rahbarlik qilgan sof misgar hunarmand aka-uka kimlar edi?", a: "Ya'qub va Amr Layslar (Safforiylar)." },
+      { q: "31. Safforiylar sulolasining asoschisi Ya'qub ibn Lays xalifalikda qanday nom bilan mashhur bo'lgan?", a: "«As-Saffor» (misgar)." },
+      { q: "32. Safforiylar Xuroson poytaxti Nishopurni qaysi yili egallagan?", a: "873-yilda." },
+      { q: "33. Safforiylarning yirik hukmdorlari kimlar bo'lgan?", a: "Ya'qub ibn Lays (873–879) va Amr ibn Lays (879–900)." },
+      { q: "34. IX–X asrlarda Turon hududida aholining etnik shakllanishida qaysi qabilalarning ta'siri kuchli bo'lgan?", a: "Qarluq va o'g'uzlarning." },
+      { q: "35. Qarluqlar davlatining poytaxti Suyab shahri qaysi daryo yaqinida joylashgan edi?", a: "Chu daryosidan shimolroqda." },
+      { q: "36. O'g'uzlar davlatining poytaxti Yangikent shahri qayerda joylashgan edi?", a: "Sirdaryo quyi oqimida." },
+      { q: "37. Tohiriylar davlatiga asos solingan yil qaysi?", a: "821-yil." },
+      { q: "38. Safforiylar tohiriylar hokimiyatiga barham berib, hokimiyatni qachon qo'lga olgan?", a: "873-yilda." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
+    const testQuestions = [
+      {
+        q: "1. Movarounnahr va Xurosonda tinimsiz qo'zg'olonlar va ziddiyatlar xalifalik boshqaruviga qanday ta'sir ko'rsatdi?",
+        options: ["Hokimiyatni zaiflashtirdi va mustaqil davlatlarning paydo bo'lishiga olib keldi", "Xalifalikni yanada kuchaytirdi", "Hech qanday ta'sir ko'rsatmadi", "Faqat savdoni rivojlantirdi"],
+        correct: 0,
+        exp: "Ziddiyatlar xalifalik hokimiyatini zaiflashtirib, mustaqil davlatlar kelishiga sabab bo'ldi."
+      },
+      {
+        q: "2. Qarluqlar qadimda qayerda yashagan turkiy qabilalar edi?",
+        options: ["Sirdaryo bo'ylarida", "Oltoyning g'arbida, so'ngra Irtish daryosining o'rta oqimida", "Farg'ona vodiysida", "Sharqiy Turkistonda"],
+        correct: 1,
+        exp: "Ular Oltoyning g'arbida, Irtish daryosi o'rta oqimida yashagan."
+      },
+      {
+        q: "3. VIII asr o'rtalarida Yettisuv o'lkasida qanday davlat tashkil topdi?",
+        options: ["O'g'uzlar davlati", "Qarluqlar davlati", "Tohiriylar davlati", "Safforiylar davlati"],
+        correct: 1,
+        exp: "VIII asr o'rtalarida Yettisuvda Qarluqlar davlati tashkil topdi."
+      },
+      {
+        q: "4. Qarluqlar davlatining poytaxti qaysi shahar edi?",
+        options: ["Yangikent", "Suyab shahri", "Balx", "Marv"],
+        correct: 1,
+        exp: "Qarluqlar davlatining poytaxti Suyab shahri edi."
+      },
+      {
+        q: "5. Qarluqlar davlati hukmdori qanday unvon bilan yuritilgan?",
+        options: ["Xoqon", "«Yabg'u» yoki «jabg'u»", "Sulton", "Ixshid"],
+        correct: 1,
+        exp: "Qarluqlar davlati hukmdori «yabg'u» deb yuritilgan."
+      },
+      {
+        q: "6. O'g'uzlar qaysi davlat tanazzulidan keyin yirik etnik uyushma hosil qildi?",
+        options: ["Turk xoqonligi", "G'arbiy Turk xoqonligining tanazzulidan keyin", "Qang' davlati", "Kushon podshohligi"],
+        correct: 1,
+        exp: "G'arbiy Turk xoqonligi tanazzulidan keyin uyushma hosil qilgan."
+      },
+      {
+        q: "7. Arab-fors manbalarida o'g'uzlar yana qanday nom bilan atalgan?",
+        options: ["«Turkman»", "«Guz»", "«Qarluq»", "«Sarmat»"],
+        correct: 1,
+        exp: "Arab-fors manbalarida ular «guz» deb atalgan."
+      },
+      {
+        q: "8. O'g'uz davlatining poytaxti qaysi shahar bo'lgan?",
+        options: ["Suyab", "Yangikent shahri", "Nishopur", "Buxoro"],
+        correct: 1,
+        exp: "O'g'uz davlatining poytaxti Yangikent shahri edi."
+      },
+      {
+        q: "9. X asrning birinchi choragida o'g'uzlar davlati shimoldan kimlarning qaqshatqich zarbasiga uchradi?",
+        options: ["Qipchoqlar", "Mo'g'ullar", "Sosoniylar", "Xitoyliklar"],
+        correct: 0,
+        exp: "O'g'uzlar shimoldan qipchoqlar zarbasiga uchragan."
+      },
+      {
+        q: "10. Xurosonda hukmronlik qilgan Tohiriylar davlatiga kim asos solgan?",
+        options: ["Ya'qub ibn Lays", "Tohir ibn Husayn (821-yilda)", "Abu Muslim", "Amr ibn Lays"],
+        correct: 1,
+        exp: "Tohiriylar davlatiga Tohir ibn Husayn asos solgan."
+      },
+      {
+        q: "11. Tohir ibn Husayn 811-yilda xalifa Aminning sarkardasini yenggach qanday faxriy unvon olgan?",
+        options: ["«Soxibqiron»", "«Zul yaminayn» («Ikki qo'lda kurashuvchi»)", "«Amir ul-mo'minin»", "«Malik ush-shuaro»"],
+        correct: 1,
+        exp: "Unga «Zul yaminayn» unvoni berilgan."
+      },
+      {
+        q: "12. Tohiriylar davrida xalifa nomi xutbadan qachon chiqarib yuborilgan?",
+        options: ["821-yilda", "822-yilda", "873-yilda", "813-yilda"],
+        correct: 1,
+        exp: "822-yilda xalifa nomi xutbadan chiqarilgan."
+      },
+      {
+        q: "13. Harun ar-Rashid vafotidan so'ng uning qaysi o'g'illari o'rtasida taxt uchun kurash ketdi?",
+        options: ["Abbos va Marvon", "Ma'mun va Amin", "Qutayba va Ziyod", "Ya'qub va Amr"],
+        correct: 1,
+        exp: "Ma'mun va Amin o'rtasida kurash ketgan."
+      },
+      {
+        q: "14. Ma'mun Xuroson noibi bo'lgach, Somonxudotning nabiralariga qanday vazifalar bergan?",
+        options: ["Nuhga Samarqand, Ahmadga Farg'ona, Yahyoga Shosh va Ustrushana berilgan", "Barcha hududlar bitta kishiga berilgan", "Faqat Xorazm berilgan", "Hech qanday yer berilmagan"],
+        correct: 0,
+        exp: "Nuhga Samarqand, Ahmadga Farg'ona, Yahyoga Shosh va Ustrushana berilgan."
+      },
+      {
+        q: "15. Tohiriylar orqali Movarounnahr xirojining katta qismi qayerga yuborib turilgan?",
+        options: ["Xalifa xazinasiga", "Faqat kambag'allarga", "Xitoy imperiyasiga", "Mahalliy obodonchilikka"],
+        correct: 0,
+        exp: "Xiroj xalifa xazinasiga yuborib turilgan."
+      },
+      {
+        q: "16. Xalifalik zulmidan bezor bo'lgan xalq qo'zg'olonchilari o'zlarini qanday ataganlar?",
+        options: ["«G'oziylar»", "«Safforiylar»", "«Tohiriylar»", "«Muqanniylar»"],
+        correct: 0,
+        exp: "Qo'zg'olonchilar o'zlarini «g'oziylar» deb atagan."
+      },
+      {
+        q: "17. Qo'zg'olonga rahbarlik qilgan sof misgar hunarmand aka-uka kimlar edi?",
+        options: ["Ya'qub va Amr Layslar (Safforiylar)", "Nuh va Ahmad", "Ma'mun va Amin", "Bumin va Istami"],
+        correct: 0,
+        exp: "Aka-uka Ya'qub va Amr Layslar edi."
+      },
+      {
+        q: "18. Safforiylar sulolasining asoschisi Ya'qub ibn Lays xalifalikda qanday nom bilan mashhur bo'lgan?",
+        options: ["«As-Saffor» (misgar)", "«At-Turkiy»", "«Al-Bag'dodiy»", "«Al-Xurosoniy»"],
+        correct: 0,
+        exp: "U «As-Saffor» (misgar) deb atalgan."
+      },
+      {
+        q: "19. Safforiylar Xuroson poytaxti Nishopurni qaysi yili egallagan?",
+        options: ["821-yilda", "873-yilda", "900-yilda", "750-yilda"],
+        correct: 1,
+        exp: "Nishopur 873-yilda egallangan."
+      },
+      {
+        q: "20. Safforiylarning yirik hukmdorlari kimlar bo'lgan?",
+        options: ["Tohir va Talha", "Ya'qub ibn Lays (873–879) va Amr ibn Lays (879–900)", "Ma'mun va Amin", "Nuh va Ahmad"],
+        correct: 1,
+        exp: "Ya'qub ibn Lays va Amr ibn Lays edi."
+      },
+      {
+        q: "21. IX–X asrlarda Turon hududida aholining etnik shakllanishida qaysi qabilalarning ta'siri kuchli bo'lgan?",
+        options: ["Qarluq va o'g'uzlarning", "Faqat arablarning", "Faqat xitoylarning", "Faqat rimliklarning"],
+        correct: 0,
+        exp: "Qarluq va o'g'uzlarning ta'siri kuchli bo'lgan."
+      },
+      {
+        q: "22. Qarluqlar davlatining poytaxti Suyab shahri qaysi daryo yaqinida joylashgan edi?",
+        options: ["Chu daryosidan shimolroqda", "Sirdaryo bo'yida", "Amudaryo quyi oqimida", "Zarafshonda"],
+        correct: 0,
+        exp: "Suyab Chu daryosidan shimolroqda joylashgan edi."
+      },
+      {
+        q: "23. O'g'uzlar davlatining poytaxti Yangikent shahri qayerda joylashgan edi?",
+        options: ["Sirdaryo quyi oqimida", "Talas daryosida", "Yettisuvda", "Farg'ona vodiysida"],
+        correct: 0,
+        exp: "Yangikent Sirdaryo quyi oqimida joylashgan edi."
+      },
+      {
+        q: "24. X asr o'rtalariga kelib qarluqlarning qaysi qismi musulmon bo'lgan?",
+        options: ["Kattagina qismi", "Faqat hukmdorlari", "Hech qaysisi", "Faqat oddiy askarlar"],
+        correct: 0,
+        exp: "Kattagina qismi musulmon bo'lgan."
+      },
+      {
+        q: "25. Qarluqlar o'troq aholiga chetdan qanday mahsulotlar olib chiqib sotgan?",
+        options: ["Jun va junli mahsulotlar (gilam, sholcha, namat)", "Faqat metall idishlar", "Faqat meva-sabzavot", "Faqat qurol-yarog'"],
+        correct: 0,
+        exp: "Jun va junli mahsulotlar sotgan."
+      },
+      {
+        q: "26. O'g'uzlar qachondan boshlab islom dinini qabul qila boshlaganlar?",
+        options: ["VIII asrdan", "X asrdan boshlab", "XII asrdan", "VI asrdan"],
+        correct: 1,
+        exp: "O'g'uzlar X asrdan boshlab islomni qabul qilganlar."
+      },
+      {
+        q: "27. Tohiriylar davlati rasman qaysi xalifalikka qaram bo'lgan?",
+        options: ["Abbosiylar xalifaligiga", "Umaviylar xalifaligiga", "Fotimiylar xalifaligiga", "Usmonlilar xalifaligiga"],
+        correct: 0,
+        exp: "Abbosiylar xalifaligiga qaram bo'lgan."
+      },
+      {
+        q: "28. 813-yilda Tohir ibn Husayn kimni Bag'dodni egallab taxtga o'tqazgan?",
+        options: ["Ma'munni", "Aminni", "Harun ar-Rashidni", "Mutasimni"],
+        correct: 0,
+        exp: "Ma'munni taxtga o'tqazgan."
+      },
+      {
+        q: "29. Xuroson noibi Ma'mun Samarqand boshqarig'ini kimga topshirgan edi?",
+        options: ["Nuhga", "Ahmadga", "Yahyoga", "Ilyosga"],
+        correct: 0,
+        exp: "Samarqand Nuhga topshirilgan edi."
+      },
+      {
+        q: "30. Farg'ona viloyati Ma'mun tomonidan kimga berilgan edi?",
+        options: ["Ahmadga", "Nuhga", "Yahyoga", "Tohirga"],
+        correct: 0,
+        exp: "Ahmadga berilgan edi."
+      },
+      {
+        q: "31. Shosh va Ustrushana viloyatlari kimga tegishli edi?",
+        options: ["Yahyoga", "Nuhga", "Ilyosga", "Tohirga"],
+        correct: 0,
+        exp: "Yahyoga tegishli edi."
+      },
+      {
+        q: "32. Hirot viloyati kimga tekkan edi?",
+        options: ["Ilyosga", "Nuhga", "Ahmadga", "Ya'qubga"],
+        correct: 0,
+        exp: "Ilyosga tekkan edi."
+      },
+      {
+        q: "33. Safforiylar hukmronligi qachon tugatilib, hokimiyat kimlarning qo'liga o'tdi?",
+        options: ["Samoniylar qo'liga", "Somoniylar davriga o'tgan (900-yilda)", "Qoraxoniylarga", "G'aznaviylarga"],
+        correct: 1,
+        exp: "Safforiylar 900-yilda somoniylar tomonidan tugatilgan."
+      },
+      {
+        q: "34. Tohiriylar sulolasiga asos solingan yil qaysi?",
+        options: ["811-yil", "821-yil", "873-yil", "750-yil"],
+        correct: 1,
+        exp: "Tohiriylar 821-yilda tuzilgan."
+      },
+      {
+        q: "35. O'g'uzlarning bir qismi qipchoqlar zarbasidan so'ng qayerga borib o'rnashdi?",
+        options: ["Shimoliy Kavkaz dashtlariga", "Kichik Osiyoga", "Xitoy chegarasiga", "Hindistonga"],
+        correct: 0,
+        exp: "Shimoliy Kavkaz dashtlariga borib o'rnashgan."
+      },
+      {
+        q: "36. Qarluqlar davlati hukmdorining unvoni qanday edi?",
+        options: ["Xoqon", "Yabg'u", "Sulton", "Ixshid"],
+        correct: 1,
+        exp: "Hukmdor yabg'u deb atalgan."
+      },
+      {
+        q: "37. X asrda qarluqlar Movarounnahrning qayerlariga kelib o'rnashgan?",
+        options: ["Shosh atrofi, Farg'ona va Zarafshon vodiylariga", "Faqat Xorazmga", "Faqat Qashqadaryoga", "Faqat Surxondaryoga"],
+        correct: 0,
+        exp: "Shosh atrofi, Farg'ona va Zarafshon vodiylariga kelib o'rnashgan."
+      },
+      {
+        q: "38. Tohir ibn Husaynga berilgan «Zul yaminayn» unvoni nimani anglatadi?",
+        options: ["«Ikki qo'lda kurashuvchi»", "«Buyuk sarkarda»", "«Adolatli hokim»", "«Sharq amiri»"],
+        correct: 0,
+        exp: "«Zul yaminayn» — «Ikki qo'lda kurashuvchi» degani."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 34) fb.innerText = "Mukammal natija! Qarluqlar, o'g'uzlar, tohiriylar mavzusini to'laqonli o'zlashtiribsiz 🌟";
+      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

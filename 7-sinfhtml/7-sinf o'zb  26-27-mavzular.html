@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>26-27-mavzular. Somoniylar davrida ijtimoiy-iqtisodiy hayot</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 13px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 5px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 4px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #291104;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 65px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 190px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.45;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 16.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>26-27-mavzular. Somoniylar davrida ijtimoiy-iqtisodiy hayot</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (38)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (38)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 5 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">📜</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Ijtimoiy-iqtisodiy hayotga oid barcha atamalarni muvaffaqiyatli mosladingiz. Endi 38 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (38 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">26-27-mavzular Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏰</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">38 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Somoniylar davri ijtimoiy-iqtisodiy hayotini to'la o'rganib chiqdingiz. Endi 38 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida teng va butunlay aralashtirilgan) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">26-27-mavzular Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/38</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: 20 ta juftlik) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Dehqonchilik", right: "Farg'ona, Qashqadaryo, Zarafshon, Choch, Xorazmda yuksak darajada rivojlangan soha" },
+        { id: 2, left: "Buxoro qovunlari", right: "Somoniylar davrida o'zining shirinligi bilan ayniqsa mashhur bo'lgan poliz ekini" },
+        { id: 3, left: "Axsikent", right: "Farg'ona viloyatining poytaxti bo'lib, 3 farsang masofaga cho'zilgan yirik shahar" },
+        { id: 4, left: "Farsax (farsang)", right: "Taxminan 6 km ga (yoki 12 000 qadamga) teng masofa o'lchov birligi" },
+        { id: 5, left: "Istaxriy", right: "«Xorazm Jayhunning butun foydasini ola bilgan mamlakatdir» deya ta'rif bergan arab geografi" }
+      ],
+      [
+        { id: 6, left: "Samarqand", right: "Yuqori navli qog'oz va vadoriy matolari bilan mashhur bo'lgan markaz" },
+        { id: 7, left: "Shosh", right: "Ko'chachilik mahsulotlari va charm mollari bilan tanilgan voha" },
+        { id: 8, left: "Iloq", right: "Kumush va qo'rg'oshin konlari hamda kumush tanga chiqaradigan zarbxonasi bor hudud" },
+        { id: 9, left: "Zandanachi", right: "Buxoro yaqinidagi qishloqda to'qilgan mallarang bo'z mato" },
+        { id: 10, left: "Vadoriy", right: "Samarqandning Vador qishlog'ida tayyorlangan mashhur mato" }
+      ],
+      [
+        { id: 11, left: "Sarroflik", right: "Tashqi savdo muomalasida keng foydalanilgan cheklar (pul almashtirish tizimi)" },
+        { id: 12, left: "Fals", right: "Ichki bozorlarda savdo-sotiqda ishlatilgan mis chaqa" },
+        { id: 13, left: "Dirham", right: "Xalqaro savdo-sotiqda ishlatilgan kumush tanga" },
+        { id: 14, left: "«Ismoiliy»", right: "Somoniylar davrida yuqori sifatli sof kumushdan zarb etilib, asosan xalqaro savdoda ishlatilgan tanga" },
+        { id: 15, left: "Pishig' g'isht", right: "Ma'muriy va jamoa binolari qurilishida asosiy materialga aylangan pishiq mahsulot" }
+      ],
+      [
+        { id: 16, left: "Sinch konstruksiya", right: "Turar joy binolari qurilishida keng tarqalgan me'moriy usul" },
+        { id: 17, left: "Mayolika", right: "Sirlangan yaxlit pishirilgan sopol taxtachalar yasash usuli" },
+        { id: 18, left: "Ismoil Somoniy maqbarasi", right: "Buxoroda joylashgan, kubsimon hajmda va pishiq g'ishtdan qurilgan me'moriy durdona" },
+        { id: 19, left: "Qirqqiz qal'asi", right: "Termiz yaqinida qariyb 1000 yil avval qurilgan muhtasham qal'a" },
+        { id: 20, left: "Choy (cha yoki ming)", right: "VII–VIII asrlarda import qilinib, keyinchalik xalqning kunduzgi sevimli ichimligiga aylangan mahsulot" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 5;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      colLeft.innerHTML = '';
+      colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (38 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Somoniylar davrida qaysi vodiylarda dehqonchilik yuksak darajada olib borilgan?", a: "Farg'ona, Qashqadaryo, Zarafshon, Choch, Xorazm va Xuroson." },
+      { q: "2. Somoniylar davrida qaysi ekinlar yetishtirilgan?", a: "Bug'doy, arpa, sholi, paxta, tariq, zig'ir, kunjut, kanop, no'xot, mosh, yasmiq, beda." },
+      { q: "3. Poliz ekinlari orasida ayniqsa nimalar mashhur bo'lgan?", a: "Buxoro qovunlari va qovoq, tarvuz, sabzavotlardan baqlajon, sabzi, piyoz." },
+      { q: "4. Dehqonchilik solig'i — xiroj xazinaga tushadigan daromadning qaysi qismini qoplagan?", a: "Kattagina qismini." },
+      { q: "5. Farg'ona viloyatining poytaxti qaysi shahar edi?", a: "Axsikent." },
+      { q: "6. Axsikent shahri qancha masofaga cho'zilgan edi?", a: "3 farsang masofaga (atrofidagi bog'lar bilan yana 2 farsang)." },
+      { q: "7. Farsax (farsang) taxminan necha kmga teng masofa?", a: "Taxminan 6 km ga (yoki 12 000 qadamga)." },
+      { q: "8. Samarqandda qanday yuqori navli mahsulotlar ishlab chiqarilgan?", a: "Yuqori navli qog'oz va vadoriy matolari." },
+      { q: "9. Shosh (Toshkent) nimasi bilan mashhur bo'lgan?", a: "Ko'chmanchilik mahsulotlari va charm mollari bilan." },
+      { q: "10. Iloq viloyati nimasi bilan tanilgan?", a: "Kumush va qo'rg'oshin konlari hamda kumush tanga chiqaradigan zarbxonasi bilan." },
+      { q: "11. Buxoro yaqinidagi Zandana qishlog'ida qanday mato to'qilgan?", a: "Mallarang bo'z — «zandanachi»." },
+      { q: "12. Samarqandning Vador qishlog'ida qanday mato tayyorlangan?", a: "«Vadoriy» matosi." },
+      { q: "13. Tashqi savdo muomalasida nimalardan keng foydalanilgan?", a: "Sarroflik cheklaridan." },
+      { q: "14. Ichki bozorlarda savdo-sotiqda qanday mis chaqalar ishlatilgan?", a: "«Fals»." },
+      { q: "15. Xalqaro savdo-sotiqda qanday tangalar ishlatilgan?", a: "Kumush tangalar — dirhamlar." },
+      { q: "16. Kumush tangalar qaysi shahar zarbxonalarida solingan?", a: "Marv, Samarqand, Buxoro va Shoshdagi davlat zarbxonalarida." },
+      { q: "17. Somoniylar tomonidan qaysi nomlar bilan yuritilgan bir necha xil kumush dirhamlar chiqarilgan?", a: "«Ismoiliy» va «muhammadiy»." },
+      { q: "18. «Ismoiliy» tangasi nimadan va qanday maqsadda zarb etilgan?", a: "Yuqori sifatli sof kumushdan zarb etilib, xalqaro savdoda ishlatilgan." },
+      { q: "19. «Chek» so'zi qaysi tildagi atama?", a: "Forscha atama." },
+      { q: "20. Pishiq g'isht nima uchun asosiy materialga aylangan?", a: "Ma'muriy va jamoa binolari qurilishida." },
+      { q: "21. Turar joy binolari qurilishida qanday konstruksiya keng tarqalgan?", a: "Sinch konstruksiya." },
+      { q: "22. Pardoz ishlarida nimalar ishlatilgan?", a: "Somonli loy suvoq va ganchning turlari." },
+      { q: "23. Keyinchalik qanday sopol usullari kashf etilgan?", a: "Sirlanmagan koshin va sopol plitkalar, sirlangan yaxlit pishirilgan sopol taxtachalar — parchin va mayolika." },
+      { q: "24. Eng qadimiy obidalardan biri bo'lgan Qavmat qayerda?", a: "Qadimiy Xorazmdagi Qavat qal'asi." },
+      { q: "25. Termiz yaqinidagi qariyb 1000 yil avval qurilgan muhtasham qal'a qanday ataladi?", a: "Qirqqiz qal'asi." },
+      { q: "26. Somoniylar maqbarasi qayerda joylashgan va u qanday hajmda?", a: "Buxoroda, kubsimon hajmda." },
+      { q: "27. Somoniylar maqbarasining o'lchami qanday?", a: "Tashqi uzunligi 10 metrga yaqin, ichki tomoni 7,2x7,2 metr." },
+      { q: "28. VII–VIII asrlarda import qilinib, keyinchalik xalqning kunduzgi sevimli ichimligiga aylangan mahsulot?", a: "Choy («cha» yoki «ming»)." },
+      { q: "29. Xitoydan Sharqiy Turkiston orqali nimalar olib kelingan?", a: "Choy, ipak mato va tuz." },
+      { q: "30. Movarounnahr va Xorazmdan Itil, Xazar va Bulg'orga nimalar olib borib sotilgan?", a: "Guruch, quruq mevalar, shirinliklar, tuzlangan baliq, paxta, shoyi matolar, movut, kimxob va gilamlar." },
+      { q: "31. Bulg'or va Xazardan Turonga nimalar olib kelingan?", a: "Qimmatbaho mo'ynalar, shamlar, cho'qqi qalpoqlar." },
+      { q: "32. Buxoroda IX asrda qanday islomiy nom berilgan?", a: "«Qubbat ul-islam» (Islom dinining gumbazi)." },
+      { q: "33. Buxoroda X asrda qaysi madrasa qurilgan?", a: "Farjak madrasasi." },
+      { q: "34. Somoniylar davrida ma'naviy hayotga rahbarlik qilgan shaxs qanday atalgan?", a: "«Ustod» (din va ilm peshvolari), keyinchalik «shayx ul-islom»." },
+      { q: "35. Ustdan keyin kim turgan?", a: "Xatiblar." },
+      { q: "36. Somoniylar davrida qaysi karvon yo'li orqali keng savdo olib borilgan?", a: "Shimoliy yo'l (Sibir va Mo'g'ulistongacha)." },
+      { q: "37. Somoniylar tangalari qayerda zarb etilgan?", a: "Buxoroda va boshqa markazlarda." },
+      { q: "38. Somoniylar davrida shaharsozlik va me'morchilikda qanday bezaklar ishlatilgan?", a: "Ganch o'ymakorligi va pishiq g'isht naqshlari." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida muvozanatli va butunlay aralashtirilgan) ---
+    const testQuestions = [
+      {
+        q: "1. Somoniylar davrida qaysi vodiylarda dehqonchilik ishlari yuksak darajada amalga oshirilgan?",
+        options: ["Farg'ona, Qashqadaryo, Zarafshon, Choch va Xorazmda", "Faqat cho'l hududlarida", "Faqat tog'li qishloqlarda", "Faqat dashtlarda"],
+        correct: 0,
+        exp: "Farg'ona, Qashqadaryo, Zarafshon, Choch va Xorazmda dehqonchilik yuksak edi."
+      },
+      {
+        q: "2. Somoniylar davrida poliz ekinlari orasida ayniqsa nimalar mashhur bo'lgan?",
+        options: ["Faqat tarvuzlar", "Buxoro qovunlari", "Faqat qovoqlar", "Faqat bodringlar"],
+        correct: 1,
+        exp: "Buxoro qovunlari ayniqsa mashhur bo'lgan."
+      },
+      {
+        q: "3. Farg'ona viloyatining poytaxti bo'lgan Axsikent shahri qancha masofaga cho'zilgan edi?",
+        options: ["1 farsang", "2 farsang", "3 farsang masofaga", "5 farsang"],
+        correct: 2,
+        exp: "Axsikent 3 farsang masofaga cho'zilgan edi."
+      },
+      {
+        q: "4. Farsax (farsang) taxminan necha kilometrga teng masofa o'lchov birligi?",
+        options: ["Taxminan 3 km", "Taxminan 10 km", "Taxminan 6 km ga (yoki 12 000 qadamga)", "Taxminan 20 km"],
+        correct: 2,
+        exp: "Farsax taxminan 6 km ga teng."
+      },
+      {
+        q: "5. Samarqandda qanday yuqori navli mahsulotlar ishlab chiqarilar edi?",
+        options: ["Faqat temir qurollar", "Yuqori navli qog'oz va vadoriy matolari", "Faqat sopol idishlar", "Faqat charm mahsulotlari"],
+        correct: 1,
+        exp: "Samarqandda yuqori navli qog'oz va vadoriy matolari ishlab chiqarilgan."
+      },
+      {
+        q: "6. Shosh (Toshkent) shahri o'zining qaysi mahsulotlari bilan tanilgan edi?",
+        options: ["Faqat ipak matolari bilan", "Ko'chmanchilik mahsulotlari va charm mollari bilan", "Faqat qog'ozi bilan", "Faqat shishasi bilan"],
+        correct: 1,
+        exp: "Ko'chmanchilik mahsulotlari va charm mollari bilan tanilgan."
+      },
+      {
+        q: "7. Kumush va qo'rg'oshin konlari hamda kumush tanga chiqaradigan zarbxonasi bor hudud qaysi edi?",
+        options: ["Iloq", "Xorazm", "Ustrushana", "Kesh"],
+        correct: 0,
+        exp: "Iloq viloyatida kumush konlari va zarbxona bo'lgan."
+      },
+      {
+        q: "8. Buxoro yaqinidagi Zandana qishlog'ida qanday mashhur mato to'qilgan?",
+        options: ["Vadoriy", "Mallarang bo'z — «zandanachi»", "Adras", "Atlas"],
+        correct: 1,
+        exp: "Zandanachi qishlog'ida mallarang bo'z to'qilgan."
+      },
+      {
+        q: "9. Tashqi savdo muomalasida savdogarlar nimadan keng foydalanganlar?",
+        options: ["Oltin quymalardan", "Sarroflik cheklaridan", "Faqat qog'oz pullardan", "Mahsulot ayirboshlashdan"],
+        correct: 1,
+        exp: "Sarroflik cheklaridan keng foydalanilgan."
+      },
+      {
+        q: "10. Ichki bozorlarda savdo-sotiqda qanday mis chaqalar ishlatilgan?",
+        options: ["«Fals»", "«Dirham»", "«Dinor»", "«Ismoiliy»"],
+        correct: 0,
+        exp: "Mis chaqalar «fals» deb atalgan."
+      },
+      {
+        q: "11. Xalqaro savdo-sotiqda qanday asosiy tangalar ishlatilgan?",
+        options: ["Mis chaqalar", "Kumush tangalar — dirhamlar", "Faqat temir pullar", "Faqat oltin pullar"],
+        correct: 1,
+        exp: "Kumush tangalar — dirhamlar ishlatilgan."
+      },
+      {
+        q: "12. Somoniylar davrida yuqori sifatli sof kumushdan zarb etilib, xalqaro savdoda ishlatilgan tanga qaysi?",
+        options: ["«Muhammadiy»", "«Ismoiliy»", "«Fals»", "«Safforiy»"],
+        correct: 1,
+        exp: "«Ismoiliy» tangasi sof kumushdan zarb etilgan."
+      },
+      {
+        q: "13. «Chek» so'zi qaysi tildagi atama hisoblanadi?",
+        options: ["Arabcha", "Forscha atama", "Turkiycha", "Sug'dcha"],
+        correct: 1,
+        exp: "«Chek» so'zi forscha atama hisoblanadi."
+      },
+      {
+        q: "14. Somoniylar davrida ma'muriy va jamoa binolari qurilishida asosiy material qaysi edi?",
+        options: ["Xom g'isht", "Pishiq g'isht", "Yog'och taxta", "Tosh bloklar"],
+        correct: 1,
+        exp: "Pishiq g'isht asosiy material bo'lgan."
+      },
+      {
+        q: "15. Turar joy binolari qurilishida qanday konstruksiya keng tarqalgan edi?",
+        options: ["Gumbazli g'isht", "Sinch konstruksiya", "Temir-beton", "Katakomba"],
+        correct: 1,
+        exp: "Sinch konstruksiya keng tarqalgan edi."
+      },
+      {
+        q: "16. Pardoz ishlarida somonli loy suvoq qatorida nikaning turlari ishlatilgan?",
+        options: ["Ganchning turlari", "Ohak", "Marmar", "Granit"],
+        correct: 0,
+        exp: "Ganchning turli turlari ishlatilgan."
+      },
+      {
+        q: "17. Sirlangan yaxlit pishirilgan sopol taxtachalar qanday atalgan?",
+        options: ["Parchin va mayolika", "Koshin va g'isht", "Mishur", "Keramika"],
+        correct: 0,
+        exp: "Ular parchin va mayolika deb atalgan."
+      },
+      {
+        q: "18. Buxoroda joylashgan, kubsimon hajmda va pishiq g'ishtdan qurilgan me'moriy durdona qaysi?",
+        options: ["Ismoil Somoniy maqbarasi", "Mir Arab madrasasi", "Kalon masjidi", "Qirqqiz qal'asi"],
+        correct: 0,
+        exp: "Bu Ismoil Somoniy maqbarasidir."
+      },
+      {
+        q: "19. Termiz yaqinida qariyb 1000 yil avval qurilgan muhtasham obida qanday nomlanadi?",
+        options: ["Varaxsha", "Qirqqiz qal'asi", "Zartepa", "Zahoki Maron"],
+        correct: 1,
+        exp: "Bu Qirqqiz qal'asidir."
+      },
+      {
+        q: "20. VII–VIII asrlarda import qilinib, keyinchalik xalqning kunduzgi sevimli ichimligiga aylangan mahsulot?",
+        options: ["Qahva", "Choy («cha» yoki «ming»)", "Sharbat", "Kakao"],
+        correct: 1,
+        exp: "Choy («cha» yoki «ming») sevimli ichimlikka aylangan."
+      },
+      {
+        q: "21. Xitoydan Sharqiy Turkiston orqali Turonga nimalar olib kelingan?",
+        options: ["Faqat qurollar", "Choy, ipak mato va tuz", "Faqat qog'oz", "Faqat mevalar"],
+        correct: 1,
+        exp: "Choy, ipak mato va tuz olib kelingan."
+      },
+      {
+        q: "22. Movarounnahr va Xorazmdan Itil, Xazar va Bulg'orga nimalar olib borib sotilgan?",
+        options: ["Faqat mo'yna", "Guruch, quruq mevalar, shirinliklar, tuzlangan baliq, paxta va shoyi matolar", "Faqat ziravorlar", "Faqat yog'och"],
+        correct: 1,
+        exp: "Guruch, mevalar, shirinliklar va shoyi matolar olib borilgan."
+      },
+      {
+        q: "23. Bulg'or va Xazardan Turonga nimalar olib kelingan?",
+        options: ["Qimmatbaho mo'ynalar, shamlar, cho'qqi qalpoqlar", "Faqat ipak", "Faqat guruch", "Faqat choy"],
+        correct: 0,
+        exp: "Qimmatbaho mo'ynalar, shamlar va cho'qqi qalpoqlar olib kelingan."
+      },
+      {
+        q: "24. Buxoroga IX asrda berilgan faxriy islomiy nom qanday edi?",
+        options: ["«Qubbat ul-islam» (Islom dinining gumbazi)", "«Madina at-tujjor»", "«Dor us-salam»", "«Poytaxt shahar»"],
+        correct: 0,
+        exp: "Buxoro «Qubbat ul-islam» deb nom olgan."
+      },
+      {
+        q: "25. Buxoroda X asrda qurilgan ilk madrasa qanday atalgan?",
+        options: ["Mir Arab", "Farjak madrasasi", "Ulug'bek madrasasi", "Kukaldosh"],
+        correct: 1,
+        exp: "Bu Farjak madrasasi edi."
+      },
+      {
+        q: "26. Somoniylar davrida ma'naviy hayotga rahbarlik qilgan «din va ilm peshvolari» qanday atalgan?",
+        options: ["«Ustod»", "«Qozikalon»", "«Imom»", "«Mutavalliy»"],
+        correct: 0,
+        exp: "Ular «ustod» deb atalgan."
+      },
+      {
+        q: "27. «Ustod» unvoni keyinchalik qanday nom bilan yanada ulug'landi?",
+        options: ["«Shayx ul-islom»", "«Sadr»", "«Muftiy»", "«Ulamo»"],
+        correct: 0,
+        exp: "Keyinchalik «shayx ul-islom» deb ulug'langan."
+      },
+      {
+        q: "28. Somoniylar davrida masjid va madrasalar qurish va ularning sarf-xarajatlari uchun nima ajratilgan?",
+        options: ["Maxsus soliqlar", "Katta-katta mulklar va vaqf yerlari", "Davlat xazinasidan maosh", "Ehsonlar"],
+        correct: 1,
+        exp: "Katta-katta mulklar va vaqf yerlari ajratilgan."
+      },
+      {
+        q: "29. Ismoil Somoniy davrida qaysi shaharda uning maqbarasi barpo etilgan?",
+        options: ["Samarqandda", "Buxoroda", "Xivada", "Termizda"],
+        correct: 1,
+        exp: "Maqbara Buxoroda barpo etilgan."
+      },
+      {
+        q: "30. Somoniylar davrida qaysi savdo yo'li orqali keng savdo olib borilgan?",
+        options: ["Faqat dengiz yo'li", "Shimoliy yo'l (Sibir va Mo'g'ulistongacha)", "Faqat Janubiy yo'l", "Faqat G'arbiy yo'l"],
+        correct: 1,
+        exp: "Shimoliy yo'l orqali keng savdo olib borilgan."
+      },
+      {
+        q: "31. Somoniylar davrida yer egaligi turlaridan biri bo'lgan «iqto'» kimlarga berilgan?",
+        options: ["Faqat dehqonlarga", "Harbiy xizmat va boshqaruvdagi xizmatlari evaziga amirzodalarga", "Faqat kambag'allarga", "Faqat xorijliklarga"],
+        correct: 1,
+        exp: "Harbiy va ma'muriy xizmatlar uchun amirzodalarga berilgan."
+      },
+      {
+        q: "32. Somoniylar davrida davlatni boshqarishda amir qarorgohi va saroy a'yonlari turar joyi qanday atalgan?",
+        options: ["Amir dargohi", "Arg", "Qo'handiz", "Saroy"],
+        correct: 0,
+        exp: "Bu amir dargohi deb atalgan."
+      },
+      {
+        q: "33. Somoniylar armiyasidagi maxsus tanish sarbozlar (gvardiya) necha bosqichdan iborat xizmatni o'tagan?",
+        options: ["4 bosqichdan", "6 bosqichdan", "Sakkiz bosqichdan", "10 bosqichdan"],
+        correct: 2,
+        exp: "Gvardiyada xizmat qilish sakkiz bosqichdan iborat bo'lgan."
+      },
+      {
+        q: "34. Somoniylar davrida dehqonchilik solig'i qanday nomlangan?",
+        options: ["Jiz'ya", "Xiroj va ushr", "Zakot", "Boje"],
+        correct: 1,
+        exp: "Solig' xiroj va ushrdan iborat bo'lgan."
+      },
+      {
+        q: "35. Somoniylar tangalarida kimlarning ismlari tushirilgan?",
+        options: ["Faqat Ismoil Somoniy", "Ismoil Somoniy va Nasr ibn Ahmad", "Faqat Nasr ibn Ahmad", "Alptegin va Sabuktegin"],
+        correct: 1,
+        exp: "Ismoil Somoniy va Nasr ibn Ahmad ismlari tushirilgan."
+      },
+      {
+        q: "36. Somoniylar davrida qishloq jamoasining kam yerli a'zolariga yerlarni ijaraga beruvchilar kimlar edi?",
+        options: ["Barzikor yoki qo'shchilar", "Kadivarlar", "Qullar", "Dehqonlar"],
+        correct: 0,
+        exp: "Ular barzikor yoki qo'shchilar deb atalgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! Somoniylar davrida ijtimoiy-iqtisodiy hayot mavzusini to'laqonli o'zlashtiribsiz 🌟";
+      else if(score >= 25) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

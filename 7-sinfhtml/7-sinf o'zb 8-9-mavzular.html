@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>8-9-mavzular. Turk xoqonligi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 12px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 11.5px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 4px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 10px 6px;
+      color: #291104;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 170px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 16px; font-weight: 800; line-height: 1.4; color: #291104; }
+    .fc-a {
+      font-size: 14.5px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 15px; font-weight: 800; text-align: left; color: #291104; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 11px 13px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>8-9-mavzular. Turk xoqonligi</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (38)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (38)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 12px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 45px;">📜</div>
+        <h2 style="font-size: 18px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 14px; color: var(--text-muted); max-width: 300px;">
+          Turk xoqonligiga oid atamalarni mukammal mosladingiz. Endi 38 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (38 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">8-9-mavzular Trenajyor</span>
+          <span id="fc-counter" style="font-size: 12px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 45px;">🏰</div>
+        <h2 style="font-size: 18px; font-weight: 800; color: #291104;">38 ta savol tugadi!</h2>
+        <p style="font-size: 14px; color: var(--text-muted); max-width: 300px;">
+          Turk xoqonligi mavzusining barcha jihatlarini to'la o'rganib chiqdingiz. Endi 38 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">8-9-mavzular Test Sinovi</span>
+          <span id="q-counter" style="font-size: 12px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 45px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/38</div>
+        <h2 style="font-size: 18px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 14px; color: var(--text-muted); max-width: 300px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: 1-ustun atamalar, 2-ustun izohlar) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Bumin xoqon", right: "Oltoy va Janubiy Sibir turkiy qabilalarini birlastirgan xoqonlik asoschisi (555-yil)" },
+        { id: 2, left: "Istami yabg‘u", right: "Oltoy xoqonligining g'arbiy qismiga boshchilik qilgan, «Yabg'u xoqon» unvonini olgan arbob" },
+        { id: 3, left: "Xusrav I Anushirvon", right: "Eftaliylarga qarshi turklar bilan harbiy ittifoq tuzgan sosoniylar hukmdori" },
+        { id: 4, left: "El", right: "Turk xoqonligining davlat mafkurasidagi atamasi («qadimiy el», «tangri el»)" }
+      ],
+      [
+        { id: 5, left: "Ashina xonadoni", right: "Hokimiyat faqat Tangri tomonidan in'om etilgan deb e'tiqod qilingan qadimgi turkiy sulola" },
+        { id: 6, left: "Shod", right: "O'n ming suvoriysiga ega bo'lgan tuman (armiya) boshlig'i" },
+        { id: 7, left: "Tuman", right: "O'n o'q el sardori, ya'ni o'n ming suvoriydan iborat harbiy birlik" },
+        { id: 8, left: "Budun (qora budun)", right: "Ko'chmanchi chorvador aholining umumiy nomi" }
+      ],
+      [
+        { id: 9, left: "Samarqand", right: "«Turk qonunnomasi» amal qilgan va ibodatxonada saqlangan shahar" },
+        { id: 10, left: "Ajinatepa", right: "Farg'ona vodiysi va Qo'rg'ontepa yaqinida topilgan buddizm yodgorligi (12 metrli budda)" },
+        { id: 11, left: "Urxun-Yenisey", right: "Tangri yagona, abadiy, hayot beruvchi deya bitilgan qadimgi yodgorliklar" },
+        { id: 12, left: "Qovunchi madaniyati", right: "Hozirgi Toshkent viloyati Yangiyo'l shahri hududidagi qadimgi katakomba qabrlari topilgan madaniyat" }
+      ],
+      [
+        { id: 13, left: "Katakomba", right: "Yer ostidagi maxsus gumbazli, g'ishtin yoki tuproqli qabrlar" },
+        { id: 14, left: "Yetti ota-bobo", right: "Qadimgi turkiylarda jang maydonida qahramonlik ko'rsatib, yaxshi bilish talab etilgan ajdodlar" },
+        { id: 15, left: "Shomonlik", right: "Turk xoqonligining mafkurasiy asosini tashkil etgan, osmonga sig'inish e'tiqodi" },
+        { id: 16, left: "Sharqiy va G'arbiy", right: "Turk xoqonligi VI asrning 80-yillari oxirida bo'lingan ikki qism" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      colLeft.innerHTML = '';
+      colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (38 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Turk xoqonligi qaysi asr o'rtalarida tashkil topdi?", a: "VI asr o'rtalarida." },
+      { q: "2. Turk xoqonligiga asos solgan shaxs kim?", a: "Bumin xoqon." },
+      { q: "3. Bumin xoqonga qanday unvon berilgan?", a: "«Yabg'u xoqon»." },
+      { q: "4. Turk xoqonligining tashkil topgan yili sifatida qaysi yil ko'rsatiladi?", a: "555-yil." },
+      { q: "5. Oltoy xoqonligining g'arbiy qismiga kim boshchilik qilgan?", a: "Istami yabg'u." },
+      { q: "6. Eftaliylarga qarshi sosoniylar shohi bilan turklar o'rtasida qachon ittifoq tuzilgan?", a: "563–567-yillarda." },
+      { q: "7. Sosoniylar hukmdori Xusrav I Anushirvon kim bilan ittifoq tuzgan?", a: "Turk xoqoni Istami yabg'u bilan." },
+      { q: "8. Eftaliylar davlati parchalangach, Amudaryoning janubiy qirg'oqlarigacha bo'lgan yerlar kimning tasarrufigacha o'tdi?", a: "Turk xoqonligi tasarrufiga." },
+      { q: "9. Turk xoqonligi VI asrning 80-yillari oxirida nechta qismga bo'lindi?", a: "Ikkiga: Sharqiy turk xoqonligi va G'arbiy turk xoqonligiga." },
+      { q: "10. Sharqiy turk xoqonligining poytaxti qayer bo'lgan?", a: "O'tukan." },
+      { q: "11. G'arbiy turk xoqonligining poytaxti qayer bo'lgan?", a: "Yettisuv." },
+      { q: "12. Turk xoqonligining davlat mafkurasida asosiy tushuncha qanday nomlangan?", a: "«El» («qadimiy el», «turk eli»)." },
+      { q: "13. Xoqon hokimiyati kimning xonadoniga in'om etilgan deb e'tiqod qilingan?", a: "Tangri tomonidan Ashina xonadoniga." },
+      { q: "14. Agar xoqon o'z iqtidorini ko'rsata olmasa nima deb tushunilgan?", a: "«Tangri bergan siyosiy hokimiyat yana Tangri tomonidan qaytarib olinadi»." },
+      { q: "15. Turk xoqonligida davlat qanday hujjatlar asosida boshqarilgan?", a: "Yozma qonunchilik hujjatlari bilan." },
+      { q: "16. «Turk qonunnomasi» qayerda amalda bo'lib, qayerda saqlangan?", a: "Samarqandda, ibodatxonada saqlangan." },
+      { q: "17. Qadimiy Sug'dda oldi-sotdi va nikohni qayd etish qanday tuzilgan?", a: "Guvohlar o'rtasida yozma shaklda tuzilib, muhr bilan tasdiqlangan." },
+      { q: "18. Turk xoqonligida e'tiqodlarning ko'rinishlari qaysilar edi?", a: "Tengrilichilik, zardushtiylik, moniylik, nasroniylik, shomonlik, buddizm." },
+      { q: "19. Urxun-Yenisey yodgorlik bitiklarida Tangri qanday sifatlar bilan ulug'langan?", a: "Yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi, hukm qiluvchi." },
+      { q: "20. Toxaristonda olamning ibtidosi nechta qarama-qarshi yaratuvchidan iborat deb bilingan?", a: "Ikkita: yorug'lik va ezgulik hamda zulmat va yovuzlik." },
+      { q: "21. Toxaristonda moniy dinining arkoni nimalar hisoblangan?", a: "Ibodat, ro'za, sadaqa." },
+      { q: "22. Turkiy xalqlarda qadimda nima ilohiylashtirilgan?", a: "Bo'ri (ko'p nishonlarda bo'ri tasviri bo'lgan)." },
+      { q: "23. Tangrilichilik ta'limotiga ko'ra Tangrining doimiy makoni qayer bo'lgan?", a: "Osmon." },
+      { q: "24. Tangrilichilikda to'rt tomoni teng salb qanday nomlangan?", a: "«Adji»." },
+      { q: "25. Turkiylar o'limni qanday tushungan?", a: "Ikkinchi hayotga o'tish deb bilishgan." },
+      { q: "26. Turkiylar o'likni dafn etganda nima bilan birga ko'mgan?", a: "Kiyim-kechagi va kundalik zarur buyumlari bilan." },
+      { q: "27. O'n ming suvoriysiga ega bo'lgan tuman boshlig'i kim deb atalgan?", a: "«Shod»." },
+      { q: "28. O'n o'q budun yoki elining hokimi qanday unvon bilan atalgan?", a: "«Yabg'u»." },
+      { q: "29. Ko'chmanchi chorvador aholi qanday nomlar bilan yuritilgan?", a: "«Budun» yoki «qora budun»." },
+      { q: "30. Xoqonlik eng kuchaygan davrda qayerdan qayergacha bo'lgan hududni egallagan?", a: "Oxota dengizidan Qrim yarimoroligacha, Sibirdan Hindistongacha." },
+      { q: "31. Farg'ona vodiysi Qo'rg'ontepa yaqinidagi buddizm yodgorligi qanday nomlanadi?", a: "Ajinatepa." },
+      { q: "32. Ajinatepadagi budda haykalining bo'yi necha metrga boradi?", a: "12 metrga." },
+      { q: "33. Ajinatepa budda haykali hozir qayerda saqlanadi?", a: "Dushanbe shahridagi Milliy arxeologiya muzeyida." },
+      { q: "34. «Qovunchi madaniyati» qaysi hududga tegishli?", a: "Hozirgi Toshkent viloyati Yangiyo'l shahri hududiga." },
+      { q: "35. Qovunchi madaniyati davri qabrlari qanday tuzilgan?", a: "Yer ostidagi maxsus gumbazli katakomba qabrlardan." },
+      { q: "36. Turkiylarda o'zidan oldingi necha ota-bobo faoliyatini yaxshi bilish talab etilgan?", a: "Yetti ota-bobo." },
+      { q: "37. Qadimgi turklarda ruhlarga sig'inish va qom (shomon)lar tomonidan olib borilgan e'tiqod qanday atalgan?", a: "Shomonlik (qomlik)." },
+      { q: "38. Turk xoqonligining asosiy harbiy-ma'muriy boshqaruvi nimaga tayangan?", a: "Urug'-aymoqchilik udumlariga." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
+    const testQuestions = [
+      {
+        q: "1. Turk xoqonligi qaysi asr o'rtalarida tashkil topgan?",
+        options: ["VI asr o'rtalarida", "IV asr o'rtalarida", "VIII asr o'rtalarida", "V asr o'rtalarida"],
+        correct: 0,
+        exp: "Turk xoqonligi VI asr o'rtalarida tashkil topgan."
+      },
+      {
+        q: "2. Turk xoqonligiga asos solgan shaxs kim?",
+        options: ["Istami yabg'u", "Bumin xoqon", "Mochun", "Bilga xoqon"],
+        correct: 1,
+        exp: "Xoqonlikka Bumin xoqon asos solgan."
+      },
+      {
+        q: "3. Bumin xoqonga qanday unvon berilgan?",
+        options: ["«Yabg'u xoqon»", "«Elterish xoqon»", "«Qutlug' xoqon»", "«Bilga xoqon»"],
+        correct: 0,
+        exp: "Bumin xoqonga «Yabg'u xoqon» unvoni berilgan."
+      },
+      {
+        q: "4. Turk xoqonligining tashkil topgan yili sifatida qaysi yil ko'rsatiladi?",
+        options: ["563-yil", "555-yil", "576-yil", "584-yil"],
+        correct: 1,
+        exp: "Manbalarda 555-yil ko'rsatib o'tilgan."
+      },
+      {
+        q: "5. Oltoy xoqonligining g'arbiy qismiga kim boshchilik qilgan?",
+        options: ["Bumin xoqon", "Istami yabg'u", "Kultegin", "Tonyuquq"],
+        correct: 1,
+        exp: "G'arbiy qismiga Istami yabg'u boshchilik qilgan."
+      },
+      {
+        q: "6. Eftaliylarga qarshi sosoniylar shohi bilan turklar o'rtasida qachon ittifoq tuzilgan?",
+        options: ["531–579-yillarda", "563–567-yillarda", "580–585-yillarda", "540–550-yillarda"],
+        correct: 1,
+        exp: "563–567-yillarda sosoniylar va turklar o'rtasida harbiy ittifoq tuzilgan."
+      },
+      {
+        q: "7. Eftaliylar davlati parchalangach, Amudaryoning janubiy qirg'oqlarigacha bo'lgan yerlar kimning tasarrufiga o'tdi?",
+        options: ["Sosoniylar imperiyasiga", "Turk xoqonligi tasarrufiga", "Xitoy Suy imperiyasiga", "Arab xalifaligiga"],
+        correct: 1,
+        exp: "Yerlar Turk xoqonligi tasarrufiga o'tdi."
+      },
+      {
+        q: "8. Turk xoqonligi VI asrning 80-yillari oxirida nechta qismga bo'lindi?",
+        options: ["Uchta qismga", "To'rtta qismga", "Ikkiga: Sharqiy va G'arbiy turk xoqonligiga", "Bo'linmagan"],
+        correct: 2,
+        exp: "Xoqonlik Sharqiy va G'arbiy turk xoqonligiga bo'lindi."
+      },
+      {
+        q: "9. Sharqiy turk xoqonligining poytaxti qayer bo'lgan?",
+        options: ["Yettisuv", "O'tukan", "Bolasog'un", "Suyob"],
+        correct: 1,
+        exp: "Sharqiy turk xoqonligining poytaxti O'tukan edi."
+      },
+      {
+        q: "10. G'arbiy turk xoqonligining poytaxti qayer bo'lgan?",
+        options: ["O'tukan", "Yettisuv", "Qashqar", "Turpan"],
+        correct: 1,
+        exp: "G'arbiy turk xoqonligining poytaxti Yettisuv edi."
+      },
+      {
+        q: "11. Xoqon hokimiyati qaysi xonadonga in'om etilgan deb e'tiqod qilingan?",
+        options: ["Tuqsoba xonadoniga", "Ashina xonadoniga", "Qarluq xonadoniga", "Ashtarkhoniy xonadoniga"],
+        correct: 1,
+        exp: "Hokimiyat Tangri tomonidan Ashina xonadoniga in'om etilgan deb ishonilgan."
+      },
+      {
+        q: "12. «Turk qonunnomasi» qayerda amalda bo'lib, qayerda saqlangan?",
+        options: ["Buxoroda, saroyda", "Samarqandda, ibodatxonada", "O'tukanda, bosh qarorgohda", "Yettisuvda, hokimlikda"],
+        correct: 1,
+        exp: "«Turk qonunnomasi» Samarqandda amalda bo'lib, ibodatxonada saqlangan."
+      },
+      {
+        q: "13. Qadimiy Sug'dda oldi-sotdi va nikohni qayd etish qanday tuzilgan edi?",
+        options: ["Faqat og'zaki kelishuv asosida", "Guvohlar o'rtasida yozma shaklda tuzilib, muhr bilan tasdiqlangan", "Faqat diniy qasam bilan", "Faqat qabila kengashi qarori bilan"],
+        correct: 1,
+        exp: "Yozma shaklda tuzilib, muhr bilan tasdiqlangan."
+      },
+      {
+        q: "14. Urxun-Yenisey yodgorlik bitiklarida Tangri qanday sifatlar bilan ulug'langan?",
+        options: ["Faqat g'azabkor va jazolovchi", "Yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi, hukm qiluvchi", "Faqat tabiat ilohi sifatida", "Faqat jangchi iloh sifatida"],
+        correct: 1,
+        exp: "Tangri yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi sifatida ulug'langan."
+      },
+      {
+        q: "15. Toxaristonda olamning ibtidosi nechta qarama-qarshi kuchdan iborat deb bilingan?",
+        options: ["Bitta kuchdan", "Uchta kuchdan", "Ikkita: yorug'lik va ezgulik hamda zulmat va yovuzlik", "To'rtta tabiat unsuri"],
+        correct: 2,
+        exp: "Olamning ibtidosi ikkita qarama-qarshi kuchdan iborat deb bilingan."
+      },
+      {
+        q: "16. Toxaristonda moniy dinining arkoni nimalar hisoblangan?",
+        options: ["Faqat qurbonlik keltirish", "Ibodat, ro'za, sadaqa", "Faqat ziyorat qilish", "Faqat muqaddas kitobni yodlash"],
+        correct: 1,
+        exp: "Moniy dinining arkoni ibodat, ro'za, sadaqa hisoblangan."
+      },
+      {
+        q: "17. Turkiy xalqlarda qadimda nima ilohiylashtirilgan edi?",
+        options: ["Burgut", "Ot", "Bo'ri", "Arslon"],
+        correct: 2,
+        exp: "Turkiylarda bo'ri ilohiylashtirilgan bo'lib, ko'p nishonlarda uning tasviri bo'lgan."
+      },
+      {
+        q: "18. Tangrilichilik ta'limotiga ko'ra Tangrining doimiy makoni qayer bo'lgan?",
+        options: ["Yer osti", "Osmon", "Tog' cho'qqisi", "Muqaddas daryo"],
+        correct: 1,
+        exp: "Tangrining doimiy makoni osmon bo'lgan."
+      },
+      {
+        q: "19. Tangrilichilikda to'rt tomoni teng salb qanday nomlangan?",
+        options: ["«Adji»", "«Tamg'a»", "«Totem»", "«Tuman»"],
+        correct: 0,
+        exp: "To'rt tomoni teng salb «adji» deb atalgan."
+      },
+      {
+        q: "20. Turkiylar o'limni qanday tushunishgan?",
+        options: ["Tugatish deb", "Ikkinchi hayotga o'tish deb", "Jazoga tortilish deb", "Unutilish deb"],
+        correct: 1,
+        exp: "O'limni ikkinchi hayotga o'tish deb tushunishgan."
+      },
+      {
+        q: "21. O'n ming suvoriysiga ega bo'lgan tuman boshlig'i kim deb atalgan?",
+        options: ["«Yabg'u»", "«Shod»", "«Elterish»", "«Tarkan»"],
+        correct: 1,
+        exp: "Tuman boshlig'i «shod» deb atalgan."
+      },
+      {
+        q: "22. O'n o'q budun yoki elining hokimi qanday unvon bilan atalgan?",
+        options: ["«Xoqon»", "«Shod»", "«Yabg'u»", "«Beg»"],
+        correct: 2,
+        exp: "O'n o'q budun hokimi «yabg'u» unvoni bilan atalgan."
+      },
+      {
+        q: "23. Ko'chmanchi chorvador aholi qanday nomlar bilan yuritilgan?",
+        options: ["«Budun» yoki «qora budun»", "«Kadivar»", "«Kashovarz»", "«Sipohiy»"],
+        correct: 0,
+        exp: "Chorvador aholi «budun» yoki «qora budun» deb yuritilgan."
+      },
+      {
+        q: "24. Xoqonlik eng kuchaygan davrda qayerdan qayergacha bo'lgan hududni egallagan?",
+        options: ["Faqat O'rta Osiyoni", "Oxota dengizidan Qrim yarimoroligacha, Sibirdan Hindistongacha", "Faqat Xitoy va Eronni", "Faqat Dashti Qipchoqni"],
+        correct: 1,
+        exp: "Xoqonlik Oxota dengizidan Qrimgacha, Sibirdan Hindistongacha bo'lgan hududni egallagan."
+      },
+      {
+        q: "25. Farg'ona vodiysi Qo'rg'ontepa yaqinidagi buddizm yodgorligi qanday nomlanadi?",
+        options: ["Tuproqqal'a", "Ajinatepa", "Zartepa", "Vardona"],
+        correct: 1,
+        exp: "Qo'rg'ontepa yaqinidagi buddizm yodgorligi Ajinatepa deb ataladi."
+      },
+      {
+        q: "26. Ajinatepadagi budda haykalining bo'yi necha metrga boradi?",
+        options: ["8 metr", "10 metr", "12 metr", "15 metr"],
+        correct: 2,
+        exp: "Ajinatepa budda haykalining bo'yi 12 metrga boradi."
+      },
+      {
+        q: "27. Ajinatepa budda haykali hozir qayerda saqlanadi?",
+        options: ["Toshkent muzeyida", "Samarqand muzeyida", "Dushanbe shahridagi Milliy arxeologiya muzeyida", "Moskva muzeyida"],
+        correct: 2,
+        exp: "Haykal Dushanbe shahridagi Milliy arxeologiya muzeyida saqlanadi."
+      },
+      {
+        q: "28. «Qovunchi madaniyati» qaysi hududga tegishli?",
+        options: ["Hozirgi Toshkent viloyati Yangiyo'l shahri hududiga", "Farg'ona vodiysiga", "Surxondaryo vohasiga", "Zarafshon vodiysiga"],
+        correct: 0,
+        exp: "Qovunchi madaniyati Toshkent viloyati Yangiyo'l hududiga tegishli."
+      },
+      {
+        q: "29. Qovunchi madaniyati davri qabrlari qanday tuzilgan?",
+        options: ["Oddiy chuqur qabrlar", "Yer ostidagi maxsus gumbazli katakomba qabrlardan", "Tosh qutilar", "Ochiq qo'rg'onlar"],
+        correct: 1,
+        exp: "Qabrlar yer ostidagi gumbazli katakomba ko'rinishida bo'lgan."
+      },
+      {
+        q: "30. Turkiylarda o'zidan oldingi necha ota-bobo faoliyatini yaxshi bilish talab etilgan?",
+        options: ["Beshta", "Oltita", "Yetti ota-bobo", "O'nta"],
+        correct: 2,
+        exp: "Turkiylarda yetti ota-bobo faoliyatini bilish talab etilgan."
+      },
+      {
+        q: "31. Qadimgi turklarda shomonlar qanday atalgan?",
+        options: ["«Qom»", "«Mobad»", "«Pontifik»", "«Otin»"],
+        correct: 0,
+        exp: "Qadimgi turklarda shomonlar «qom» deb yuritilgan."
+      },
+      {
+        q: "32. Turk xoqonligining asosiy boshqaruvi nimaga tayangan?",
+        options: ["Faqat yollanma armiyaga", "Urug'-aymoqchilik udumlariga asoslangan harbiy-ma'muriy boshqaruvga", "Faqat diniy qonunlarga", "Faqat shahar hokimlariga"],
+        correct: 1,
+        exp: "Boshqaruv urug'-aymoqchilik udumlariga tayangan."
+      },
+      {
+        q: "33. Sosoniylar hukmdori Xusrav I Anushirvon kim bilan ittifoq tuzgan edi?",
+        options: ["Bumin xoqon bilan", "Istami yabg'u bilan", "Tardu xoqon bilan", "Mochun bilan"],
+        correct: 1,
+        exp: "Xusrav I Anushirvon turk xoqoni Istami yabg'u bilan ittifoq tuzgan."
+      },
+      {
+        q: "34. Xusrav I Anushirvon qaysi yillarda hukmronlik qilgan?",
+        options: ["531–579-yillarda", "500–530-yillarda", "580–600-yillarda", "450–500-yillarda"],
+        correct: 0,
+        exp: "Xusrav I 531–579-yillarda hukmronlik qilgan."
+      },
+      {
+        q: "35. Turk xoqonligida o'limni qanday marosim bilan o'tkazishgan?",
+        options: ["Faqat kuydirishgan", "Jasad kiyim-kechagi va kundalik buyumlari bilan birga dafn etishgan", "Faqat suvga oqizishgan", "Faqat maxsus minoraga qo'yishgan"],
+        correct: 1,
+        exp: "Jasad kiyim-kechagi va kundalik buyumlari bilan birga dafn etilgan."
+      },
+      {
+        q: "36. Turk xoqonligining g'arbiy qismini boshqargan Istami yabg'uga qanday unvon berilgan?",
+        options: ["«Yabg'u xoqon»", "«Elterish»", "«Qutlug'»", "«Buyuk xoqon»"],
+        correct: 0,
+        exp: "Istami yabg'uga «Yabg'u xoqon» unvoni berilgan."
+      },
+      {
+        q: "37. Qovunchi madaniyatiga oid qabrlardan nimalar topilgan?",
+        options: ["Faqat oltin taqinchoqlar", "Temirdan ishlangan harbiy va mehnat qurollari hamda sopol idishlar", "Faqat tangalar", "Faqat bronza haykallar"],
+        correct: 1,
+        exp: "Temirdan ishlangan qurollar va sopol idishlar topilgan."
+      },
+      {
+        q: "38. Turk xoqonligi tashkil topgan davrda uning hududi qayergacha cho'zilgan edi?",
+        options: ["Faqat Oltoy va Yettisuvgacha", "Sirdaryo va Orol dengizi bo'ylarigacha", "Faqat Farg'ona vodiysigacha", "Faqat Xitoy chegarasigacha"],
+        correct: 1,
+        exp: "Sirdaryo va Orol dengizi bo'ylarigacha cho'zilgan edi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 34) fb.innerText = "Mukammal natija! Turk xoqonligi mavzusini to'laqonli o'zlashtiribsiz 🌟";
+      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>53-54-mavzular. Abu Rayhon Beruniy</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 13px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 5px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 4px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #291104;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 65px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 190px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.45;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 16.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>53-54-mavzular. Abu Rayhon Beruniy</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (36)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 5 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">📜</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Abu Rayhon Beruniy merosiga oid atamalarni muvaffaqiyatli mosladingiz. Endi 36 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (36 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">53-54-mavzular Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏰</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">36 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Abu Rayhon Beruniy mavzusini to'la o'rganib chiqdingiz. Endi 36 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">53-54-mavzular Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: 20 ta juftlik) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Abu Rayhon Beruniy", right: "973-yilda qadimgi Kot shahrida tug'ilib, 1048-yilda G'aznada vafot etgan ulug' mutafakkir" },
+        { id: 2, left: "150 dan ortiq", right: "Abu Rayhon Beruniy yaratgan ilmiy asarlar soni" },
+        { id: 3, left: "«Qadimgi xalqlardan qolgan yodgorliklar»", right: "Beruniyning zamonasidayoq unga shuhrat keltirgan mashhur asarlaridan biri" },
+        { id: 4, left: "«Hindiston», «Mineralogiya», «Geodeziya»", right: "Beruniy qalamiga mansub fundamental ilmiy asarlar" },
+        { id: 5, left: "1029 ta yulduz", right: "Beruniy tuzgan yulduzlar jadvalidagi koordinatalar va yulduz kattaliklari miqdori" }
+      ],
+      [
+        { id: 6, left: "Jorj Sarton", right: "XI asrni «Beruniy asri» deb ta'riflagan amerikalik tarixchi" },
+        { id: 7, left: "Abu Nasr ibn Iroq", right: "Beruniyning ilk ustozi (astronomiya, algebra va geometrikani o'rgatgan)" },
+        { id: 8, left: "Abu Sahl Iso al-Masihiy", right: "Beruniyning ikkinchi ustozi (tibbiyot, astronomiya va falsafani o'rgatgan)" },
+        { id: 9, left: "«Kitob al-tafhim»", right: "Beruniyning X–XI asrlarda yozgan astronomiya, fizika, matematika va geografiyaga oid yirik asari" },
+        { id: 10, left: "Usturlob", right: "Beruniy davrida foydalanilgan astronomik asbob" }
+      ],
+      [
+        { id: 11, left: "H. Abdullayev", right: "«Beruniy geologiya va mineralogiya fanlarining nazariyotchisi va asoschisidir» degan akademik" },
+        { id: 12, left: "Zaxau", right: "«Hindshunoslikda Beruniyga teng keladigan kishini ... bilmaymiz» degan nemis sharqshunosi" },
+        { id: 13, left: "16 yoshda", right: "Beruniy o'zining birinchi astronomik tajribalarini Kat shahrida boshlagan yosh" },
+        { id: 14, left: "«Saydana»", right: "Beruniyning tibbiyotga bag'ishlangan, mingdan ortiq dorivor moddalar nomini yozgan asari" },
+        { id: 15, left: "Mahmud G'aznaviy", right: "Xorazmni 1017-yilda zabt etib, Beruniyni G'aznaga olib ketgan hukmdor" }
+      ],
+      [
+        { id: 16, left: "Mas'ud G'aznaviy (1030–1041)", right: "Davrida Beruniyning ilmiy faoliyati yana ham yuksak darajada rivojlangan Sulton" },
+        { id: 17, left: "«Qonuni Ma'sudiy»", right: "Beruniy Sulton Mas'udning homiyligida yaratgan buyuk astronomik asari" },
+        { id: 18, left: "Vena shahri", right: "2009-yil iyun oyida BMT bo'limiga Beruniy, Ibn Sino, Roziy va Xayyam haykallari o'rnatilgan joy" },
+        { id: 19, left: "1957-yil", right: "Olim yashagan shahar (Rim yaqinida) Beruniy nomi berilgan sana" },
+        { id: 20, left: "1973-yil", right: "Olim tavalludining 1000 yilligi O'zbekistonda keng ko'lamda nishonlangan yil" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 5;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      matchesRemaining = 5;
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      const badge = document.getElementById('match-stage-badge');
+      const counter = document.getElementById('match-counter');
+      const prog = document.getElementById('match-progress');
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+
+      if (badge) badge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (prog) prog.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      if (colLeft) colLeft.innerHTML = '';
+      if (colRight) colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        if (colLeft) colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        if (colRight) colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          
+          const counter = document.getElementById('match-counter');
+          if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                const prog = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (prog) prog.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (36 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Abu Rayhon Beruniy qaysi yillarda yashagan?", a: "973–1048-yillarda." },
+      { q: "2. Abu Rayhon Beruniy qayerda tug'ilgan va vafot etgan?", a: "Qadimgi Kot shahrida tug'ilib, G'aznada vafot etgan." },
+      { q: "3. Beruniy qaysi fanlarni puxta egallagan?", a: "Falakiyot (astronomiya), fizika, riziyot (matematika), ilohiyot, ma'danshunoslik." },
+      { q: "4. Beruniy jami qancha asar yaratgan?", a: "150 dan ortiq asar." },
+      { q: "5. Beruniyning eng mashhur asarlari qaysilar?", a: "«Qadimgi xalqlardan qolgan yodgorliklar», «Hindiston», «Mineralogiya», «Geodeziya»." },
+      { q: "6. Beruniy yer haqida qanday ilmiy xulosani asoslab bergan?", a: "Yerning dumaloq shaklda ekanligini." },
+      { q: "7. Beruniy tuzgan yulduzlar jadvalida nechta yulduzning koordinatalari qayd etilgan?", a: "1029 ta yulduzning." },
+      { q: "8. Beruniy o'zining falakiyotga oid asarlarida qanday ilmiy farazni birinchi bo'lib ilgari surgan?", a: "Yerning Quyosh atrofida aylanishi haqidagi fikrni." },
+      { q: "9. Beruniyning qaysi taxminicha XV–XVI asrlarda o'z tasdig'ini topgan?", a: "G'arbiy yarim sharda katta quruqlik (Amerika qit'asi) borligi haqidagi fikri." },
+      { q: "10. XI asrni «Beruniy asri» deb ta'riflagan amerikalik tarixchi kim?", a: "Jorj Sarton." },
+      { q: "11. Beruniy ismidagi «Abu Rayhon» va «Muhammad» qismlari nimani anglatadi?", a: "«Abu Rayhon» — rayhonning otasi (rayhonning eng yaxshisi), «Muhammad» — mutafakkirning o'z ismi, «ibn Ahmad» — Ahmadning o'g'li." },
+      { q: "12. Beruniyga «Beruniy» taxallusi nima uchun qo'yilgan?", a: "Kot (Kat) shahrining tashqarisida tug'ilgani uchun («tashqarilik» ma'nosida)." },
+      { q: "13. Beruniyning ilk ustozi kim bo'lgan va undan nimalarni o'rgangan?", a: "Abu Nasr ibn Iroq; astronomiya, algebra va geometrikani o'rgangan." },
+      { q: "14. Beruniyning ikkinchi ustozi kim bo'lgan va undan nimalarni o'rgangan?", a: "Abu Sahl Iso al-Masihiy; tibbiyot, astronomiya va falsafani o'rgangan." },
+      { q: "15. Beruniy necha yoshida ilk astronomik tajribalarini Kat shahrida boshlagan?", a: "16 yoshida." },
+      { q: "16. Beruniy tibbiyotga bag'ishlab qanday asar yozgan va unda nechta dorivor modda nomini keltirgan?", a: "«Saydana» asari; mingdan ortiq dorivor modda." },
+      { q: "17. Mahmud G'aznaviy Xorazmni qachon zabt etib, Beruniyni G'aznaga olib ketgan?", a: "1017-yilda." },
+      { q: "18. Sulton Mas'ud G'aznaviy davrida Beruniy qaysi asarini yaratgan?", a: "«Qonuni Ma'sudiy»." },
+      { q: "19. Beruniyning «Kitob al-tafhim» asari qanday fanlarga bag'ishlangan?", a: "Astronomiya, fizika, matematika, geometriya va geografiyaga." },
+      { q: "20. Akademik H. Abdullayev Beruniyga qanday ta'rif bergan?", a: "«Beruniy geologiya va mineralogiya fanlarining nazariyotchisi va asoschisidir»." },
+      { q: "21. Nemis sharqshunosi Zaxau Beruniy haqida nima degan?", a: "«Hindshunoslikda Beruniyga teng keladigan kishini ... bilmaymiz»." },
+      { q: "22. Xorazmdagi siyosiy ziddiyatlar sababli Beruniy 22 yoshida qayerlarga borgan?", a: "Jurjon va Ray shahrilariga (faqlirlikda kun kechirgan)." },
+      { q: "23. 2009-yil iyun oyida Vena shahrida BMT bo'limiga qaysi to'rt buyuk olimning haykallari o'rnatilgan?", a: "Ibn Sino, Beruniy, Zokiriy Roziy va Umar Xayyom." },
+      { q: "24. Rim yaqinidagi olim yashagan shahar qachon Beruniy nomini olgan?", a: "1957-yilda." },
+      { q: "25. O'zbekistonda Beruniy tavalludining 1000 yilligi qachon keng ko'lamda nishonlangan?", a: "1973-yilda." },
+      { q: "26. Toshkent metropolitenining bekati va Toshkentdagi ko'chalar, haykallar kimning sharafiga nomlangan?", a: "Abu Rayhon Beruniy." },
+      { q: "27. Oyagi vulqon va asteroid kimning sharafiga nomlangan?", a: "Abu Rayhon Beruniy sharafiga." },
+      { q: "28. O'zbekiston Fanlar akademiyasi Sharqshunoslik institutiga kimning nomi berilgan?", a: "Abu Rayhon Beruniy." },
+      { q: "29. Beruniyning «Qadimgi xalqlardan qolgan yodgorliklar» asarida muallif o'quvchini zeriktirmaslik uchun nima qilgan?", a: "Fandan fanga o'tib, turli qiziqarli voqealarni keltirgan." },
+      { q: "30. Beruniy o'zining «Mineralogiya» asarida insonning asosiy vazifasi nima ekanini yozgan?", a: "Mehnat orqali maqsadga erishish va yaxshilik qilish." },
+      { q: "31. Sulton Mahmud Hindistonga yurish qilganda kimni o'zi bilan olib yurgan?", a: "Abu Rayhon Beruniyni (munajjim sifatida)." },
+      { q: "32. Beruniy Sulton Mahmudning Hindistonga yurishlari davomida to'plagan ma'lumotlari asosida qaysi asarini yozgan?", a: "«Hindiston» asarini." },
+      { q: "33. Beruniyning ilk ustozi kim bo'lgan?", a: "Abu Nasr ibn Iroq." },
+      { q: "34. Beruniyning ikkinchi ustozi kim bo'lgan?", a: "Abu Sahl Iso al-Masihiy." },
+      { q: "35. Beruniy asarlari hozirgi kunda qanday maqomga ega?", a: "Jahon fanining oltin fondiga kiritilgan." },
+      { q: "36. Beruniyning ilmiy merosi bugungi kunda ham nima uchun ahamiyatli?", a: "Tabiiy fanlar va tarixiy-etnografik manba sifatidagi ulkan qiymati uchun." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      const counter = document.getElementById('fc-counter');
+      const prog = document.getElementById('fc-progress');
+      const qEl = document.getElementById('fc-question');
+      const aEl = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+
+      if (counter) counter.innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      if (prog) prog.style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      if (qEl) qEl.innerText = card.q;
+      if (aEl) {
+        aEl.innerText = card.a;
+        aEl.style.display = 'none';
+      }
+      if (toggleBtn) toggleBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      const aEl = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (aEl) aEl.style.display = 'block';
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) {
+        loadFlashcard();
+      } else {
+        const playBox = document.getElementById('fc-play-box');
+        const finishBox = document.getElementById('fc-finish-box');
+        if (playBox) playBox.style.display = 'none';
+        if (finishBox) finishBox.style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida mutlaqo tartibsiz va har biriga aniq 9 tadan teng taqsimlangan, «Qachon» so'zi bilan) ---
+    const testQuestions = [
+      // 1. Correct: C (2)
+      {
+        q: "1. Qachon Abu Rayhon Beruniy tavallud topgan?",
+        options: ["1048-yilda", "1017-yilda", "973-yilda", "1973-yilda"],
+        correct: 2,
+        exp: "Beruniy 973-yilda qadimgi Kot shahrida tug'ilgan."
+      },
+      // 2. Correct: A (0)
+      {
+        q: "2. Qachon Abu Rayhon Beruniy vafot etgan?",
+        options: ["1048-yilda", "973-yilda", "1017-yilda", "1957-yilda"],
+        correct: 0,
+        exp: "Beruniy 1048-yilda G'aznada vafot etgan."
+      },
+      // 3. Correct: D (3)
+      {
+        q: "3. Qachon Mahmud G'aznaviy Xorazmni zabt etib, Beruniyni G'aznaga olib ketgan?",
+        options: ["973-yilda", "1048-yilda", "1973-yilda", "1017-yilda"],
+        correct: 3,
+        exp: "Xorazm 1017-yilda zabt etilgan."
+      },
+      // 4. Correct: B (1)
+      {
+        q: "4. Qachon Rim yaqinidagi olim yashagan shahar Beruniy nomini olgan?",
+        options: ["1973-yilda", "1957-yilda", "2009-yilda", "1990-yilda"],
+        correct: 1,
+        exp: "Bu 1957-yilda yuz bergan."
+      },
+      // 5. Correct: C (2)
+      {
+        q: "5. Qachon O'zbekistonda Abu Rayhon Beruniy tavalludining 1000 yilligi keng ko'lamda nishonlangan?",
+        options: ["1957-yilda", "1990-yilda", "1973-yilda", "2009-yilda"],
+        correct: 2,
+        exp: "Tavalludining 1000 yilligi 1973-yilda nishonlangan."
+      },
+      // 6. Correct: A (0)
+      {
+        q: "6. Qachon Vena shahrida BMT bo'limiga Beruniy va boshqa buyuk olimlarning haykallari o'rnatilgan pavilyon taqdim etildi?",
+        options: ["2009-yil iyun oyida", "1957-yilda", "1973-yilda", "1017-yilda"],
+        correct: 0,
+        exp: "Bu 2009-yil iyun oyida yuz bergan."
+      },
+      // 7. Correct: D (3)
+      {
+        q: "7. Qachon Beruniy o'zining ilk astronomik tajribalarini Kat shahrida boshlagan?",
+        options: ["10 yoshida", "12 yoshida", "22 yoshida", "16 yoshida"],
+        correct: 3,
+        exp: "Beruniy ilk tajribalarini 16 yoshida boshlagan."
+      },
+      // 8. Correct: B (1)
+      {
+        q: "8. Qachon Xorazmdagi siyosiy ziddiyatlar sababli Beruniy Jurjon va Ray shaharlarida faqirlikda kun kechirgan?",
+        options: ["16 yoshida", "22 yoshida", "50 yoshida", "70 yoshida"],
+        correct: 1,
+        exp: "U 22 yoshida o'z shahrini tark etib, Jurjon va Rayga borgan."
+      },
+      // 9. Correct: C (2)
+      {
+        q: "9. Qachon Sulton Mas'ud G'aznaviy hokimiyat tepasida bo'lgan davrda Beruniy o'zining «Qonuni Ma'sudiy» asarini yaratgan?",
+        options: ["973–1048-yillarda", "1017-yilda", "1030–1041-yillarda", "1957-yilda"],
+        correct: 2,
+        exp: "Sulton Mas'ud 1030–1041-yillarda hukmronlik qilgan."
+      },
+      // 10. Correct: A (0)
+      {
+        q: "10. Qachon Beruniy o'z asarlarida Yerning Quyosh atrofida aylanishi haqidagi fikrni birinchi bo'lib ilgari surgan?",
+        options: ["Falakiyotga oid asarlarida o'rta asrlarda", "Faqat antik davrda", "Faqat sovet davrida", "Mustaqillik yillarida"],
+        correct: 0,
+        exp: "Bu uning falakiyotga oid asarlarida ilgari surilgan."
+      },
+      // 11. Correct: D (3)
+      {
+        q: "11. Qachon Beruniy o'zining 150 dan ortiq fundamental asarlarini yaratib qoldirgan?",
+        options: ["Faqat keksalik chog'ida", "Faqat yoshligida", "Vafotidan keyin", "973–1048-yillardagi hayoti va ijodi davomida"],
+        correct: 3,
+        exp: "Asarlar uning hayoti davomida yaratilgan."
+      },
+      // 12. Correct: B (1)
+      {
+        q: "12. Qachon amerikalik tarixchi Jorj Sarton XI asrni «Beruniy asri» deb ta'riflagan?",
+        options: ["X asrda", "O'zining ilmiy tadqiqotlarini olib borgan vaqtida (XX asrda)", "XIX asrda", "Faqat XXI asrda"],
+        correct: 1,
+        exp: "Jorj Sarton o'z asarlarida shunday deb yozgan."
+      },
+      // 13. Correct: C (2)
+      {
+        q: "13. Qachon Beruniy o'zining «Qadimgi xalqlardan qolgan yodgorliklar» asarini yozgan?",
+        options: ["V asrda", "VIII asrda", "Zamonasidayoq unga shuhrat keltirgan o'rta asrlarda", "XVI asrda"],
+        correct: 2,
+        exp: "Bu asar unga zamonasidayoq shuhrat keltirgan."
+      },
+      // 14. Correct: A (0)
+      {
+        q: "14. Qachon Beruniy G'arbiy yarim sharda katta quruqlik (Amerika qit'asi) borligini taxmin qilib o'tgan?",
+        options: ["O'zining ilmiy asarlarida XV–XVI asrlarda o'z tasdig'ini topishidan oldin", "Faqat Xristofor Kolumbdan keyin", "Faqat XIX asrda", "Faqat XX asrda"],
+        correct: 0,
+        exp: "Bu uning asarlarida Kolumbdan oldin yozilgan."
+      },
+      // 15. Correct: D (3)
+      {
+        q: "15. Qachon Beruniy 1029 ta yulduzning koordinatalari va yulduz kattaliklari qayd etilgan jadvalni tuzgan?",
+        options: ["Qadimgi Rimda", "Faqat Yevropada", "Faqat Hindistonda", "O'rta asrlarda astronomik kuzatishlar olib borgan davrida"],
+        correct: 3,
+        exp: "Bu o'rta asrlarda astronomik kuzatishlar paytida tuzilgan."
+      },
+      // 16. Correct: B (1)
+      {
+        q: "16. Qachon Beruniy tibbiyotga bag'ishlangan «Saydana» asarida mingdan ortiq dorivor moddalar nomini yozib chiqqan?",
+        options: ["Qadimgi Misrda", "O'rta asrlarda alloma ijod qilgan yillarda", "Faqat XIX asrda", "Faqat XX asrda"],
+        correct: 1,
+        exp: "Asar o'rta asrlarda yozib tugatilgan."
+      },
+      // 17. Correct: C (2)
+      {
+        q: "17. Qachon nemis sharqshunosi Zaxau Beruniy haqida yuqori baho bergan?",
+        options: ["X asrda", "XI asrda", "O'zining ilmiy-tadqiqot ishlarini olib borgan davrida", "XIII asrda"],
+        correct: 2,
+        exp: "Zaxau o'zining tadqiqotlari davrida shunday degan."
+      },
+      // 18. Correct: A (0)
+      {
+        q: "18. Qachon Beruniy o'zining ilk ustozi Abu Nasr ibn Iroqdan astronomiya, algebra va geometrikani o'rgangan?",
+        options: ["Yoshlik yillarida Kat shahrida yurgan paytida", "G'aznaga borgach", "Vafotidan keyin", "Faqat qari yoshida"],
+        correct: 0,
+        exp: "U yoshligida ilk ustozidan saboq olgan."
+      },
+      // 19. Correct: D (3)
+      {
+        q: "19. Qachon Beruniy ikkinchi ustozi Abu Sahl Iso al-Masihiy bilan Jurjondagi paytida tanishgan?",
+        options: ["Qadimgi Bobilda", "Makkada", "Samarqandda", "Jurjonda yurgan davrida"],
+        correct: 3,
+        exp: "Ular Jurjonda tanishib, tibbiyot va falsafani o'rgangan."
+      },
+      // 20. Correct: B (1)
+      {
+        q: "20. Qachon Beruniy o'zining «Kitob al-tafhim» asarini yaratgan?",
+        options: ["V asrda", "X–XI asrlarda", "XIV asrda", "XIX asrda"],
+        correct: 1,
+        exp: "Asar X–XI asrlarda yaratilgan."
+      },
+      // 21. Correct: C (2)
+      {
+        q: "21. Qachon akademik H. Abdullayev Beruniyga geologiya va mineralogiya fanining asoschisi deya ta'rif bergan?",
+        options: ["O'rta asrlarda", "XIX asrda", "XX asrda o'zining ilmiy faoliyati davrida", "Faqat XXI asrda"],
+        correct: 2,
+        exp: "Akademik H. Abdullayev XX asrda shunday degan."
+      },
+      // 22. Correct: A (0)
+      {
+        q: "22. Qachon Beruniy «Mineralogiya» asarida minerallar va ma'danlarning narx-navosini bayon etgan?",
+        options: ["O'rta asrlarda o'z davridagi ilmiy kuzatishlar asosida", "Faqat qadimgi Rimda", "Mustaqillik yillarida", "Faqat sovet davrida"],
+        correct: 0,
+        exp: "Bu o'rta asrlarda yozilgan."
+      },
+      // 23. Correct: D (3)
+      {
+        q: "23. Qachon Beruniy Hindistonga Sulton Mahmudning yurishlari davomida borib, «Hindiston» asarini yozgan?",
+        options: ["973-yilda", "1048-yilda", "1957-yilda", "Sulton Mahmud yurishlari paytida (XI asrda)"],
+        correct: 3,
+        exp: "Bu Sulton Mahmudning yurishlari davrida yozilgan."
+      },
+      // 24. Correct: B (1)
+      {
+        q: "24. Qachon Beruniy o'zining «Qadimgi xalqlardan qolgan yodgorliklar» asarida o'quvchini zeriktirmaslik uchun turli qiziqarli voqealarni keltirgan?",
+        options: ["V asrda", "O'rta asrlarda asarni yozish jarayonida", "XIX asrda", "XXI asrda"],
+        correct: 1,
+        exp: "Bu asar yozilayotgan paytda kiritilgan."
+      },
+      // 25. Correct: C (2)
+      {
+        q: "25. Qachon Beruniy Yerning dumaloq shaklda ekanligini ilmiy jihatdan asoslab bergan?",
+        options: ["Faqat zamonaviy kosmosdan turib", "Qadimgi Xitoyda", "O'rta asrlardagi ilmiy asarlarida va geodezik o'lchovlarida", "Faqat XIX asrda"],
+        correct: 2,
+        exp: "Bu o'rta asrlardagi geodezik o'lchovlar va asarlarda asoslangan."
+      },
+      // 26. Correct: A (0)
+      {
+        q: "26. Qachon Beruniy insonning asosiy vazifasi mehnat orqali maqsadga erishish ekanini ta'kidlagan?",
+        options: ["«Mineralogiya» asarini yozgan paytida", "Faqat qadimgi Misrda", "Vafotidan keyin", "Faqat maktab darsliklarida"],
+        correct: 0,
+        exp: "Bu «Mineralogiya» asarida yozilgan."
+      },
+      // 27. Correct: D (3)
+      {
+        q: "27. Qachon Beruniyning ilmiy merosi jahon fanining oltin fondiga kiritilgan?",
+        options: ["V asrda", "VI asrda", "VII asrda", "O'rta asrlardan to hozirgi kungacha bo'lgan davrda"],
+        correct: 3,
+        exp: "Uning merosi o'rta asrlardan to hozirgi kungacha yuksak qadrlanadi."
+      },
+      // 28. Correct: B (1)
+      {
+        q: "28. Qachon Beruniy o'zining «Geodeziya» asarini yaratgan?",
+        options: ["Qadimgi Rimda", "O'rta asrlarda ilmiy faoliyati davrida", "Faqat sovet davrida", "Mustaqillikda"],
+        correct: 1,
+        exp: "Bu o'rta asrlarda yaratilgan."
+      },
+      // 29. Correct: C (2)
+      {
+        q: "29. Qachon Beruniy va Ibn Sino birgalikda ilmiy masalalarni muhokama qilib maktublar yozishgan?",
+        options: ["V asrda", "VII asrda", "O'rta asrlarda ikkala buyuk mutafakkir yashagan davrda", "XIV asrda"],
+        correct: 2,
+        exp: "Ular o'rta asrlarda ilmiy muloqotda bo'lishgan."
+      },
+      // 30. Correct: A (0)
+      {
+        q: "30. Qachon Beruniy O'zbekiston Fanlar akademiyasi Sharqshunoslik institutiga o'z nomini oldi?",
+        options: ["O'zbekistonda ilm-fanni rivojlantirish va ulug'lash yillarida", "Faqat qadimgi davrda", "Vafotidan darhol keyin", "Faqat Yevropada"],
+        correct: 0,
+        exp: "Bu O'zbekistonda ilm-fanni ulug'lash davrida berilgan."
+      },
+      // 31. Correct: D (3)
+      {
+        q: "31. Qachon Beruniyning «Hindiston» asari jahon ilmiy jamoatchiligi tomonidan e'tirof etilgan?",
+        options: ["V asrda", "VI asrda", "VII asrda", "O'rta asrlardan boshlab hozirgi kungacha"],
+        correct: 3,
+        exp: "Bu o'rta asrlardan boshlab hozirgi kungacha e'tirof etib kelinmoqda."
+      },
+      // 32. Correct: B (1)
+      {
+        q: "32. Qachon Beruniy o'zining astronomik jadvallarini tuzishda minglab yulduzlarning holatini aniqlagan?",
+        options: ["Qadimgi Bobilda", "O'rta asrlarda rasadxonalarda o'tkazgan kuzatishlari paytida", "Faqat XIX asrda", "Faqat XX asrda"],
+        correct: 1,
+        exp: "Bu o'rta asrlarda rasadxonalardagi kuzatishlar paytida bajarilgan."
+      },
+      // 33. Correct: C (2)
+      {
+        q: "33. Qachon Beruniy o'z zamonasining barcha fanlarini puxta egallagan daho sifatida tanilgan?",
+        options: ["V asrda", "VII asrda", "O'rta asrlar Sharq Uyg'onish davrida", "XIX asrda"],
+        correct: 2,
+        exp: "U o'rta asr Sharq Uyg'onish davrining dahosi bo'lgan."
+      },
+      // 34. Correct: A (0)
+      {
+        q: "34. Qachon Beruniy G'aznada Sulton Mahmud va Sulton Mas'ud saroyida yashab ijod qilgan?",
+        options: ["1017-yilda G'aznaga olib ketilgandan keyingi hayoti davomida", "Faqat qadimgi Xitoyda", "Vafotidan keyin", "Faqat Yevropada"],
+        correct: 0,
+        exp: "U G'aznada saroyda yashab ijod qilgan."
+      },
+      // 35. Correct: D (3)
+      {
+        q: "35. Qachon Beruniy asarlari xorijiy tillarga tarjima qilinib, jahon ilm-faniga ta'sir ko'rsatgan?",
+        options: ["V asrda", "VI asrda", "VII asrda", "O'rta asrlardan boshlab to hozirgi kungacha"],
+        correct: 3,
+        exp: "Bu o'rta asrlardan boshlab to hozirgi kungacha davom etib kelmoqda."
+      },
+      // 36. Correct: B (1)
+      {
+        q: "36. Qachon Abu Rayhon Beruniy o'zining «Qadimgi xalqlardan qolgan yodgorliklar» asarini yaratib dunyoga tanilgan?",
+        options: ["V asrda", "Zamonasidayoq o'rta asrlarda", "XIV asrda", "XIX asrda"],
+        correct: 1,
+        exp: "Asar zamonasidayoq unga shuhrat keltirgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const prog = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      const optBox = document.getElementById('q-options');
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (prog) prog.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      if (optBox) {
+        optBox.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.innerText = opt;
+          btn.onclick = () => selectOpt(idx);
+          optBox.appendChild(btn);
+        });
+      }
+
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const scoreEl = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 32) fb.innerText = "Mukammal natija! 53-54-mavzularni to'laqonli o'zlashtiribsiz 🌟";
+        else if(score >= 25) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+        else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize application on load
+    window.onload = function() {
+      initMatch();
+      loadFlashcard();
+      loadTestQuestion();
+    };
+  </script>
+</body>
+</html>

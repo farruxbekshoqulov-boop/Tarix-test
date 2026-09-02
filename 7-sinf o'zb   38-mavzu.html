@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>38-mavzu. Etnik jarayonlar va o'zbek xalqining shakllanishi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 13px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 5px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 4px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #291104;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 65px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 190px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.45;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 16.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>38-mavzu. Etnik jarayonlar va o'zbek xalqining shakllanishi</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (36)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 5 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">📜</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Etnik jarayonlar va o'zbek xalqining shakllanishiga oid atamalarni muvaffaqiyatli mosladingiz. Endi 36 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (36 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">38-mavzu Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏰</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">36 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Etnik jarayonlar mavzusini to'la o'rganib chiqdingiz. Endi 36 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">38-mavzu Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: 20 ta juftlik) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Etnik jarayon", right: "Kelib chiqishi bir-biriga yaqin bo'lgan turli qabila va elatlarning asrlar davomida qo'shilib borishi" },
+        { id: 2, left: "Turkiston", right: "Turkiy aholi o'rnashgan o'lka" },
+        { id: 3, left: "O'zbeklar", right: "Movarounnahr, Xorazm, Yettisuv, qisman Sharqiy Turkistonning g'arbiy mintaqalarida shakllangan alohida elat" },
+        { id: 4, left: "Sug'diylar, baqtriylar, xorazmiylar", right: "O'zbek xalqining etnogenezida asosiy o'rin tutgan qadimgi mahalliy elatlar" },
+        { id: 5, left: "Yarim chorvador va ko'chmanchi sak-massagetlar", right: "O'rta Osiyoda yashagan qadimgi etnik guruhlardan biri" }
+      ],
+      [
+        { id: 6, left: "Janubiy Sibir, Oltoy, Yettisuv", right: "Movarounnahrga turli davrlarda ko'chib kelgan turkiy etnik guruhlarning boshlang'ich maskanlari" },
+        { id: 7, left: "Qang' davri", right: "Turkiyzabop etnoslar ustuvorlik qilib, o'ziga xos uyg'unlashgan madaniyat yuzaga kelgan davr" },
+        { id: 8, left: "«Qovunchi madaniyati»", right: "Arxeologik asarlarda Qang' davridagi o'ziga xos arxeologik madaniyat nomi" },
+        { id: 9, left: "Kushonlar, xioniylar, kidariylar, eftaliylar", right: "O'zbeklar etnogenezida qatnashgan navbatdagi etnik guruhlar va turkiy qabilalar" },
+        { id: 10, left: "VII asrdan «Turkiston»", right: "Mintaqaning turkiy elatlar va mahalliy o'troq aholi o'rtasidagi yaqinlashuvi tufayli atala boshlagan nomi" }
+      ],
+      [
+        { id: 11, left: "VIII asr", right: "Arablar va boshqa xalqlarning O'rta Osiyoga kirib kelishi kuchaygan davr" },
+        { id: 12, left: "IX asr", right: "Movarounnahr mintaqasida yaxlit turkiy etnik qatlam, turkiylashuv jarayoni jadallashgan asr" },
+        { id: 13, left: "Qoraxoniylar davri", right: "Movarounnahr va Xorazmda siyosiy hokimiyat turkiy sulolalarga o'tgan davr" },
+        { id: 14, left: "Yakuniy bosqich", right: "Qoraxoniylar davrida o'zbek xalqining shakllanish jarayoni yakuniga yetgan bosqich" },
+        { id: 15, left: "Ziroatkor va chorvador", right: "IX–XII asrlarda o'zbek xalqining asosini tashkil etgan tub yerli aholi qatlamlari" }
+      ],
+      [
+        { id: 16, left: "Antropologik qiyofa", right: "Qang' davrida O'rta Osiyoning vodiy va vohalarida hozirgi o'zbek va tojiklargas xos shakllangan qiyofa" },
+        { id: 17, left: "Turkiy va sharqiy eroniy tillar", right: "Qadimda O'rta Osiyo qabilalari so'zlashgan asosiy tillar guruxlari" },
+        { id: 18, left: "Sug'd va turk tillari", right: "Movarounnahrda joylashgan aholi qadimdan ikki tilda muloqot qilgan tillar" },
+        { id: 19, left: "Etnogenez", right: "Xalqlarning kelib chiqish tarixini va shakllanish jarayonini o'rganuvchi tushuncha" },
+        { id: 20, left: "Etnos", right: "Yunoncha «xalq» ma'nosini anglatuvchi tushuncha" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 5;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      const badge = document.getElementById('match-stage-badge');
+      const counter = document.getElementById('match-counter');
+      const prog = document.getElementById('match-progress');
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+
+      if (badge) badge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (prog) prog.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      if (colLeft) colLeft.innerHTML = '';
+      if (colRight) colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        if (colLeft) colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        if (colRight) colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          
+          const counter = document.getElementById('match-counter');
+          if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                const prog = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (prog) prog.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (36 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Etnik jarayon deganda nima tushuniladi?", a: "Kelib chiqishi bir-biriga yaqin bo'lgan turli qabila va elatlarning asrlar davomida qo'shilib borishi." },
+      { q: "2. «Turkiston» so'zi nimani anglatadi?", a: "Turkiy aholi o'rnashgan o'lka." },
+      { q: "3. O'zbeklar alohida etnik birlik (elat) sifatida qayerda shakllangan?", a: "Movarounnahr, Xorazm, Yettisuv, qisman Sharqiy Turkistonning g'arbiy mintaqalarida." },
+      { q: "4. Qadimgi o'zbeklar qanday turmush tarzi bilan shug'ullangan?", a: "O'troq yashab, sug'orma dehqonchilik va hunarmandchilik bilan." },
+      { q: "5. O'zbek xalqining etnogenezida qaysi qadimgi mahalliy elatlar asosiy o'rin tutgan?", a: "Sug'diylar, baqtriylar, xorazmiylar, farg'onaliklar, shoshliklar." },
+      { q: "6. O'zbek xalqi etnogeneziga qaysi ko'chmanchi guruhlar ham o'z ta'sirini ko'rsatgan?", a: "Yarim chorvador va ko'chmanchi sak-massagetlar." },
+      { q: "7. Movarounnahrga janubiy Sibir, Oltoy va Yettisuvdan kimlar ko'chib kelgan?", a: "Turkiy etnik guruhlar." },
+      { q: "8. Qang' davrida qaysi etnoslar ustuvorlik qilgan?", a: "Turkiyzabop etnoslar." },
+      { q: "9. Qang' davridagi o'ziga xos arxeologik madaniyat qanday nomlanadi?", a: "«Qovunchi madaniyati»." },
+      { q: "10. Antropologik olimlarning ta'kidlashicha, O'rta Osiyoda hozirgi o'zbek va tojiklar qaysi davrda to'liq shakllangan?", a: "Qang' davrida." },
+      { q: "11. O'zbeklar etnogenezida qatnashgan navbatdagi etnik guruhlar qaysilar?", a: "Kushonlar, xioniylar, kidariylar, eftaliylar va turkiy qabilalar." },
+      { q: "12. Mintaqa qachondan boshlab «Turkiston» nomi bilan atala boshlandi?", a: "VII asrdan boshlab." },
+      { q: "13. O'zbek xalqining tashkil topishi qaysi asrda boshlangan va qachon kuchaygan?", a: "VIII asrda arablar kelishi bilan boshlanib, IX asrda kuchaygan." },
+      { q: "14. IX asrda Movarounnahr mintaqasida nima yuzaga kela boshladi?", a: "Yaxlit turkiy etnik qatlam, turkiylashuv jarayoni." },
+      { q: "15. Qaysi davrda Movarounnahr va Xorazmda siyosiy hokimiyat turkiy sulolalarga o'tdi?", a: "Qoraxoniylar davrida." },
+      { q: "16. O'zbek xalqining shakllanish jarayoni qaysi davrda yakuniy bosqichga yetdi?", a: "Qoraxoniylar davrida." },
+      { q: "17. IX–XII asrlarda o'zbek xalqining asosini kimlar tashkil etdi?", a: "O'lkada yashab kelgan ziroatkor va chorvador tub yerli aholi." },
+      { q: "18. Movarounnahrda joylashgan aholi qadimdan qaysi tillarda muloqot qilgan?", a: "Sug'd va turk tillarida." },
+      { q: "19. Xalqlarning kelib chiqish tarixini va shakllanish jarayonini o'rganuvchi fan qanday ataladi?", a: "Etnogenez." },
+      { q: "20. «Etnos» so'zi qaysi tildan olingan va qanday ma'noni anglatadi?", a: "Yunoncha «xalq» ma'nosini anglatadi." },
+      { q: "21. Qadimda O'rta Osiyo qabilalari asosan qaysi tillarda so'zlashgan?", a: "Turkiy va sharqiy eroniy tillarda." },
+      { q: "22. Turkiy elatlar va mahalliy o'troq aholi munosabatlari natijasida nima yuz berdi?", a: "Madaniy-xo'jalik an'analari uyg'unlashuvi." },
+      { q: "23. O'zbek xalqining asosiy etnik negizini qanday guruhlar tashkil etgan?", a: "Mahalliy o'troq dehqonlar va ko'chmanchi turkiy qabilalar." },
+      { q: "24. IX–XII asrlarda o'zbek xalqi shakllanishining yakunlanishiga nima sabab bo'ldi?", a: "Turkiy tilning umumlashuvi va yagona elat sifatida uyushishi." },
+      { q: "25. Qadimda Farg'ona, Shosh va Sug'dda yashagan elatlar kimlar bilan qon-qarindosh bo'lgan?", a: "Sak-massagetlar va turkiy qabilalar bilan." },
+      { q: "26. O'rta Osiyo hududida turkiy tillarning mavqei qachondan boshlab keskin oshdi?", a: "Turk xoqonligi va undan keyingi davrlarda." },
+      { q: "27. Qovunchi madaniyati qaysi davlat hududiga to'g'ri keladi?", a: "Qang' davri hududiga." },
+      { q: "28. O'zbek tilining boyishida qaysi tillarning ta'siri bo'lgan?", a: "Sharqiy eroniy va mahalliy lahjalar." },
+      { q: "29. Xalqlar tilining shakllanishida nima asosiy omil hisoblanadi?", a: "Asrlar davomidagi iqtisodiy va madaniy aloqalar." },
+      { q: "30. O'zbek xalqining elat sifatida uyushuvi qaysi asrlarni o'z ichiga oladi?", a: "IX–XII asrlarni." },
+      { q: "31. Movarounnahr va Xorazmda turkiylashuv jarayoni qaysi sulola davrida jadallashdi?", a: "Qoraxoniylar davrida." },
+      { q: "32. Qadimiy sug'diylar va baqtriylar keyinchalik qaysi xalq tarkibiga singib ketdi?", a: "O'zbek va tojik xalqlari tarkibiga." },
+      { q: "33. Ko'chmanchi turkiy qabilalarning o'troqlashuvi qanday jarayon edi?", a: "Uzoq davom etgan etnik-madaniy yaqinlashuv." },
+      { q: "34. «Etnik birlik» deganda nimani tushunasiz?", a: "Muayyan hududda yashovchi, tili va madaniyati yaqin bo'lgan odamlar jamoasi." },
+      { q: "35. O'zbek xalqining etnogenezi necha ming yillik tarixga ega?", a: "Qadimgi davrlardan boshlanuvchi ko'p bosqichli tarixga." },
+      { q: "36. O'zbek xalqining shakllanishida qaysi omil hal qiluvchi rol o'ynagan?", a: "Mahalliy o'troq aholi va turkiy qabilalarning qo'shilib ketishi." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      const counter = document.getElementById('fc-counter');
+      const prog = document.getElementById('fc-progress');
+      const qEl = document.getElementById('fc-question');
+      const aEl = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+
+      if (counter) counter.innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      if (prog) prog.style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      if (qEl) qEl.innerText = card.q;
+      if (aEl) {
+        aEl.innerText = card.a;
+        aEl.style.display = 'none';
+      }
+      if (toggleBtn) toggleBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      const aEl = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (aEl) aEl.style.display = 'block';
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) {
+        loadFlashcard();
+      } else {
+        const playBox = document.getElementById('fc-play-box');
+        const finishBox = document.getElementById('fc-finish-box');
+        if (playBox) playBox.style.display = 'none';
+        if (finishBox) finishBox.style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA TEST) ---
+    const testQuestions = [
+      {
+        q: "1. Movarounnahr mintaqasida yaxlit turkiy etnik qatlam va turkiylashuv jarayoni qachon jadallashgan?",
+        options: ["IX asrda", "VIII asrda", "X asrda", "VII asrda"],
+        correct: 0,
+        exp: "Turkiylashuv jarayoni IX asrda jadallashgan."
+      },
+      {
+        q: "2. Qachon O'rta Osiyoda turkiy tillarning mavqei keskin oshib, siyosiy hokimiyat turkiy sulolalarga o'tgan?",
+        options: ["Somoniylar davrida", "Qoraxoniylar davrida", "G'aznaviylar davrida", "Afrig'iylar davrida"],
+        correct: 1,
+        exp: "Qoraxoniylar davrida hokimiyat turkiy sulolalarga o'tgan."
+      },
+      {
+        q: "3. Qachon O'rta Osiyoning vodiy va vohalarida hozirgi o'zbek va tojiklar uchun xos antropologik qiyofa to'liq shakllangan?",
+        options: ["Kushonlar davrida", "Achaemeniylar davrida", "Qang' davrida", "Qadimgi Yunon davrida"],
+        correct: 2,
+        exp: "Antropologik qiyofa Qang' davrida shakllangan."
+      },
+      {
+        q: "4. Qachondan boshlab O'rta Osiyo mintaqasi «Turkiston» nomi bilan atala boshlangan?",
+        options: ["V asrdan", "IX asr boshidan", "X asrdan", "VII asrdan boshlab"],
+        correct: 3,
+        exp: "Mintaqa VII asrdan boshlab Turkiston deb atala boshlagan."
+      },
+      {
+        q: "5. Qaysi asrda o'zbek xalqining elat sifatida uyushuvi va shakllanishi o'z yakuniga yetgan?",
+        options: ["IX–XII asrlarda", "VI–VII asrlarda", "XIII–XIV asrlarda", "XV–XVI asrlarda"],
+        correct: 0,
+        exp: "Shakllanish IX–XII asrlarda yakuniga yetgan."
+      },
+      {
+        q: "6. Qaysi tushuncha «xalq» ma'nosini anglatib, yunoncha so'zdan olingan?",
+        options: ["Etnogenez", "Shajara", "Etnos", "Elat"],
+        correct: 2,
+        exp: "Etnos so'zi yunoncha «xalq» degan ma'noni bildiradi."
+      },
+      {
+        q: "7. Kelib chiqishi bir-biriga yaqin bo'lgan turli qabila va elatlarning asrlar davomida qo'shilib borishi qanday ataladi?",
+        options: ["Assimilyatsiya", "Migratsiya", "Urbanizatsiya", "Etnik jarayon"],
+        correct: 3,
+        exp: "Bu etnik jarayon deb ataladi."
+      },
+      {
+        q: "8. Qaysi qadimgi mahalliy elatlar o'zbek xalqining etnogenezida asosiy o'rin tutgan?",
+        options: ["Faqat ko'chmanchilar", "Sug'diylar, baqtriylar, xorazmiylar", "Faqat eroniylar", "Faqat hindlar"],
+        correct: 1,
+        exp: "Sug'diylar, baqtriylar va xorazmiylar asosiy o'rin tutgan."
+      },
+      {
+        q: "9. «Turkiston» so'zining ma'nosi qaysi javobda to'g'ri ko'rsatilgan?",
+        options: ["Turkiy aholi o'rnashgan o'lka", "Savdogarlar yurti", "Qal'alar shahri", "Chorvadorlar dashti"],
+        correct: 0,
+        exp: "Turkiston — turkiy aholi o'rnashgan o'lka demakdir."
+      },
+      {
+        q: "10. O'zbeklar alohida etnik birlik (elat) sifatida qayerda shakllanganlar?",
+        options: ["Faqat Farg'ona vodiysida", "Faqat Xurosonda", "Movarounnahr, Xorazm, Yettisuv, qisman Sharqiy Turkistonning g'arbiy mintaqalarida", "Faqat Yevropada"],
+        correct: 2,
+        exp: "Movarounnahr, Xorazm, Yettisuv va qisman Sharqiy Turkistonda shakllangan."
+      },
+      {
+        q: "11. Qadimgi o'zbeklar qanday xo'jalik tarzi bilan shug'ullanib kelganlar?",
+        options: ["Faqat ovchilik", "Faqat dengiz savdosi", "Faqat ko'chmanchilik", "O'troq yashab, sug'orma dehqonchilik, hunarmandchilik"],
+        correct: 3,
+        exp: "Ular o'troq yashab, sug'orma dehqonchilik va hunarmandchilik qilgan."
+      },
+      {
+        q: "12. O'zbeklar etnogeneziga o'z ta'sirini ko'rsatgan yarim chorvador va ko'chmanchi guruhlardan biri qaysi?",
+        options: ["Sak-massagetlar", "Rimliklar", "Germanlar", "Gallar"],
+        correct: 0,
+        exp: "Sak-massagetlar shunday guruhlardan biri bo'lgan."
+      },
+      {
+        q: "13. Movarounnahrga janubiy Sibir, Oltoy va Yettisuvdan kimlar ko'chib kelgan?",
+        options: ["Arab qo'shinlari", "Turkiy etnik guruhlar", "Fors zodagonlari", "Yunon sayyohlari"],
+        correct: 1,
+        exp: "Turkiy etnik guruhlar ko'chib kelgan."
+      },
+      {
+        q: "14. Qang' davrida O'rta Osiyo hududida qaysi etnoslar ustuvorlik qilgan edi?",
+        options: ["Faqat eroniylar", "Faqat slavyanlar", "Turkiyzabop etnoslar", "Faqat hind-oriy"],
+        correct: 2,
+        exp: "Turkiyzabop etnoslar ustuvorlik qilgan."
+      },
+      {
+        q: "15. O'zbeklar etnogenezida qatnashgan navbatdagi etnik guruhlar qaysi javobda to'g'ri sanab o'tilgan?",
+        options: ["Faqat mo'g'ullar", "Faqat rimliklar", "Faqat xitoyliklar", "Kushonlar, xioniylar, kidariylar, eftaliylar va turkiy qabilalar"],
+        correct: 3,
+        exp: "Kushonlar, xioniylar, kidariylar va eftaliylar qatnashgan."
+      },
+      {
+        q: "16. Movarounnahrda joylashgan aholi qadimdan qaysi tillarda muloqot qilgan?",
+        options: ["Sug'd va turk tillarida", "Faqat arab tilida", "Faqat lotin tilida", "Faqat yunon tilida"],
+        correct: 0,
+        exp: "Aholi qadimdan sug'd va turk tillarida muloqot qilgan."
+      },
+      {
+        q: "17. Qadimda O'rta Osiyo qabilalari asosiy qaysi tillar guruhida so'zlashgan?",
+        options: ["Faqat german tillarida", "Turkiy va sharqiy eroniy tillarda", "Faqat roman tillarida", "Faqat som tillarida"],
+        correct: 1,
+        exp: "Turkiy va sharqiy eroniy tillarda so'zlashgan."
+      },
+      {
+        q: "18. Xalqlarning kelib chiqish tarixini va shakllanish jarayonini o'rganuvchi fan yoki tushuncha nima deyiladi?",
+        options: ["Antropologiya", "Arxeologiya", "Etnogenez", "Numizmatika"],
+        correct: 2,
+        exp: "Bu etnogenez deb ataladi."
+      },
+      {
+        q: "19. O'zbek xalqining tashkil topishi qachon boshlangan edi?",
+        options: ["IV asrda", "VI asrda", "XIV asrda", "VIII asrda arablar kelishi bilan"],
+        correct: 3,
+        exp: "Bu jarayon VIII asrda arablar kelishi bilan boshlangan."
+      },
+      {
+        q: "20. IX–XII asrlarda o'zbek xalqining asosini kimlar tashkil etgan?",
+        options: ["O'lkada yashab kelgan ziroatkor va chorvador tub yerli aholi", "Faqat kelgindi qo'shinlar", "Faqat qullar", "Faqat chet ellik savdogarlar"],
+        correct: 0,
+        exp: "Asosini ziroatkor va chorvador tub yerli aholi tashkil etgan."
+      },
+      {
+        q: "21. Turkiy elatlar va mahalliy o'troq aholi o'rtasidagi aloqalar natijasida nima sodir bo'ldi?",
+        options: ["Madaniyatlar to'qnashib yo'qoldi", "Madaniy-xo'jalik an'analari uyg'unlashuvi (uyg'unlashuv) yuz berdi", "Tillar butunlay unutildi", "Hech qanday o'zgarish bo'lmadi"],
+        correct: 1,
+        exp: "Madaniy-xo'jalik an'analari uyg'unlashuvi yuz bergan."
+      },
+      {
+        q: "22. Qoraxoniylar davrida Movarounnahr va Xorazmda siyosiy hokimiyat kimlarning qo'liga o'tdi?",
+        options: ["Arab xalifalariga", "Vizantiya imperatoriga", "Turkiy sulolalarga", "Mo'g'on xonlariga"],
+        correct: 2,
+        exp: "Hokimiyat turkiy sulolalarga o'tgan."
+      },
+      {
+        q: "23. Farg'ona, Shosh va Sug'dda qadimda yashagan elatlar kimlar bilan qon-qarindosh bo'lgan?",
+        options: ["Faqat rimliklar bilan", "Faqat hindlar bilan", "Faqat slavyanlar bilan", "Sak-massagetlar va turkiy qabilalar bilan"],
+        correct: 3,
+        exp: "Sak-massagetlar va turkiy qabilalar bilan qon-qarindosh bo'lgan."
+      },
+      {
+        q: "24. O'rta Osiyo hududida turkiy tillarning mavqei qachondan boshlab keskin oshdi?",
+        options: ["Turk xoqonligi va undan keyingi davrlarda", "Bronza davrida", "Antik davrda", "Temir asrida"],
+        correct: 0,
+        exp: "Turk xoqonligi va undan keyingi davrlarda keskin oshgan."
+      },
+      {
+        q: "25. O'zbek tilining lug'at boyligi va shakllanishiga qaysi tillar sezilarli ta'sir ko'rsatgan?",
+        options: ["Faqat lotin tili", "Sharqiy eroniy va mahalliy lahjalar", "Faqat ispan tili", "Faqat ingliz tili"],
+        correct: 1,
+        exp: "Sharqiy eroniy va mahalliy lahjalar ta'sir ko'rsatgan."
+      },
+      {
+        q: "26. Qovunchi madaniyati qaysi davlat hududiga va topilmalariga xos?",
+        options: ["Kushon podshohligiga", "Achaemeniylar davriga", "Qang' davri va uning hududiga", "Qadimgi Baqtriyaga"],
+        correct: 2,
+        exp: "Bu Qang' davri hududiga va topilmalariga xos."
+      },
+      {
+        q: "27. O'zbek xalqining shakllanish jarayoni qanday xarakterdagi tarixiy jarayon hisoblanadi?",
+        options: ["Faqat 1 ta bosqichli", "Faqat 2 ta bosqichli", "Faqat 3 ta bosqichli", "Qadimdan boshlanuvchi ko'p bosqichli uzoq tarixiy jarayon"],
+        correct: 3,
+        exp: "Bu ko'p bosqichli uzoq tarixiy jarayon hisoblanadi."
+      },
+      {
+        q: "28. O'zbek xalqining shakllanishida qaysi omil eng hal qiluvchi rol o'ynagan?",
+        options: ["Mahalliy o'troq aholi va turkiy qabilalarning asrlar davomida qo'shilib ketishi", "Faqat tashqi urushlar", "Faqat iqlim o'zgarishi", "Faqat savdo yo'llari"],
+        correct: 0,
+        exp: "Mahalliy o'troq aholi va turkiy qabilalarning qo'shilib ketishi hal qilgan."
+      },
+      {
+        q: "29. «Etnik birlik» (elat) tushunchasi nimani anglatadi?",
+        options: ["Tasodifiy odamlar guruhini", "Muayyan hududda yashovchi, tili va madaniyati yaqin bo'lgan jamoani", "Faqat harbiy qismlarni", "Faqat bitta oila a'zolarini"],
+        correct: 1,
+        exp: "Bu tili va madaniyati yaqin bo'lgan odamlar jamoasini anglatadi."
+      },
+      {
+        q: "30. O'zbek xalqining elat sifatida uyushuvi asosan qaysi davrni qamrab oladi?",
+        options: ["Paleolit davrini", "Antik davrni", "IX–XII asrlarni", "Faqat Temuriylar davrini"],
+        correct: 2,
+        exp: "Bu davr IX–XII asrlarni qamrab oladi."
+      },
+      {
+        q: "31. Qadimgi sug'diylar va baqtriylar keyinchalik qaysi xalqlar tarkibiga singib ketgan?",
+        options: ["Faqat arablar", "Faqat xitoyliklar", "Faqat mo'g'ullar", "O'zbek va tojik xalqlari tarkibiga"],
+        correct: 3,
+        exp: "Ular o'zbek va tojik xalqlari tarkibiga singib ketgan."
+      },
+      {
+        q: "32. Ko'chmanchi turkiy qabilalarning o'troqlashuvi qanday xarakterga ega bo'lgan?",
+        options: ["Uzoq davom etgan etnik-madaniy yaqinlashuv jarayoni", "Tezkor va majburiy", "Faqat urushlar orqali", "Tasodifiy"],
+        correct: 0,
+        exp: "Bu uzoq davom etgan etnik-madaniy yaqinlashuv jarayoni bo'lgan."
+      },
+      {
+        q: "33. O'zbek xalqining etnogenezida qatnashgan turkiy qabilalar qayerlardan ko'chib kelgan?",
+        options: ["Faqat Yevropadan", "Janubiy Sibir, Oltoy va Yettisuvdan", "Faqat Afrikadan", "Faqat Kichik Osiyodan"],
+        correct: 1,
+        exp: "Ular Janubiy Sibir, Oltoy va Yettisuvdan ko'chib kelgan."
+      },
+      {
+        q: "34. Movarounnahrda turkiylashuv jarayonining jadallashishi qachon sodir bo'lgan?",
+        options: ["Ipak yo'lining yopilish davrida", "Faqat sovet davrida", "IX asr va Qoraxoniylar davrida", "Faqat antik davrda"],
+        correct: 2,
+        exp: "Bu IX asr va Qoraxoniylar davriga to'g'ri keladi."
+      },
+      {
+        q: "35. O'zbek xalqining shakllanishida ishtirok etgan asosiy hududlar qaysilar?",
+        options: ["Faqat Sahroi Kabir", "Faqat Skandinaviya", "Faqat Skifiya", "Movarounnahr va Xorazm vohalari"],
+        correct: 3,
+        exp: "Movarounnahr va Xorazm vohalari qatnashgan."
+      },
+      {
+        q: "36. Qaysi arxeologik madaniyat orqali Qang' davridagi o'ziga xos etnik o'zgarishlar o'rganiladi?",
+        options: ["«Qovunchi madaniyati»", "Chust madaniyati", "Afrosiyob", "Zartepa"],
+        correct: 0,
+        exp: "Bu «Qovunchi madaniyati» orqali o'rganiladi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const prog = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      const optBox = document.getElementById('q-options');
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (prog) prog.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      if (optBox) {
+        optBox.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.innerText = opt;
+          btn.onclick = () => selectOpt(idx);
+          optBox.appendChild(btn);
+        });
+      }
+
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const scoreEl = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 32) fb.innerText = "Mukammal natija! 38-mavzuni to'laqonli o'zlashtiribsiz 🌟";
+        else if(score >= 25) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+        else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize application on load
+    window.onload = function() {
+      initMatch();
+      loadFlashcard();
+      loadTestQuestion();
+    };
+  </script>
+</body>
+</html>

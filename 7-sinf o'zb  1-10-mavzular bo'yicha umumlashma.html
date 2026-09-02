@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>7-sinf O'zbekiston tarixi — 1-10-mavzular Umumlashmasi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 13px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 5px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 4px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #291104;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 65px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 190px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.45;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 16.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>7-sinf O'zbekiston tarixi — 1-10-mavzular umumlashmasi</h1>
+      <p>O'rta asrlar tarixi bo'yicha 40 ta sara savol va test</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (40)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 5 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">📜</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          1-10-mavzular bo'yicha atamalar va voqealarni muvaffaqiyatli mosladingiz. Endi Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (40 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">1-10-mavzular Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏰</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">40 ta savol yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          1-10-mavzular bo'yicha savol-javoblarni takrorlab chiqdingiz. Endi Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (40 TA TEST - A, B, C, D o'rtasida mutlaqo betartib va har biriga aniq 10 tadan teng taqsimlangan) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">1-10-mavzular Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/40</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Umumlashma sinov tugadi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: 20 ta juftlik) ---
+    const matchStages = [
+      [
+        { id: 1, left: "O'rta asrlar davri", right: "V asrdan XVII asrning o'rtalarigacha bo'lgan davrni o'z ichiga olgan tarixiy bosqich" },
+        { id: 2, left: "Turk xoqonligi", right: "VI asr o'rtalarida Oltoyda tashkil topgan ulkan turkiy davlat" },
+        { id: 3, left: "Istami yabg'u", right: "Turk xoqonligining g'arbiy qismiga boshchilik qilgan hukmdor" },
+        { id: 4, left: "Bumin xoqon", right: "Turk xoqonligiga asos solgan birinchi xoqon" },
+        { id: 5, left: "Ipak yo'li", right: "Sharq va G'arbni bog'lovchi buyuk xalqaro savdo yo'li" }
+      ],
+      [
+        { id: 6, left: "Qoraxoniylar davlati", right: "X asr oxirlarida Yettisuv va Qashqarda tashkil topgan turkiy sulola davlati" },
+        { id: 7, left: "G'aznaviylar davlati", right: "X asr oxirida Xurosonda va Afg'onistonda yuksalgan davlat" },
+        { id: 8, left: "Saljuqiylar imperiyasi", right: "XI asrda Yaqin va O'rta Sharqda ulkan hududni egallagan turkiy imperiya" },
+        { id: 9, left: "Somoniylar davlati", right: "IX–X asrlarda Movarounnahr va Xurosonda hukmronlik qilgan mahalliy forsiy sulola" },
+        { id: 10, left: "Ibrohim Bug'roxon", right: "Qoraxoniylar davlatida Islom dinini davlat dini deb e'lon qilgan hukmdor" }
+      ],
+      [
+        { id: 11, left: "Sulton Mahmud G'aznaviy", right: "G'aznaviylar davlatining eng mashhur hukmdori (998–1030)" },
+        { id: 12, left: "Tog'rul bek", right: "Saljuqiylar davlatining asoschisi va birinchi sultoni" },
+        { id: 13, left: "Ismoil Somoniy", right: "Somoniylar davlatini siyosiy jihatdan mustahkamlagan amir" },
+        { id: 14, left: "Qutlug' Bilga Qadrxon", right: "Qoraxoniylar davlatining asoschisi" },
+        { id: 15, left: "Arslon xon", right: "Qoraxoniylar davrida Buxoroda Minorai Kalonni qurdirgan hukmdor" }
+      ],
+      [
+        { id: 16, left: "Yabg'u", right: "Turk xoqonligida ulus boshliqlari va g'arbiy qism hokimiga berilgan unvon" },
+        { id: 17, left: "Tadun", right: "Iustinian II saroyiga elchi bo'lib borgan sug'd elchisi" },
+        { id: 18, left: "Sust", right: "Soliq turlaridan biri yoki o'rta asrlarda mavjud bo'lgan to'lov" },
+        { id: 19, left: "Sohibxo'ja", right: "O'rta asrlarda harbiylar va mulkdorlarga berilgan unvonlardan biri" },
+        { id: 20, left: "Mahmud Qoshg'ariy", right: "XI asrda «Devonu lug'otit turk» asarini yozgan buyuk tilshunos olim" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 5;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      matchesRemaining = 5;
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      const badge = document.getElementById('match-stage-badge');
+      const counter = document.getElementById('match-counter');
+      const prog = document.getElementById('match-progress');
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+
+      if (badge) badge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (prog) prog.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      if (colLeft) colLeft.innerHTML = '';
+      if (colRight) colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        if (colLeft) colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        if (colRight) colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          
+          const counter = document.getElementById('match-counter');
+          if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                const prog = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (prog) prog.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (40 TA) ---
+    const flashcards = [
+      { q: "1. O'rta asrlar davri tarixda qaysi davrlarni o'z ichiga oladi?", a: "V asrdan XVII asrning o'rtalarigacha." },
+      { q: "2. Turk xoqonligi qachon va qayerda tashkil topgan?", a: "VI asr o'rtalarida Oltoyda." },
+      { q: "3. Turk xoqonligining asoschisi kim?", a: "Bumin xoqon." },
+      { q: "4. Xoqonlikning g'arbiy qismiga kim boshchilik qilgan?", a: "Istami yabg'u." },
+      { q: "5. Istami yabg'u Vizantiya imperatori Iustinian saroyiga kimni elchi qilib yuborgan?", a: "Tadun boshchiligidagi sug'd elchilarini." },
+      { q: "6. Buyuk Ipak yo'li orqali qaysi davlatlar o'rtasida elchilik va savdo aloqalari o'rnatilgan?", a: "Turk xoqonligi va Vizantiya." },
+      { q: "7. Qoraxoniylar davlati qachon va qayerda tashkil topgan?", a: "X asr oxirlarida Yettisuv va Qashqarda." },
+      { q: "8. Qoraxoniylar davlatining asoschisi kim?", a: "Qutlug' Bilga Qadrxon." },
+      { q: "9. Qoraxoniylar davrida Islom dinini rasman davlat dini deb e'lon qilgan hukmdor kim?", a: "Ibrohim Bug'roxon." },
+      { q: "10. G'aznaviylar davlati qachon va qayerda tashkil topgan?", a: "X asr oxirida Xurosonda va Afg'onistonda." },
+      { q: "11. G'aznaviylar davlatining eng mashhur hukmdori kim?", a: "Sulton Mahmud G'aznaviy (998–1030)." },
+      { q: "12. Saljuqiylar imperiyasi qachon tashkil topgan?", a: "XI asrda." },
+      { q: "13. Saljuqiylar davlatining asoschisi va birinchi sultoni kim?", a: "Tog'rul bek." },
+      { q: "14. Somoniylar davlati qaysi yillarda hukmronlik qilgan?", a: "IX–X asrlarda." },
+      { q: "15. Somoniylar davlatini siyosiy jihatdan mustahkamlagan amir kim?", a: "Ismoil Somoniy." },
+      { q: "16. Mahmud Qoshg'ariy qaysi asri va qanday asari bilan mashhur?", a: "XI asr, «Devonu lug'otit turk» asari bilan." },
+      { q: "17. Qoraxoniylar davrida Buxoroda Minorai Kalonni qurdirgan hukmdor kim?", a: "Arslon xon." },
+      { q: "18. O'rta asrlarda Movarounnahr va Xorazmda shaharlar hayoti qanday rivojlangan?", a: "Savdo-sotiq, hunarmandchilik va madaniyat markazlari sifatida." },
+      { q: "19. Turk xoqonligida ulus boshliqlari qanday atalgan?", a: "Yabg'u." },
+      { q: "20. O'rta asrlarda yer egaligi va soliq tizimida qanday to'lovlar mavjud bo'lgan?", a: "Sust va boshqa yer soliqlari." },
+      { q: "21. Ismoil Somoniy hukmronligi davrida poytaxt qaysi shahar bo'lgan?", a: "Buxoro." },
+      { q: "22. Sulton Mahmud G'aznaviy Hindistonga necha marta yurish qilgan?", a: "17 marta." },
+      { q: "23. Saljuqiylar Dandanqon jangida kimlarni mag'lub etgan?", a: "G'aznaviylarni (1040-yilda)." },
+      { q: "24. Qoraxoniylar davlati keyinchalik nechta qismga bo'lingan?", a: "Ikki qismga (Sharqiy va G'arbiy qoraxoniylar)." },
+      { q: "25. Somoniylar davlati qaysi yilda barham topgan?", a: "999-yilda." },
+      { q: "26. Qoraxoniylar poytaxti dastlab qaysi shahar bo'lgan?", a: "Bolasog'un va Qashqar." },
+      { q: "27. G'aznaviylar poytaxti qaysi shahar edi?", a: "G'azna shahri." },
+      { q: "28. Saljuqiylar dastlab qayerdan chiqqan turkiy qabila bo'lgan?", a: "O'g'uz-turkman qabilalaridan." },
+      { q: "29. Turk xoqonligi parchalangach nechta qismga bo'lingan?", a: "G'arbiy va Sharqiy xoqonlikka." },
+      { q: "30. Istami yabg'u qaysi yo'nalishda faol tashqi siyosat olib borgan?", a: "G'arbiy yo'nalishda (Vizantiya va Eron bilan)." },
+      { q: "31. O'rta asrlarda Movarounnahrda pul muomalasi qanday bo'lgan?", a: "Kumush va mis tangalar zarb qilingan." },
+      { q: "32. Ismoil Somoniy kim ustidan g'alaba qozonib davlatni birlashtirgan?", a: "Safforiylar ustidan." },
+      { q: "33. Sulton Mahmud G'aznaviy saroyida qanday olimlar yashab ijod qilgan?", a: "Firdusiy, Beruniy va boshqalar." },
+      { q: "34. Qoraxoniylar davlatida ilk bor turkiy tilda qanday asarlar yozila boshlangan?", a: "«Qutadg'u bilig» va boshqalar." },
+      { q: "35. Yusuf Xos Hojib qaysi asarni yozgan?", a: "«Qutadg'u bilig» («Baxt keltiruvchi bilim»)." },
+      { q: "36. Mahmud Qoshg'ariyning «Devonu lug'otit turk» asari nima haqida?", a: "Turkiy tillarning qiyosiy lug'ati va xaritasi haqida." },
+      { q: "37. O'rta asrlarda karvonsaroylar nima uchun qurilgan?", a: "Savdogarlar va sayohatchilar to'xtab o'tishi uchun." },
+      { q: "38. Somoniylar davrida ilm-fan homiysi bo'lgan hukmdorlar qayerda to'plangan?", a: "Buxoro saroyida (kutubxonalari bilan mashhur)." },
+      { q: "39. O'rta asrlarda hunarmandchilikning qaysi turlari rivojlangan?", a: "Kulolchilik, to'qimachilik, temirchilik va shishasozlik." },
+      { q: "40. Turk xoqonligi davrida xalqaro savdoda asosiy to'lov vositasi nima bo'lgan?", a: "Ipak matolar va tangalar." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      const counter = document.getElementById('fc-counter');
+      const prog = document.getElementById('fc-progress');
+      const qEl = document.getElementById('fc-question');
+      const aEl = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+
+      if (counter) counter.innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      if (prog) prog.style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      if (qEl) qEl.innerText = card.q;
+      if (aEl) {
+        aEl.innerText = card.a;
+        aEl.style.display = 'none';
+      }
+      if (toggleBtn) toggleBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      const aEl = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (aEl) aEl.style.display = 'block';
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) {
+        loadFlashcard();
+      } else {
+        const playBox = document.getElementById('fc-play-box');
+        const finishBox = document.getElementById('fc-finish-box');
+        if (playBox) playBox.style.display = 'none';
+        if (finishBox) finishBox.style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (40 TA TEST - Mutlaqo tartibsiz, har bir harfga aniq 10 tadan teng taqsimlangan) ---
+    const testQuestions = [
+      // 1. Correct: B (1)
+      {
+        q: "1. Qachon Turk xoqonligi Oltoyda tashkil topgan?",
+        options: ["V asr o'rtalarida", "VI asr o'rtalarida", "VII asr o'rtalarida", "VIII asrda"],
+        correct: 1,
+        exp: "Turk xoqonligi VI asr o'rtalarida tashkil topgan."
+      },
+      // 2. Correct: D (3)
+      {
+        q: "2. Qachon Qoraxoniylar davlati Yettisuv va Qashqarda tashkil topgan?",
+        options: ["IX asr boshida", "VIII asr oxirida", "XI asr boshida", "X asr oxirida"],
+        correct: 3,
+        exp: "Qoraxoniylar davlati X asr oxirida tashkil topgan."
+      },
+      // 3. Correct: A (0)
+      {
+        q: "3. Qachon G'aznaviylar davlati Xurosonda yuksalgan?",
+        options: ["X asr oxirida", "IX asr boshida", "XI asrda", "XII asrda"],
+        correct: 0,
+        exp: "G'aznaviylar davlati X asr oxirida tashkil topgan."
+      },
+      // 4. Correct: C (2)
+      {
+        q: "4. Qachon Saljuqiylar imperiyasi Yaqin va O'rta Sharqda tashkil topgan?",
+        options: ["IX asrda", "X asrda", "XI asrda", "XII asrda"],
+        correct: 2,
+        exp: "Saljuqiylar imperiyasi XI asrda tashkil topgan."
+      },
+      // 5. Correct: B (1)
+      {
+        q: "5. Qachon Somoniylar davlati Movarounnahr va Xurosonda hukmronlik qilgan?",
+        options: ["V–VI asrlarda", "IX–X asrlarda", "XI–XII asrlarda", "XIII–XIV asrlarda"],
+        correct: 1,
+        exp: "Somoniylar IX–X asrlarda hukmronlik qilgan."
+      },
+      // 6. Correct: D (3)
+      {
+        q: "6. Qachon Mahmud Qoshg'ariy o'zining «Devonu lug'otit turk» asarini yozgan?",
+        options: ["IX asrda", "X asrda", "XII asrda", "XI asrda"],
+        correct: 3,
+        exp: "Mahmud Qoshg'ariy XI asrda yashab ijod qilgan."
+      },
+      // 7. Correct: A (0)
+      {
+        q: "7. Qachon Ismoil Somoniy Safforiylar ustidan g'alaba qozonib davlatni birlashtirgan?",
+        options: ["IX asr oxiri / X asr boshlarida", "XI asrda", "XII asrda", "VI asrda"],
+        correct: 0,
+        exp: "Bu voqea IX asr oxiri va X asr boshlarida sodir bo'lgan."
+      },
+      // 8. Correct: C (2)
+      {
+        q: "8. Qachon Dandanqon jangi bo'lib o'tgan?",
+        options: ["999-yilda", "1017-yilda", "1040-yilda", "1097-yilda"],
+        correct: 2,
+        exp: "Dandanqon jangi 1040-yilda bo'lgan."
+      },
+      // 9. Correct: B (1)
+      {
+        q: "9. Qachon Somoniylar davlati barham topgan?",
+        options: ["813-yilda", "999-yilda", "1040-yilda", "1231-yilda"],
+        correct: 1,
+        exp: "Somoniylar davlati 999-yilda barham topgan."
+      },
+      // 10. Correct: D (3)
+      {
+        q: "10. Qachon Sulton Mahmud G'aznaviy hukmronlik qilgan?",
+        options: ["813–833-yillarda", "873–950-yillarda", "980–1037-yillarda", "998–1030-yillarda"],
+        correct: 3,
+        exp: "Sulton Mahmud 998–1030-yillarda hukmronlik qilgan."
+      },
+      // 11. Correct: A (0)
+      {
+        q: "11. Qachon Istami yabg'u Vizantiya imperatori Iustinian saroyiga elchi yuborgan?",
+        options: ["VI asrda Turk xoqonligi davrida", "X asrda", "XI asrda", "XII asrda"],
+        correct: 0,
+        exp: "Bu VI asrda Turk xoqonligi davrida sodir bo'lgan."
+      },
+      // 12. Correct: C (2)
+      {
+        q: "12. Qachon Buxoroda Minorai Kalon qurdirilgan?",
+        options: ["Somoniylar davrida", "G'aznaviylar davrida", "Qoraxoniylar davrida", "Saljuqiylar davrida"],
+        correct: 2,
+        exp: "Minorai Kalon qoraxoniylar davrida qurilgan."
+      },
+      // 13. Correct: B (1)
+      {
+        q: "13. Qachon Yusuf Xos Hojib «Qutadg'u bilig» asarini yozgan?",
+        options: ["IX asrda", "XI asrda", "XIII asrda", "XIV asrda"],
+        correct: 1,
+        exp: "Yusuf Xos Hojib XI asrda yozgan."
+      },
+      // 14. Correct: D (3)
+      {
+        q: "14. Qachon Ibrohim Bug'roxon Qoraxoniylar davrida Islom dinini davlat dini deb e'lon qilgan?",
+        options: ["VI asrda", "VIII asrda", "IX asrda", "X asrda"],
+        correct: 3,
+        exp: "Bu X asrda sodir bo'lgan."
+      },
+      // 15. Correct: A (0)
+      {
+        q: "15. Qachon Turk xoqonligi parchalangach G'arbiy va Sharqiy xoqonliklarga bo'lingan?",
+        options: ["VI asr oxiri / VII asr boshlarida", "X asrda", "XI asrda", "XII asrda"],
+        correct: 0,
+        exp: "Bu VI asr oxiri va VII asr boshlarida yuz bergan."
+      },
+      // 16. Correct: C (2)
+      {
+        q: "16. Qachon Tog'rul bek saljuqiylarning birinchi sultoni bo'lgan?",
+        options: ["IX asrda", "X asrda", "XI asrda", "XII asrda"],
+        correct: 2,
+        exp: "Tog'rul bek XI asrda sulton bo'lgan."
+      },
+      // 17. Correct: B (1)
+      {
+        q: "17. Qachon Movarounnahrda kumush va mis tangalar keng miqyosda zarb qilingan?",
+        options: ["Faqat antik davrda", "O'rta asrlarda Somoniylar va Qoraxoniylar davrida", "Faqat sovet davrida", "Mustaqillikda"],
+        correct: 1,
+        exp: "Bu o'rta asrlarda keng amalga oshirilgan."
+      },
+      // 18. Correct: D (3)
+      {
+        q: "18. Qachon Buyuk Ipak yo'li xalqaro savdo va elchilik aloqalarida eng yuqori cho'qqiga chiqqan?",
+        options: ["Faqat paleolitda", "Faqat temir asrida", "Faqat XIX asrda", "O'rta asrlarda Turk xoqonligi va keyingi davrlarda"],
+        correct: 3,
+        exp: "Bu o'rta asrlarda Turk xoqonligi davrida rivojlangan."
+      },
+      // 19. Correct: A (0)
+      {
+        q: "19. Qachon Buxoro shahar sifatida Somoniylar davrida qanday maqomga ega bo'lgan?",
+        options: ["Poytaxt va ilm-fan, madaniyat markazi", "Faqat kichik qishloq", "Faqat harbiy qal'a", "Faqat cho'l hududi"],
+        correct: 0,
+        exp: "Buxoro poytaxt bo'lgan."
+      },
+      // 20. Correct: C (2)
+      {
+        q: "20. Qachon O'rta asrlarda karvonsaroylar savdogarlar uchun qurila boshlagan?",
+        options: ["Qadimgi Rimda", "Faqat Hindistonda", "Buyuk Ipak yo'li bo'ylab o'rta asrlarda", "Faqat zamonaviy davrda"],
+        correct: 2,
+        exp: "Karvonsaroylar Ipak yo'li bo'ylab o'rta asrlarda qurilgan."
+      },
+      // 21. Correct: B (1)
+      {
+        q: "21. Qachon Bumin xoqon Turk xoqonligiga asos solgan?",
+        options: ["V asrda", "VI asrda", "VII asrda", "VIII asrda"],
+        correct: 1,
+        exp: "Bumin xoqon VI asrda asos solgan."
+      },
+      // 22. Correct: D (3)
+      {
+        q: "22. Qachon Sulton Mahmud G'aznaviy Hindistonga 17 marta yurish qilgan?",
+        options: ["973–980-yillarda", "999–1010-yillarda", "1040–1050-yillarda", "998–1030-yillardagi hukmronligi davrida"],
+        correct: 3,
+        exp: "U o'z hukmronligi davrida yurishlar qilgan."
+      },
+      // 23. Correct: A (0)
+      {
+        q: "23. Qachon Somoniylar davrida Buxoro saroyida buyuk olimlar to'plangan?",
+        options: ["IX–X asrlarda", "XI–XII asrlarda", "XIII–XIV asrlarda", "XV–XVI asrlarda"],
+        correct: 0,
+        exp: "Bu IX–X asrlarda sodir bo'lgan."
+      },
+      // 24. Correct: C (2)
+      {
+        q: "24. Qachon O'rta asrlarda hunarmandchilik turlari (kulolchilik, to'qimachilik) ravnaq topgan?",
+        options: ["Faqat ibtidoiy tuzumda", "Faqat antik davrda", "Movarounnahr va Xorazm shaharlari rivojlangan o'rta asrlarda", "Faqat XX asrda"],
+        correct: 2,
+        exp: "Bu o'rta asrlarda shahar hayotida ravnaq topgan."
+      },
+      // 25. Correct: B (1)
+      {
+        q: "25. Qachon Istami yabg'u Turk xoqonligining g'arbiy qismiga boshchilik qilgan?",
+        options: ["V asr oxirida", "VI asr o'rtalaridan boshlab", "VII asrda", "VIII asrda"],
+        correct: 1,
+        exp: "Istami yabg'u VI asr o'rtalaridan boshlab boshqargan."
+      },
+      // 26. Correct: D (3)
+      {
+        q: "26. Qachon Qoraxoniylar davlati keyinchalik ikkiga (Sharqiy va G'arbiy) bo'lingan?",
+        options: ["X asrda", "XI asr boshida", "XII asr oxirida", "XI asrning ikkinchi yarmida"],
+        correct: 3,
+        exp: "Bu XI asrning ikkinchi yarmida yuz bergan."
+      },
+      // 27. Correct: A (0)
+      {
+        q: "27. Qachon Ismoil Somoniy hukmronlik qilgan?",
+        options: ["892–907-yillarda", "998–1030-yillarda", "1030–1041-yillarda", "1097–1231-yillarda"],
+        correct: 0,
+        exp: "Ismoil Somoniy 892–907-yillarda hukmronlik qilgan."
+      },
+      // 28. Correct: C (2)
+      {
+        q: "28. Qachon G'aznaviylar davrida poytaxt G'azna shahri bo'lgan?",
+        options: ["VI asrda", "IX asrda", "X–XI asrlarda", "XIV asrda"],
+        correct: 2,
+        exp: "Bu G'aznaviylar davrida (X–XI asrlarda) bo'lgan."
+      },
+      // 29. Correct: B (1)
+      {
+        q: "29. Qachon Turk xoqonligi va Vizantiya o'rtasida elchilik munosabatlari o'rnatilgan?",
+        options: ["V asrda", "VI asrda", "VIII asrda", "X asrda"],
+        correct: 1,
+        exp: "Bu VI asrda Turk xoqonligi davrida o'rnatilgan."
+      },
+      // 30. Correct: D (3)
+      {
+        q: "30. Qachon O'rta asrlarda teleradio yoki internet bo'lmagan paytda ma'lumotlar qanday tarqatilgan?",
+        options: ["Faqat telegraf orqali", "Faqat telefon orqali", "Faqat pochtasiz", "Karvonlar va elchilar orqali yozma va og'zaki ravishda"],
+        correct: 3,
+        exp: "Ma'lumotlar karvonlar va elchilar orqali tarqatilgan."
+      },
+      // 31. Correct: A (0)
+      {
+        q: "31. Qachon O'rta asrlarda Movarounnahrda sug'orma dehqonchilik yanada rivojlangan?",
+        options: ["IX–XII asrlarda iqtisodiy yuksalish davrida", "V asrda", "XIII asrda", "XVI asrda"],
+        correct: 0,
+        exp: "Bu IX–XII asrlarda yuz bergan."
+      },
+      // 32. Correct: C (2)
+      {
+        q: "32. Qachon Saljuqiylar Mesopotamiya va Yaqin Sharqni egallagan?",
+        options: ["VI asrda", "IX asrda", "XI asrda", "XIV asrda"],
+        correct: 2,
+        exp: "Saljuqiylar bu hududlarni XI asrda egallagan."
+      },
+      // 33. Correct: B (1)
+      {
+        q: "33. Qachon O'rta asrlarda ko'chmanchi turkiy qabilalar o'troqlasha boshlagan?",
+        options: ["Qadimgi paleolitda", "Movarounnahr va Xorazmga o'rnashgan o'rta asrlarda", "Faqat XIX asrda", "Faqat XX asrda"],
+        correct: 1,
+        exp: "O'troqlashuv o'rta asrlarda sodir bo'lgan."
+      },
+      // 34. Correct: D (3)
+      {
+        q: "34. Qachon O'rta asrlarda shahar hokimlari va amirlar saroylari qayerda joylashgan?",
+        options: ["Faqat cho'lda", "Faqat tog'da", "Faqat daryo bo'yida", "Shaharning markaziy qismi — arkda"],
+        correct: 3,
+        exp: "Saroylar arkda joylashgan."
+      },
+      // 35. Correct: A (0)
+      {
+        q: "35. Qachon O'rta asrlarda shahar aholisining asosiy qismini kimlar tashkil etgan?",
+        options: ["Hunarmandlar va savdogarlar", "Faqat jangchilar", "Faqat chet elliklar", "Faqat sayohatchilar"],
+        correct: 0,
+        exp: "Asosiy qismini hunarmandlar va savdogarlar tashkil etgan."
+      },
+      // 36. Correct: C (2)
+      {
+        q: "36. Qachon O'rta asrlarda shahar atrofi qanday atalgan?",
+        options: ["Ark", "Shahriston", "Rabot (Rirob)", "Qal'a"],
+        correct: 2,
+        exp: "Shahar atrofi rabot deb atalgan."
+      },
+      // 37. Correct: B (1)
+      {
+        q: "37. Qachon O'rta asrlarda shaharning ichki qismi, savdo va ma'muriy joylashgan qismi nima deb atalgan?",
+        options: ["Rabot", "Shahriston", "Qishloq", "Dasht"],
+        correct: 1,
+        exp: "Bu qism shahriston deb atalgan."
+      },
+      // 38. Correct: D (3)
+      {
+        q: "38. Qachon O'rta asrlarda davlat boshqaruvida devonlar (vazirliklar) qanday vazifani bajargan?",
+        options: ["Faqat harbiy yurish", "Faqat savdo", "Faqat bog'dorchilik", "Moliya, soliq va davlat ishlarini yuritish"],
+        correct: 3,
+        exp: "Devonlar moliya va davlat ishlarini yuritgan."
+      },
+      // 39. Correct: A (0)
+      {
+        q: "39. Qachon O'rta asrlarda turkiy tillarning mavqei va hurmati oshib borgan?",
+        options: ["Turk xoqonligi va keyingi turkiy sulolalar davrida", "Faqat antik davrda", "Faqat Rimda", "Faqat Gretsiyada"],
+        correct: 0,
+        exp: "Bu turkiy sulolalar davrida oshgan."
+      },
+      // 40. Correct: C (2)
+      {
+        q: "40. Qachon 7-sinf O'rta asrlar O'zbekiston tarixi darsligi o'quvchilarga o'rgatila boshlangan?",
+        options: ["O'rta asrlarning o'zida", "Qadimgi davrda", "Zamonamizdagi ta'lim tizimida", "Faqat XIX asrda"],
+        correct: 2,
+        exp: "Bu zamonaviy ta'lim tizimida o'qitiladi."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const prog = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      const optBox = document.getElementById('q-options');
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (prog) prog.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      if (optBox) {
+        optBox.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.innerText = opt;
+          btn.onclick = () => selectOpt(idx);
+          optBox.appendChild(btn);
+        });
+      }
+
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const scoreEl = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 35) fb.innerText = "Mukammal natija! 1-10-mavzularni a'lo darajada o'zlashtiribsiz 🌟";
+        else if(score >= 25) fb.innerText = "Ajoyib natija! Asosiy sanalar va tushunchalarni yaxshi bilasiz 👍";
+        else fb.innerText = "Yaxshi, lekin mavzularni yana bir bor takrorlab chiqish tavsiya etiladi 📚";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize application on load
+    window.onload = function() {
+      initMatch();
+      loadFlashcard();
+      loadTestQuestion();
+    };
+  </script>
+</body>
+</html>

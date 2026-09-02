@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>1-§. Ajdodlarimizning ma'naviy qadriyatlari</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 12px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 11.5px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 4px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME (2 ta ustun: atama va izoh) */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 10px 6px;
+      color: #291104;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 170px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 16px; font-weight: 800; line-height: 1.4; color: #291104; }
+    .fc-a {
+      font-size: 14.5px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 15px; font-weight: 800; text-align: left; color: #291104; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 11px 13px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>1-mavzu. Ajdodlarimizning ma'naviy qadriyatlari</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (25)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (25)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 12px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 45px;">📜</div>
+        <h2 style="font-size: 18px; font-weight: 800; color: #291104;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 14px; color: var(--text-muted); max-width: 300px;">
+          Barcha atamalarni muvaffaqiyatli mosladingiz. Endi 25 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (25 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">1-mavzu Trenajyor</span>
+          <span id="fc-counter" style="font-size: 12px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 45px;">🏰</div>
+        <h2 style="font-size: 18px; font-weight: 800; color: #291104;">25 ta savol tugadi!</h2>
+        <p style="font-size: 14px; color: var(--text-muted); max-width: 300px;">
+          Mavzuning asosiy tushunchalarini o'rganib chiqdingiz. Endi 25 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (25 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">1-mavzu Test Sinovi</span>
+          <span id="q-counter" style="font-size: 12px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 45px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/25</div>
+        <h2 style="font-size: 18px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 14px; color: var(--text-muted); max-width: 300px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (5 BOSQICH: 1-ustun atamalar, 2-ustun izohlar) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Ilk o‘rta asrlar", right: "IV–VIII asrlar oralig‘i" },
+        { id: 2, left: "Rivojlangan o‘rta asrlar", right: "IX–XV asrlar oralig‘i" },
+        { id: 3, left: "So‘nggi o‘rta asrlar", right: "XVI–XIX asrlar oralig‘i" },
+        { id: 4, left: "Rim imperiyasi qulashi", right: "Milodiy 476-yil (Yevropada o‘rta asr boshi)" }
+      ],
+      [
+        { id: 5, left: "Birinchi renessans", right: "IX–XII asrlar (Sharq uyg‘onish davri)" },
+        { id: 6, left: "Ikkinchi renessans", right: "XIV–XV asrlar (Temuriylar Renessansi)" },
+        { id: 7, left: "«O‘rta asrlar» tushunchasi", right: "Italiyalik tarixchilar tomonidan kiritilgan" },
+        { id: 8, left: "Xalqimizning o‘tmishi", right: "IV asrdan XIII asr boshlarigacha bo‘lgan davr" }
+      ],
+      [
+        { id: 9, left: "Imom Buxoriy", right: "Zaminimizda tug‘ilib voyaga yetgan buyuk muhaddis" },
+        { id: 10, left: "Abu Rayhon Beruniy", right: "Jahon ilm-faniga ulkan hissa qo‘shgan qomusiy olim" },
+        { id: 11, left: "Abu Ali ibn Sino", right: "«Tib qonunlari» asari muallifi" },
+        { id: 12, left: "Al-Xorazmiy", right: "Algebra faniga asos solgan buyuk mutafakkir" }
+      ],
+      [
+        { id: 13, left: "Turon", right: "Qadimdan atalib kelingan yurtimizning qadimgi nomi" },
+        { id: 14, left: "Movarounnahr", right: "Arablar davridagi hududiy nomlanishi" },
+        { id: 15, left: "Xuroson", right: "XVIII–XIX asr g‘arb olimlari atagan nom" },
+        { id: 16, left: "Qishloq hokimlari", right: "Ilk o‘rta asrlarda «dehqonlar» deb atalgan yer egalari" }
+      ],
+      [
+        { id: 17, left: "Xorazm, eftaliylar", right: "Ilk o‘rta asrlarda mavjud bo‘lgan etnik uyushmalar" },
+        { id: 18, left: "Amir Temur saltanati", right: "XIV–XV asrlarda hukmronlik qilgan yirik davlat" },
+        { id: 19, left: "Arab xalofligi hukmronligi", right: "VIII asr boshlaridan mamlakatimizda o‘rnatildi" },
+        { id: 20, left: "Yersiz kadivar", right: "Dehqonlar ekinzorlarida ishlovchi qatlam" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      colLeft.innerHTML = '';
+      colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (25 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. 7-sinf O‘zbekiston tarixi fani qaysi davrni o‘z ichiga oladi?", a: "O‘rta asrlar tarixini (IV asrdan XIX asr o‘rtalarigacha)." },
+      { q: "2. «O‘rta asrlar» tushunchasi fanga kimlar tomonidan kiritilgan?", a: "Italiyalik tarixchilar tomonidan." },
+      { q: "3. Yevropada o‘rta asrlarning boshlanishi qaysi voqegap to‘g‘ri keladi?", a: "Rim imperiyasining qulashi (476-yil) va V asr oxirlari voqealariga." },
+      { q: "4. Bizning tariximizda «o‘rta asrlar» deb atalayotgan davr qachondan boshlangan?", a: "IV asr oxirlari hamda V asr o‘rtalaridan siyosiy maydonda xioniyylar, kidariylar, eftaliylar paydo bo‘lgan davrdan." },
+      { q: "5. O‘rta asrlar davri nechta asosiy qismga bo‘linadi?", a: "Uchta qismga: Ilk o‘rta asrlar, Rivojlangan o‘rta asrlar va So‘nggi o‘rta asrlar." },
+      { q: "6. Ilk o‘rta asrlar davri qaysi asrlarni o‘z ichiga oladi?", a: "IV–VIII asrlarni." },
+      { q: "7. Rivojlangan o‘rta asrlar davri qaysi asrlarni qamrab oladi?", a: "IX–XV asrlarni." },
+      { q: "8. So‘nggi o‘rta asrlar davri qaysi asrlarga to‘g‘ri keladi?", a: "XVI–XIX asrlarga." },
+      { q: "9. Qadimdan «Turon» deb atalgan yurtimizga arablar davrida qanday nom berilgan?", a: "«Movarounnahr»." },
+      { q: "10. XVIII–XIX asr g‘arb olimlari va sayyohlari yurtimizni qanday nomlagan?", a: "«O‘rta Osiyo» yoki «Markaziy Osiyo» va «Xuroson»." },
+      { q: "11. Ilk o‘rta asrlarda «qishloq hokimlari» kimlar deb atalgan?", a: "«Dehqonlar» (ular katta yer egalari bo‘lib, ekinzorlarida yersiz kadivarlar ishlagan)." },
+      { q: "12. Ilk o‘rta asrlarda yerga ishlash tartibining o‘zgarishi nishon bergan?", a: "Aholi orasida tabaqalanishning yanada keskinlashishiga olib kelgan." },
+      { q: "13. Mamlakatimiz hududida arab xalifaligi hukmronligi qachon o‘rnatildi?", a: "VIII asr boshlarida." },
+      { q: "14. Arab xalifaligi hukmronligidan keyingi asrlarda yurtimizda nima avj oldi?", a: "Ilm-ma’rifatning ravnaqi uchun qulay sharoit yuzaga keldi." },
+      { q: "15. IX–XII asrlar tariximizda qanday nom bilan ataladi?", a: "Birinchi renessans (Uyg‘onish davri)." },
+      { q: "16. XIV–XV asrlar tariximizda qanday nomlanadi?", a: "Ikkinchi renessans (Temuriylar renessansi)." },
+      { q: "17. IX–XII asrlarda zaminimizda yetishib chiqqan buyuk muhaddislarni ayting.", a: "Imom Buxoriy, Imom Termiziy." },
+      { q: "18. Yurtimizda yetishib chiqqan qomusiy olimlarni ko‘rsating.", a: "Muhammad ibn Muso Xorazmiy, Ahmad Farg‘oniy, Abu Rayhon Beruniy, Abu Ali ibn Sino." },
+      { q: "19. Tasavvuf ta'limoti namoyandalaridan kimlarni bilasiz?", a: "Mahmud Zamaxshariy, Ahmad Yassaviy, Najmiddin Kubro." },
+      { q: "20. Mazkur o‘rta asr davrida qaysi yirik davlatlar mavjud bo‘lgan?", a: "Xorazm, xioniyylar, kidariylar, eftaliylar, Turk xoqonligi, somoniylar, qoraxoniylar, xorazmshohlar, Amir Temur va temuriylar saltanati." },
+      { q: "21. O‘rta asr tushunchasi nima uchun tarixda shartli ravishda ishlatiladi?", a: "Chunki uning davriy chegaralari Yevropa va Sharqda (Turon tarixida) bir xil emasligi sababli." },
+      { q: "22. Ajdodlarimizning boy ilmiy va madaniy merosi bugungi kunda kimlarning e'tiborini tortmoqda?", a: "Nafaqat mamlakatimiz, balki dunyo olimlarining." },
+      { q: "23. Darslikka ko‘ra bugungi tezlik bilan o‘zgarayotgan dunyoda nima yakka-yu yagona najot hisoblanadi?", a: "Ilm." },
+      { q: "24. Ilm va ma'rifatga intilish insonni nimaga yetaklaydi?", a: "Uni egallash orqaligina komillikka erishish mumkinligini tushunishga." },
+      { q: "25. O‘zbek xalqining o‘tmishi etnik jihatdan qaysi qardosh xalqlar tarixi bilan chambarchas bog‘langan?", a: "O‘zbek, tojik, qirg‘iz, qozoq, qoraqalpoq va turkman xalqlarining ajdodlari bilan." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (25 TA TEST) ---
+    const testQuestions = [
+      {
+        q: "1. 7-sinf O‘zbekiston tarixi darsligi qaysi davr tarixini o‘rganishga bag‘ishlangan?",
+        options: ["Qadimgi dunyo tarixi", "O‘rta asrlar tarixi", "Yangi davr tarixi", "Eng yangi davr tarixi"],
+        correct: 1,
+        exp: "7-sinf O‘rta asrlar tarixi (IV–XIX asr o‘rtalari)ni o‘rganishga bag‘ishlangan."
+      },
+      {
+        q: "2. «O‘rta asrlar» tushunchasini fan tarixiga kimlar kiritgan?",
+        options: ["Yunon tarixchilari", "Rim imperatorlari", "Italiyalik tarixchilar", "Arab sayyohlari"],
+        correct: 2,
+        exp: "O‘rta asrlar tushunchasi fanga italyan tarixchilari tomonidan kiritilgan."
+      },
+      {
+        q: "3. Yevropada o‘rta asrlarning boshlanishi qaysi voqea bilan bog‘liq?",
+        options: ["Rim imperiyasining qulashi (476-yil)", "Arab xalofligining tuzilishi", "Amir Temur saltanati", "Buyuk ipak yo‘lining ochilishi"],
+        correct: 0,
+        exp: "Yevropada o‘rta asrlar 476-yilda G‘arbiy Rim imperiyasining qulashi bilan boshlanadi."
+      },
+      {
+        q: "4. Bizning tariximizda «o‘rta asrlar» deb atalayotgan davr qachondan boshlanadi?",
+        options: [
+          "IV asr oxirlari va V asr o‘rtalaridan xioniyylar, kidariylar, eftaliylar paydo bo‘lgan davrdan",
+          "VIII asr boshlaridan arablar kelgach",
+          "IX asrdan somoniylar davrida",
+          "XIV asrdan Amir Temur davridan"
+        ],
+        correct: 0,
+        exp: "Bizning tariximizda IV asr oxirlari va V asr o‘rtalarida siyosiy maydonga qabila uyushmalari chiqqan davrdan boshlanadi."
+      },
+      {
+        q: "5. O‘rta asrlar davri nechta asosiy qismga bo‘linadi?",
+        options: ["2 ta", "3 ta", "4 ta", "5 ta"],
+        correct: 1,
+        exp: "Ilk, rivojlangan va so‘nggi o‘rta asrlarga bo‘linadi (3 ta)."
+      },
+      {
+        q: "6. Ilk o‘rta asrlar davri qaysi asrlarni o‘z ichiga oladi?",
+        options: ["IX–XV asrlar", "XVI–XIX asrlar", "IV–VIII asrlar", "I–IV asrlar"],
+        correct: 2,
+        exp: "Ilk o‘rta asrlar IV–VIII asrlarni o‘z ichiga oladi."
+      },
+      {
+        q: "7. Rivojlangan o‘rta asrlar davri qaysi asrlarni qamrab oladi?",
+        options: ["IV–VIII asrlar", "IX–XV asrlar", "XVI–XIX asrlar", "X–XX asrlar"],
+        correct: 1,
+        exp: "Rivojlangan o‘rta asrlar IX–XV asrlarni o‘z ichiga oladi."
+      },
+      {
+        q: "8. So‘nggi o‘rta asrlar davri qaysi asrlarga to‘g‘ri keladi?",
+        options: ["VI–IX asrlar", "X–XII asrlar", "XVI–XIX asrlar", "XX–XXI asrlar"],
+        correct: 2,
+        exp: "So‘nggi o‘rta asrlar XVI–XIX asrlarni o‘z ichiga oladi."
+      },
+      {
+        q: "9. Qadimdan «Turon» deb atalgan yurtimizga arablar davrida qanday nom berilgan?",
+        options: ["Xuroson", "Movarounnahr", "Turkiston", "Baqtriya"],
+        correct: 1,
+        exp: "Arablar davrida Movarounnahr deb atalgan."
+      },
+      {
+        q: "10. XVIII–XIX asr g‘arb olimlari va sayyohlari yurtimizni qanday nomlar bilan atashgan?",
+        options: ["O‘rta Osiyo yoki Markaziy Osiyo va Xuroson", "Faqat Turon", "Faqat Sug‘d", "Faqat Xorazm"],
+        correct: 0,
+        exp: "XVIII–XIX asr g‘arb olimlari O‘rta Osiyo, Markaziy Osiyo va Xuroson deb atashgan."
+      },
+      {
+        q: "11. Ilk o‘rta asrlarda «qishloq hokimlari» kimlar deb nomlangan?",
+        options: ["Kadivarlar", "Dehqonlar", "Sipohiylar", "Hunarmandlar"],
+        correct: 1,
+        exp: "Katta yer egalari bo‘lgan qishloq hokimlari dehqonlar deb atalgan."
+      },
+      {
+        q: "12. Ilk o‘rta asrlarda dehqonlarning ekinzorlarida ishlovchi yersiz qatlam qanday atalgan?",
+        options: ["Kadivarlar", "Qullar", "Nobillar", "Beklar"],
+        correct: 0,
+        exp: "Yersiz kadivarlar ekinzorlarda ishlagan."
+      },
+      {
+        q: "13. Mamlakatimiz hududida arab xalifaligi hukmronligi qachon o‘rnatildi?",
+        options: ["VI asr boshlarida", "VIII asr boshlarida", "X asr boshlarida", "XII asr boshlarida"],
+        correct: 1,
+        exp: "VIII asr boshlarida arab xalifaligi hukmronligi o‘rnatildi."
+      },
+      {
+        q: "14. IX–XII asrlar tariximizda qanday nom bilan e'tirof etiladi?",
+        options: ["Birinchi renessans", "Ikkinchi renessans", "Sanoat inqilobi", "Qora asrlar"],
+        correct: 0,
+        exp: "IX–XII asrlar Birinchi renessans (Uyg‘onish davri) deb ataladi."
+      },
+      {
+        q: "15. XIV–XV asrlar tariximizda qanday nomlanadi?",
+        options: ["Ilk renessans", "Temuriylar renessansi (Ikkinchi renessans)", "Ma'rifatparvarlik davri", "Qadimiy davr"],
+        correct: 1,
+        exp: "XIV–XV asrlar Ikkinchi renessans (Temuriylar renessansi) deb nomlanadi."
+      },
+      {
+        q: "16. Zaminimizda tug‘ilib voyaga yetgan buyuk muhaddisni toping.",
+        options: ["Al-Xorazmiy", "Imom Buxoriy", "Abu Rayhon Beruniy", "Ibn Sino"],
+        correct: 1,
+        exp: "Imom Buxoriy buyuk muhaddisdir."
+      },
+      {
+        q: "17. «Tib qonunlari» asari muallifi kim?",
+        options: ["Abu Ali ibn Sino", "Mahmud Zamaxshariy", "Ahmad Yassaviy", "Najmiddin Kubro"],
+        correct: 0,
+        exp: "Abu Ali ibn Sino — «Tib qonunlari» muallifi."
+      },
+      {
+        q: "18. Algebra faniga asos solgan buyuk mutafakkir kim?",
+        options: ["Ahmad Farg‘oniy", "Muhammad ibn Muso Xorazmiy", "Imom Termiziy", "Beruniy"],
+        correct: 1,
+        exp: "Muhammad ibn Muso Xorazmiy algebra faniga asos solgan."
+      },
+      {
+        q: "19. Tasavvuf ta'limoti namoyandasi va shoirni toping.",
+        options: ["Ahmad Yassaviy", "Al-Xorazmiy", "Doro I", "Gerodot"],
+        correct: 0,
+        exp: "Ahmad Yassaviy tasavvuf namoyandasidir."
+      },
+      {
+        q: "20. Mazkur davrda O‘zbekiston hududida mavjud bo‘lgan yirik davlatlardan birini ko‘rsating.",
+        options: ["Rim imperiyasi", "Amir Temur va temuriylar saltanati", "Afina polis", "Qadimgi Misr"],
+        correct: 1,
+        exp: "Amir Temur va temuriylar saltanati o‘rta asrlarda mavjud bo‘lgan."
+      },
+      {
+        q: "21. «O‘rta asrlar» tushunchasi nima uchun tarixda shartli ravishda ishlatiladi?",
+        options: [
+          "Chunki uning davriy chegaralari Yevropa va Sharqda turlicha farqlanadi",
+          "Hujjatlar saqlanmagani uchun",
+          "Faqat janglar bo‘lgani uchun",
+          "Hukmdorlar tez-tez o‘zgargani uchun"
+        ],
+        correct: 0,
+        exp: "Yevropa va Sharq (Turon) tarixidagi davriy chegaralar farqlangani uchun shartli ishlatiladi."
+      },
+      {
+        q: "22. O‘zbek xalqining o‘tmishi etnik jihatdan kimlar bilan chambarchas bog‘langan?",
+        options: [
+          "Faqat Yevropa xalqlari bilan",
+          "O‘zbek, tojik, qirg‘iz, qozoq, qoraqalpoq va turkman xalqlarining ajdodlari bilan",
+          "Faqat Amerika qabilalari bilan",
+          "Faqat uzoq Sharq xalqlari bilan"
+        ],
+        correct: 1,
+        exp: "Qardosh xalqlarning ajdodlari tarixi bilan chambarchas bog‘langan."
+      },
+      {
+        q: "23. Darslik matniga ko‘ra bugungi tezlik bilan o‘zgarayotgan dunyoda eng asosiy najot nima?",
+        options: ["Boylik", "Ilm", "Mansab", "Qurol"],
+        correct: 1,
+        exp: "Bugungi shiddatli dunyoda yakka-yu yagona najot ilm ekanligi ta'kidlangan."
+      },
+      {
+        q: "24. Ilm va ma'rifatni egallash insonga nima beradi?",
+        options: ["Komillikka erishishni", "Faqat boyishni", "Hukmronlik qilishni", "Sayohat qilishni"],
+        correct: 0,
+        exp: "Ilm va ma'rifatni egallash orqaligina komillikka erishish mumkin."
+      },
+      {
+        q: "25. Ilk o‘rta asrlarda yerga ishlash tartibining o‘zgarishi nimalarga olib keldi?",
+        options: [
+          "Aholi orasida tabaqalanishning yanada keskinlashishiga",
+          "Hamma aholining teng bo‘lishiga",
+          "Shaharlarning yo‘qolib ketishiga",
+          "Dehqonchilikning tugatilishiga"
+        ],
+        correct: 0,
+        exp: "Yerga ishlash tartibining o‘zgarishi aholi orasida tabaqalanishni keskinlashtirgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 23) fb.innerText = "Ajoyib natija! 1-mavzuni mukammal o‘zlashtiribsiz 🌟";
+      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

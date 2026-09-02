@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>5-mavzu. IV–V asrlarda xioniylar va kidariylar</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 12px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 11.5px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 4px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 10px 6px;
+      color: #291104;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 170px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 16px; font-weight: 800; line-height: 1.4; color: #291104; }
+    .fc-a {
+      font-size: 14.5px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 15px; font-weight: 800; text-align: left; color: #291104; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 11px 13px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>5-mavzu. IV–V asrlarda xioniylar va kidariylar</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (32)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 12px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 45px;">📜</div>
+        <h2 style="font-size: 18px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 14px; color: var(--text-muted); max-width: 300px;">
+          Xioniylar va kidariylarga oid atamalarni muvaffaqiyatli mosladingiz. Endi 32 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (32 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">5-mavzu Trenajyor</span>
+          <span id="fc-counter" style="font-size: 12px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 45px;">🏰</div>
+        <h2 style="font-size: 18px; font-weight: 800; color: #291104;">32 ta savol tugadi!</h2>
+        <p style="font-size: 14px; color: var(--text-muted); max-width: 300px;">
+          Mavzuning barcha tushunchalarini takrorlab chiqdingiz. Endi 32 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (32 TA TEST - To'g'ri javoblar o'rni har xil aralashtirilgan: A, C, D, B, C, A, D, B...) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">5-mavzu Test Sinovi</span>
+          <span id="q-counter" style="font-size: 12px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 45px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/32</div>
+        <h2 style="font-size: 18px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 14px; color: var(--text-muted); max-width: 300px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: 1-ustun atamalar, 2-ustun izohlar) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Xioniylar", right: "IV asrda turkiy qabilalardan bo'lib Zarafshon vohasiga kelgan elat" },
+        { id: 2, left: "Kidariylar", right: "V asrning 20-yillarida Sirdaryo va Orol bo'ylari orqali kirib kelgan chorvachilar" },
+        { id: 3, left: "Oq xunnnar", right: "G'arb tarixchilari xioniylarni atagan nom" },
+        { id: 4, left: "Toxarlar", right: "Xorazm va Amudaryo havzasiga kirib kelgan, kushonlarning avlodlari" }
+      ],
+      [
+        { id: 5, left: "Kidar", right: "Kidariylarga boshchilik qilgan ismli hukmdor" },
+        { id: 6, left: "Sidolo jujanlar", right: "Yuechjilar (kushonlar) hukmdori, kidariylarga hujum qilgan" },
+        { id: 7, left: "Bolo (Balx)", right: "Kidariylar davlatining poytaxtiga aylantirilgan shahar" },
+        { id: 8, left: "K. Trever", right: "Xioniylar IV asrning 70-yillarida kuchaygan deya ta'riflagan tarixchi" }
+      ],
+      [
+        { id: 9, left: "456-yil", right: "Kidariylar va sosoniylar o'rtasida to'qnashuv bo'lgan yil" },
+        { id: 10, left: "Braxmiy yozuvi", right: "Kidariylarning tangalari zarb etilgan yozuv turi" },
+        { id: 11, left: "Kidara Kushon sha", right: "Kidariylar tangalarida yozilgan yozuv" },
+        { id: 12, left: "Ikkita", right: "O'rganishimiz xulosasidagi xioniylar va kidariylar davlatlari soni" }
+      ],
+      [
+        { id: 13, left: "Gupta davlati", right: "Kidariylar Hindistonda egallab, 75 yil hukmronlik qilgan davlat" },
+        { id: 14, left: "Eftaliylar", right: "Xioniylarning keyinchalik o'ziga tobe bo'lib qolgan qudratli qabilasi" },
+        { id: 15, left: "Xitoy", right: "Kidariylar o'z elchilarini yuborgan buyuk davlat" },
+        { id: 16, left: "Gandhar", right: "Kidara shimolga yurish qilib bo'ysundirgan 5 ta davlat qatoridagi hudud" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 4;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      colLeft.innerHTML = '';
+      colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (32 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Xioniylar qaysi asrda turkiy qabilalardan bo'lib Zarafshon vohasiga egallagan?", a: "IV asrda." },
+      { q: "2. Xioniylarning markazi qaysi viloyat bo'lgan?", a: "Toxariston (Shimoliy Hindiston, Afg'oniston, Xuroson qismi ham kiritilgan)." },
+      { q: "3. Xioniylarning asli vatani ayrim tadqiqotchilar fikricha qayerda joylashgan?", a: "Orol dengizi bo'yida." },
+      { q: "4. G'arb tarixchilari xioniylarni qanday atashgan?", a: "«Oq xunlar»." },
+      { q: "5. Xioniylar bu hududda necha yildan ortiq hukmronlik qilgan?", a: "120 yildan ortiq." },
+      { q: "6. Kidariylar qaysi asrda Sirdaryo va Orol bo'ylari orqali kirib kelgan?", a: "V asrning 20-yillarida." },
+      { q: "7. Kidariylar qayerlarga kirib kelgan?", a: "Xorazm va Amudaryo havzasiga." },
+      { q: "8. Toxariylar kimlarning avlodlari bo'lgan?", a: "Kushonlarning avlodlari." },
+      { q: "9. Kidariylar davlatining poytaxti qaysi shahar bo'lgan?", a: "Balx (Bolo)." },
+      { q: "10. Kidariylar dastlab qayerda yashagan?", a: "Sharqiy Turkistonda." },
+      { q: "11. Yuechjilar (kushonlar) hukmdori Sido-lo jujanlar hujumi tufayli qayerga ko'chgan?", a: "Bolo (Balx)ga." },
+      { q: "12. Kidariylar Hindistonda qaysi davlatni egallab, 75 yil hukmronlik qilgan?", a: "Gupta davlatini." },
+      { q: "13. Kidariylar qayerga elchilar yuborgan?", a: "Xitoyga." },
+      { q: "14. Tarixchi K. Trever fikricha, xioniylar qachon o'zining kuchaygan pallasiga kirgan?", a: "IV asrning 70-yillarida." },
+      { q: "15. Xioniylarning kuchayishi natijasida ularning siyosiy ahvoli o'zgarib kimlarga tobe bo'lib qolgan?", a: "Eftaliylarga tobe bo'lib qolgan." },
+      { q: "16. Kidariylarning sosoniylar bilan to'qnashuvi qaysi yilda yuz berdi?", a: "456-yilda." },
+      { q: "17. 456-yildagi to'qnashuvda kimlar yengildi?", a: "Kidariylar sosoniylardan yengiladi." },
+      { q: "18. Mag'lubiyatdan so'ng kidariylar qayerga chekindi?", a: "Shimoliy Hindistonga." },
+      { q: "19. Kidariylarning tangalari qaysi yozuvda zarb etilgan?", a: "Braxmiy yozuvida." },
+      { q: "20. Kidariylar tangalarida qanday yozuv bitilgan?", a: "«Kidara Kushon sha»." },
+      { q: "21. Kidariylar tangalaridagi yozuvdagi so'z kimga tegishli bo'lgan?", a: "Ikkita (ikkita hukmdor/hokim tomonidan zarb etilgan)." },
+      { q: "22. Xioniylar va kidariylarning ijtimoiy-iqtisodiy tizimi haqidagi ma'lumotlar bizgacha yetib kelganmi?", a: "Afsuski, yetib kelmagan." },
+      { q: "23. Xioniylar dastlab qaysi vohani egallagan?", a: "Zarafshon vohasini." },
+      { q: "24. Xioniylar qayerga qarab yurish qilgan?", a: "Janub tomonga." },
+      { q: "25. Xioniylar qaysi podshohlik hududida hukmronlik qilishgan?", a: "Kushon podshohligi hududida." },
+      { q: "26. Xioniylarni xalq orasida yana qanday atashgan?", a: "«Oq xunnnar»." },
+      { q: "27. Kidariylarga kim ismli hukmdor boshchilik qilgan?", a: "Kidar." },
+      { q: "28. Kidara Shimoliy Hindistonga yurish qilib nechta davlatni o'ziga bo'ysundirgan?", a: "5 ta davlatni." },
+      { q: "29. Gandhardan shimoldagi nechta davlat kidariylar qo'liga o'tgan?", a: "5 ta." },
+      { q: "30. Kidariylar qayerda sosoniylar bilan to'qnashgan?", a: "Eron sosoniylari bilan." },
+      { q: "31. Kidariylar tangasidagi ikkita ism kimlarga tegishli bo'lgan?", a: "Mahalliy hokim va kidariylar hukmdoriga." },
+      { q: "32. Xioniylar va kidariylar tarixi asosan qaysi asrlarga to'g'ri keladi?", a: "IV–V asrlarga." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (32 TA TEST - To'g'ri javoblar o'rni har xil aralashtirilgan: A, C, D, B, C, A, D, B...) ---
+    const testQuestions = [
+      // 1. Correct: A (index 0)
+      {
+        q: "1. Xioniylar qaysi asrda turkiy qabilalardan bo'lib Zarafshon vohasiga kelgan?",
+        options: ["IV asrda", "VI asrda", "VIII asr boshida", "X asrda"],
+        correct: 0,
+        exp: "Xioniylar IV asrda Zarafshon vohasiga egallagan."
+      },
+      // 2. Correct: C (index 2)
+      {
+        q: "2. Xioniylarning markazi qaysi hudud bo'lgan?",
+        options: ["Faqat Zarafshon", "Faqat Xorazm", "Toxariston", "Faqat Farg'ona"],
+        correct: 2,
+        exp: "Xioniylarning markazi Toxariston bo'lgan."
+      },
+      // 3. Correct: D (index 3)
+      {
+        q: "3. G'arb tarixchilari xioniylarni qanday atashgan?",
+        options: ["Sarmatlar", "Massagetlar", "Kushonlar", "«Oq xunlar»"],
+        correct: 3,
+        exp: "G'arb tarixchilari xioniylarni «oq xunlar» deb atagan."
+      },
+      // 4. Correct: B (index 1)
+      {
+        q: "4. Kidariylar qaysi asrda Sirdaryo va Orol bo'ylari orqali kirib kelgan?",
+        options: ["IV asrda", "V asrning 20-yillarida", "VI asr oxirida", "VII asrda"],
+        correct: 1,
+        exp: "Kidariylar V asrning 20-yillarida kirib kelgan."
+      },
+      // 5. Correct: C (index 2)
+      {
+        q: "5. Kidariylar davlatining poytaxti qaysi shahar bo'lgan?",
+        options: ["Samarqand", "Buxoro", "Balx (Bolo)", "Marv"],
+        correct: 2,
+        exp: "Balx shahri kidariylar davlatining poytaxtiga aylantirilgan."
+      },
+      // 6. Correct: A (index 0)
+      {
+        q: "6. Kidariylar Hindistonda qaysi davlatni egallab, 75 yil hukmronlik qilgan?",
+        options: ["Gupta davlatini", "Maurya imperiyasini", "Kushon podshohligini", "Boburiylar davlatini"],
+        correct: 0,
+        exp: "Kidariylar Hindistonda Gupta davlatini egallab, 75 yil hukmronlik qilgan."
+      },
+      // 7. Correct: D (index 3)
+      {
+        q: "7. Tarixchi K. Trever fikricha, xioniylar qachon o'zining kuchaygan pallasiga kirgan?",
+        options: ["IV asr boshida", "V asr oxirida", "III asr oxirida", "IV asrning 70-yillarida"],
+        correct: 3,
+        exp: "K. Trever fikricha, xioniylar IV asrning 70-yillarida kuchaygan pallasiga kirgan."
+      },
+      // 8. Correct: B (index 1)
+      {
+        q: "8. Kidariylarning sosoniylar bilan to'qnashuvi qaysi yilda yuz berdi?",
+        options: ["305-yilda", "456-yilda", "567-yilda", "620-yilda"],
+        correct: 1,
+        exp: "456-yilda kidariylar va sosoniylar o'rtasida to'qnashuv bo'lib o'tgan."
+      },
+
+      // 9. Correct: A (index 0)
+      {
+        q: "9. Mag'lubiyatdan so'ng kidariylar qayerga chekindi?",
+        options: ["Shimoliy Hindistonga", "Xitoyga", "Kichik Osiyoga", "Dashti Qipchoqqa"],
+        correct: 0,
+        exp: "Sosoniylardan yengilgach, kidariylar Shimoliy Hindistonga chekindilar."
+      },
+      // 10. Correct: C (index 2)
+      {
+        q: "10. Kidariylarning tangalari qaysi yozuvda zarb etilgan?",
+        options: ["Arab yozuvida", "Yunon yozuvida", "Braxmiy yozuvida", "Sug'd yozuvida"],
+        correct: 2,
+        exp: "Kidariylar tangalari braxmiy yozuvida zarb etilgan."
+      },
+      // 11. Correct: D (index 3)
+      {
+        q: "11. Kidariylar tangalarida qanday yozuv bitilgan?",
+        options: ["«Kidar shohi»", "«Buyuk Kushon»", "«Soxibqiron Kidar»", "«Kidara Kushon sha»"],
+        correct: 3,
+        exp: "Tangalarda «Kidara Kushon sha» degan yozuv bitilgan edi."
+      },
+      // 12. Correct: B (index 1)
+      {
+        q: "12. Xioniylar va kidariylarning ijtimoiy-iqtisodiy tizimi haqidagi ma'lumotlar bizgacha yetib kelganmi?",
+        options: ["To'liq yetib kelgan", "Afsuski, yetib kelmagan", "Faqat qonunlar to'plami saqlangan", "Faqat saroy xaritalari saqlangan"],
+        correct: 1,
+        exp: "Afsuski, ularning ijtimoiy-iqtisodiy tizimi haqida ma'lumot yetib kelmagan."
+      },
+      // 13. Correct: C (index 2)
+      {
+        q: "13. Xioniylar dastlab qaysi hududni egallagan edilar?",
+        options: ["Faqat Farg'ona vodiysini", "Faqat Toshkent vohasini", "Zarafshon vohasini", "Faqat Qashqadaryoni"],
+        correct: 2,
+        exp: "Xioniylar dastlab Zarafshon vohasini egallashgan."
+      },
+      // 14. Correct: A (index 0)
+      {
+        q: "14. Xioniylarning asli vatani ayrim tadqiqotchilar fikricha qayerda edi?",
+        options: ["Orol dengizi bo'yida", "Kaspiy dengizi janubida", "Boltiq bo'yida", "Qora dengiz sohilida"],
+        correct: 0,
+        exp: "Xioniylarning asli vatani Orol dengizi bo'yida deb taxmin qilinadi."
+      },
+      // 15. Correct: D (index 3)
+      {
+        q: "15. Xioniylar bu hududda necha yildan ortiq hukmronlik qilgan?",
+        options: ["50 yildan ortiq", "80 yildan ortiq", "100 yildan ortiq", "120 yildan ortiq"],
+        correct: 3,
+        exp: "Xioniylar bu hududda 120 yildan ortiq hukmronlik qildi."
+      },
+      // 16. Correct: B (index 1)
+      {
+        q: "16. Kidariylar qaysi xalqning avlodlari hisoblangan?",
+        options: ["Sarmatlarning", "Kushonlarning (yuechjilar)", "Massagetlarning", "Soylarning"],
+        correct: 1,
+        exp: "Toxariylar kushonlarning avlodlari bo'lgan."
+      },
+
+      // 17. Correct: A (index 0)
+      {
+        q: "17. Kidariylar dastlab qayerda yashaganlar?",
+        options: ["Sharqiy Turkistonda", "Kichik Osiyoda", "Mesopotamiyada", "Eron hududida"],
+        correct: 0,
+        exp: "Manbalarga ko'ra, kidariylar dastlab Sharqiy Turkistonda yashagan."
+      },
+      // 18. Correct: C (index 2)
+      {
+        q: "18. Yuechjilar hukmdori Sido-lo kimlarning hujumi tufayli o'z qarorgohini Bologa ko'chirgan?",
+        options: ["Sosoniylar", "Xioniylar", "Jujanlar", "Turklar"],
+        correct: 2,
+        exp: "Jujanlar hujumi tufayli Sido-lo qarorgohini Bologa (Balxga) ko'chirgan."
+      },
+      // 19. Correct: D (index 3)
+      {
+        q: "19. Kidara Shimoliy Hindistonga yurish qilib nechta davlatni o'ziga bo'ysundirgan?",
+        options: ["2 ta", "3 ta", "4 ta", "5 ta"],
+        correct: 3,
+        exp: "Kidara Gandhardan shimoldagi 5 ta davlatni o'ziga bo'ysundirgan."
+      },
+      // 20. Correct: B (index 1)
+      {
+        q: "20. Xioniylarning kuchayishi natijasida ularning siyosiy ahvoli o'zgarib kimlarga tobe bo'lib qoldi?",
+        options: ["Sosoniylarga", "Eftaliylarga", "Xitoy imperiyasiga", "Arab xalifaligiga"],
+        correct: 1,
+        exp: "Xioniylar keyinchalik eftaliylarga tobe bo'lib qoldilar."
+      },
+      // 21. Correct: C (index 2)
+      {
+        q: "21. Kidariylar tangasidagi yozuv nechta hokim tomonidan zarb etilganligini ko'rsatadi?",
+        options: ["Bitta", "Uchta", "Ikkita", "To'rtta"],
+        correct: 2,
+        exp: "Tangalar ikkita hokim tomonidan zarb etilganligini bildiradi."
+      },
+      // 22. Correct: A (index 0)
+      {
+        q: "22. Kidariylar qayerga o'z elchilarini yuborganlar?",
+        options: ["Xitoyga", "Vizantiyaga", "Rimga", "Hindistonga (faqat mahalliy)"],
+        correct: 0,
+        exp: "Kidariylar Xitoyga elchilar yuborganlar."
+      },
+      // 23. Correct: D (index 3)
+      {
+        q: "23. Xioniylar qaysi podshohlik hududida hukmronlik qilishgan?",
+        options: ["Qang' davlati", "Dovon podshohligi", "Baqtriya podshohligi", "Kushon podshohligi"],
+        correct: 3,
+        exp: "Xioniylar Kushon podshohligi hududida hukmronlik qilishgan."
+      },
+      // 24. Correct: B (index 1)
+      {
+        q: "24. Kidariylarga qaysi ismli hukmdor boshchilik qilgan?",
+        options: ["Afrig'", "Kidar", "Sido-lo", "Shovshafar"],
+        correct: 1,
+        exp: "Kidariylarga Kidar ismli hukmdor boshchilik qilgan."
+      },
+
+      // 25. Correct: A (index 0)
+      {
+        q: "25. Xioniylar qaysi davlat hududidan janubga qarab yurish qilganlar?",
+        options: ["Zarafshon vohasidan", "Sirdaryo quyi oqimidan", "Farg'ona vodiysidan", "Yettisuvdan"],
+        correct: 0,
+        exp: "Xioniylar Zarafshon vohasini egallab, janubga qarab yurish qilganlar."
+      },
+      // 26. Correct: C (index 2)
+      {
+        q: "26. Kidariylar va sosoniylar o'rtasidagi to'qnashuv qayerdagi munosabatlarni yomonlashtirgan edi?",
+        options: ["Sharqiy Eron bilan", "Shimoliy Hindiston bilan", "Janubiy Eron sosoniylari bilan", "Xorazm bilan"],
+        correct: 2,
+        exp: "Kidariylarning janubdagi Eron sosoniylari bilan munosabatlari yomonlashgan."
+      },
+      // 27. Correct: D (index 3)
+      {
+        q: "27. Kidariylar sosoniylardan mag'lub bo'lgach, qayerdagi hududlarga chekindilar?",
+        options: ["Eronning ichki qismiga", "Arabiston cho'llariga", "Dashti Qipchoqqa", "Shimoliy Hindistonga"],
+        correct: 3,
+        exp: "456-yildagi mag'lubiyatdan so'ng Shimoliy Hindistonga chekindilar."
+      },
+      // 28. Correct: B (index 1)
+      {
+        q: "28. Xioniylar va kidariylar tarixi asosan qaysi davrni o'z ichiga oladi?",
+        options: ["I–II asrlarni", "IV–V asrlarni", "VI–VII asrlarni", "VIII–IX asrlarni"],
+        correct: 1,
+        exp: "Mavzu nomi bo'yicha IV–V asrlarni o'z ichiga oladi."
+      },
+      // 29. Correct: C (index 2)
+      {
+        q: "29. Kidariylar tangalaridagi yozuvlar qaysi tilda/yozuvda bitilgan?",
+        options: ["Sug'd tilida", "Xorazm yozuvida", "Braxmiy yozuvida", "Xitoy iyeroglifida"],
+        correct: 2,
+        exp: "Tangalardagi yozuvlar braxmiy yozuvida edi."
+      },
+      // 30. Correct: A (index 0)
+      {
+        q: "30. Xioniylar nomi bilan bog'liq bo'lgan qabilalarning kelib chiqishi qaysi guruhga mansub?",
+        options: ["Turkiy qabilalar", "Eroniy qabilalar", "Slavyan qabilalari", "Fin-ugor qabilalari"],
+        correct: 0,
+        exp: "Xioniylar turkiy qabilalardan biri bo'lgan."
+      },
+      // 31. Correct: D (index 3)
+      {
+        q: "31. Kidariylar hukmronligi davrida Hindistonda qaysi sulola davlati yengilgan edi?",
+        options: ["Maurya", "Shatavahana", "Chola", "Gupta davlati"],
+        correct: 3,
+        exp: "Kidariylar Hindistonda Gupta davlatini yengib egallagan."
+      },
+      // 32. Correct: B (index 1)
+      {
+        q: "32. Xioniylarning boshlang'ich davrdagi asosiy harakat yo'nalishi qaysi tomonga bo'lgan?",
+        options: ["Faqat shimolga", "Janub tomonga", "Faqat g'arbga", "Faqat sharqqa"],
+        correct: 1,
+        exp: "Xioniylar Zarafshondan janub tomonga yurish qilganlar."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 28) fb.innerText = "Ajoyib natija! 5-mavzuni mukammal o'zlashtiribsiz 🌟";
+      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

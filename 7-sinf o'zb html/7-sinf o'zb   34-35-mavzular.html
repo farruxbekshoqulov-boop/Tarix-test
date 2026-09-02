@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>34-35-mavzular. Xorazmshohlar davlati va uning yuksalishi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 14.5px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 13px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 5px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 4px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #291104;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 65px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 190px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.45;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 16.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>34-35-mavzular. Xorazmshohlar davlati va uning yuksalishi</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (36)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 5 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">📜</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Xorazmshohlar davriga oid atamalarni muvaffaqiyatli mosladingiz. Endi 36 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (36 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">34-35-mavzular Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏰</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">36 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Xorazmshohlar davlati mavzusini to'la o'rganib chiqdingiz. Endi 36 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA TEST - A, B, C, D o'rtasida mutlaqo teng va tartibli aralashtirilgan) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">34-35-mavzular Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: har biri 5 tadan, jami 20 ta) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Ma'muniylar", right: "995–1017-yillarda Xorazmda hukmronlik qilgan sulola" },
+        { id: 2, left: "Oltintoshiylar", right: "1017–1040-yillarda Xorazmni boshqargan sulola" },
+        { id: 3, left: "Anushteginiylar", right: "1097–1231-yillarda Xorazmda saltanat darajasiga erishgan sulola" },
+        { id: 4, left: "Anushtegin", right: "Saljuqiy Sulton Malikshohning ishongan mansabdori va Xorazm hokimi (1077-yil)" },
+        { id: 5, left: "Qutbiddin Muhammad", right: "Anushteginning o'g'li bo'lib, 1097-yilda Xorazm hokimi etib tayinlangan shaxs" }
+      ],
+      [
+        { id: 6, left: "Otsiz", right: "Qutbiddin Muhammadning o'g'li bo'lib, Sulton Sanjarga tobelikdan bosh tortgan xorazmshoh" },
+        { id: 7, left: "Gurganch", right: "Xorazm saltanatining birinchi va asosiy poytaxti" },
+        { id: 8, left: "El Arslon", right: "Otsizning o'limidan so'ng taxtga chiqqan, qoraxitoylar bilan to'qnashgan xorazmshoh" },
+        { id: 9, left: "Takash (1172–1200)", right: "El Arslondan so'ng taxtga o'tirib G'arbiy Eron va Kirmonni bo'ysundirgan xorazmshoh" },
+        { id: 10, left: "Alovuddin Muhammad (1200–1220)", right: "Xorazmshohlar davlatini ulkan hududga aylantirgan va qoraxitoylarni yenggan hukmdor" }
+      ],
+      [
+        { id: 11, left: "Rashiduddin va Hofiz Abro'", right: "Anushteginiylar sulolasining kelib chiqishi haqida yozib qoldirgan tarixchilar" },
+        { id: 12, left: "«Xorazm mutasarrifi»", right: "Anushtegin dastlab tayinlangan mansab va unga berilgan «shixnasi» unvoni" },
+        { id: 13, left: "1206-yil", right: "Alovuddin Muhammad qoraxitoylarni tamomila tor-mor keltirgan davr boshi" },
+        { id: 14, left: "1210-yil", right: "Talas to'liq mag'lubiyati yuz bergan va xorazmshohning shuhrati oshgan yil" },
+        { id: 15, left: "«Ikkinchi Iskandar»", right: "Alovuddin Muhammadga berilgan ulug'vor unvonlardan biri" }
+      ],
+      [
+        { id: 16, left: "Hulvon viloyati", right: "Alovuddin Muhammad 400 minglik qo'shini bilan Bag'dodga yurish qilganda qor yog'gan hudud" },
+        { id: 17, left: "Sulton xalifa nomini xutbadan chiqarish", right: "Alovuddin Muhammad ob-havo ofatidan so'ng Bag'dod yurishini to'xtatib bergan buyrug'i" },
+        { id: 18, left: "170 ming / 100 ming / 400 ming", right: "Takash, Muhammad davrida xorazmshoh qo'shinining otliq va piyoda askarlari soni" },
+        { id: 19, left: "Otamalik Juvayniy", right: "Otsizning Sulton Sanjarga «otidan tushmagani» voqeasini yozib qoldirgan tarixchi" },
+        { id: 20, left: "Orol dengizidan Hind okeanigacha", right: "Xorazmshohlar davlatining Alovuddin Muhammad davridagi ulkan chegarasi" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 5;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      matchesRemaining = 5;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      colLeft.innerHTML = '';
+      colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (36 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Xorazm vohasida hukmronlik qilgan mahalliy sulolalar qanday umumiy nom bilan yuritilgan?", a: "Xorazmshohlar." },
+      { q: "2. Xorazmda hukm surgan sulolalar ketma-ketligi qaysilar?", a: "Afrig'iylar, Ma'muniylar, Oltintoshiylar, Saljuqiylar, Anushteginiylar." },
+      { q: "3. Xorazmdan tashqariga chiqib saltanat darajasiga erishgan sulola qaysi?", a: "Anushteginiylar." },
+      { q: "4. Anushtegin dastlab kimning ishonchli mansabdori bo'lgan?", a: "Saljuqiy Sulton Malikshohning." },
+      { q: "5. Anushtegin qaysi yili Xorazm hokimi etib tayinlangan?", a: "1077-yili." },
+      { q: "6. Anushteginning o'g'li Qutbiddin Muhammad Xorazm hokimi etib qachon tayinlangan?", a: "1097-yili." },
+      { q: "7. Qutbiddin Muhammad soliqni har yili qayerga olib borib bergan?", a: "Poytaxt Marvga (Sulton Sanjarga)." },
+      { q: "8. Qutbiddin Muhammadning o'g'li Otsiz Sulton Sanjar hukmi bilan qachon Xorazm hokimligiga tayinlangan?", a: "Otasidan keyin." },
+      { q: "9. Otsiz o'z mavqeyi mustahkamlangach nima qildi?", a: "Saljuqiylarga tobelikdan bosh tortdi." },
+      { q: "10. Xorazm saltanatining bosh poytaxti qaysi shahar edi?", a: "Gurganch." },
+      { q: "11. Otsizning vafotidan so'ng taxtga chiqqan o'g'li kim edi?", a: "El Arslon." },
+      { q: "12. El Arslon Movarounnahrda kimlar bilan to'qnashgan?", a: "Qoraxitoylar bilan." },
+      { q: "13. El Arslon vafotidan so'ng uning qaysi o'g'illari o'rtasida o'zaro kurash kechdi?", a: "Takash va Sultonshoh Mahmud." },
+      { q: "14. Takash G'arbiy Eron va qaysi hududni o'ziga bo'ysundirdi?", a: "Kirmonni." },
+      { q: "15. Alovuddin Muhammad hukmronlik qilgan yillar qaysilar?", a: "1200–1220-yillar." },
+      { q: "16. Alovuddin Muhammad Movarounnahrni kimlardan tozalab quvib chiqargan?", a: "Qoraxitoylardan." },
+      { q: "17. Alovuddin Muhammad qaysi hududlarni Xorazmshohlar tasarrufiga kiritdi?", a: "Ozarbayjon, Eron, Xurosondan Hindistongacha bo'lgan yerlarni." },
+      { q: "18. Sulton Muhammadning asosiy maqsadi qaysi o'lkalarni o'ziga bo'ysundirish edi?", a: "Suriya, Kichik Osiyo va Misrni." },
+      { q: "19. Anushteginiylar sulolasining asoschisi Anushtegin dastlab qanday mansabga tayinlangan?", a: "«Xorazm mutasarrifi» (shixnasi)." },
+      { q: "20. Rashiduddin va Hofiz Abro' yozishicha, Anushtegin qaysi sulton saroyidan chiqqan?", a: "Sulton Jaloliddin Malikshoh saroyidan." },
+      { q: "21. Sulton Sanjar Otsizga nisbatan necha marta qo'shin yuborgan?", a: "Bir necha marta." },
+      { q: "22. Otsiz Sulton Sanjar huzuriga borganida qanday odobsizlik qilgan?", a: "Otidan tushmagan." },
+      { q: "23. Sulton Sanjar Xorazmni egallagach, uni kimning jiyaniga boshqaruvga bergan?", a: "Sulaymonshohga." },
+      { q: "24. Sulton Sanjar Marvga qaytib ketishi bilan xorazmliklar nima qilgan?", a: "Otsizni qo'llab-quvvatlab uning hokimiyatini tiklagan." },
+      { q: "25. Otsiz o'z ismi bitilgan qanday tangalarni zarb etishni boshlagan?", a: "Oltin tangalarni." },
+      { q: "26. Takash qo'shinida qancha otliq askar bo'lgan?", a: "170 ming nafar." },
+      { q: "27. Xorazmshoh Muhammadning Fors Iroqi, Ozarbayjonga qilgan yurishida necha ming otliq askar qatnashgan?", a: "100 ming nafar." },
+      { q: "28. Qoraxitoylarga qarshi yurishlarda xorazmshoh Muhammadning otliqlari soni qancha bo'lgan?", a: "400 ming nafar." },
+      { q: "29. Alovuddin Muhammad Bag'dodga yurish qilganda qaysi viloyatda g'ayritabiiy qor yog'gan?", a: "Hulvon viloyatida." },
+      { q: "30. Alovuddin Muhammad qanday yirik laqab bilan mashhur bo'lgan?", a: "«Ikkinchi Iskandar»." },
+      { q: "31. Xorazmshohlar davlatida harbiy qo'shin soni davr va nimalarga qarab o'zgarib turgan?", a: "Yurishlarga qarab." },
+      { q: "32. Xorazmshohlar davlatining chegarasi qayerdan qayergacha cho'zilgan edi?", a: "Orol dengizidan Hind okeanigacha." },
+      { q: "33. Sulton Sanjar otsizni jazolamoqchi bo'lib kelganda Otsiz nima qilgan?", a: "Sulton bilan yarashib tobelik bildirgan." },
+      { q: "34. Xorazmshohlar davrida majburiy umumxalq harbiy ta'lim tizimi joriy etilganmidi?", a: "Ha, joriy etilgan edi." },
+      { q: "35. Otsiz o'limidan oldin qaysi shaharlarni o'z tasarrufiga o'tkazgan edi?", a: "Marv va Nishopurni." },
+      { q: "36. Xorazmshoh Muhammad Hulvon yaqinida fojia yuz bergach nima qilishni buyurdi?", a: "Sulton xalifa nomini xutbadan chiqarib tashlashni." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA TEST - A, B, C, D o'rtasida mutlaqo teng taqsimlangan) ---
+    const testQuestions = [
+      // 9 ta A (0)
+      {
+        q: "1. Xorazm vohasida hukmronlik qilgan mahalliy sulolalar umumiy qanday nom bilan yuritilgan?",
+        options: ["Xorazmshohlar", "Somoniylar", "Qoraxoniylar", "Saljuqiylar"],
+        correct: 0,
+        exp: "Ularning umumiy nomi Xorazmshohlar edi."
+      },
+      {
+        q: "2. Anushtegin dastlab kimning ishonchli mansabdori bo'lgan?",
+        options: ["Saljuqiy Sulton Malikshohning", "Mahmud G'aznaviyning", "Sulton Sanjarning", "Harun ar-Rashidning"],
+        correct: 0,
+        exp: "U Saljuqiy Sulton Malikshohning mansabdori bo'lgan."
+      },
+      {
+        q: "3. Otsiz o'limidan oldin qaysi yirik shaharlarni o'z tasarrufiga kiritgan edi?",
+        options: ["Marv va Nishopurni", "Samarqand va Buxoroni", "Bag'dod va Damashqni", "G'azna va Balxni"],
+        correct: 0,
+        exp: "Otsiz Marv va Nishopurni o'z tasarrufiga o'tkazgan edi."
+      },
+      {
+        q: "4. Alovuddin Muhammad hukmronlik qilgan yillar qaysi javobda to'g'ri ko'rsatilgan?",
+        options: ["1200–1220-yillar", "1172–1200-yillar", "1097–1120-yillar", "1040–1097-yillar"],
+        correct: 0,
+        exp: "Alovuddin Muhammad 1200–1220-yillarda hukmronlik qilgan."
+      },
+      {
+        q: "5. Anushteginiylar sulolasining kelib chiqishi haqida qaysi tarixchilar yozib qoldirgan?",
+        options: ["Rashiduddin va Hofiz Abro'", "Narshaxiy va Bayhaqiy", "Gardiziy va Utbiy", "Juvayniy va Tabariy"],
+        correct: 0,
+        exp: "Buni Rashiduddin va Hofiz Abro' yozib qoldirgan."
+      },
+      {
+        q: "6. Alovuddin Muhammad qaysi xalq ustidan g'alaba qozonib o'z obro'sini keskin oshirib yuborgan?",
+        options: ["Qoraxitoylarni", "Arab laskarini", "Vizantiyaliklarni", "Mongollarni"],
+        correct: 0,
+        exp: "U qoraxitoylarni yengib obro'sini oshirgan."
+      },
+      {
+        q: "7. El Arslondan so'ng taxtga o'tirib G'arbiy Eron va Kirmonni bo'ysundirgan xorazmshoh kim?",
+        options: ["Takash", "Alovuddin Muhammad", "Otsiz", "Qutbiddin Muhammad"],
+        correct: 0,
+        exp: "Bu xorazmshoh Takash edi."
+      },
+      {
+        q: "8. Xorazmdan tashqariga chiqib saltanat darajasiga erishgan asosiy sulola qaysi?",
+        options: ["Anushteginiylar", "Afrig'iylar", "Ma'muniylar", "Oltintoshiylar"],
+        correct: 0,
+        exp: "Bu Anushteginiylar sulolasi edi."
+      },
+      {
+        q: "9. El Arslon vafotidan so'ng uning qaysi o'g'illari o'rtasida hokimiyat uchun kurash ketdi?",
+        options: ["Takash va Sultonshoh Mahmud", "Ma'mun va Amin", "Nasr va Ismoil", "Alp Arslon va Sanjar"],
+        correct: 0,
+        exp: "Takash va Sultonshoh Mahmud o'rtasida kurash bo'lgan."
+      },
+
+      // 9 ta B (1)
+      {
+        q: "10. Xorazmda hukm surgan sulolalar ichida 1097–1231-yillarda hukmronlik qilgan sulola qaysi?",
+        options: ["Ma'muniylar", "Anushteginiylar", "Oltintoshiylar", "Afrig'iylar"],
+        correct: 1,
+        exp: "Bu Anushteginiylar sulolasi edi."
+      },
+      {
+        q: "11. Anushteginning o'g'li Qutbiddin Muhammad Xorazm hokimi etib qachon tayinlangan?",
+        options: ["1077-yilda", "1097-yilda", "1172-yilda", "1200-yilda"],
+        correct: 1,
+        exp: "Qutbiddin Muhammad 1097-yilda tayinlangan."
+      },
+      {
+        q: "12. Qutbiddin Muhammad soliqni har yili qayerga olib borib bergan edi?",
+        options: ["Bag'dodga", "Poytaxt Marvga (Sulton Sanjarga)", "Samarqandga", "G'aznaga"],
+        correct: 1,
+        exp: "Soliq poytaxt Marvga olib borib berilgan."
+      },
+      {
+        q: "13. Xorazm saltanatining bosh poytaxti qaysi shahar bo'lgan?",
+        options: ["Buxoro", "Gurganch", "Marv", "Samarqand"],
+        correct: 1,
+        exp: "Bosh poytaxt Gurganch shahri edi."
+      },
+      {
+        q: "14. Anushtegin dastlab tayinlangan mansab qanday atalgan va unga qanday unvon berilgan?",
+        options: ["«Voliy»", "«Xorazm mutasarrifi» (shixnasi)", "«Hojib»", "«Sipohsolor»"],
+        correct: 1,
+        exp: "Unga «Xorazm mutasarrifi» (shixnasi) unvoni berilgan."
+      },
+      {
+        q: "15. Sulton Sanjar Otsizga nisbatan qanday munosabatda bo'lgan?",
+        options: ["Uni tabriklagan", "Unga qarshi bir necha marta qo'shin yuborgan", "Uni o'ziga valiahd qilgan", "Yer sovg'a qilgan"],
+        correct: 1,
+        exp: "Sulton Sanjar unga qarshi bir necha marta qo'shin yuborgan."
+      },
+      {
+        q: "16. Takash qo'shinida qancha otliq askar borligi aytiladi?",
+        options: ["100 ming", "170 ming nafar", "400 ming", "50 ming"],
+        correct: 1,
+        exp: "Takash qo'shinida 170 ming nafar otliq bo'lgan."
+      },
+      {
+        q: "17. Otsiz Sulton Sanjar huzuriga borganida qanday odobsizlik qilgan?",
+        options: ["Salom bermagan", "Otidan tushmagan", "Sovg'a bermagan", "Kech qolgan"],
+        correct: 1,
+        exp: "U Sulton huzurida otidan tushmagan."
+      },
+      {
+        q: "18. Xorazmshohlar davlatida harbiy qudratni oshirish uchun nima joriy etilgan edi?",
+        options: ["Faqat yollanma askarlar", "Majburiy umumxalq harbiy ta'lim tizimi", "Faqat dengiz floti", "Faqat otliq qo'shin"],
+        correct: 1,
+        exp: "Majburiy umumxalq harbiy ta'lim tizimi joriy etilgan edi."
+      },
+
+      // 9 ta C (2)
+      {
+        q: "19. Xorazmda hukm surgan sulolalarning eng oxirgisi (saltanat darajasidagisi) qaysi?",
+        options: ["Ma'muniylar", "Oltintoshiylar", "Anushteginiylar", "Afrig'iylar"],
+        correct: 2,
+        exp: "Bu Anushteginiylar sulolasi edi."
+      },
+      {
+        q: "20. Sulton Sanjar Otsizni jazolamoqchi bo'lib kelganda Otsiz nima qilgan?",
+        options: ["Qochib ketgan", "Taslim bo'lgan", "Sulton bilan yarashib tobelik bildirgan, biroq odob saqlamagan", "Urush boshlagan"],
+        correct: 2,
+        exp: "Otsiz tobelik bildirgan, biroq odob saqlamagan."
+      },
+      {
+        q: "21. Sulton Sanjar Xorazmni egallagach, uni kimning jiyaniga boshqaruvga bergan edi?",
+        options: ["Otsizning", "El Arslonning", "Sulaymonshohga", "Takashga"],
+        correct: 2,
+        exp: "Ushbu hudud Sulaymonshohga berilgan edi."
+      },
+      {
+        q: "22. Xorazmshoh Muhammadning Fors Iroqi, Ozarbayjonga qilgan yurishida necha ming otliq askar qatnashgan?",
+        options: ["50 ming", "170 ming", "100 ming nafar", "400 ming"],
+        correct: 2,
+        exp: "Yurishda 100 ming nafar otliq qatnashgan."
+      },
+      {
+        q: "23. Qoraxitoylarga qarshi yurishlarda xorazmshoh Muhammadning otliqlari soni qancha bo'lgan?",
+        options: ["100 ming", "170 ming", "400 ming nafar", "500 ming"],
+        correct: 2,
+        exp: "Otliqlari soni 400 ming nafarga yetgan."
+      },
+      {
+        q: "24. Alovuddin Muhammad Bag'dodga yurish qilganda qaysi viloyatda g'ayritabiiy qor yog'gan?",
+        options: ["Marv", "Xuroson", "Hulvon viloyatida", "Ray"],
+        correct: 2,
+        exp: "Qor Hulvon viloyatida yog'gan."
+      },
+      {
+        q: "25. Hulvon voqeasidan so'ng Alovuddin Muhammad nima qilishni buyurdi?",
+        options: ["Poytaxtni o'zgartirishni", "Urushni davom ettirishni", "Sulton xalifa nomini xutbadan chiqarib tashlashni", "Soliqlarni kamaytirishni"],
+        correct: 2,
+        exp: "Sulton xalifa nomini xutbadan chiqarib tashlashni buyurgan."
+      },
+      {
+        q: "26. Sulton Sanjar Marvga qaytib ketgach, xorazmliklar nima qilgan?",
+        options: ["Taslim bo'lgan", "Qochib ketgan", "Otsizni qo'llab-quvvatlab uning hokimiyatini tiklagan", "Shahar darvozalarini yopgan"],
+        correct: 2,
+        exp: "Xorazmliklar Otsizni qo'llab-quvvatlab hokimiyatini tiklagan."
+      },
+      {
+        q: "27. Xorazmshohlar davlatining chegarasi Alovuddin Muhammad davrida qayerdan qayergacha cho'zilgan edi?",
+        options: ["Faqat Movarounnahr va Eron", "Faqat Xuroson va Xorazm", "Orol dengizidan Hind okeanigacha, Iroqdan Sharqiy Turkistongacha", "Faqat Kichik Osiyo"],
+        correct: 2,
+        exp: "Chegarasi Orol dengizidan Hind okeanigacha, Iroqdan Sharqiy Turkistongacha yetgan."
+      },
+
+      // 9 ta D (3)
+      {
+        q: "28. Xorazmda hukm surgan eng qadimgi mahalliy sulola qaysi edi?",
+        options: ["Ma'muniylar", "Oltintoshiylar", "Anushteginiylar", "Afrig'iylar (III–X asrlar)"],
+        correct: 3,
+        exp: "Eng qadimgi sulola Afrig'iylar edi."
+      },
+      {
+        q: "29. Otsizning vafotidan so'ng taxtga o'tirgan xorazmshoh kim?",
+        options: ["Takash", "Alovuddin Muhammad", "Qutbiddin Muhammad", "El Arslon"],
+        correct: 3,
+        exp: "Otsizdan so'ng El Arslon taxtga chiqqan."
+      },
+      {
+        q: "30. Alovuddin Muhammadga berilgan mashhur ulug'vor unvonlardan biri qaysi?",
+        options: ["«Soxibqiron»", "«Zul yaminayn»", "«Nosiriddin»", "«Ikkinchi Iskandar»"],
+        correct: 3,
+        exp: "Unga «Ikkinchi Iskandar» unvoni berilgan."
+      },
+      {
+        q: "31. Anushtegin qaysi yili Xorazm hokimi etib tayinlangan edi?",
+        options: ["1097-yil", "1172-yil", "1200-yil", "1077-yili"],
+        correct: 3,
+        exp: "Anushtegin 1077-yili tayinlangan."
+      },
+      {
+        q: "32. Otsiz o'z ismi bitilgan qanday tangalarni zarb etishni boshlagan edi?",
+        options: ["Mis chaqalar", "Kumush dirhamlar", "Mis medallar", "Oltin tangalarni"],
+        correct: 3,
+        exp: "U oltin tangalarni zarb etishni boshlagan."
+      },
+      {
+        q: "33. Otsiz o'limidan oldin qaysi davlat bilan muvaffaqiyatli kurashgan?",
+        options: ["Xitoy bilan", "Vizantiya bilan", "Hindiston bilan", "Saljuqiylar davlati bilan"],
+        correct: 3,
+        exp: "U saljuqiylar davlati bilan muvaffaqiyatli kurashgan."
+      },
+      {
+        q: "34. Xorazmshohlar davrida qaysi asarlar orqali ularning tarixi bizgacha yetib kelgan?",
+        options: ["Faqat dostonlar", "Faqat bitiklar", "Faqat xaritalar", "Tarixiy asarlar va solnomalar (Otamalik Juvayniy va boshqalar)"],
+        correct: 3,
+        exp: "Tarixiy asarlar va solnomalar orqali yetib kelgan."
+      },
+      {
+        q: "35. Alovuddin Muhammad qaysi o'lkalarni o'ziga bo'ysundirishni asosiy maqsad qilib qo'ygan edi?",
+        options: ["Faqat dashtlarni", "Faqat Xitoyni", "Faqat Hindistonni", "Suriya, Kichik Osiyo va Misrni"],
+        correct: 3,
+        exp: "Asosiy maqsadi Suriya, Kichik Osiyo va Misrni bo'ysundirish edi."
+      },
+      {
+        q: "36. Anushteginning o'g'li Qutbiddin Muhammad Xorazm hokimi etib qachon tayinlangan?",
+        options: ["1077-yilda", "1172-yilda", "1200-yilda", "1097-yilda"],
+        correct: 3,
+        exp: "Qutbiddin Muhammad 1097-yilda tayinlangan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 32) fb.innerText = "Mukammal natija! Xorazmshohlar davlati mavzusini to'laqonli o'zlashtiribsiz 🌟";
+      else if(score >= 25) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>
+```eof

@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>20-21-mavzular. VIII asrda Xuroson va Movarounnahr</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 14.5px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 13px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 5px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 4px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #291104;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 65px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 190px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.45;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 16.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>20-21-mavzular. VIII asrda Xuroson va Movarounnahr</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (38)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (38)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 5 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">📜</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Xuroson va Movarounnahrga oid barcha atamalarni muvaffaqiyatli mosladingiz. Endi 38 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (38 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">20-21-mavzular Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏰</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">38 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          VIII asrda Xuroson va Movarounnahr mavzusining barcha jihatlarini to'la o'rganib chiqdingiz. Endi 38 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (38 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">20-21-mavzular Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/38</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById('sticky-bar').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: har birida 5 tadan, jami 20 ta) ---
+    const matchStages = [
+      [
+        { id: 1, left: "VIII asrning 40-yillari", right: "Xalifalikda toj-u taxt uchun kurash kuchaygan davr" },
+        { id: 2, left: "Marvon Muhammad", right: "Hokimlik qilgan davrida xiroj solig'i oshirilib, ahvol og'irlashgan xalifa" },
+        { id: 3, left: "Abu Muslim", right: "Xurosonda abosiylarni qo'llab-quvvatlashga chaqirgan kufalik targ'ibotchi" },
+        { id: 4, left: "Qora liboslar va qora bayroq", right: "Abu Muslim tarafdorlarining umaviylardan ajralib turuvchi ramziy belgilari" },
+        { id: 5, left: "747-yil", right: "Abu Muslim Xurosonning markazi Marv shahrini egallagan yil" }
+      ],
+      [
+        { id: 6, left: "Abul Abbos Saffoh", right: "750-yilda taxtga o'tirib, arab xalifaligida abbosiylar hokimiyatini o'rnatgan shaxs" },
+        { id: 7, left: "750–754-yillar", right: "Abul Abbos Saffoh hukmronlik qilgan davr" },
+        { id: 8, left: "751-yil", right: "Talas yaqinidagi jang bo'lib o'tgan yil va Xitoy qo'shini tor-mor etilgan sana" },
+        { id: 9, left: "Ziyod ibn Solih", right: "Talas jangida arab va turonliklardan iborat qo'shinga boshchilik qilgan sarkarda" },
+        { id: 10, left: "Gao Syanchji", right: "Talas jangida mag'lubiyatga uchragan Tan imperiyasining xitoylik qo'mondoni" }
+      ],
+      [
+        { id: 11, left: "Samarqand qog'ozi", right: "Talas jangidan so'ng asir tushgan xitoyliklar sirlarini o'rgatishi natijasida butun Sharq va G'arbda mashhur bo'lgan mahsulot" },
+        { id: 12, left: "Muqanna (Hoshim ibn Hakim)", right: "VIII asr oxirlarida Movarounnahrda bo'lib o'tgan «Oq kiyimlar» qo'zg'oloni rahbari" },
+        { id: 13, left: "Sarxanglik", right: "Muqanna Xurosonda erishgan kichik lashkarboshi va vazirlik darajasi" },
+        { id: 14, left: "Som qal'asi", right: "Muqanna o'z qarorgohini aylantirib, oxirigacha qahramonona kurashgan Kesh vohasidagi qal'a" },
+        { id: 15, left: "786–809-yillar", right: "Rofe ibn Lays boshchiligida xalifalikka qarshi yana qo'zg'olon ko'tarilgan davr" }
+      ],
+      [
+        { id: 16, left: "Ma'mun", right: "Xuroson noibi bo'lib, keyinchalik isyonni bostirish uchun Nuh, Ahmad va Yahyolardan yordam so'ragan shaxs" },
+        { id: 17, left: "«Miri Ibrohimiy»", right: "Qog'oz turlaridan biri bo'lib, yuz qismida suv tomchisi izlari bo'lgan nav" },
+        { id: 18, left: "«Nimkanop»", right: "Ipak qoldiqlari va po'stloq tolalari aralashmasidan tayyorlangan qog'oz turi" },
+        { id: 19, left: "Koza qishlog'i", right: "Muqanna Marv atrofida tug'ilib o'sgan qishloq" },
+        { id: 20, left: "Abu Bakr Narshaxiy", right: "«Buxoro tarixi» asarida Muqanna va Buxoro voqealarini yozib qoldirgan muarrix" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 5;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      colLeft.innerHTML = '';
+      colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (38 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. VIII asrning 40-yillarida xalifalikda nima uchun kurash kuchaydi?", a: "Toj-u taxt uchun." },
+      { q: "2. Umaviylarga qarshi norozilik ayniqsa qaysi xalifa davrida kuchayib ketdi?", a: "Xalifa Marvon Muhammad davrida." },
+      { q: "3. Umaviylar siyosatidan norozilik kuchayishiga asosiy sabab nima edi?", a: "Xiroj solig'ining miqdori oshirilib, aholining muttasil harbiy safarbarlikka majburan jalb etilishi." },
+      { q: "4. Abbosiylar umaviylarga qarshi kurashga da'vat etish uchun qayerlarga targ'ibotchilar yubordi?", a: "Turli viloyatlarga." },
+      { q: "5. Xurosonda faoliyat olib borgan kufalik taniqli targ'ibotchi kim edi?", a: "Abu Muslim." },
+      { q: "6. Abu Muslim Xurosonda aholini kimlarni qo'llab-quvvatlashga chaqirdi?", a: "Payg'ambarimiz (s.a.v.) avlodlarini." },
+      { q: "7. Abu Muslimni dastlab kimlar qo'llab-quvvatladi?", a: "Arab zodagonlari va so'ngra mahalliy dehqonlar." },
+      { q: "8. Abu Muslim tarafdorlarining tashqi ko'rinishidagi o'ziga xos belgisi nima edi?", a: "Qora libos kiyib, qora bayroq ko'tarishgan." },
+      { q: "9. Abu Muslim Xurosonning markazi bo'lgan qaysi shahrni egalladi?", a: "Marv shahrini (747-yil)." },
+      { q: "10. 750-yilda taxtga o'tirib, arab xalifaligida abbosiylar sulolasi hokimiyatini o'rnatgan shaxs kim?", a: "Abul Abbos Saffoh." },
+      { q: "11. Abul Abbos Saffoh taxtga o'tirgach, poytaxtni qayerga ko'chirdi?", a: "Damashqdan Bag'dodga." },
+      { q: "12. Abu Muslim poytaxtdan uzoqlashtirilib qayerga noib etib yuborildi?", a: "Xuroson va Movarounnahrga." },
+      { q: "13. Oqibatda Abu Muslim poytaxtda o'ldirilgach, qayerda unga qarshi xalq qo'zg'oloni chiqdi?", a: "Buxoroda (750-yil)." },
+      { q: "14. 751-yilda Talas yaqinidagi jangda kimlar to'qnash keldi?", a: "Arab-turon qo'shini va Tan imperiyasining xitoylik qo'shinlari." },
+      { q: "15. Talas jangida arab va turonliklar qo'shiniga kim boshchilik qilgan?", a: "Ziyod ibn Solih." },
+      { q: "16. Talas jangida xitoyliklar qo'shiniga kim qo'mondonlik qilgan?", a: "Gao Syanchji." },
+      { q: "17. Talas jangining eng muhim tarixiy natijasi nima bo'ldi?", a: "Xitoy qo'shini tor-mor etilib, qog'oz tayyorlash siri Movarounnahrga o'tdi va Xitoyning g'arbga yurishiga chek qo'yildi." },
+      { q: "18. VIII asr oxirlarida Movarounnahrda bo'lib o'tgan «Oq kiyimlar» qo'zg'oloni rahbari kim?", a: "Muqanna (Hoshim ibn Hakim)." },
+      { q: "19. Muqanna darslikda dastlab kim sifatida tilga olingan?", a: "Kudungarlik (matolarni bo'yash) bilan shug'ullangan, keyin ilm o'rgangan shaxs." },
+      { q: "20. Muqanna Xurosonda qanday darajaga erishgan edi?", a: "Sarxanglik (kichik lashkarboshi va vazirlik) darajasigacha." },
+      { q: "21. Muqanna o'z qarorgohini qayerdagi Som qal'asiga ko'chirgan?", a: "Kesh vohasidagi Som qal'asiga." },
+      { q: "22. Muqanna ishtirokidagi «Oq kiyimlar» qo'zg'oloni qancha davom etgan?", a: "783-yilgacha." },
+      { q: "23. 806–809-yillarda xalifalikka qarshi yana kim boshchiligida qo'zg'olon ko'tarildi?", a: "Rofe ibn Lays." },
+      { q: "24. Rofe ibn Lays qo'zg'oloni qaysi shaharlarni qamrab olgan?", a: "Samarqand, Shosh, Farg'ona, Buxoro va Naxshabni." },
+      { q: "25. Rofe ibn Lays isyonini bostirishda Xuroson noibi Ma'munga kimlar yordam bergan?", a: "Nuh, Ahmad va Yahyolar." },
+      { q: "26. Samarqand qog'ozining turlari qaysilar?", a: "«Samarqand sulton qog'ozi», «Miri Ibrohimiy», «Nimkanop»." },
+      { q: "27. «Samarqand sulton qog'ozi» qanday xususiyatga ega edi?", a: "Yupqaligi, silliqligi va yumshoqligi bilan ajralib turgan." },
+      { q: "28. «Nimkanop» qanday materialdan tayyorlangan?", a: "Ipak qoldiqlari va po'stloq tolalari aralashmasidan." },
+      { q: "29. Xorazmda nimalar ishlab chiqarilgan va ipakka ayirboshlangan?", a: "Kamonlar va sopol idishlar." },
+      { q: "30. Muqanna nima sababdan yuziga ko'k parda tutib yurgan?", a: "Xunukligini yoki yuzidagi nuqsonni yashirish uchun." },
+      { q: "31. Muqanna g'oyalarining asosi nimaga asoslangan edi?", a: "Mazdak g'oyalariga — ijtimoiy tenglik va erkin hayotga." },
+      { q: "32. Muqanna harakatining markazi qayer edi?", a: "Kesh vohasidagi Som qal'asi." },
+      { q: "33. Talas jangida asir tushgan xitoylik hunarmandlar qayerda qog'oz fabrikalarini ochgan?", a: "Samarqandda." },
+      { q: "34. Xalifalikda abbosiylar hokimiyat tepasiga kelgach, Xuroson va Movarounnahrda ahvol o'zgardimi?", a: "Yo'q, soliqlar va zulm davom etgani uchun xalq harakatlari kuchaydi." },
+      { q: "35. Abu Muslim tarafdorlari nima uchun qora libos kiygan?", a: "Umaviylarga qarshi kurashning ramziy belgisi sifatida." },
+      { q: "36. Talas jangi qaysi daryo bo'yida bo'lib o'tgan?", a: "Talas daryosi bo'yida." },
+      { q: "37. Abu Bakr Narshaxiyning qaysi asarida Buxoro va Muqanna haqida ma'lumotlar bor?", a: "«Buxoro tarixi» asarida." },
+      { q: "38. VIII asr oxirlarida Movarounnahrda tarqalgan yana bir yirik ijtimoiy harakat qanday atalgan?", a: "«Oq kiyimlar» (Muqanna harakati)." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
+    const testQuestions = [
+      {
+        q: "1. VIII asrning 40-yillarida xalifalikda nima uchun keskin kurash kuchayib ketdi?",
+        options: ["Toj-u taxt uchun", "Yangi din kiritish uchun", "Poytaxtni ko'chirish uchun", "Savdo yo'llarini bo'lishish uchun"],
+        correct: 0,
+        exp: "Xalifalikda toj-u taxt uchun kurash kuchaygan edi."
+      },
+      {
+        q: "2. Umaviylarga qarshi norozilik ayniqsa qaysi xalifa davrida cho'qqisiga chiqdi?",
+        options: ["Muoviya I", "Xalifa Marvon Muhammad", "Abul Abbos Saffoh", "Usmon ibn Affon"],
+        correct: 1,
+        exp: "Norozilik xalifa Marvon Muhammad davrida nihoyatda kuchaygan edi."
+      },
+      {
+        q: "3. Umaviylar siyosatiga qarshi norozilikning asosiy sababi nima edi?",
+        options: ["Faqatgina ob-havo o'zgarishi", "Xiroj solig'ining oshirilishi va aholining majburiy harbiy safarbarligi", "Ilm-fanning taqiqlanishi", "Tillar o'zgartirilishi"],
+        correct: 1,
+        exp: "Xiroj solig'i oshirilib, aholi majburan harbiy safarbarlikka jalb etilgan."
+      },
+      {
+        q: "4. Abbosiylar umaviylarga qarshi kurashga da'vat etish uchun kimni Xurosonga yuborgan edilar?",
+        options: ["Ziyod ibn Solihni", "Abu Muslimni", "Qutaybani", "Muqannani"],
+        correct: 1,
+        exp: "Abbosiylar kufalik Abu Muslimni yuborgan."
+      },
+      {
+        q: "5. Abu Muslim Xurosonda aholini kimlarni qo'llab-quvvatlashga chaqirdi?",
+        options: ["Umaviy amirlarini", "Payg'ambarimiz (s.a.v.) avlodlarini", "Xitoy elchilarini", "Sosoniy qoldiqlarini"],
+        correct: 1,
+        exp: "Payg'ambarimiz (s.a.v.) avlodlarini qo'llab-quvvatlashga chaqirgan."
+      },
+      {
+        q: "6. Abu Muslim tarafdorlarining tashqi ko'rinishidagi ramziy belgisi qanday edi?",
+        options: ["Oq kiyim va oq bayroq", "Qora libos kiyib, qora bayroq ko'tarish", "Qizil qalpoq kiyish", "Yashil lentalar taqish"],
+        correct: 1,
+        exp: "Ular qora libos kiyib, qora bayroq ko'tarishgan."
+      },
+      {
+        q: "7. Abu Muslim Xurosonning markazi bo'lgan qaysi shahrni egalladi?",
+        options: ["Buxoroni", "Samarqandni", "Marv shahrini (747-yil)", "Balxni"],
+        correct: 2,
+        exp: "Abu Muslim 747-yilda Marv shahrini egallagan."
+      },
+      {
+        q: "8. 750-yilda taxtga o'tirib, arab xalifaligida abbosiylar sulolasi hokimiyatini o'rnatgan shaxs kim?",
+        options: ["Abul Abbos Saffoh", "Abu Muslim", "Marvon II", "Rofe ibn Lays"],
+        correct: 0,
+        exp: "Abul Abbos Saffoh taxtga o'tirib abbosiylar hokimiyatini o'rnatgan."
+      },
+      {
+        q: "9. Abul Abbos Saffoh taxtga o'tirgach, xalifalik poytaxtini qayerga ko'chirdi?",
+        options: ["Damashqdan Bag'dodga", "Marvga", "Samarqandga", "Buxoroga"],
+        correct: 0,
+        exp: "Poytaxt Damashqdan Bag'dodga ko'chirildi."
+      },
+      {
+        q: "10. Abu Muslim poytaxtdan uzoqlashtirilib qayerga noib etib yuborildi?",
+        options: ["Misrga", "Xuroson va Movarounnahrga", "Hindistonga", "Ispaniyaga"],
+        correct: 1,
+        exp: "U Xuroson va Movarounnahrga noib qilib yuborilgan."
+      },
+      {
+        q: "11. Abu Muslim poytaxtda o'ldirilgach, qayerda unga qarshi darhol xalq qo'zg'oloni chiqdi?",
+        options: ["Buxoroda (750-yil)", "Samarqandda", "Xorazmda", "Chochda"],
+        correct: 0,
+        exp: "750-yilda Buxoroda qo'zg'olon ko'tarilgan."
+      },
+      {
+        q: "12. 751-yilda Talas yaqinidagi jangda kimlar to'qnash keldi?",
+        options: ["Turklar va eftaliylar", "Arab-turon qo'shini va Tan imperiyasining xitoylik qo'shinlari", "Sug'dlar va sosoniylar", "Xitoy va Eron"],
+        correct: 1,
+        exp: "Arab-turon qo'shini va xitoyliklar to'qnashgan."
+      },
+      {
+        q: "13. Talas jangida arab va turonliklar qo'shiniga kim boshchilik qilgan?",
+        options: ["Ziyod ibn Solih", "Qutayba ibn Muslim", "Ubaydulloh", "Abu Muslim"],
+        correct: 0,
+        exp: "Qo'shinga Ziyod ibn Solih boshchilik qilgan."
+      },
+      {
+        q: "14. Talas jangida xitoyliklar qo'shiniga kim qo'mondonlik qilgan?",
+        options: ["Gao Syanchji", "Li Siye", "Duan Shoushar", "An Lushan"],
+        correct: 0,
+        exp: "Xitoy qo'shiniga Gao Syanchji qo'mondonlik qilgan."
+      },
+      {
+        q: "15. Talas jangining eng muhim tarixiy natijasi nima bo'ldi?",
+        options: ["Xitoyning g'arbga yurishiga chek qo'yilib, qog'oz tayyorlash siri Movarounnahrga o'tdi", "Movarounnahr mustaqillikka erishdi", "Xalifalik parchalanib ketdi", "Ipak yo'li yopildi"],
+        correct: 0,
+        exp: "Xitoyning yurishiga chek qo'yilib, qog'oz siri o'zlashtirildi."
+      },
+      {
+        q: "16. VIII asr oxirlarida Movarounnahrda bo'lib o'tgan «Oq kiyimlar» qo'zg'oloni rahbari kim edi?",
+        options: ["Divashtich", "Muqanna (Hoshim ibn Hakim)", "G'urak", "Rofe ibn Lays"],
+        correct: 1,
+        exp: "Qo'zg'olon rahbari Muqanna edi."
+      },
+      {
+        q: "17. Muqanna darslikda dastlab qanday hunar egasi sifatida ko'rsatilgan?",
+        options: ["Temirchi", "Kudungarlik (matolarni bo'yash)", "Zargar", "Kulol"],
+        correct: 1,
+        exp: "U dastlab kudungarlik bilan shug'ullangan."
+      },
+      {
+        q: "18. Muqanna Xurosonda qanday martabaga erishgan edi?",
+        options: ["Vazir", "Sarxanglik (kichik lashkarboshi va vazirlik)", "Noib", "Sarkarda"],
+        correct: 1,
+        exp: "U sarxanglik darajasiga erishgan."
+      },
+      {
+        q: "19. Muqanna o'z qarorgohini qayerdagi qal'aga ko'chirgan edi?",
+        options: ["Kesh vohasidagi Som qal'asiga", "Panjikentga", "Poykandga", "Varaxshaga"],
+        correct: 0,
+        exp: "Qarorgohi Kesh vohasidagi Som qal'asi edi."
+      },
+      {
+        q: "20. Muqanna ishtirokidagi qo'zg'olon taxminan qachongacha davom etgan?",
+        options: ["750-yilgacha", "783-yilgacha", "810-yilgacha", "850-yilgacha"],
+        correct: 1,
+        exp: "Qo'zg'olon 783-yilgacha davom etgan."
+      },
+      {
+        q: "21. 806–809-yillarda xalifalikka qarshi yana kim boshchiligida yirik qo'zg'olon ko'tarildi?",
+        options: ["Rofe ibn Lays", "Muqanna", "Abu Muslim", "G'urak"],
+        correct: 0,
+        exp: "Qo'zg'olonga Rofe ibn Lays boshchilik qilgan."
+      },
+      {
+        q: "22. Rofe ibn Lays qo'zg'oloni qaysi hududlarni qamrab olgan?",
+        options: ["Faqat Xorazmni", "Samarqand, Shosh, Farg'ona, Buxoro va Naxshabni", "Faqat Toxaristonni", "Faqat Farg'ona vodiysini"],
+        correct: 1,
+        exp: "Qo'zg'olon Samarqand, Shosh, Farg'ona, Buxoro va Naxshabni qamrab olgan."
+      },
+      {
+        q: "23. Rofe ibn Lays isyonini bostirishda Xuroson noibi Ma'munga kimlar yordam bergan?",
+        options: ["Nuh, Ahmad va Yahyolar", "Qutayba va Ziyod", "Abbos va Marvon", "Hoshim va Zayd"],
+        correct: 0,
+        exp: "Ma'munga Nuh, Ahmad va Yahyolar yordam bergan."
+      },
+      {
+        q: "24. Samarqand qog'ozining turlari qaysi javobda to'g'ri ko'rsatilgan?",
+        options: ["Faqat bitta turi bor edi", "«Samarqand sulton qog'ozi», «Miri Ibrohimiy», «Nimkanop»", "«Sariq va qora qog'oz»", "«Shohona qog'oz»"],
+        correct: 1,
+        exp: "Ular «Samarqand sulton qog'ozi», «Miri Ibrohimiy» va «Nimkanop» edi."
+      },
+      {
+        q: "25. «Samarqand sulton qog'ozi» qanday xususiyati bilan ajralib turgan?",
+        options: ["Qalinligi bilan", "Yupqaligi, silliqligi va yumshoqligi bilan", "Faqat rang-barangligi bilan", "Qattiqligi bilan"],
+        correct: 1,
+        exp: "U yupqaligi, silliqligi va yumshoqligi bilan ajralib turgan."
+      },
+      {
+        q: "26. «Nimkanop» qanday materialdan tayyorlangan edi?",
+        options: ["Faqat qamishdan", "Ipak qoldiqlari va po'stloq tolalari aralashmasidan", "Faqat paxtadan", "Faqat o't-o'lanlardan"],
+        correct: 1,
+        exp: "Ipak qoldiqlari va po'stloq tolalari aralashmasidan tayyorlangan."
+      },
+      {
+        q: "27. Xorazmda nimalar ishlab chiqarilib, ipakka ayirboshlangan?",
+        options: ["Qilich va qalqonlar", "Kamonlar va sopol idishlar", "Zargarlik buyumlari", "Gilam va ot jabduqlari"],
+        correct: 1,
+        exp: "Kamonlar va sopol idishlar ayirboshlangan."
+      },
+      {
+        q: "28. Muqanna nima sababdan yuziga ko'k parda tutib yurgan?",
+        options: ["Soyada yurish uchun", "Xunukligini yoki yuzidagi nuqsonni yashirish uchun", "Sovqotmaslik uchun", "Faqat rasm bo'yicha"],
+        correct: 1,
+        exp: "Yuzidagi nuqsoni yoki xunukligini yashirish uchun tutgan."
+      },
+      {
+        q: "29. Muqanna g'oyalarining asosi nimalarga tayangan edi?",
+        options: ["Mazdak g'oyalariga — ijtimoiy tenglik va erkin hayotga", "Faqat boylik to'plashga", "Faqat monarxiyaga", "Faqat harbiy bosqinchilikka"],
+        correct: 0,
+        exp: "G'oyalari Mazdak ta'limotiga — ijtimoiy tenglikka tayangan."
+      },
+      {
+        q: "30. Talas jangida asir tushgan xitoylik hunarmandlar qayerda qog'oz fabrikalarini ochgan?",
+        options: ["Buxoroda", "Samarqandda", "Toshkentda", "Marvda"],
+        correct: 1,
+        exp: "Fabrikalar Samarqandda ochilgan."
+      },
+      {
+        q: "31. Xalifalikda abbosiylar hokimiyat tepasiga kelgach, Movarounnahrda ahvol o'zgardiimi?",
+        options: ["Ahvol butunlay yaxshilandi", "Soliqlar va zulm davom etgani uchun xalq harakatlari kuchaydi", "Barcha soliqlar kechirildi", "Urushlar butunlay to'xtadi"],
+        correct: 1,
+        exp: "Zulm va soliqlar davom etgani bois xalq isyonlari davom etdi."
+      },
+      {
+        q: "32. Abu Muslim tarafdorlari nima uchun qora libos kiyganlar?",
+        options: ["Diniy qoidaga ko'ra", "Umaviylarga qarshi kurashning ramziy belgisi sifatida", "Sovuqdan saqlanish uchun", "Faqat moda uchun"],
+        correct: 1,
+        exp: "Bu umaviylarga qarshi kurash ramzi edi."
+      },
+      {
+        q: "33. Talas jangi qaysi daryo bo'yida bo'lib o'tgan?",
+        options: ["Amudaryo", "Sirdaryo", "Talas daryosi", "Zarafshon"],
+        correct: 2,
+        exp: "Jang Talas daryosi bo'yida bo'lgan."
+      },
+      {
+        q: "34. Abu Bakr Narshaxiyning qaysi mashhur asarida Buxoro va Muqanna haqida ma'lumotlar bor?",
+        options: ["«Tarixi Tabariy»", "«Buxoro tarixi»", "«Zafarnoma»", "«Qutadg'u bilig»"],
+        correct: 1,
+        exp: "Ma'lumotlar «Buxoro tarixi» asarida keltirilgan."
+      },
+      {
+        q: "35. VIII asr oxirlarida Movarounnahrda tarqalgan yana bir yirik harakat qanday atalgan?",
+        options: ["«Qizil kiyimlar»", "«Oq kiyimlar» (Muqanna harakati)", "«Ko'k liboslilar»", "«Sariq bayroqlilar»"],
+        correct: 1,
+        exp: "Bu «Oq kiyimlar» (Muqanna harakati) edi."
+      },
+      {
+        q: "36. Muqanna qayerda tug'ilib o'sgan?",
+        options: ["Marv atrofidagi Koza qishlog'ida", "Samarqandda", "Nasafda", "Chochda"],
+        correct: 0,
+        exp: "U Marv atrofidagi Koza qishlog'idan edi."
+      },
+      {
+        q: "37. Rofe ibn Lays qo'zg'oloni qaysi yillarni o'z ichiga olgan?",
+        options: ["700–705-yillarni", "750–754-yillarni", "806–809-yillarni", "830–844-yillarni"],
+        correct: 2,
+        exp: "Qo'zg'olon 806–809-yillarda bo'lgan."
+      },
+      {
+        q: "38. Abul Abbos Saffoh qaysi yillarda hukmronlik qilgan?",
+        options: ["744–750-yillar", "750–754-yillar", "760–770-yillar", "780–790-yillar"],
+        correct: 1,
+        exp: "U 750–754-yillarda hukmronlik qilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
+      const optBox = document.getElementById('q-options');
+      optBox.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
+
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
+      
+      document.getElementById('sticky-bar').style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const fb = document.getElementById('q-feedback');
+      if(score >= 34) fb.innerText = "Mukammal natija! VIII asrda Xuroson va Movarounnahr mavzusini to'laqonli o'zlashtiribsiz 🌟";
+      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
+  </script>
+</body>
+</html>

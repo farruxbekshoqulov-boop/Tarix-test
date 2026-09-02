@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>49-50-mavzular. Ahmad Farg'oniy</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #b45309;
+      --accent: #0284c7;
+      --gold: #f59e0b;
+      --card-bg: #fffbf0;
+      --text: #291104;
+      --text-muted: #78350f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      border: 4px solid #b45309;
+      border-image: linear-gradient(to bottom, #f59e0b, #78350f, #f59e0b) 1;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(245, 158, 11, 0.15);
+      position: relative;
+    }
+
+    .palace-header {
+      text-align: center;
+      background: linear-gradient(135deg, #78350f, #b45309);
+      color: #fef3c7;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #f59e0b;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.4);
+    }
+
+    .palace-header h1 {
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .palace-header p {
+      font-size: 13px;
+      color: #fde68a;
+      margin-top: 4px;
+    }
+
+    .tab-nav {
+      display: flex;
+      background: #fde68a;
+      padding: 5px;
+      border-radius: 12px;
+      border: 1.5px solid #d97706;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 4px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #78350f;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(133, 77, 14, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(180, 83, 9, 0.15);
+      color: #854d0e;
+      border: 1px solid rgba(180, 83, 9, 0.4);
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #fde68a;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+      border: 1px solid #f59e0b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d97706, #b45309);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-column {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .match-btn {
+      background: #ffffff;
+      border: 2px solid #d97706;
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #291104;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 65px;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .match-btn.selected {
+      border-color: #854d0e;
+      background: #fef08a;
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: #d1fae5;
+      border-color: #059669;
+      color: #065f46;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #991b1b;
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+      border: 2px dashed #b45309;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 190px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-a {
+      font-size: 16px; font-weight: 700; color: #065f46;
+      background: #ecfdf5; border: 1.5px solid #6ee7b7;
+      border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    
+    .opt-btn {
+      background: #ffffff;
+      border: 1.5px solid #d97706;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #291104;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: #fef3c7;
+      border-left: 4px solid #b45309;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #78350f;
+      line-height: 1.45;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b45309, #854d0e);
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 14px;
+      font-size: 16.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
+      margin-top: 8px;
+    }
+
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fffbf0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 2px solid #b45309;
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: #fef3c7; border: 3px solid #b45309;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #854d0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+
+    <div class="palace-header">
+      <h1>49-50-mavzular. Ahmad Farg'oniy</h1>
+      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (36)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+    </div>
+
+    <!-- 1. MOSLASH BO'LIMI -->
+    <div id="tab-match" class="tab-content active">
+      <div id="match-play-box">
+        <div class="header-bar">
+          <span class="topic-badge" id="match-stage-badge">Bosqich: 1 / 4</span>
+          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 5 ta juftlik</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
+        
+        <div class="match-grid">
+          <div class="match-column" id="match-col-left"></div>
+          <div class="match-column" id="match-col-right"></div>
+        </div>
+      </div>
+
+      <div id="match-finish-box" class="finish-state">
+        <div style="font-size: 50px;">📜</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Ahmad Farg'oniy merosiga oid atamalarni muvaffaqiyatli mosladingiz. Endi 36 talik Savol-Javob qismiga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. SAVOL-JAVOB (36 TA SAVOL) -->
+    <div id="tab-cards" class="tab-content">
+      <div id="fc-play-box">
+        <div class="header-bar">
+          <span class="topic-badge">49-50-mavzular Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
+
+        <div class="flashcard-area">
+          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
+          <div class="fc-a" id="fc-answer"></div>
+        </div>
+
+        <div>
+          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko'rish</button>
+          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
+        </div>
+      </div>
+
+      <div id="fc-finish-box" class="finish-state">
+        <div style="font-size: 50px;">🏰</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">36 ta savol tugadi!</h2>
+        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+          Ahmad Farg'oniy mavzusini to'la o'rganib chiqdingiz. Endi 36 talik Test sinoviga o'tamizmi?
+        </p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TEST SINOVI (36 TA TEST) -->
+    <div id="tab-quiz" class="tab-content">
+      <div id="quiz-body">
+        <div class="header-bar">
+          <span class="topic-badge">49-50-mavzular Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
+
+        <div class="q-title" id="q-title">Yuklanmoqda...</div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="exp-box" id="q-explanation"></div>
+      </div>
+
+      <div id="quiz-result" class="finish-state">
+        <div style="font-size: 50px;">🌟</div>
+        <div class="finish-badge" id="q-score">0/36</div>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
+        <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
+          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
+    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
+  </div>
+
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
+    }
+
+    function switchTab(tab) {
+      ['match', 'cards', 'quiz'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: 20 ta juftlik) ---
+    const matchStages = [
+      [
+        { id: 1, left: "Ahmad Farg'oniy", right: "797–865-yillarda Farg'ona vodiysining Quvo qishlog'ida tug'ilgan buyuk astronom" },
+        { id: 2, left: "Bag'dod va Damashq", right: "Ahmad Farg'oniy rasadxonalarda ish olib borgan va yangi «Zij» yaratishga rahbarlik qilgan shaharlar" },
+        { id: 3, left: "Ptolemeyning «Yulduzlar jadvali»", right: "Farg'oniy tahrir qilib, geografik koordinatalarni qaytadan aniqlagan asar" },
+        { id: 4, left: "«Astronomiya asoslari haqidagi kitob»", right: "Farg'oniyning «Samoiy harakatlar va umumiy ilmi nujum» deb nomlangan mashhur asari" },
+        { id: 5, left: "Ispaniya orqali", right: "Farg'oniyning astronomiya asoslariga oid kitobi Yevropa mamlakatlariga tarqalgan yo'l" }
+      ],
+      [
+        { id: 6, left: "XII asr / XVI asr", right: "Farg'oniy kitobi lotin tiliga tarjima qilingan va oyagi kraterga nomi berilgan asrlar" },
+        { id: 7, left: "2007-yil", right: "Misr poytaxti Qohirada allomaga haykal o'rnatilgan yil" },
+        { id: 8, left: "1998-yil", right: "Allomaning 1200 yillik tavallud sanasi keng nishonlangan yil" },
+        { id: 9, left: "861-yil", right: "Farg'oniy Qohira yaqinidagi Ravzo orolida «Miqyosi Nil» uskunasini yasagan yil" },
+        { id: 10, left: "«Miqyosi Nil»", right: "Nil daryosining suv sathini belgilovchi va soliq miqdoriga asos solgan qurilma" }
+      ],
+      [
+        { id: 11, left: "«Usturlob yasash haqida kitob»", right: "Ahmad Farg'oniy qalamiga mansub bo'lgan asarlardan biri" },
+        { id: 12, left: "«Farg'oniy jadvallari»", right: "Farg'oniyning yulduzlar va osmon jismlari harakatiga oid asari" },
+        { id: 13, left: "«Yetti iqlimni hisoblash haqida»", right: "Farg'oniyning geografik o'lchovlarga bag'ishlangan risolasi" },
+        { id: 14, left: "«Oyning Yer ostida va ustida vaqtlarini aniqlash haqida»", right: "Farg'oniy qalamiga mansub ilmiy risola" },
+        { id: 15, left: "Nil daryosi", right: "Misr xalqi uchun hayot-mamot daryosi bo'lib, uning atigi 6 foizigagina dehqonchilik qilingan" }
+      ],
+      [
+        { id: 16, left: "Regiomontan (XV asr)", right: "Avstriya va Italiya universitetlarida Farg'oniy asarlarini o'rgangan olim" },
+        { id: 17, left: "Dante (XIV asr) va Shiller (XVIII asr)", right: "O'z asarlarida Ahmad Farg'oniy nomini tilga olgan buyuk adiblar" },
+        { id: 18, left: "Yan Geveliy (1647-yil)", right: "«Selenografiya» kitobida oyagi kraterlardan birini Farg'oniy nomi bilan atagan astronom" },
+        { id: 19, left: "Roud «burni»", right: "Nil daryosi orollaridan birida «Miqyosi Nil» qurilgan joy" },
+        { id: 20, left: "Muhammadjon Obidov", right: "«Miqyosi Nil» haqidagi risola muallifi" }
+      ]
+    ];
+
+    let currentMatchStage = 0;
+    let selectedMatchBtn = null;
+    let matchesRemaining = 5;
+
+    function initMatch() {
+      currentMatchStage = 0;
+      matchesRemaining = 5;
+      loadMatchStage();
+    }
+
+    function loadMatchStage() {
+      const pool = matchStages[currentMatchStage];
+      matchesRemaining = pool.length;
+      
+      const badge = document.getElementById('match-stage-badge');
+      const counter = document.getElementById('match-counter');
+      const prog = document.getElementById('match-progress');
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+
+      if (badge) badge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (prog) prog.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      
+      let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
+      let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
+
+      leftCards.sort(() => 0.5 - Math.random());
+      rightCards.sort(() => 0.5 - Math.random());
+
+      const colLeft = document.getElementById('match-col-left');
+      const colRight = document.getElementById('match-col-right');
+      if (colLeft) colLeft.innerHTML = '';
+      if (colRight) colRight.innerHTML = '';
+
+      leftCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        if (colLeft) colLeft.appendChild(btn);
+      });
+
+      rightCards.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'match-btn';
+        btn.innerText = c.text;
+        btn.dataset.id = c.id;
+        btn.onclick = () => onMatchClick(btn);
+        if (colRight) colRight.appendChild(btn);
+      });
+    }
+
+    function onMatchClick(btn) {
+      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+
+      if (!selectedMatchBtn) {
+        selectedMatchBtn = btn;
+        btn.classList.add('selected');
+      } else {
+        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+          btn.classList.add('matched');
+          selectedMatchBtn.classList.add('matched');
+          selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = null;
+          matchesRemaining--;
+          
+          const counter = document.getElementById('match-counter');
+          if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+
+          if (matchesRemaining === 0) {
+            currentMatchStage++;
+            setTimeout(() => {
+              if (currentMatchStage < matchStages.length) {
+                loadMatchStage();
+              } else {
+                const prog = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (prog) prog.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
+              }
+            }, 500);
+          }
+        } else {
+          btn.classList.add('wrong');
+          selectedMatchBtn.classList.add('wrong');
+          
+          setTimeout(() => {
+            btn.classList.remove('wrong', 'selected');
+            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+            selectedMatchBtn = null;
+          }, 400);
+        }
+      }
+    }
+
+    // --- 2. SAVOL-JAVOB (36 TA SAVOL) ---
+    const flashcards = [
+      { q: "1. Ahmad Farg'oniyning to'liq ismi sharifi nima?", a: "Abul Abbos Ahmad ibn Muhammad ibn Kasir al-Farg'oniy." },
+      { q: "2. Ahmad Farg'oniy qaysi yillarda yashagan va qayerda tug'ilgan?", a: "797–865-yillarda Farg'ona vodiysining Quvo qishlog'ida tug'ilgan." },
+      { q: "3. Ahmad Farg'oniy dastlab qaysi shahardagi rasadxonada ish olib borgan?", a: "Bag'doddagi rasadxonada." },
+      { q: "4. Bag'dondan so'ng Farg'oniy qayerdagi rasadxonada osmon jismlari harakatiga rahbarlik qilgan?", a: "Damashqdagi rasadxonada." },
+      { q: "5. Farg'oniy yunan astronomi Ptolemeyning qaysi asarini tahrir qilgan?", a: "«Yulduzlar jadvali»ni." },
+      { q: "6. Ahmad Farg'oniyning astronomiya asoslariga bag'ishlangan mashhur asari qanday ataladi?", a: "«Astronomiya asoslari haqidagi kitob» («Samoiy harakatlar va umumiy ilmi nujum»)." },
+      { q: "7. Farg'oniyning asari Yevropaga qaysi davlat orqali tarqalgan?", a: "Ispaniya orqali." },
+      { q: "8. Ahmad Farg'oniy kitobi lotin tiliga qachon tarjima qilingan?", a: "XII asrda." },
+      { q: "9. Oyagi kraterga Ahmad Farg'oniy nomi qachon berilgan?", a: "XVI asrda." },
+      { q: "10. Allomaning 1200 yillik tavallud sanasi qachon nishonlangan?", a: "1998-yilda." },
+      { q: "11. Misr poytaxti Qohirada allomaga qachon haykal o'rnatildi?", a: "2007-yilda." },
+      { q: "12. Ahmad Farg'oniy Qohira yaqinidagi Ravzo orolida qanday qurilma yasagan?", a: "«Miqyosi Nil» (suv sathini belgilovchi uskuna)." },
+      { q: "13. «Miqyosi Nil» qurilmasi qachon yasalgan?", a: "861-yilda." },
+      { q: "14. Nil daryosi Misr xalqi uchun qanday ahamiyatga ega edi?", a: "Hayot-mamot daryosi bo'lgan." },
+      { q: "15. Misr hududining atigi necha foizigagina dehqonchilik qilish mumkin bo'lgan?", a: "Olti foizigagina." },
+      { q: "16. Farg'oniy Nil daryosi sathidagi o'zgarishlarni hisobga olib nima yaratgan?", a: "Solik tizimini va hosildorlik jadvalini." },
+      { q: "17. Yevropa Uyg'onish davrining olimi Regiomontan Farg'oniy asarlarini qachon o'rgangan?", a: "XV asrda Avstriya va Italiya universitetlarida." },
+      { q: "18. Ahmad Farg'oniy nomini o'z asarlarida tilga olgan buyuk adiblar kimlar?", a: "Dante (XIV asr) va Shiller (XVIII asr)." },
+      { q: "19. Astronom Yan Geveliy o'zining 1647-yilda nashr qilingan qaysi kitobida oyagi kraterga Farg'oniy nomini bergan?", a: "«Selenografiya» kitobida." },
+      { q: "20. Ahmad Farg'oniy qalamiga mansub «Usturlob yasash haqida kitob» nima haqida?", a: "Astronomik asbob — usturlobni yasash usullari haqida." },
+      { q: "21. Farg'oniyning osmon jismlari harakatiga oid jadvallari qanday atalgan?", a: "«Farg'oniy jadvallari»." },
+      { q: "22. Farg'oniyning geografik o'lchovlarga bag'ishlangan risolasi nima deb nomlanadi?", a: "«Yetti iqlimni hisoblash haqida»." },
+      { q: "23. Farg'oniyning yana qanday risolasi mavjud?", a: "«Oyning Yer ostida va ustida vaqtlarini aniqlash haqida»." },
+      { q: "24. Farg'oniy yaratgan «Miqyosi Nil» qurilmasi qayerda joylashgan edi?", a: "Nil daryosi orollaridan biri — Roud «burni»da." },
+      { q: "25. «Miqyosi Nil» uskunasining poyiga kimning haykali qo'yilgan?", a: "Ahmad al-Farg'oniyning haykali." },
+      { q: "26. Amerikalik tarixchi J. Sarton Farg'oniy haqida nima degan?", a: "«Xorazmiy o'z davrining eng buyuk matematigi va ... barcha davrlarning ham eng buyuklari ham biri» (asarida Farg'oniyga ham yuksak baho bergan)." },
+      { q: "27. Farg'ona vodiysining Quvo qishlog'ida tug'ilgan buyuk astronom kim?", a: "Ahmad Farg'oniy." },
+      { q: "28. Farg'oniy astronomik atashunoslikda qaysi sohalarga o'z hissasini qo'shgan?", a: "Falakiyot, riyoziyot va geografiyaga." },
+      { q: "29. Nil daryosi orolidagi «Miqyosi Nil» inshooti necha metr keladigan ustundan iborat bo'lgan?", a: "35–40 metr." },
+      { q: "30. Farg'oniyning ilmiy asarlari o'rta asrlarda qaysi tillarga tarjima qilingan?", a: "Lotin va boshqa Yevropa tillariga." },
+      { q: "31. Farg'oniy o'zining ilmiy kuzatishlarini asosan qayerlarda olib borgan?", a: "Bag'dod va Damashq rasadxonalarida." },
+      { q: "32. «Miqyosi Nil» qurilmasi Misr xalqiga nima uchun xizmat qilgan?", a: "Solih miqdorini adolatli belgilash uchun." },
+      { q: "33. Farg'oniyning asarlari Yevropada qancha vaqt davomida asosiy qo'llanma bo'lib xizmat qilgan?", a: "Bir necha asr davomida." },
+      { q: "34. Farg'oniyning ilmiy merosi bugungi kunda ham nima uchun muhim?", a: "Astronomiya va geografiya fanlari tarixida tutgan o'rni uchun." },
+      { q: "35. Ahmad Farg'oniyga bag'ishlab Qohirada o'rnatilgan haykal qaysi xalqning minnatdorchilik ramzi?", a: "Misr xalqining." },
+      { q: "36. Farg'oniyning asarlari sharq mamlakatlarida qanday nom bilan mashhur bo'lgan?", a: "«Samoiy harakatlar va umumiy ilmi nujum»." }
+    ];
+
+    let fcIdx = 0;
+    function loadFlashcard() {
+      const card = flashcards[fcIdx];
+      const counter = document.getElementById('fc-counter');
+      const prog = document.getElementById('fc-progress');
+      const qEl = document.getElementById('fc-question');
+      const aEl = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+
+      if (counter) counter.innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      if (prog) prog.style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      if (qEl) qEl.innerText = card.q;
+      if (aEl) {
+        aEl.innerText = card.a;
+        aEl.style.display = 'none';
+      }
+      if (toggleBtn) toggleBtn.style.display = 'block';
+      if (nextBtn) nextBtn.style.display = 'none';
+    }
+
+    function toggleAnswer() {
+      const aEl = document.getElementById('fc-answer');
+      const toggleBtn = document.getElementById('fc-toggle-btn');
+      const nextBtn = document.getElementById('fc-next-btn');
+      if (aEl) aEl.style.display = 'block';
+      if (toggleBtn) toggleBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'block';
+    }
+
+    function nextFlashcard() {
+      fcIdx++;
+      if (fcIdx < flashcards.length) {
+        loadFlashcard();
+      } else {
+        const playBox = document.getElementById('fc-play-box');
+        const finishBox = document.getElementById('fc-finish-box');
+        if (playBox) playBox.style.display = 'none';
+        if (finishBox) finishBox.style.display = 'flex';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartCards() {
+      fcIdx = 0;
+      const playBox = document.getElementById('fc-play-box');
+      const finishBox = document.getElementById('fc-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
+      loadFlashcard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- 3. TEST SINOVI (36 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida mutlaqo tartibsiz va har biriga aniq 9 tadan teng taqsimlangan, «Qachon» so'zi bilan) ---
+    const testQuestions = [
+      // 1. Correct: A (0)
+      {
+        q: "1. Qachon Ahmad Farg'oniy tavallud topgan?",
+        options: ["797-yilda", "824-yilda", "861-yilda", "1998-yilda"],
+        correct: 0,
+        exp: "Ahmad Farg'oniy 797-yilda Quvoda tavallud topgan."
+      },
+      // 2. Correct: B (1)
+      {
+        q: "2. Qachon Ahmad Farg'oniy Qohira yaqinidagi Ravzo orolida «Miqyosi Nil» uskunasini yasagan?",
+        options: ["797-yilda", "861-yilda", "1998-yilda", "2007-yilda"],
+        correct: 1,
+        exp: "Uskuna 861-yilda yasalgan."
+      },
+      // 3. Correct: C (2)
+      {
+        q: "3. Qachon allomaning 1200 yillik tavallud sanasi katta tantanalar bilan nishonlandi?",
+        options: ["1976-yilda", "1991-yilda", "1998-yilda", "2007-yilda"],
+        correct: 2,
+        exp: "Tavalludining 1200 yilligi 1998-yilda nishonlangan."
+      },
+      // 4. Correct: D (3)
+      {
+        q: "4. Qachon Misr poytaxti Qohirada Ahmad Farg'oniyga haykal o'rnatildi?",
+        options: ["1976-yilda", "1998-yilda", "2006-yilda", "2007-yilda"],
+        correct: 3,
+        exp: "Haykal 2007-yilda o'rnatilgan."
+      },
+      // 5. Correct: A (0)
+      {
+        q: "5. Qachon astronom Yan Geveliy o'zining «Selenografiya» kitobida oyagi kraterlardan biriga Farg'oniy nomini bergan?",
+        options: ["1647-yilda", "1976-yilda", "1998-yilda", "2007-yilda"],
+        correct: 0,
+        exp: "Kitob 1647-yilda nashr qilingan."
+      },
+      // 6. Correct: B (1)
+      {
+        q: "6. Qachon Xalqaro astronomiya ittifoqi Oyning krateriga Muso Farg'oniy nomini berdi?",
+        options: ["1647-yilda", "1976-yilda", "1998-yilda", "2007-yilda"],
+        correct: 1,
+        exp: "Bu 1976-yilda amalga oshirilgan."
+      },
+      // 7. Correct: C (2)
+      {
+        q: "7. Qachon Ahmad Farg'oniy asari lotin tiliga tarjima qilingan?",
+        options: ["V asrda", "VIII asrda", "XII asrda", "XVIII asrda"],
+        correct: 2,
+        exp: "Farg'oniy asarlari XII asrda lotin tiliga tarjima qilingan."
+      },
+      // 8. Correct: D (3)
+      {
+        q: "8. Qachon Oyagi kraterga Ahmad Farg'oniy nomi berilganligi Yevropada rasman tan olingan?",
+        options: ["XII asrda", "XIV asrda", "XVIII asrda", "XVI asrda"],
+        correct: 3,
+        exp: "Bu XVI asrda yuz bergan."
+      },
+      // 9. Correct: A (0)
+      {
+        q: "9. Qachon Avstriya va Italiya universitetlarida Regiomontan Farg'oniy asarlarini o'rgangan?",
+        options: ["XV asrda", "XII asrda", "XIV asrda", "XVIII asrda"],
+        correct: 0,
+        exp: "Regiomontan XV asrda o'rgangan."
+      },
+      // 10. Correct: B (1)
+      {
+        q: "10. Qachon Dante o'z asarlarida Ahmad Farg'oniy nomini tilga olgan?",
+        options: ["XII asrda", "XIV asrda", "XVI asrda", "XVIII asrda"],
+        correct: 1,
+        exp: "Dante XIV asrda tilga olgan."
+      },
+      // 11. Correct: C (2)
+      {
+        q: "11. Qachon Shiller o'z asarlarida Ahmad Farg'oniy nomini yozib qoldirgan?",
+        options: ["XIV asrda", "XV asrda", "XVIII asrda", "XX asrda"],
+        correct: 2,
+        exp: "Shiller XVIII asrda tilga olgan."
+      },
+      // 12. Correct: D (3)
+      {
+        q: "12. Qachon Ahmad Farg'oniy vafot etgan?",
+        options: ["797-yilda", "813-yilda", "832-yilda", "865-yilda"],
+        correct: 3,
+        exp: "Ahmad Farg'oniy 865-yilda vafot etgan."
+      },
+      // 13. Correct: A (0)
+      {
+        q: "13. Qachon Ahmad Farg'oniy Bag'doddagi rasadxonada ilmiy faoliyat olib borgan?",
+        options: ["Xalifa Ma'mun davrida (797–865-yillardagi hayoti davomida)", "Faqat sovet davrida", "Faqat mustaqillikda", "XIV asrda"],
+        correct: 0,
+        exp: "U xalifa Ma'mun davrida Bag'dod rasadxonasida ishlagan."
+      },
+      // 14. Correct: B (1)
+      {
+        q: "14. Qachon Damashqdagi rasadxonada osmon jismlari harakatini aniqlash ishlari olib borilgan?",
+        options: ["Bag'doddan oldin", "Ahmad Farg'oniy rahbarligida Bag'doddan keyin", "Faqat XIX asrda", "Faqat XX asrda"],
+        correct: 1,
+        exp: "Farg'oniy Bag'doddan so'ng Damashq rasadxonasiga rahbarlik qilgan."
+      },
+      // 15. Correct: C (2)
+      {
+        q: "15. Qachon Farg'oniy yunan astronomi Ptolemeyning «Yulduzlar jadvali»ni tahrir qilgan?",
+        options: ["Qadimgi Yunonistonda", "Rim imperiyasida", "O'rta asrlarda rasadxonalarda ishlagan davrida", "Faqat XXI asrda"],
+        correct: 2,
+        exp: "Bu uning o'rta asrlardagi rasadxona faoliyati davrida bajarilgan."
+      },
+      // 16. Correct: D (3)
+      {
+        q: "16. Qachon Farg'oniyning «Astronomiya asoslari haqidagi kitob» risolasi yozilgan?",
+        options: ["V asrda", "VII asrda", "X asrda", "O'rta asrlarda IX–X asrlarda"],
+        correct: 3,
+        exp: "Bu asar o'rta asrlarda yaratilgan."
+      },
+      // 17. Correct: A (0)
+      {
+        q: "17. Qachon Farg'oniy kitoblari Ispaniya orqali Yevropa mamlakatlariga tarqalgan?",
+        options: ["O'rta asrlarda lotin tiliga tarjima qilingach", "Qadimgi Rimda", "Faqat sovet davrida", "Mustaqillik yillarida"],
+        correct: 0,
+        exp: "Lotin tiliga tarjima qilingach Ispaniya orqali tarqalgan."
+      },
+      // 18. Correct: B (1)
+      {
+        q: "18. Qachon Farg'oniy «Usturlob yasash haqida kitob» asarini yozib qoldirgan?",
+        options: ["Qadimgi Bobilda", "O'zining ilmiy faoliyati davrida", "Faqat XIX asrda", "Faqat XX asrda"],
+        correct: 1,
+        exp: "Bu uning o'z ilmiy faoliyati davrida yozilgan."
+      },
+      // 19. Correct: C (2)
+      {
+        q: "19. Qachon Farg'oniyning «Yetti iqlimni hisoblash haqida» risolasi yaratilgan?",
+        options: ["V asrda", "VII asrda", "O'rta asrlarda alloma hayoti davomida", "XVII asrda"],
+        correct: 2,
+        exp: "Bu o'rta asrlarda yaratilgan."
+      },
+      // 20. Correct: D (3)
+      {
+        q: "20. Qachon Nil daryosi sathidagi o'zgarishlarni hisobga olib soliq tizimi yaratilgan?",
+        options: ["Qadimgi Misr fir'avnlari davrida", "Rim imperiyasida", "Faqat XIX asrda", "Ahmad Farg'oniy «Miqyosi Nil»ni yasagan davrda"],
+        correct: 3,
+        exp: "Bu Ahmad Farg'oniy «Miqyosi Nil»ni yasagan paytda qilingan."
+      },
+      // 21. Correct: A (0)
+      {
+        q: "21. Qachon sayyoh Al-Muqaddasiy xorazmliklar haqida o'z fikrlarini yozib qoldirgan?",
+        options: ["X asrda", "VI asrda", "VIII asrda", "XII asrda"],
+        correct: 0,
+        exp: "Al-Muqaddasiy X asrda yashab o'tgan."
+      },
+      // 22. Correct: B (1)
+      {
+        q: "22. Qachon britaniyalik jurnalist Endryu Marr teleko'rsatuvda Ahmad Farg'oniy haqida gapirgan?",
+        options: ["1976-yilda", "1927-yilda (BBC ko'rsatuvida)", "1998-yilda", "2007-yilda"],
+        correct: 1,
+        exp: "Bu matnda 1927 - BBC deb ko'rsatilgan."
+      },
+      // 23. Correct: C (2)
+      {
+        q: "23. Qachon amerikalik tarixchi J. Sarton Farg'oniyga yuksak baho bergan?",
+        options: ["O'rta asrlarda", "XIX asrda", "O'zining tarixiy asarlarini yozgan davrida (XX asrda)", "Faqat XXI asrda"],
+        correct: 2,
+        exp: "J. Sarton o'zining tarixiy asarlarida yozgan."
+      },
+      // 24. Correct: D (3)
+      {
+        q: "24. Qachon Farg'oniyning «Oyning Yer ostida va ustida vaqtlarini aniqlash haqida» asari yaratilgan?",
+        options: ["Qadimgi Mesopotamiyada", "Faqat Hindistonda", "Faqat Xitoyda", "O'rta asrlarda alloma faoliyat yuritgan yillarda"],
+        correct: 3,
+        exp: "Bu o'rta asrlarda alloma faoliyati davrida yozilgan."
+      },
+      // 25. Correct: A (0)
+      {
+        q: "25. Qachon Farg'oniyning «Farg'oniy jadvallari» osmon jismlari harakatiga bag'ishlab tuzilgan?",
+        options: ["O'rta asrlarda rasadxonalarda ishlagan paytida", "Faqat sovet davrida", "Mustaqillikda", "XIV asrda"],
+        correct: 0,
+        exp: "Bu o'rta asrlarda rasadxonalarda tuzilgan."
+      },
+      // 26. Correct: B (1)
+      {
+        q: "26. Qachon Nil daryosi orolidagi Roud «burni»da «Miqyosi Nil» inshooti qurilgan?",
+        options: ["Qadimgi Rimda", "861-yilda Ahmad Farg'oniy rahbarligida", "XIV asrda", "XIX asrda"],
+        correct: 1,
+        exp: "Inshoot 861-yilda qurilgan."
+      },
+      // 27. Correct: C (2)
+      {
+        q: "27. Qachon Farg'oniy o'zining ilmiy ishlari bilan Yevropa astronomiyasiga tamal toshini qo'ygan?",
+        options: ["V asrda", "X asrda", "O'rta asrlarda asarlari Yevropaga tarqalgan davrda", "XXI asrda"],
+        correct: 2,
+        exp: "Bu o'rta asrlarda asarlari tarqalgan davrda yuz bergan."
+      },
+      // 28. Correct: D (3)
+      {
+        q: "28. Qachon Farg'oniy Quvo qishlog'idan Bag'dodga borib ilmiy faoliyatini boshlagan?",
+        options: ["Vafotidan keyin", "Faqat qarilik chog'ida", "XVII asrda", "Yoshlik yillarida xalifa Ma'mun davrida"],
+        correct: 3,
+        exp: "U yoshlik yillarida Bag'dodga borgan."
+      },
+      // 29. Correct: A (0)
+      {
+        q: "29. Qachon Farg'oniyning «Oyning Yer ostida...» risolasi ilm-fanga ta'sir ko'rsatgan?",
+        options: ["O'rta asrlarda", "Antik davrda", "Faqat sovet davrida", "Mustaqillikda"],
+        correct: 0,
+        exp: "Bu o'rta asrlarda yozilgan."
+      },
+      // 30. Correct: B (1)
+      {
+        q: "30. Qachon Farg'oniyning ilmiy merosi bugungi kundagi sun'iy yo'ldoshlar va astronomiyaga asos bo'lgan?",
+        options: ["Qadimgi davrda", "O'rta asrlardagi kashfiyotlari zamonaviy fan uchun poydevor bo'lishi natijasida", "Faqat XIX asrda", "Faqat ХVI asrda"],
+        correct: 1,
+        exp: "Uning o'rta asrlardagi kashfiyotlari zamonaviy fanga poydevor bo'lgan."
+      },
+      // 31. Correct: C (2)
+      {
+        q: "31. Qachon Misr xalqi Ahmad Farg'oniyga o'z minnatdorchiligini bildirib haykal o'rnatgan?",
+        options: ["1976-yilda", "1998-yilda", "2007-yilda Qohirada", "2017-yilda"],
+        correct: 2,
+        exp: "Haykal 2007-yilda Qohirada o'rnatilgan."
+      },
+      // 32. Correct: D (3)
+      {
+        q: "32. Qachon Farg'oniyning «Farg'oniy jadvallari» qo'lyozmalari turli mamlakatlar kutubxonalarida saqlana boshlagan?",
+        options: ["Qadimgi Rimda", "Faqat Osiyoda", "Faqat Amerikada", "O'rta asrlardan keyingi davrlarda"],
+        correct: 3,
+        exp: "Uning qo'lyozmalari o'rta asrlardan so'ng kutubxonalarda saqlana boshlagan."
+      },
+      // 33. Correct: A (0)
+      {
+        q: "33. Qachon Farg'oniy osmon jismlari harakatini uzluksiz kuzatib borgan?",
+        options: ["Bag'dod va Damashq rasadxonalarida ishlagan yillarida", "Faqat uyda o'tirib", "Sayohat paytida", "Dengizda suzayotganda"],
+        correct: 0,
+        exp: "U rasadxonalarda ishlagan yillarida kuzatib borgan."
+      },
+      // 34. Correct: B (1)
+      {
+        q: "34. Qachon Farg'oniy nomidagi xalqaro anjumanlar va xotira tadbirlari o'tkazila boshlandi?",
+        options: ["Faqat o'rta asrlarda", "1998-yildagi 1200 yillik yubiley va undan keyingi davrlarda", "Faqat antik davrda", "XVI asrda"],
+        correct: 1,
+        exp: "Bu 1998-yildagi yubiley va keyingi yillarda o'tkazila boshlandi."
+      },
+      // 35. Correct: C (2)
+      {
+        q: "35. Qachon Farg'oniyning asarlari Yevropa universitetlarida asosiy darslik bo'lgan?",
+        options: ["Qadimgi davrda", "V asrda", "XII asrdan keyingi asrlarda lotin tiliga tarjima qilingach", "XXI asrda"],
+        correct: 2,
+        exp: "Bu asarlar lotin tiliga tarjima qilingach darslik bo'lgan."
+      },
+      // 36. Correct: D (3)
+      {
+        q: "36. Qachon Ahmad Farg'oniy Quvoda tavallud topib, butun Sharq va G'arbga mashhur bo'lgan?",
+        options: ["V asrda", "VI asrda", "VII asrda", "797–865-yillardagi hayoti davomida"],
+        correct: 3,
+        exp: "U 797–865-yillarda yashab ijod qilgan."
+      }
+    ];
+
+    let tIdx = 0, score = 0;
+
+    function loadTestQuestion() {
+      const q = testQuestions[tIdx];
+      const counter = document.getElementById('q-counter');
+      const prog = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
+      const optBox = document.getElementById('q-options');
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
+
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (prog) prog.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
+
+      if (optBox) {
+        optBox.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.innerText = opt;
+          btn.onclick = () => selectOpt(idx);
+          optBox.appendChild(btn);
+        });
+      }
+
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+    }
+
+    function selectOpt(selectedIdx) {
+      const q = testQuestions[tIdx];
+      const buttons = document.querySelectorAll('.opt-btn');
+
+      buttons.forEach((btn, idx) => {
+        btn.onclick = null;
+        if(idx === q.correct) btn.classList.add('correct');
+        else if(idx === selectedIdx) btn.classList.add('incorrect');
+      });
+
+      if(selectedIdx === q.correct) {
+        score++;
+      }
+
+      const exp = document.getElementById('q-explanation');
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
+    }
+
+    function nextTestQuestion() {
+      tIdx++;
+      if (tIdx < testQuestions.length) {
+        loadTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const scoreEl = document.getElementById('q-score');
+      const fb = document.getElementById('q-feedback');
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 32) fb.innerText = "Mukammal natija! 49-50-mavzularni to'laqonli o'zlashtiribsiz 🌟";
+        else if(score >= 25) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+        else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function restartTest() {
+      tIdx = 0; score = 0;
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
+      loadTestQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize application on load
+    window.onload = function() {
+      initMatch();
+      loadFlashcard();
+      loadTestQuestion();
+    };
+  </script>
+</body>
+</html>

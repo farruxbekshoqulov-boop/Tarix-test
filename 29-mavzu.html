@@ -390,35 +390,31 @@
         document.getElementById(`tab-${t}`).classList.remove('active');
       });
       document.getElementById(`tab-btn-${tab}`).classList.add('active');
-      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
       document.getElementById('sticky-bar').style.display = 'none';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
-      // 1-bosqich: Fuqaro tarbiyasi va harbiy ta’lim
       [
         { id: 1, left: "Faol fuqarolar", right: "Yunon maktablari tarbiyalashi kerak bo‘lgan davlat himoyachilari" },
         { id: 2, left: "Ikki yil harbiy ta’lim", right: "Umumiy ta’limdan tashqari yigitlar olgan tayyorgarlik" },
         { id: 3, left: "Pirey porti", right: "Ikkinchi yili ba’zi yigitlar dengizchilik san’atini o‘rgangan joy" },
         { id: 4, left: "30 yoshga to‘lmaganlar", right: "Harbiy xavf tug‘ilganda qurol-yarog‘ bilan ko‘rikka yetib kelishi shart bo‘lganlar" }
       ],
-      // 2-bosqich: Olimpiya o‘yinlari tarixi
       [
         { id: 5, left: "Mil. avv. 776-yil", right: "Olimpiya shahrida birinchi o‘yinlar o‘tkazilgan sana" },
         { id: 6, left: "Har to‘rt yilda bir marta", right: "Olimpiada o‘yinlari o‘tkazib turilgan muddat" },
         { id: 7, left: "Zevs sharafiga", right: "Olimpiya o‘yinlari bag‘ishlab o‘tkazilgan oliy xudo" },
         { id: 8, left: "Gerakl", right: "Afsonalarga ko‘ra Olimpiya o‘yinlari asoschisi" }
       ],
-      // 3-bosqich: Musobaqa turlari va shartlari
       [
         { id: 9, left: "Beshkurash", right: "Turli sport musobaqalaridan iborat asosiy bellashuv" },
         { id: 10, left: "Otchopar", right: "Aravalar va otlarda poyga uyushtiriladigan joy" },
         { id: 11, left: "Urushlarni to‘xtatish", right: "Olimpiada o‘tkazilayotgan paytda amalga oshirilgan qoida" },
         { id: 12, left: "Ozod yunonlar", right: "Olimpiya o‘yinlarida ishtirok etish huquqiga ega bo‘lganlar" }
       ],
-      // 4-bosqich: G‘oliblar va zamonaviylik
       [
         { id: 13, left: "O‘z haykalini o‘rnatish", right: "Olimpiadada uch karra g‘alaba qozongan sportchining huquqi" },
         { id: 14, left: "Zaytun novdasi", right: "G‘oliblar taqdirlangan muqaddas gulchambar" },
@@ -565,270 +561,150 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (24 TA ARALASH TEST - JAVOBLAR 6 TADAN TENG TAQSIMLANGAN: A, B, C, D) ---
+    // --- 3. TEST SINOVI (24 TA) ---
     const testQuestions = [
       {
         q: "1. Qadimgi Yunonistonda birinchi Olimpiya o‘yinlari qachon o‘tkazilgan?",
-        options: [
-          "Miloddan avvalgi 776-yilda",
-          "Miloddan avvalgi 490-yilda",
-          "Milodiy 394-yilda",
-          "1896-yilda"
-        ],
-        correct: 0, // A
+        options: ["Miloddan avvalgi 776-yilda", "Miloddan avvalgi 490-yilda", "Milodiy 394-yilda", "1896-yilda"],
+        correct: 0,
         exp: "Miloddan avvalgi 776-yilda Olimpiya shahrida birinchi o‘yinlar o‘tkazilgan."
       },
       {
         q: "2. Qadimgi Yunonistonda yigitlar umumiy ta’limdan tashqari necha yil harbiy ta’lim olganlar?",
-        options: [
-          "Bir yil",
-          "Ikki yil",
-          "Uch yil",
-          "Besh yil"
-        ],
-        correct: 1, // B
+        options: ["Bir yil", "Ikki yil", "Uch yil", "Besh yil"],
+        correct: 1,
         exp: "Umumiy ta’limdan tashqari, yigitlar ikki yil harbiy ta’lim ham olgan."
       },
       {
         q: "3. Qadimgi Yunonistonda Olimpiya o‘yinlari qaysi xudo sharafiga bag‘ishlab o‘tkazilgan?",
-        options: [
-          "Apollon",
-          "Poseydon",
-          "Zevs",
-          "Gerakl"
-        ],
-        correct: 2, // C
+        options: ["Apollon", "Poseydon", "Zevs", "Gerakl"],
+        correct: 2,
         exp: "Olimpiya o‘yinlari Olimp xudosi Zevs sharafiga bag‘ishlab o‘tkazilgan."
       },
       {
         q: "4. Qadimgi Olimpiya o‘yinlari xristian dini tarqalishi natijasida qachon taqiqlangan?",
-        options: [
-          "Miloddan avvalgi 776-yilda",
-          "1896-yilda",
-          "Mil. avv. V asrda",
-          "Milodiy 394-yilda"
-        ],
-        correct: 3, // D
+        options: ["Miloddan avvalgi 776-yilda", "1896-yilda", "Mil. avv. V asrda", "Milodiy 394-yilda"],
+        correct: 3,
         exp: "Milodiy 394-yilda qadimgi Olimpiya o‘yinlarini o‘tkazish butunlay to‘xtatib qoldi."
       },
       {
         q: "5. Mamlakatni mudofaa qilish zarurati tug‘ilganda qurol-yarog‘i bilan ko‘rikka yetib kelishi shart bo‘lgan fuqarolar yoshi qancha edi?",
-        options: [
-          "30 yoshga to‘lmagan erkaklar",
-          "Faqat 50 yoshdan oshganlar",
-          "18 yoshli o‘smirlar",
-          "60 yoshli keksa jangchilar"
-        ],
-        correct: 0, // A
+        options: ["30 yoshga to‘lmagan erkaklar", "Faqat 50 yoshdan oshganlar", "18 yoshli o‘smirlar", "60 yoshli keksa jangchilar"],
+        correct: 0,
         exp: "Mamlakatni mudofaa qilish zarurati tug‘ilganda 30 yoshga to‘lmagan erkaklarning barchasi qurol-yarog‘i bilan kelishi shart bo‘lgan."
       },
       {
         q: "6. Qadimgi Yunonistonda Olimpiya o‘yinlarining afsonaviy asoschisi kim deb hisoblangan?",
-        options: [
-          "Perikl",
-          "Gerakl",
-          "Demosfen",
-          "Leonid"
-        ],
-        correct: 1, // B
+        options: ["Perikl", "Gerakl", "Demosfen", "Leonid"],
+        correct: 1,
         exp: "Afsonalarga ko‘ra, Olimpiya o‘yinlari asoschisi Gerakl hisoblangan."
       },
       {
         q: "7. Qadimgi Olimpiya o‘yinlari g‘oliblari qanday mukofot bilan taqdirlangan?",
-        options: [
-          "Oltin taqinchoqlar bilan",
-          "Qimmatbaho qurollar bilan",
-          "Muqaddas zaytun daraxti novdalaridan to‘qilgan gulchambar bilan",
-          "Katta yer uchastkalari bilan"
-        ],
-        correct: 2, // C
+        options: ["Oltin taqinchoqlar bilan", "Qimmatbaho qurollar bilan", "Muqaddas zaytun daraxti novdalaridan to‘qilgan gulchambar bilan", "Katta yer uchastkalari bilan"],
+        correct: 2,
         exp: "G‘oliblar muqaddas zaytun daraxti novdalaridan to‘qilgan gulchambar bilan taqdirlangan."
       },
       {
         q: "8. Qadimgi Olimpiya o‘yinlari qayta tiklangan yil qaysi javobda ko‘rsatilgan?",
-        options: [
-          "1900-yil",
-          "1924-yil",
-          "1880-yil",
-          "1896-yil"
-        ],
-        correct: 3, // D
+        options: ["1900-yil", "1924-yil", "1880-yil", "1896-yil"],
+        correct: 3,
         exp: "Nihoyat 1896-yilda Olimpiya o‘yinlari qayta tiklandi."
       },
       {
         q: "9. Harbiy ta’limning ikkinchi yilida ayrim yigitlar qayerda dengizchilik san’atini o‘rganganlar?",
-        options: [
-          "Pirey portida",
-          "Salamin bo‘g‘ozida",
-          "Krit orolida",
-          "Marafon tekisligida"
-        ],
-        correct: 0, // A
+        options: ["Pirey portida", "Salamin bo‘g‘ozida", "Krit orolida", "Marafon tekisligida"],
+        correct: 0,
         exp: "Ikkinchi yili boshqalari Pirey portida dengizchilik san’atining asoslarini o‘rganar edi."
       },
       {
         q: "10. Olimpiya o‘yinlari qancha muddatda bir marta o‘tkazib turilgan?",
-        options: [
-          "Har yili",
-          "Har to‘rt yilda bir marta",
-          "Har o‘n yilda bir marta",
-          "Har ikki yilda bir marta"
-        ],
-        correct: 1, // B
+        options: ["Har yili", "Har to‘rt yilda bir marta", "Har o‘n yilda bir marta", "Har ikki yilda bir marta"],
+        correct: 1,
         exp: "Ana shu sanadan boshlab har to‘rt yilda bir marta Olimpiada olovi quyosh nurlarida yondirilgan."
       },
       {
         q: "11. Yunon maktablari o‘z oldiga qanday asosiy tarbiyaviy maqsadni qo‘ygan edi?",
-        options: [
-          "Faqat chet tillarini o‘rgatish",
-          "Boy savdogarlarni tayyorlash",
-          "Faol fuqarolar, davlat himoyachilarini tarbiyalash",
-          "Faqat professional sportchilarni chiqarish"
-        ],
-        correct: 2, // C
+        options: ["Faqat chet tillarini o‘rgatish", "Boy savdogarlarni tayyorlash", "Faol fuqarolar, davlat himoyachilarini tarbiyalash", "Faqat professional sportchilarni chiqarish"],
+        correct: 2,
         exp: "Yunon maktablari faol fuqarolar, davlat himoyachilarini tarbiyalashi kerak edi."
       },
       {
         q: "12. Olimpiya o‘yinlarida ishtirok etish huquqiga kimlar ega bo‘lgan?",
-        options: [
-          "Barcha xohlovchi qullar",
-          "Chet ellik boy savdogarlar",
-          "Faqat Afina fuqarolari",
-          "Jinoyat sodir etmagan, sha’niga dog‘ tushirmagan ozod yunonlar"
-        ],
-        correct: 3, // D
+        options: ["Barcha xohlovchi qullar", "Chet ellik boy savdogarlar", "Faqat Afina fuqarolari", "Jinoyat sodir etmagan, sha’niga dog‘ tushirmagan ozod yunonlar"],
+        correct: 3,
         exp: "Olimpiya o‘yinlarida faqat jinoyat sodir etmagan, sha’niga dog‘ tushirmagan ozod yunon ishtirok etishi mumkin bo‘lgan."
       },
       {
         q: "13. Harbiy xizmatning birinchi yilida yigitlar qanday vazifalarni bajarganlar?",
-        options: [
-          "Uylarida yashab, safda yurish, qurol taqib yurish, ochlik va sovuqqa chidamli bo‘lishni o‘rgangan",
-          "Faqat darslik yodlagan",
-          "Chet ellarga savdo kemalarida suzgan",
-          "Piramidalar qurilishida ishlagan"
-        ],
-        correct: 0, // A
+        options: ["Uylarida yashab, safda yurish, qurol taqib yurish, ochlik va sovuqqa chidamli bo‘lishni o‘rgangan", "Faqat darslik yodlagan", "Chet ellarga savdo kemalarida suzgan", "Piramidalar qurilishida ishlagan"],
+        correct: 0,
         exp: "Birinchi yili ular uylarida yashab va safda yurish, qurol taqib yurish, ochlik va sovuqqa chidamli bo‘lishni o‘rgandi."
       },
       {
         q: "14. Qadimgi Yunonistonda sport musobaqalari paytida qanday muhim shart bajarilgan?",
-        options: [
-          "Barcha shaharlar birlashib hujum qilgan",
-          "O‘zaro urushlar to‘xtatilgan",
-          "Faqat tungi vaqtda poyga qilingan",
-          "Chet elliklar qatnashishi majburiy bo‘lgan"
-        ],
-        correct: 1, // B
+        options: ["Barcha shaharlar birlashib hujum qilgan", "O‘zaro urushlar to‘xtatilgan", "Faqat tungi vaqtda poyga qilingan", "Chet elliklar qatnashishi majburiy bo‘lgan"],
+        correct: 1,
         exp: "Odamlar va sportchilar Olimpiyaga eson-omon yetib kelishi uchun o‘yinlar o‘tkazilayotgan paytda urushlar to‘xtatilgan."
       },
       {
         q: "15. Olimpiya shahrida uch karra g‘alaba qozongan sportchiga qanday huquq berilgan?",
-        options: [
-          "Olimpiya shahrida o‘z haykalini o‘rnatishga",
-          "Yunoniston podshosi bo‘lishga",
-          "Barcha soliqlardan umrbod ozod bo‘lishga",
-          "Katta flot egasi bo‘lishga"
-        ],
-        correct: 2, // C
+        options: ["Olimpiya shahrida o‘z haykalini o‘rnatishga", "Yunoniston podshosi bo‘lishga", "Barcha soliqlardan umrbod ozod bo‘lishga", "Katta flot egasi bo‘lishga"],
+        correct: 2,
         exp: "Musobaqalarda uch karra g‘alaba qozongan sportchi Olimpiya shahrida o‘z haykalini o‘rnatishga haqli bo‘lgan."
       },
       {
         q: "16. Bolalikdanoq o‘g‘il bolalarga qaysi san’at turlariga muhabbat hissi singdirilgan?",
-        options: [
-          "Rassomchilik va haykaltaroshlikka",
-          "Teatr va sahna san’atiga",
-          "Arxitektura va qurilishga",
-          "She’riyat va musiqaga"
-        ],
-        correct: 3, // D
+        options: ["Rassomchilik va haykaltaroshlikka", "Teatr va sahna san’atiga", "Arxitektura va qurilishga", "She’riyat va musiqaga"],
+        correct: 3,
         exp: "Bolalikdanoq o‘g‘il bolalarga she’riyat va musiqaga muhabbat hissi singdirilardi."
       },
       {
         q: "17. Qadimgi Olimpiya o‘yinlari qaysi shaharda o‘tkazilgan?",
-        options: [
-          "Olimpiya shahrida",
-          "Afinada",
-          "Spartada",
-          "Miken shahrida"
-        ],
-        correct: 0, // A
+        options: ["Olimpiya shahrida", "Afinada", "Spartada", "Miken shahrida"],
+        correct: 0,
         exp: "Mil. avv. 776-yilda Olimpiya shahrida birinchi o‘yinlar o‘tkazilgan."
       },
       {
         q: "18. Qadimgi yunon yigitlari harbiy xizmatning ikkinchi yilida qayerda xizmat o‘taganlar?",
-        options: [
-          "Krit orolida",
-          "Attika chegara qal’alarida",
-          "Peloponnes cho‘llarida",
-          "Marafon tekisligida"
-        ],
-        correct: 1, // B
+        options: ["Krit orolida", "Attika chegara qal’alarida", "Peloponnes cho‘llarida", "Marafon tekisligida"],
+        correct: 1,
         exp: "Ikkinchi yili esa ayrimlari Attika chegara qal’alarida harbiy xizmat o‘tar edi."
       },
       {
         q: "19. Hozirgi kunda Olimpiya o‘yinlarining mash’alasi qayerdan yoqib keltiriladi?",
-        options: [
-          "Afina Akropolidan",
-          "Olimp tog‘i cho‘qqisidan",
-          "Quyosh nurlaridan yondirilib o‘yinlar o‘tkaziladigan joyga keltiriladi",
-          "Delf ibodatxonasidan"
-        ],
-        correct: 2, // C
+        options: ["Afina Akropolidan", "Olimp tog‘i cho‘qqisidan", "Quyosh nurlaridan yondirilib o‘yinlar o‘tkaziladigan joyga keltiriladi", "Delf ibodatxonasidan"],
+        correct: 2,
         exp: "Quyosh nurlaridan yondirilgan mash’ala Olimpiya musobaqalari o‘tkaziladigan joyga keltiriladi."
       },
       {
         q: "20. Yunon fuqarolari tarbiyasida Vatanga muhabbat nimalarda yaqqol namoyon bo‘lgan?",
-        options: [
-          "Faqat chiroyli she’rlar yozishda",
-          "Chet ellarga savdo qilish uchun borishda",
-          "Olimpiya o‘yinlarida hakamlik qilishda",
-          "Har bir fuqaroning fidoyiligi va jasoratida"
-        ],
-        correct: 3, // D
+        options: ["Faqat chiroyli she’rlar yozishda", "Chet ellarga savdo qilish uchun borishda", "Olimpiya o‘yinlarida hakamlik qilishda", "Har bir fuqaroning fidoyiligi va jasoratida"],
+        correct: 3,
         exp: "Vatanga muhabbat har bir fuqaroning fidoyiligi va jasoratida aks etgan."
       },
       {
         q: "21. Beshkurash musobaqalari qanday turlardan iborat bo‘lgan?",
-        options: [
-          "Turli sport musobaqalari yig‘indisidan",
-          "Faqat suzish va eshkak eshishdan",
-          "Faqat jangovar qilichbozlikdan",
-          "Aravalar poygasidan"
-        ],
-        correct: 0, // A
+        options: ["Turli sport musobaqalari yig‘indisidan", "Faqat suzish va eshkak eshishdan", "Faqat jangovar qilichbozlikdan", "Aravalar poygasidan"],
+        correct: 0,
         exp: "Beshkurash turli sport musobaqalaridan iborat bo‘lgan."
       },
       {
         q: "22. Otchoparda asosan qanday musobaqalar uyushtirilgan?",
-        options: [
-          "Piyoda yugurish poygalari",
-          "Aravalarda va otlarda poyga",
-          "Og‘ir atletika bellashuvlari",
-          "Nayza uloqtirish musobaqasi"
-        ],
-        correct: 1, // B
+        options: ["Piyoda yugurish poygalari", "Aravalarda va otlarda poyga", "Og‘ir atletika bellashuvlari", "Nayza uloqtirish musobaqasi"],
+        correct: 1,
         exp: "Otchoparda esa aravalarda va otlarda poyga uyushtirilar edi."
       },
       {
         q: "23. Qadimgi Yunonistonda sportni rivojlantirish va Olimpiya o‘yinlariga qiziqishdan asosiy maqsad nima edi?",
-        options: [
-          "Faqat dam olish va ko‘ngil ochish",
-          "Chet elliklardan pul topish",
-          "Baquvvat, chidamli va davlatni himoya qiluvchi faol fuqarolarni tarbiyalash",
-          "Teatr san’atini rivojlantirish"
-        ],
-        correct: 2, // C
+        options: ["Faqat dam olish va ko‘ngil ochish", "Chet elliklardan pul topish", "Baquvvat, chidamli va davlatni himoya qiluvchi faol fuqarolarni tarbiyalash", "Teatr san’atini rivojlantirish"],
+        correct: 2,
         exp: "Sportni rivojlantirish va Olimpiya o‘yinlariga ommaviy qiziqish faol fuqarolar, davlat himoyachilarini tarbiyalashga xizmat qilgan."
       },
       {
         q: "24. Olimpiya o‘yinlari vaqtida sportchilar va odamlar uchun qanday qoida amal qilgan?",
-        options: [
-          "Faqat boylar qatnashishi mumkin bo‘lgan",
-          "Barcha qonunlar bekor qilingan",
-          "Musobaqa paytida savdo qilish taqiqlangan",
-          "Olimpiyaga eson-omon yetib kelish uchun o‘yinlar o‘tkazilayotgan paytda urushlar to‘xtatilgan"
-        ],
-        correct: 3, // D
+        options: ["Faqat boylar qatnashishi mumkin bo‘lgan", "Barcha qonunlar bekor qilingan", "Musobaqa paytida savdo qilish taqiqlangan", "Olimpiyaga eson-omon yetib kelish uchun o‘yinlar o‘tkazilayotgan paytda urushlar to‘xtatilgan"],
+        correct: 3,
         exp: "Odamlar va sportchilar Olimpiyaga eson-omon yetib kelishi uchun o‘yinlar o‘tkazilayotgan paytda urushlar to‘xtatilgan."
       }
     ];
@@ -907,10 +783,12 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Dastlabki ishga tushirish
-    initMatch();
-    loadFlashcard();
-    loadTestQuestion();
+    // Dastlabki ishga tushirish (Sahifa to‘liq yuklangach ishlaydi)
+    window.onload = function() {
+      initMatch();
+      loadFlashcard();
+      loadTestQuestion();
+    };
   </script>
 </body>
 </html>

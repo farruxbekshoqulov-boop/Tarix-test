@@ -384,7 +384,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (40 TA TEST - A, B, C, D o'rtasida mutlaqo betartib va har biriga aniq 10 tadan teng taqsimlangan) -->
+    <!-- 3. TEST SINOVI (40 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -438,7 +438,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 20 ta juftlik) ---
+    // --- 1. MOSLASH ---
     const matchStages = [
       [
         { id: 1, left: "O'rta asrlar davri", right: "V asrdan XVII asrning o'rtalarigacha bo'lgan davrni o'z ichiga olgan tarixiy bosqich" },
@@ -668,282 +668,242 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (40 TA TEST - Mutlaqo tartibsiz, har bir harfga aniq 10 tadan teng taqsimlangan) ---
+    // --- 3. TEST SINOVI ---
     const testQuestions = [
-      // 1. Correct: B (1)
       {
         q: "1. Qachon Turk xoqonligi Oltoyda tashkil topgan?",
         options: ["V asr o'rtalarida", "VI asr o'rtalarida", "VII asr o'rtalarida", "VIII asrda"],
         correct: 1,
         exp: "Turk xoqonligi VI asr o'rtalarida tashkil topgan."
       },
-      // 2. Correct: D (3)
       {
         q: "2. Qachon Qoraxoniylar davlati Yettisuv va Qashqarda tashkil topgan?",
         options: ["IX asr boshida", "VIII asr oxirida", "XI asr boshida", "X asr oxirida"],
         correct: 3,
         exp: "Qoraxoniylar davlati X asr oxirida tashkil topgan."
       },
-      // 3. Correct: A (0)
       {
         q: "3. Qachon G'aznaviylar davlati Xurosonda yuksalgan?",
         options: ["X asr oxirida", "IX asr boshida", "XI asrda", "XII asrda"],
         correct: 0,
         exp: "G'aznaviylar davlati X asr oxirida tashkil topgan."
       },
-      // 4. Correct: C (2)
       {
         q: "4. Qachon Saljuqiylar imperiyasi Yaqin va O'rta Sharqda tashkil topgan?",
         options: ["IX asrda", "X asrda", "XI asrda", "XII asrda"],
         correct: 2,
         exp: "Saljuqiylar imperiyasi XI asrda tashkil topgan."
       },
-      // 5. Correct: B (1)
       {
         q: "5. Qachon Somoniylar davlati Movarounnahr va Xurosonda hukmronlik qilgan?",
         options: ["V–VI asrlarda", "IX–X asrlarda", "XI–XII asrlarda", "XIII–XIV asrlarda"],
         correct: 1,
         exp: "Somoniylar IX–X asrlarda hukmronlik qilgan."
       },
-      // 6. Correct: D (3)
       {
         q: "6. Qachon Mahmud Qoshg'ariy o'zining «Devonu lug'otit turk» asarini yozgan?",
         options: ["IX asrda", "X asrda", "XII asrda", "XI asrda"],
         correct: 3,
         exp: "Mahmud Qoshg'ariy XI asrda yashab ijod qilgan."
       },
-      // 7. Correct: A (0)
       {
         q: "7. Qachon Ismoil Somoniy Safforiylar ustidan g'alaba qozonib davlatni birlashtirgan?",
         options: ["IX asr oxiri / X asr boshlarida", "XI asrda", "XII asrda", "VI asrda"],
         correct: 0,
         exp: "Bu voqea IX asr oxiri va X asr boshlarida sodir bo'lgan."
       },
-      // 8. Correct: C (2)
       {
         q: "8. Qachon Dandanqon jangi bo'lib o'tgan?",
         options: ["999-yilda", "1017-yilda", "1040-yilda", "1097-yilda"],
         correct: 2,
         exp: "Dandanqon jangi 1040-yilda bo'lgan."
       },
-      // 9. Correct: B (1)
       {
         q: "9. Qachon Somoniylar davlati barham topgan?",
         options: ["813-yilda", "999-yilda", "1040-yilda", "1231-yilda"],
         correct: 1,
         exp: "Somoniylar davlati 999-yilda barham topgan."
       },
-      // 10. Correct: D (3)
       {
         q: "10. Qachon Sulton Mahmud G'aznaviy hukmronlik qilgan?",
         options: ["813–833-yillarda", "873–950-yillarda", "980–1037-yillarda", "998–1030-yillarda"],
         correct: 3,
         exp: "Sulton Mahmud 998–1030-yillarda hukmronlik qilgan."
       },
-      // 11. Correct: A (0)
       {
         q: "11. Qachon Istami yabg'u Vizantiya imperatori Iustinian saroyiga elchi yuborgan?",
         options: ["VI asrda Turk xoqonligi davrida", "X asrda", "XI asrda", "XII asrda"],
         correct: 0,
         exp: "Bu VI asrda Turk xoqonligi davrida sodir bo'lgan."
       },
-      // 12. Correct: C (2)
       {
         q: "12. Qachon Buxoroda Minorai Kalon qurdirilgan?",
         options: ["Somoniylar davrida", "G'aznaviylar davrida", "Qoraxoniylar davrida", "Saljuqiylar davrida"],
         correct: 2,
         exp: "Minorai Kalon qoraxoniylar davrida qurilgan."
       },
-      // 13. Correct: B (1)
       {
         q: "13. Qachon Yusuf Xos Hojib «Qutadg'u bilig» asarini yozgan?",
         options: ["IX asrda", "XI asrda", "XIII asrda", "XIV asrda"],
         correct: 1,
         exp: "Yusuf Xos Hojib XI asrda yozgan."
       },
-      // 14. Correct: D (3)
       {
         q: "14. Qachon Ibrohim Bug'roxon Qoraxoniylar davrida Islom dinini davlat dini deb e'lon qilgan?",
         options: ["VI asrda", "VIII asrda", "IX asrda", "X asrda"],
         correct: 3,
         exp: "Bu X asrda sodir bo'lgan."
       },
-      // 15. Correct: A (0)
       {
         q: "15. Qachon Turk xoqonligi parchalangach G'arbiy va Sharqiy xoqonliklarga bo'lingan?",
         options: ["VI asr oxiri / VII asr boshlarida", "X asrda", "XI asrda", "XII asrda"],
         correct: 0,
         exp: "Bu VI asr oxiri va VII asr boshlarida yuz bergan."
       },
-      // 16. Correct: C (2)
       {
         q: "16. Qachon Tog'rul bek saljuqiylarning birinchi sultoni bo'lgan?",
         options: ["IX asrda", "X asrda", "XI asrda", "XII asrda"],
         correct: 2,
         exp: "Tog'rul bek XI asrda sulton bo'lgan."
       },
-      // 17. Correct: B (1)
       {
         q: "17. Qachon Movarounnahrda kumush va mis tangalar keng miqyosda zarb qilingan?",
         options: ["Faqat antik davrda", "O'rta asrlarda Somoniylar va Qoraxoniylar davrida", "Faqat sovet davrida", "Mustaqillikda"],
         correct: 1,
         exp: "Bu o'rta asrlarda keng amalga oshirilgan."
       },
-      // 18. Correct: D (3)
       {
         q: "18. Qachon Buyuk Ipak yo'li xalqaro savdo va elchilik aloqalarida eng yuqori cho'qqiga chiqqan?",
         options: ["Faqat paleolitda", "Faqat temir asrida", "Faqat XIX asrda", "O'rta asrlarda Turk xoqonligi va keyingi davrlarda"],
         correct: 3,
         exp: "Bu o'rta asrlarda Turk xoqonligi davrida rivojlangan."
       },
-      // 19. Correct: A (0)
       {
         q: "19. Qachon Buxoro shahar sifatida Somoniylar davrida qanday maqomga ega bo'lgan?",
         options: ["Poytaxt va ilm-fan, madaniyat markazi", "Faqat kichik qishloq", "Faqat harbiy qal'a", "Faqat cho'l hududi"],
         correct: 0,
         exp: "Buxoro poytaxt bo'lgan."
       },
-      // 20. Correct: C (2)
       {
         q: "20. Qachon O'rta asrlarda karvonsaroylar savdogarlar uchun qurila boshlagan?",
         options: ["Qadimgi Rimda", "Faqat Hindistonda", "Buyuk Ipak yo'li bo'ylab o'rta asrlarda", "Faqat zamonaviy davrda"],
         correct: 2,
         exp: "Karvonsaroylar Ipak yo'li bo'ylab o'rta asrlarda qurilgan."
       },
-      // 21. Correct: B (1)
       {
         q: "21. Qachon Bumin xoqon Turk xoqonligiga asos solgan?",
         options: ["V asrda", "VI asrda", "VII asrda", "VIII asrda"],
         correct: 1,
         exp: "Bumin xoqon VI asrda asos solgan."
       },
-      // 22. Correct: D (3)
       {
         q: "22. Qachon Sulton Mahmud G'aznaviy Hindistonga 17 marta yurish qilgan?",
         options: ["973–980-yillarda", "999–1010-yillarda", "1040–1050-yillarda", "998–1030-yillardagi hukmronligi davrida"],
         correct: 3,
         exp: "U o'z hukmronligi davrida yurishlar qilgan."
       },
-      // 23. Correct: A (0)
       {
         q: "23. Qachon Somoniylar davrida Buxoro saroyida buyuk olimlar to'plangan?",
         options: ["IX–X asrlarda", "XI–XII asrlarda", "XIII–XIV asrlarda", "XV–XVI asrlarda"],
         correct: 0,
         exp: "Bu IX–X asrlarda sodir bo'lgan."
       },
-      // 24. Correct: C (2)
       {
         q: "24. Qachon O'rta asrlarda hunarmandchilik turlari (kulolchilik, to'qimachilik) ravnaq topgan?",
         options: ["Faqat ibtidoiy tuzumda", "Faqat antik davrda", "Movarounnahr va Xorazm shaharlari rivojlangan o'rta asrlarda", "Faqat XX asrda"],
         correct: 2,
         exp: "Bu o'rta asrlarda shahar hayotida ravnaq topgan."
       },
-      // 25. Correct: B (1)
       {
         q: "25. Qachon Istami yabg'u Turk xoqonligining g'arbiy qismiga boshchilik qilgan?",
         options: ["V asr oxirida", "VI asr o'rtalaridan boshlab", "VII asrda", "VIII asrda"],
         correct: 1,
         exp: "Istami yabg'u VI asr o'rtalaridan boshlab boshqargan."
       },
-      // 26. Correct: D (3)
       {
         q: "26. Qachon Qoraxoniylar davlati keyinchalik ikkiga (Sharqiy va G'arbiy) bo'lingan?",
         options: ["X asrda", "XI asr boshida", "XII asr oxirida", "XI asrning ikkinchi yarmida"],
         correct: 3,
         exp: "Bu XI asrning ikkinchi yarmida yuz bergan."
       },
-      // 27. Correct: A (0)
       {
         q: "27. Qachon Ismoil Somoniy hukmronlik qilgan?",
         options: ["892–907-yillarda", "998–1030-yillarda", "1030–1041-yillarda", "1097–1231-yillarda"],
         correct: 0,
         exp: "Ismoil Somoniy 892–907-yillarda hukmronlik qilgan."
       },
-      // 28. Correct: C (2)
       {
         q: "28. Qachon G'aznaviylar davrida poytaxt G'azna shahri bo'lgan?",
         options: ["VI asrda", "IX asrda", "X–XI asrlarda", "XIV asrda"],
         correct: 2,
         exp: "Bu G'aznaviylar davrida (X–XI asrlarda) bo'lgan."
       },
-      // 29. Correct: B (1)
       {
         q: "29. Qachon Turk xoqonligi va Vizantiya o'rtasida elchilik munosabatlari o'rnatilgan?",
         options: ["V asrda", "VI asrda", "VIII asrda", "X asrda"],
         correct: 1,
         exp: "Bu VI asrda Turk xoqonligi davrida o'rnatilgan."
       },
-      // 30. Correct: D (3)
       {
         q: "30. Qachon O'rta asrlarda teleradio yoki internet bo'lmagan paytda ma'lumotlar qanday tarqatilgan?",
         options: ["Faqat telegraf orqali", "Faqat telefon orqali", "Faqat pochtasiz", "Karvonlar va elchilar orqali yozma va og'zaki ravishda"],
         correct: 3,
         exp: "Ma'lumotlar karvonlar va elchilar orqali tarqatilgan."
       },
-      // 31. Correct: A (0)
       {
         q: "31. Qachon O'rta asrlarda Movarounnahrda sug'orma dehqonchilik yanada rivojlangan?",
         options: ["IX–XII asrlarda iqtisodiy yuksalish davrida", "V asrda", "XIII asrda", "XVI asrda"],
         correct: 0,
         exp: "Bu IX–XII asrlarda yuz bergan."
       },
-      // 32. Correct: C (2)
       {
         q: "32. Qachon Saljuqiylar Mesopotamiya va Yaqin Sharqni egallagan?",
         options: ["VI asrda", "IX asrda", "XI asrda", "XIV asrda"],
         correct: 2,
         exp: "Saljuqiylar bu hududlarni XI asrda egallagan."
       },
-      // 33. Correct: B (1)
       {
         q: "33. Qachon O'rta asrlarda ko'chmanchi turkiy qabilalar o'troqlasha boshlagan?",
         options: ["Qadimgi paleolitda", "Movarounnahr va Xorazmga o'rnashgan o'rta asrlarda", "Faqat XIX asrda", "Faqat XX asrda"],
         correct: 1,
         exp: "O'troqlashuv o'rta asrlarda sodir bo'lgan."
       },
-      // 34. Correct: D (3)
       {
         q: "34. Qachon O'rta asrlarda shahar hokimlari va amirlar saroylari qayerda joylashgan?",
         options: ["Faqat cho'lda", "Faqat tog'da", "Faqat daryo bo'yida", "Shaharning markaziy qismi — arkda"],
         correct: 3,
         exp: "Saroylar arkda joylashgan."
       },
-      // 35. Correct: A (0)
       {
         q: "35. Qachon O'rta asrlarda shahar aholisining asosiy qismini kimlar tashkil etgan?",
         options: ["Hunarmandlar va savdogarlar", "Faqat jangchilar", "Faqat chet elliklar", "Faqat sayohatchilar"],
         correct: 0,
         exp: "Asosiy qismini hunarmandlar va savdogarlar tashkil etgan."
       },
-      // 36. Correct: C (2)
       {
         q: "36. Qachon O'rta asrlarda shahar atrofi qanday atalgan?",
         options: ["Ark", "Shahriston", "Rabot (Rirob)", "Qal'a"],
         correct: 2,
         exp: "Shahar atrofi rabot deb atalgan."
       },
-      // 37. Correct: B (1)
       {
         q: "37. Qachon O'rta asrlarda shaharning ichki qismi, savdo va ma'muriy joylashgan qismi nima deb atalgan?",
         options: ["Rabot", "Shahriston", "Qishloq", "Dasht"],
         correct: 1,
         exp: "Bu qism shahriston deb atalgan."
       },
-      // 38. Correct: D (3)
       {
         q: "38. Qachon O'rta asrlarda davlat boshqaruvida devonlar (vazirliklar) qanday vazifani bajargan?",
         options: ["Faqat harbiy yurish", "Faqat savdo", "Faqat bog'dorchilik", "Moliya, soliq va davlat ishlarini yuritish"],
         correct: 3,
         exp: "Devonlar moliya va davlat ishlarini yuritgan."
       },
-      // 39. Correct: A (0)
       {
         q: "39. Qachon O'rta asrlarda turkiy tillarning mavqei va hurmati oshib borgan?",
         options: ["Turk xoqonligi va keyingi turkiy sulolalar davrida", "Faqat antik davrda", "Faqat Rimda", "Faqat Gretsiyada"],
         correct: 0,
         exp: "Bu turkiy sulolalar davrida oshgan."
       },
-      // 40. Correct: C (2)
       {
         q: "40. Qachon 7-sinf O'rta asrlar O'zbekiston tarixi darsligi o'quvchilarga o'rgatila boshlangan?",
         options: ["O'rta asrlarning o'zida", "Qadimgi davrda", "Zamonamizdagi ta'lim tizimida", "Faqat XIX asrda"],
@@ -1046,12 +1006,10 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Initialize application on load
-    window.onload = function() {
-      initMatch();
-      loadFlashcard();
-      loadTestQuestion();
-    };
+    // To'g'ridan-to'g'ri ishga tushirish (Telegram uchun eng xavfsiz usul)
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
   </script>
 </body>
 </html>

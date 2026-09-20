@@ -36,7 +36,8 @@
     body {
       display: flex;
       justify-content: center;
-      padding: 10px 10px 100px 10px;
+      align-items: flex-start;
+      padding: 20px 10px 100px 10px;
     }
 
     .app-card {
@@ -379,9 +380,14 @@
   </div>
 
   <script>
-    if (window.Telegram && window.Telegram.WebApp) {
-      Telegram.WebApp.ready();
-      Telegram.WebApp.expand();
+    // Xavfsiz Telegram WebApp va brauzer tekshiruvi (Notebook va Telefonda birdek ishlaydi)
+    try {
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+      }
+    } catch (e) {
+      console.log("Oddiy brauzer rejimi");
     }
 
     function switchTab(tab) {
@@ -572,7 +578,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (25 TA TEST) ---
+    // --- 3. TEST SINOVI (25 TA TEST - TO'G'RI JAVOBLAR TENG VA TARTIBSIZ ARALASHTIRILGAN) ---
     const testQuestions = [
       {
         q: "1. Qadimgi dunyo tarixi qaysi davrlar oralig‘ini qamrab oladi?",
@@ -582,24 +588,29 @@
           "Tosh davridan to O‘rta Osiyoda «Avesto» yaratilguniga qadar",
           "Mil. avv. I mingyillikdan to milodiy V asrgacha"
         ],
-        correct: 0,
+        correct: 0, // A
         exp: "Odam paydo bo‘lganidan to milodiy 476-yil G‘arbiy Rim qulaguniga qadar kechgan voqealar qadimgi dunyo tarixidir."
       },
       {
         q: "2. Jahondagi barcha xalqlarning tarixi qaysi tuzumdan boshlangan?",
-        options: ["Quldorlik tuzumidan", "Ibtidoiy jamoa tuzumidan", "Feodalizm tuzumidan", "Urug‘chilik davridan"],
-        correct: 1,
+        options: [
+          "Quldorlik tuzumidan",
+          "Ibtidoiy jamoa tuzumidan",
+          "Feodalizm tuzumidan",
+          "Urug‘chilik davridan"
+        ],
+        correct: 1, // B
         exp: "Insoniyat tarixi barcha xalqlarda ibtidoiy jamoa tuzumidan boshlangan."
       },
       {
         q: "3. Insoniyat rivojidagi eng birinchi bosqich qanday atalgan?",
         options: [
           "Qabilalar ittifoqi",
-          "Kishilarning dastlabki jamoasi (ibtidoiy to‘da)",
           "Patriarxal oilalar",
+          "Kishilarning dastlabki jamoasi (ibtidoiy to‘da)",
           "Shahar-davlatlar"
         ],
-        correct: 1,
+        correct: 2, // C
         exp: "Kishilarning alohida guruhlarga birlashuvi eng qadimgi odamlarning dastlabki jamoasi hisoblanadi."
       },
       {
@@ -607,21 +618,21 @@
         options: [
           "Faqat o‘z manfaatlari uchun kurashishga",
           "Zo‘ravonlik bilan hamma narsaga erishishga",
-          "O‘zaro murosa va boshqalarga hurmat bilan munosabatda bo‘lishga",
-          "Qadimgi urushlarni takrorlashga"
+          "Qadimgi urushlarni takrorlashga",
+          "O‘zaro murosa va boshqalarga hurmat bilan munosabatda bo‘lishga"
         ],
-        correct: 2,
+        correct: 3, // D
         exp: "Darslikda ta’kidlanishicha, tarix bizni zo‘ravonlik bilan emas, o‘zaro murosa va hurmat bilan munosabatda bo‘lishga o‘rgatadi."
       },
       {
         q: "5. Darslik tavsiyasiga ko‘ra, tarixni nima uchun o‘rganish kerak?",
         options: [
-          "Faqat sana va nomlarni yodlash uchun",
           "Ajdodlarning bebaho yaratuvchanlik tajribasi uchun",
+          "Faqat sana va nomlarni yodlash uchun",
           "Boshqa davlatlar bilan bahslashish uchun",
           "Qadimiy tillarni o‘rganish uchungina"
         ],
-        correct: 1,
+        correct: 0, // A
         exp: "Tarixni sana va nomlar uchun emas, ajdodlarning yaratuvchanlik tajribasini o‘rganish uchun o‘rganiladi."
       },
       {
@@ -632,25 +643,40 @@
           "Faqat mavzu oxiridagi savollarni ko‘chirish",
           "Matnni faqat bir marta o‘qib qo‘yish"
         ],
-        correct: 1,
+        correct: 1, // B
         exp: "Darslik matnini yodlash kerak emas, qismlarga bo‘lib o‘z so‘zi bilan aytib berish kerak."
       },
       {
         q: "7. Qadimgi manzilgohlar va turarjoylarda qazishma ishlarini olib boruvchi soha vakillari kimlar?",
-        options: ["Etnograflar", "Arxeologlar", "Antropologlar", "Xronologlar"],
-        correct: 1,
+        options: [
+          "Antropologlar",
+          "Etnograflar",
+          "Arxeologlar",
+          "Xronologlar"
+        ],
+        correct: 2, // C
         exp: "Arxeologlar qadimgi turarjoylarda qazishmalar orqali ashyoviy qoldiqlarni topadi."
       },
       {
         q: "8. Qadimgi odamlarning suyak qoldiqlari orqali ularning tashqi qiyofasini tiklovchi olimlar?",
-        options: ["Arxeologlar", "Antropologlar", "Etnograflar", "Numizmatlar"],
-        correct: 1,
+        options: [
+          "Arxeologlar",
+          "Etnograflar",
+          "Numizmatlar",
+          "Antropologlar"
+        ],
+        correct: 3, // D
         exp: "Antropologlar skelet va bosh chanoqlar asosida inson qiyofasini tiklaydilar."
       },
       {
         q: "9. Qadimgi urf-odatlar va madaniy an’analarni saqlab qolgan hozirgi qabilalarni qaysi soha o‘rganadi?",
-        options: ["Antropologiya", "Toponimika", "Etnografiya", "Arxeologiya"],
-        correct: 2,
+        options: [
+          "Etnografiya",
+          "Antropologiya",
+          "Toponimika",
+          "Arxeologiya"
+        ],
+        correct: 0, // A
         exp: "Etnograflar xalqlarning urf-odat, madaniy an’analari va turmush tarzini o‘rganadi."
       },
       {
@@ -661,25 +687,40 @@
           "Ertak va afsonalar",
           "Qadimgi rivoyatlar"
         ],
-        correct: 1,
+        correct: 1, // B
         exp: "Mehnat qurollari, sopol idishlar va taqinchoqlar ashyoviy (moddiy) manbalardir."
       },
       {
         q: "11. O‘rta Osiyo tarixi bo‘yicha eng qadimgi yozma manba qaysi asar hisoblanadi?",
-        options: ["«Geografiya» kitobi", "«Avesto» kitobi", "Behistun qoyatosh bitiklari", "«Tarix» asari"],
-        correct: 1,
+        options: [
+          "«Geografiya» kitobi",
+          "Behistun qoyatosh bitiklari",
+          "«Avesto» kitobi",
+          "«Tarix» asari"
+        ],
+        correct: 2, // C
         exp: "Mintaqamizning eng qadimgi yozma manbasi «Avesto» hisoblanadi."
       },
       {
         q: "12. Behistun qoyatosh bitiklari qaysi davlat hududida joylashgan?",
-        options: ["Yunonistonda", "Misrda", "Eronda", "Iroqda"],
-        correct: 2,
+        options: [
+          "Yunonistonda",
+          "Misrda",
+          "Iroqda",
+          "Eronda"
+        ],
+        correct: 3, // D
         exp: "Behistun qoyasi hozirgi Eron hududida joylashgan."
       },
       {
         q: "13. Behistun qoyatosh bitiklari qaysi hukmdor buyrug‘i bilan o‘yib yozilgan?",
-        options: ["Kir II", "Doro I", "Aleksandr Makedoniyalik", "Kserks"],
-        correct: 1,
+        options: [
+          "Doro I",
+          "Kir II",
+          "Aleksandr Makedoniyalik",
+          "Kserks"
+        ],
+        correct: 0, // A
         exp: "Fors shohi Doro I buyrug‘i bilan Behistun qoyasiga o‘yib yozilgan."
       },
       {
@@ -690,30 +731,40 @@
           "Savdo yo‘llari xaritasi chizilgan",
           "Qadimgi jangchilarning ismlari yozilgan"
         ],
-        correct: 1,
+        correct: 1, // B
         exp: "Bitiklarda zabt etilgan hududlar qatorida O‘rta Osiyoning qadimgi davlatlari ham tilga olinadi."
       },
       {
         q: "15. Miloddan avvalgi V asrda yashab, O‘rta Osiyo haqida ma’lumot qoldirgan yunon tarixchisi kim?",
-        options: ["Aristotel", "Strabon", "Gerodot", "Arrian"],
-        correct: 2,
+        options: [
+          "Aristotel",
+          "Strabon",
+          "Gerodot",
+          "Arrian"
+        ],
+        correct: 2, // C
         exp: "Mil. avv. V asrda Gerodot o‘zining «Tarix» asarida yurtimiz tarixi haqida yozgan."
       },
       {
         q: "16. Miloddan avvalgi I asr oxirlarida yashab, «Geografiya» asarini yozgan olim kim?",
-        options: ["Strabon", "Gerodot", "Ptolemey", "Arrian"],
-        correct: 0,
+        options: [
+          "Gerodot",
+          "Ptolemey",
+          "Arrian",
+          "Strabon"
+        ],
+        correct: 3, // D
         exp: "Strabon «Geografiya» asarida ko‘plab xalqlar va o‘lkalar haqida ma’lumot beradi."
       },
       {
         q: "17. «Aleksandrning harbiy yurishlari» asari qachon va kim tomonidan yozilgan?",
         options: [
-          "Mil. avv. IV asrda Aleksandr tomonidan",
           "Milodiy II asrda yunon tarixchisi Arrian tomonidan",
+          "Mil. avv. IV asrda Aleksandr tomonidan",
           "Mil. avv. I asrda Strabon tomonidan",
           "Milodiy V asrda Rim tarixchilari tomonidan"
         ],
-        correct: 1,
+        correct: 0, // A
         exp: "Milodiy II asrda Arrian ushbu asarni yozgan."
       },
       {
@@ -724,69 +775,84 @@
           "Qabilalar kengashi asosida",
           "Podsholar farmonlari asosida"
         ],
-        correct: 1,
+        correct: 1, // B
         exp: "Dastlabki urug‘ jamoalari ona atrofida birlashgan — Matriarxat."
       },
       {
         q: "19. Patriarxat davrining boshlanishiga asosiy sabab nima bo‘ldi?",
         options: [
-          "Mehnat qurollari va xo‘jalik shakllarining takomillashuvi natijasida yetakchilik erkakka o‘tishi",
           "Ayollar sonining keskin kamayib ketishi",
           "Odamlarning shaharlarga ko‘chib o‘tishi",
+          "Mehnat qurollari va xo‘jalik shakllarining takomillashuvi natijasida yetakchilik erkakka o‘tishi",
           "Yozuvning kashf qilinishi"
         ],
-        correct: 0,
+        correct: 2, // C
         exp: "Mehnat qurollari rivojlanishi bilan yetakchilik erkaklarga o‘tdi — Patriarxat."
       },
       {
         q: "20. Nima sababdan arxeologlar insoniyat tarixi ibtidosini «Tosh davri» deb ataydilar?",
         options: [
           "Odamlar faqat tog‘larda yashagani uchun",
-          "Dastlabki mehnat qurollari toshlardan yasalgani sababli",
           "Yer yuzi butunlay tosh qoplamasidan iborat bo‘lgani uchun",
-          "Boshqa ashyolarni ishlatish taqiqlangani uchun"
+          "Boshqa ashyolarni ishlatish taqiqlangani uchun",
+          "Dastlabki mehnat qurollari toshlardan yasalgani sababli"
         ],
-        correct: 1,
+        correct: 3, // D
         exp: "Dastlabki mehnat qurollari toshdan yasalgani uchun bu davr Tosh davri deb atalgan."
       },
       {
         q: "21. Qadimgi tosh davri fanda qanday ataladi?",
-        options: ["Mezolit", "Neolit", "Paleolit", "Eneolit"],
-        correct: 2,
+        options: [
+          "Paleolit",
+          "Mezolit",
+          "Neolit",
+          "Eneolit"
+        ],
+        correct: 0, // A
         exp: "Yunoncha «paleos» (qadimgi) va «litos» (tosh) — Paleolit."
       },
       {
         q: "22. O‘rta tosh davri qaysi atama bilan yuritiladi?",
-        options: ["Paleolit", "Mezolit", "Neolit", "Bronza"],
-        correct: 1,
+        options: [
+          "Paleolit",
+          "Mezolit",
+          "Neolit",
+          "Bronza"
+        ],
+        correct: 1, // B
         exp: "Yunoncha «mezos» (o‘rta) va «litos» (tosh) — Mezolit."
       },
       {
         q: "23. Yangi tosh davri atamasi to‘g‘ri berilgan javobni toping.",
-        options: ["Neolit", "Paleolit", "Eneolit", "Mezolit"],
-        correct: 0,
+        options: [
+          "Paleolit",
+          "Eneolit",
+          "Neolit",
+          "Mezolit"
+        ],
+        correct: 2, // C
         exp: "Yunoncha «neos» (yangi) va «litos» (tosh) — Neolit."
       },
       {
         q: "24. Mis-tosh davri qanday ataladi va qaysi tillardan olingan?",
         options: [
-          "Eneolit — lotincha «eneus» (mis) va yunoncha «litos» (tosh)",
           "Neolit — yunoncha «neos» va «litos»",
           "Mezolit — lotincha «mezo» va yunoncha «litos»",
-          "Paleolit — lotincha «paleo» va arabcha «lit»"
+          "Paleolit — lotincha «paleo» va arabcha «lit»",
+          "Eneolit — lotincha «eneus» (mis) va yunoncha «litos» (tosh)"
         ],
-        correct: 0,
+        correct: 3, // D
         exp: "Eneolit — lotincha «eneus» (mis) va yunoncha «litos» (tosh) so‘zlaridan olingan."
       },
       {
         q: "25. Qadimgi tosh davri (Paleolit) qanday ichki bosqichlarga ajratib o‘rganiladi?",
         options: [
-          "Boshlang‘ich, o‘rta va yakuniy davrlar",
           "Ilk, o‘rta va so‘nggi paleolit",
+          "Boshlang‘ich, o‘rta va yakuniy davrlar",
           "Quyi va yuqori tosh davrlari",
           "Ibtidoiy, matriarxal va patriarxal bosqichlar"
         ],
-        correct: 1,
+        correct: 0, // A
         exp: "Paleolit davri ilk, o‘rta va so‘nggi paleolit davrlariga bo‘linadi."
       }
     ];
@@ -832,7 +898,6 @@
       exp.innerText = "💡 Izoh: " + q.exp;
       exp.style.display = 'block';
       
-      // Tugma pastda har doim ko'rinib turadi
       document.getElementById('sticky-bar').style.display = 'flex';
     }
 

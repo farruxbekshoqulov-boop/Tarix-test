@@ -36,7 +36,8 @@
     body {
       display: flex;
       justify-content: center;
-      padding: 14px 10px 40px 10px;
+      align-items: flex-start;
+      padding: 20px 10px 40px 10px;
     }
 
     .container {
@@ -264,9 +265,14 @@
   </div>
 
   <script>
-    if (window.Telegram && window.Telegram.WebApp) {
-      Telegram.WebApp.ready();
-      Telegram.WebApp.expand();
+    // Xavfsiz Telegram WebApp tekshiruvi (Notebook va Telefonda birdek xatosiz ishlaydi)
+    try {
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+      }
+    } catch (e) {
+      console.log("Oddiy brauzer rejimi");
     }
   </script>
 </body>

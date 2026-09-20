@@ -397,28 +397,24 @@
 
     // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
-      // 1-bosqich: Yozuv va alifbo
       [
         { id: 1, left: "Iyeroglif", right: "Yunoncha «muqaddas bitiklar» degan ma’noni anglatadi" },
         { id: 2, left: "750 iyeroglif", right: "Qadimgi Misr alifbosidagi belgilar soni" },
         { id: 3, left: "Qamish qalam", right: "Papirusga yozish uchun ishlatilgan qurol" },
         { id: 4, left: "Mineral bo‘yoqlar", right: "Yozuvda siyoh vazifasini o‘tagan moddalar" }
       ],
-      // 2-bosqich: Katta kashfiyot va manbalar
       [
         { id: 5, left: "Jak-Fransua Shampolyon", right: "1822-yilda Misr iyerogliflarini o‘qigan fransuz olimi" },
         { id: 6, left: "Rozett bitiktoshi", right: "Misr va yunon tillarida bir xil matn bitilgan tosh" },
         { id: 7, left: "Britaniya muzeyi (London)", right: "Hozirda Rozett toshi saqlanayotgan joy" },
         { id: 8, left: "Ohaktosh va sopol parchalari", right: "O‘quvchilar xat yozishni mashq qilgan ashyolar" }
       ],
-      // 3-bosqich: Astronomiya va vaqt hisobi
       [
         { id: 9, left: "Astronomiya", right: "Yulduzlarni kuzatish natijasida vujudga kelgan fan" },
         { id: 10, left: "365 kun", right: "Misr taqvimida 1 yilning davomiyligi (12 oy x 30 kun + 5 kun)" },
         { id: 11, left: "Suv soatlari", right: "Vaqtni 24 ta bo‘lmaga ajratib o‘lchagan maxsus idish" },
         { id: 12, left: "5 kunlik bayram", right: "12 oydan ortib qolgan va hisobga kiritilmagan kunlar" }
       ],
-      // 4-bosqich: Matematika, tibbiyot va o‘lchov birliklari
       [
         { id: 13, left: "Geometriya", right: "Maydon va inshootlar hajmini o‘lchash ilmi" },
         { id: 14, left: "Podsho tirsagi", right: "52,5 santimetrga teng bo‘lgan yagona uzunlik o‘lchovi" },
@@ -521,7 +517,7 @@
       { q: "12. Yil hisobidan ortib qolgan 5 kun qanday maqsadga ajratilgan?", a: "Ular bayram kunlari sifatida nishonlanib, oylik hisobga kiritilmagan." },
       { q: "13. Maydon hajmini o‘lchash va inshootlar qurish zarurati qaysi fanning paydo bo‘lishiga olib keldi?", a: "Geometriya (yer yuzasini o‘lchash ilmi) faniga." },
       { q: "14. Misrliklar matematikada arifmetikadan tashqari qanday murakkab amallarni bilishgan?", a: "Kasrlar, maxrajlar va murakkab hisob-kitoblarni bilishgan." },
-      { q: "15. Misrliklarda odamning ichki tuzilishi haqidagi mukammal tibbiy bilimlar qanday paydo bo‘lgan?", a: "Mumiyolangan mayitlarni tayyorlash jarayonida jasadni o‘rganish orqali." },
+      { q: "15. Misr tabiblarida odamning ichki tuzilishi haqidagi mukammal tibbiy bilimlar qanday paydo bo‘lgan?", a: "Mumiyolangan mayitlarni tayyorlash jarayonida jasadni o‘rganish orqali." },
       { q: "16. Misr tabiblari davolash muolajasida nimalardan keng foydalanishgan?", a: "Giyohlar damlamasi, ma’danli suvlar va tuzdan keng foydalanishgan." },
       { q: "17. Misr shaharlarida tabiblarni tayyorlash qanday amalga oshirilgan?", a: "Tabiblarga ta’lim beruvchi maxsus maktablar faoliyat ko‘rsatgan." },
       { q: "18. Qadimgi Misrda asosiy uzunlik o‘lchov birligi nima bo‘lgan?", a: "«Tirsak» (tirsakdan barmoqlar uchigacha bo‘lgan masofa) bo‘lgan." },
@@ -570,47 +566,47 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (25 TA ARALASH MATN TESTI - JAVOBLAR TENG TAQSIMLANGAN) ---
+    // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST - TO'G'RI JAVoblar 0, 1, 2, 3 UCHUN TENG TAQSIMLANGAN) ---
     const testQuestions = [
       {
         q: "1. Misrda yagona uzunlik o‘lchovi sifatida joriy etilgan «podsho tirsagi» necha santimetrga teng bo‘lgan?",
         options: [
           "45,0 santimetrga",
           "50,0 santimetrga",
-          "52,5 santimetrga",
-          "60,5 santimetrga"
+          "60,5 santimetrga",
+          "52,5 santimetrga"
         ],
-        correct: 2, // C
+        correct: 3, // D
         exp: "Qo‘llar uzunligi turlicha bo‘lgani sababli «podsho tirsagi» yagona o‘lchov qilib belgilangan va u 52,5 sm ga teng bo‘lgan."
       },
       {
         q: "2. Qadimgi Misr alifbosi jami nechta iyeroglifdan iborat bo‘lgan?",
         options: [
-          "750 ta",
           "500 ta",
+          "750 ta",
           "1000 ta",
           "365 ta"
         ],
-        correct: 0, // A
+        correct: 1, // B
         exp: "Misrliklar alifbosi 750 ta iyeroglifdan iborat bo‘lgan."
       },
       {
         q: "3. Qadimgi Misrda kun davomidagi vaqt qanday moslama yordamida o‘lchangan?",
         options: [
-          "Qum soatlari orqali",
           "24 ta bo‘lmaga ajratilgan maxsus suv soatlari orqali",
+          "Qum soatlari orqali",
           "Quyosh soyasi ustunlari orqali",
           "Olovli shamlar orqali"
         ],
-        correct: 1, // B
+        correct: 0, // A
         exp: "Misrda vaqt 24 ta bo‘lmaga ajratilgan maxsus idishdan iborat suv soatlari yordamida o‘lchangan."
       },
       {
         q: "4. Qadimgi Misr iyerogliflarini 1822-yilda o‘qishga muvaffaq bo‘lgan fransuz olimi kim?",
         options: [
           "Jan Sharden",
-          "Sharl Rollen",
           "Jak-Fransua Shampolyon",
+          "Sharl Rollen",
           "Genrix Shliman"
         ],
         correct: 2, // C
@@ -620,29 +616,29 @@
         q: "5. Misr taqvimida bir yil necha kundan iborat bo‘lgan va u qanday taqsimlangan?",
         options: [
           "360 kun: har biri 30 kundan 12 oy",
-          "365 kun: 30 kundan 12 oy va ortib qolgan 5 kunlik bayram",
           "365 kun: har biri 31 kundan 11 oy",
-          "354 kun: qamariy 12 oy"
+          "354 kun: qamariy 12 oy",
+          "365 kun: 30 kundan 12 oy va ortib qolgan 5 kunlik bayram"
         ],
-        correct: 1, // B
+        correct: 3, // D
         exp: "Misrliklar yilni 365 kun qilib, 30 kundan 12 oyga taqsimlagan, ortgan 5 kunni bayram deb hisobga kiritmagan."
       },
       {
         q: "6. Qadimgi misrliklar o‘z yozuvlarini nima deb atashgan?",
         options: [
           "Mixxat",
-          "«Muqaddas bitiklar»",
           "«Muqaddas kalom» yoki «ma’budlar kalomi»",
+          "«Muqaddas bitiklar»",
           "«Fonetik belgilar»"
         ],
-        correct: 2, // C
+        correct: 1, // B
         exp: "Dastlab duolar yozilgani uchun yozuv «muqaddas kalom» yoki «ma’budlar kalomi» deb nomlangan."
       },
       {
-        q: "7. Misrlik tabiblar qaysi amaliyot jarayonida insonning ichki a’zolari tuzilishini chuqur o‘rganganlar?",
+        q: "7. Misr tabiblar qaysi amaliyot jarayonida insonning ichki a’zolari tuzilishini chuqur o‘rganganlar?",
         options: [
-          "Jang maydonlarida jarohatlarni davolashda",
           "Dorivor o‘simliklarni yig‘ishda",
+          "Jang maydonlarida jarohatlarni davolashda",
           "Mumiyolangan mayitlarni tayyorlash jarayonida",
           "Ibodatxona qurbonliklarini so‘yishda"
         ],
@@ -652,12 +648,12 @@
       {
         q: "8. Misr o‘lchov tizimida bir kaft necha barmoqqa teng hisoblangan?",
         options: [
+          "To‘rt barmoqqa",
           "Uch barmoqqa",
           "Besh barmoqqa",
-          "To‘rt barmoqqa",
           "Olti barmoqqa"
         ],
-        correct: 2, // C
+        correct: 0, // A
         exp: "Darslikdagi chizmaga ko‘ra, bir kaft = to‘rt barmoqqa teng bo‘lgan."
       },
       {
@@ -665,21 +661,21 @@
         options: [
           "Parijdagi Luvr muzeyida",
           "Qohira milliy muzeyida",
-          "Berlin muzeyida",
-          "Londondagi Britaniya muzeyida"
+          "Londondagi Britaniya muzeyida",
+          "Berlin muzeyida"
         ],
-        correct: 3, // D
+        correct: 2, // C
         exp: "Bugungi kunda Rozett bitiktoshi Londondagi Britaniya muzeyida saqlanmoqda."
       },
       {
         q: "10. Yunoncha «iyeroglif» so‘zining lug‘aviy ma’nosi nima?",
         options: [
           "«Qadimgi xatlar»",
-          "«Ma’budlar surati»",
           "«Muqaddas bitiklar»",
+          "«Ma’budlar surati»",
           "«Toshdagi rasmlar»"
         ],
-        correct: 2, // C
+        correct: 1, // B
         exp: "Qadimgi yunonlar ularni «iyerogliflar» («muqaddas bitiklar») deb atashgan."
       },
       {
@@ -687,65 +683,65 @@
         options: [
           "5 ta kaft",
           "6 ta kaft",
-          "7 ta kaft",
-          "8 ta kaft"
+          "8 ta kaft",
+          "7 ta kaft"
         ],
-        correct: 2, // C
+        correct: 3, // D
         exp: "Darslikdagi o‘lchov qoidasiga ko‘ra, bir tirsak = yettita kaftga teng bo‘lgan."
       },
       {
         q: "12. Misrda yozuv qog‘ozi (papirus) qaysi o‘simlikdan tayyorlangan?",
         options: [
           "Zig‘ir poyasidan",
+          "Papirus butasi poyasidan",
           "Qamish bargidan",
-          "Lotos gulidan",
-          "Papirus butasi poyasidan"
+          "Lotos gulidan"
         ],
-        correct: 3, // D
+        correct: 1, // B
         exp: "Iyerogliflar papirus poyasidan ishlangan maxsus qog‘ozga yozilgan."
       },
       {
         q: "13. Misr tabiblari bemorlarni davolash muolajasida asosan qanday vositalardan keng foydalanishgan?",
         options: [
+          "Giyohlar damlamasi, ma’danli suvlar va tuz",
           "Kimyoviy kukunlar va spirt",
           "Faqat jarrohlik pichoqlari",
-          "Giyohlar damlamasi, ma’danli suvlar va tuz",
           "Qizdirilgan temir parchalari"
         ],
-        correct: 2, // C
+        correct: 0, // A
         exp: "Davolash muolajasida giyohlar damlamasi, ma’danli suvlar va tuzdan keng foydalanilgan."
       },
       {
         q: "14. Qadimgi Misrda maktab o‘quvchilari yozuv mashqlarini dastlab qanday ashyolar ustida olib borganlar?",
         options: [
-          "Qimmatbaho papirus varaqlarida",
           "Sopol idishlar parchasi yoki ohaktoshga",
+          "Qimmatbaho papirus varaqlarida",
           "Tekislangan qora yog‘och taxtachalarga",
           "Qo‘rg‘oshin yupqa plitalarga"
         ],
-        correct: 1, // B
+        correct: 0, // A
         exp: "Ta’lim olayotganda o‘quvchilar sopol idishlar parchasiga yoki ohaktoshga yozishgan."
       },
       {
         q: "15. Misrda anhorlar qazish, maydon hajmini aniqlash va binolar qurish ehtiyoji tufayli qaysi fan vujudga keldi?",
         options: [
-          "Fizika",
           "Astronomiya",
-          "Geometriya",
-          "Mexanika"
+          "Fizika",
+          "Mexanika",
+          "Geometriya"
         ],
-        correct: 2, // C
+        correct: 3, // D
         exp: "Maydon hajmini o‘lchash zarurati tufayli geometriya (yer yuzasini o‘lchash ilmi) fani dunyoga keldi."
       },
       {
         q: "16. Misrlik xattotlar yozuv uchun siyoh sifatida nimadan foydalanganlar?",
         options: [
-          "O‘simlik shirasidan",
           "Turli rangdagi mineral bo‘yoqlardan",
+          "O‘simlik shirasidan",
           "Daraxt ko‘miridan tayyorlangan qorakuya",
           "Hayvon qonidan"
         ],
-        correct: 1, // B
+        correct: 0, // A
         exp: "Turli rangdagi mineral bo‘yoqlar siyoh vazifasini o‘tagan."
       },
       {
@@ -753,98 +749,98 @@
         options: [
           "Dengizda uzoq suzish zarurati",
           "Diniy bayramlarni yulduzlarga qarab belgilash",
-          "Urug‘ qadash va hosil yig‘ish (Nil toshqini) vaqtlarini oldindan bilish ehtiyoji",
-          "Boshqa davlatlar bilan chegaralarni belgilash"
+          "Boshqa davlatlar bilan chegaralarni belgilash",
+          "Urug‘ qadash va hosil yig‘ish (Nil toshqini) vaqtlarini oldindan bilish ehtiyoji"
         ],
-        correct: 2, // C
+        correct: 3, // D
         exp: "Ziroatkorlar qachon urug‘ qadash va hosil yig‘ishni bilishi zarurligi tufayli yulduzlarni kuzatib, astronomiyani yaratdilar."
       },
       {
         q: "18. Rozett toshidagi matnlar qaysi ikki tilda bitilgan edi?",
         options: [
           "Qadimgi fors va qadimgi lotin",
-          "Qadimgi misr va qadimgi yunon",
           "Shumer va qadimgi yahudiy",
+          "Qadimgi misr va qadimgi yunon",
           "Bobil va oromiy"
         ],
-        correct: 1, // B
+        correct: 2, // C
         exp: "Toshga qadimgi misr va qadimgi yunon tillarida bir xil ma’nodagi bitik chekilgan edi."
       },
       {
         q: "19. Qadimgi Misrda tabiblar tayyorlash ishi qanday tashkil etilgan?",
         options: [
           "Faqat oilaviy meros sifatida o‘rgatilgan",
-          "Shaharlarda tabiblarga ta’lim beruvchi maxsus maktablar bo‘lgan",
           "Faqat chet ellik tabiblar jalb qilingan",
-          "Harbiy kazarmalarda o‘qitilgan"
+          "Harbiy kazarmalarda o‘qitilgan",
+          "Shaharlarda tabiblarga ta’lim beruvchi maxsus maktablar bo‘lgan"
         ],
-        correct: 1, // B
+        correct: 3, // D
         exp: "Misr shaharlarida tabiblarga ta’lim beruvchi maxsus maktablar bo‘lgan."
       },
       {
         q: "20. Qadimgi Misrda husnixat san’atini egallagan kotiblar (xattotlar)ning jamiyatdagi o‘rni qanday edi?",
         options: [
           "Oddiy hunarmandlar qatorida hisoblangan",
-          "Soliq to‘lashdan ozod qilinmagan oddiy xizmatkorlar bo‘lgan",
           "Yuksak savodxon shaxslar sanalib, katta imtiyoz va izzat-hurmatga ega bo‘lgan",
+          "Soliq to‘lashdan ozod qilinmagan oddiy xizmatkorlar bo‘lgan",
           "Faqat ibodatxonalardan tashqariga chiqishi taqiqlangan"
         ],
-        correct: 2, // C
+        correct: 1, // B
         exp: "Husnixat san’atini egallaganlar yuksak savodxon sanalgan, katta imtiyoz va izzat-hurmatga ega bo‘lgan."
       },
       {
         q: "21. Misrliklar matematikada oddiy arifmetikadan tashqari qaysi murakkab tushunchalarni qo‘llay olganlar?",
         options: [
           "Logarifm va integralni",
-          "Kasrlar, maxrajlar va murakkab hisob-kitoblarni",
           "Trigonometrik jadvallarni",
+          "Kasrlar, maxrajlar va murakkab hisob-kitoblarni",
           "Differensial tenglamalarni"
         ],
-        correct: 1, // B
+        correct: 2, // C
         exp: "Misrliklar oddiy arifmetikadan tashqari kasrlar, maxrajlar va murakkab hisoblarni bilishgan."
       },
       {
         q: "22. Suv soatlarida bir soatlik vaqt oralig‘i qanday mezon asosida belgilangan?",
         options: [
-          "Idishdagi suvning to‘liq bug‘lanishi bilan",
           "Bir bo‘lmadan ikkinchisiga oqib o‘tadigan suvning hajmi bilan",
+          "Idishdagi suvning to‘liq bug‘lanishi bilan",
           "Idishga tushgan suv tomchilarining soni bilan",
           "Quyosh nurining suvga tushish burchagi bilan"
         ],
-        correct: 1, // B
+        correct: 0, // A
         exp: "Bir bo‘lmadan ikkinchisiga oqib o‘tadigan suvning hajmi bir soat deb hisoblangan."
       },
       {
         q: "23. Qadimgi Misr yozuvida har bir so‘z dastlab qanday ifodalangan?",
         options: [
-          "Harflar vositasida",
           "Geometrik chiziqlar bilan",
           "Rasm ko‘rinishida",
+          "Harflar vositasida",
           "Faqat raqamlar orqali"
         ],
-        correct: 2, // C
+        correct: 1, // B
         exp: "Dastlab har bir so‘z rasm ko‘rinishida yozilgan."
       },
       {
         q: "24. Shampolyon kashfiyotining jahon fani uchun eng ulkan ahamiyati nimada bo‘ldi?",
         options: [
           "Misr piramidalarini buzish to‘xtatildi",
-          "Qadimgi Misr yozuvlari va tarixi «tilga kirib», sivilizatsiyani o‘rganish imkoni tug‘ildi",
           "Yunon tili butun dunyoga tarqaldi",
-          "Britaniya muzeyi tashkil etildi"
+          "Britaniya muzeyi tashkil etildi",
+          "Qadimgi Misr yozuvlari va tarixi «tilga kirib», sivilizatsiyani o‘rganish imkoni tug‘ildi"
         ],
-        correct: 1, // B
+        correct: 3, // D
         exp: "Ushbu kashfiyotdan so‘ng papirus va toshlardagi bitiklar o‘qilib, Misr sivilizatsiyasini o‘rganishga yo‘l ochildi."
       },
       {
         q: "25. Misrda asosiy uzunlik o‘lchovi hisoblangan «tirsak» inson tanasining qaysi qismini anglatgan?",
         options: [
-          "Yelkadan tirsakkacha bo‘lgan masofani",
           "Tirsakdan barmoqlar uchigacha bo‘lgan uzunlikni",
+          "Yelkadan tirsakkacha bo‘lgan masofani",
           "Kaftning kengligini",
           "Ikki qo‘lning yoyilgan uzunligini"
         ],
-        correct: 1, // B
+        correct: 0, // A
         exp: "Misrda asosiy o‘lchov birligi «tirsak» bo‘lib, u tirsakdan barmoqlar uchigacha bo‘lgan uzunlikka teng edi."
       }
     ];

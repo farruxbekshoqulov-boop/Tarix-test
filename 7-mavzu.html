@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>7-§. Qadimgi Misr va qo‘shni davlatlar</title>
+  <title>6-§. Nil vodiysi va uning aholisi</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -316,7 +316,7 @@
     <div id="tab-cards" class="tab-content">
       <div id="fc-play-box">
         <div class="header-bar">
-          <span class="badge">7-§ Trenajyor</span>
+          <span class="badge">6-§ Trenajyor</span>
           <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
@@ -349,7 +349,7 @@
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
-          <span class="badge">7-§ Test Sinovi</span>
+          <span class="badge">6-§ Test Sinovi</span>
           <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
@@ -397,33 +397,29 @@
 
     // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
-      // 1-bosqich: Qo‘shni hududlar va boyliklar
       [
-        { id: 1, left: "Nubiya", right: "Misrning janubidagi qo‘shnisi (Shimoliy Sudan)" },
-        { id: 2, left: "Liviya", right: "Misr g‘arbidagi cho‘lda yashagan chorvadorlar yurti" },
-        { id: 3, left: "Sinay yarimoroli", right: "Mis konlari joylashgan hudud" },
-        { id: 4, left: "Falastin va Suriya", right: "Mis, temir rudasi va qimmatbaho toshlarga boy o‘lkalar" }
+        { id: 1, left: "Nil daryosi uzunligi", right: "6 ming kilometr" },
+        { id: 2, left: "Quyi oqim vodiysi kengligi", right: "3 km dan 22 km gacha" },
+        { id: 3, left: "«Qora tuproq» / «Nil in’omi»", right: "Misrning qadimgi nomlari" },
+        { id: 4, left: "Papirus", right: "Vodiyni qoplagan chirmashib ketgan butalar" }
       ],
-      // 2-bosqich: Istilolar va davlat bosqichlari
       [
-        { id: 5, left: "Qadimgi podsholik", right: "Sinay yarimoroli bosib olinib, soliq to‘latilgan davr" },
-        { id: 6, left: "O‘rta podsholik", right: "Janubiy Falastin va Nubiya shimoli qo‘shib olingan davr" },
-        { id: 7, left: "Mil. avv. XVIII asr oxiri", right: "Ko‘chmanchi giksos qabilalari Misrga bostirib kirgan vaqt" },
-        { id: 8, left: "Fiva shahri", right: "Giksoslarga bo‘ysunmay, qarshilik ko‘rsatgan markaz" }
+        { id: 5, left: "Kanop o‘simligi", right: "Yetishtirilib, gazlama to‘qilgan ekin" },
+        { id: 6, left: "Qoramollar", right: "Ekilgan urug‘ni yerga singdirish uchun haydalgan" },
+        { id: 7, left: "Mis o‘roqlar", right: "Boshoqlarni o‘rib olish uchun qo‘llanilgan qurol" },
+        { id: 8, left: "Sopol xumlar", right: "Donni zararkunandalardan saqlash idishi" }
       ],
-      // 3-bosqich: Fir’avnlar va harbiy yurishlar
       [
-        { id: 9, left: "Fir’avn Yaxmos", right: "Giksoslarni tor-mor etib, Yangi podsholikka asos solgan" },
-        { id: 10, left: "Fir’avn Tutmos II", right: "Falastin, Finikiya va Suriyani istilo qilishni boshlagan" },
-        { id: 11, left: "Fir’avn Tutmos III", right: "Old Osiyoda Misr hukmronligini to‘liq o‘rnatgan" },
-        { id: 12, left: "Mil. avv. VII asr", right: "Misr yana yagona davlatga birlashib, yuksalgan davr" }
+        { id: 9, left: "Oddiy aholi uylari", right: "Loy suvalgan papirus poyalaridan qurilgan" },
+        { id: 10, left: "Zodagonlar uylari", right: "Oftobda quritilgan xom g‘ishtdan qurilgan" },
+        { id: 11, left: "Fir’avn saroylari va ibodatxonalar", right: "Mustahkam toshdan barpo etilgan" },
+        { id: 12, left: "Misgar ustalar", right: "Misni eritib, turli mehnat qurollari quyganlar" }
       ],
-      // 4-bosqich: Ahamoniylar istilosi va yakuniy xronologiya
       [
-        { id: 13, left: "Kir II", right: "Eron forslari podshosi (Kambiz II ning otasi)" },
-        { id: 14, left: "Kambiz II", right: "Ulkan lashkar bilan Misrni zabt etgan forslar shohi" },
-        { id: 15, left: "Mil. avv. 525-yil", right: "Kambiz II tomonidan Misrning bosib olinishi" },
-        { id: 16, left: "Yangi podsholik", right: "Misrning eng qudratli bosqinchilik yurishlari davri" }
+        { id: 13, left: "Nomlar", right: "Qadimgi Misrdagi ilk kichik davlatlar" },
+        { id: 14, left: "Nomarxlar", right: "Kichik nom davlatlarini boshqargan hukmdorlar" },
+        { id: 15, left: "Mil. avv. 3000-yil", right: "Menes tomonidan Misrning birlashtirilishi" },
+        { id: 16, left: "Memfis va Fiva", right: "Birlashgan Misr davlatining poytaxtlari" }
       ]
     ];
 
@@ -507,31 +503,31 @@
 
     // --- 2. SAVOL-JAVOB (25 TA SAVOL) ---
     const flashcards = [
-      { q: "1. Qadimgi Misr janubda qaysi davlat (hudud) bilan chegaradosh bo‘lgan?", a: "Nubiya (hozirgi Shimoliy Sudan) bilan chegaradosh bo‘lgan." },
-      { q: "2. Misrning g‘arbidagi cho‘lda joylashgan mamlakat qanday nomlangan va aholisi kimlardan iborat edi?", a: "Liviya deb atalgan bo‘lib, aholisi ko‘chmanchi chorvadorlar edi." },
-      { q: "3. Quyi Misrdagi Memfis shahri orqali o‘tgan yo‘l qayerga olib borgan va u yerda nima qazib olingan?", a: "Sinay yarimoroliga olib borgan, u yerda mis qazib olingan." },
-      { q: "4. Sinay yarimorolidan shimolroqda va uning yonida qaysi mamlakatlar joylashgan edi?", a: "Falastin va uning yonida Suriya joylashgan edi." },
-      { q: "5. Falastin va Suriya qanday boyliklarga boy bo‘lgan?", a: "Mis va temir rudasiga hamda boshqa foydali qazilmalarga boy bo‘lgan." },
-      { q: "6. Misrliklar Falastin va Suriyadan nimalar keltirishgan?", a: "Hunarmandlar yasagan nodir buyumlar va qimmatbaho toshlarni olib kelishgan." },
-      { q: "7. Qadimgi podsholik davrida Misr fir’avnlari qaysi hududni bosib olib, aholisini soliq to‘lashga majbur qildi?", a: "Sinay yarimorolini bosib olib, mahalliy qabilalarga soliq soldilar." },
-      { q: "8. Qadimgi podsholik fir’avnlari Nubiya va Liviyaga nima maqsadda yurish qilishgan?", a: "Shaharlarni talash, asirlar, chorva mollari va boshqa boyliklarni qo‘lga kiritish uchun." },
-      { q: "9. O‘rta podsholik fir’avnlari qaysi hududlarni Misrga qo‘shib olishga muvaffaq bo‘lishdi?", a: "Janubiy Falastin yerlari va Nubiyaning shimolini." },
-      { q: "10. Misrga ko‘chmanchi giksos qabilalari qachon bostirib kirdi?", a: "Miloddan avvalgi XVIII asr oxirida." },
-      { q: "11. Giksoslar Misrni bosib olgach, qanday xatti-harakatlarni amalga oshirdilar?", a: "Quyi Misrni egallab, shaharlar va qishloqlarni ayovsiz taladilar, odamlarni asirlikka haydab ketdilar." },
-      { q: "12. Giksoslar istilosi davrida Misrning ichki siyosiy holati qanday edi?", a: "Ko‘plab mayda «nom»larga bo‘linib ketgan va ular giksoslarga soliq to‘lab turgan." },
-      { q: "13. Giksoslar hukmronligi davrida ularga itoat etmagan yagona shahar qaysi edi?", a: "Faqat Fiva shahri hukmdorlarigina giksoslarga bo‘ysunmadi." },
-      { q: "14. Bosqinchilar zulmidan xalos bo‘lish uchun nomlar qaysi shahar va hukmdor atrofiga birlasha boshladi?", a: "Fiva shahri va Yuqori Misrning Fiva «nom»i fir’avni atrofiga birlashdilar." },
-      { q: "15. Giksoslarni tor-mor etib, Misrdan haydab chiqargan fir’avn kim?", a: "Fir’avn Yaxmos." },
-      { q: "16. Fir’avn Yaxmos davridan Misr tarixida qaysi davr boshlandi?", a: "Yangi podsholik davri boshlandi (Yaxmos yangi sulolaga asos soldi)." },
-      { q: "17. Yangi podsholik hukmdorlari qaysi yo‘nalishlarda bosqinchilik yurishlarini boshladilar?", a: "Nubiya va Old Osiyo mamlakatlariga." },
-      { q: "18. Falastin, Finikiya va Suriyani istilo qilish qaysi fir’avn davrida boshlandi?", a: "Fir’avn Tutmos II davrida." },
-      { q: "19. Tutmos II boshlagan yurishlarni kim davom ettirdi va qanday natijaga erishdi?", a: "Fir’avn Tutmos III davom ettirdi va Old Osiyoda Misr hukmronligini o‘rnatdi." },
-      { q: "20. Yangi podsholik istilolari natijasida Misrga qanday boyliklar oqib kelgan?", a: "Ko‘plab harbiy asirlar (qullar), oltin, qimmatbaho toshlar, xomashyo va o‘lponlar." },
-      { q: "21. Misr qaysi asrda yana yagona davlatga birlashdi va uning iqtisodiyoti yuksaldi?", a: "Miloddan avvalgi VII asrda." },
-      { q: "22. Miloddan avvalgi VI asrda Misrga qaysi yangi dushman bostirib kirdi?", a: "Forslar podsholigi (Ahamoniylar davlati)." },
-      { q: "23. Misrni bosib olgan fors shohi kim edi va u kimning o‘g‘li bo‘lgan?", a: "Kambiz II bo‘lib, u shoh Kir II ning o‘g‘li edi." },
-      { q: "24. Fors shohi Kambiz II Misrni qaysi yilda bosib oldi?", a: "Miloddan avvalgi 525-yilda." },
-      { q: "25. Tutmos II va Tutmos III istilo qilgan Old Osiyo hududlarini sanang.", a: "Falastin, Finikiya va Suriya hududlari." }
+      { q: "1. Nil daryosi Afrikaning qaysi qismida oqadi va uning uzunligi qancha?", a: "Afrika shimoli-sharqida joylashgan bo‘lib, uzunligi 6 ming kilometrni tashkil etadi." },
+      { q: "2. Nil daryosining quyi qismidagi qora tuproqli serhosil dalalarning kengligi qancha bo‘lgan?", a: "3 kilometrdan 22 kilometrgacha kenglikda bo‘lgan." },
+      { q: "3. Vodiyliklar o‘z yurtlarini qanday nomlar bilan atashgan?", a: "«Qora tuproq» yoki «Nil in’omi» deb nom berishgan." },
+      { q: "4. Qadimgi zamonlarda Nil vodiysini qanday o‘simlik butalari qoplab yotgan?", a: "Odam o‘tolmaydigan qalin papirus butalari chirmashib ketgan botqoqliklar qoplagan." },
+      { q: "5. Nil vodiysi botqoqliklari va suvlarida qanday xavfli jonivorlar yashagan?", a: "Suvda son-sanoqsiz timsohlar, botqoqliklarda zaharli ilonlar, quruq yerlarda yovvoyi hayvonlar galasi yashagan." },
+      { q: "6. Odamlar Nil daryosi qirg‘oqlaridagi yerlarni qachondan boshlab o‘zlashtirishga kirishdilar?", a: "Miloddan avvalgi 4-mingyillik boshlarida." },
+      { q: "7. Qadimgi Misrda qaysi g‘alla ekinlari asosiy o‘rinni egallagan?", a: "Bug‘doy va arpa ekilgan." },
+      { q: "8. Misrliklar kiyim-kechak uchun gazlamani qaysi o‘simlikdan to‘qishgan?", a: "Yetishtirilgan kanop tolasidan gazlama to‘qishgan." },
+      { q: "9. Nil vodiysida qanday poliz, meva va sabzavotlar yetishtirilgan?", a: "Uzum, qovun, anor, xurmo, piyoz, bodring, loviya kabilar." },
+      { q: "10. Qadimgi Misrda sepilgan urug‘ni yerga singdirish qanday usulda amalga oshirilgan?", a: "Urug‘ qo‘lda sepilgach, uni tuproqqa singdirish uchun daladan qoramollar haydab o‘tilgan." },
+      { q: "11. Misrliklar qaysi uy hayvonlarini boqishgan va ulardan qanday foydalanishgan?", a: "Sigir, qo‘y-echki boqishgan, ho‘kizlardan esa dala ishlarida (omoch tortishda) foydalanishgan." },
+      { q: "12. Boshoqlar qanday qurol bilan o‘rib olingan?", a: "Mis o‘roqlar bilan o‘rib olingan." },
+      { q: "13. O‘rib olingan g‘alla hosili qanday usulda yanchilgan?", a: "Maxsus joyga tashlanib, bug‘doy yoki arpa bog‘lari ustidan hayvonlarni haydab o‘tish orqali yanchilgan." },
+      { q: "14. Xirmondan chiqqan don nima maqsadda sopol xumlarda saqlangan?", a: "Donni son-sanoqsiz kemiruvchi zararkunandalardan himoya qilish uchun." },
+      { q: "15. Qadimgi Misr hunarmandligida qanchadan ortiq kasb-hunar turi mavjud bo‘lgan?", a: "30 dan ziyod kasb-kor turlari bo‘lgan." },
+      { q: "16. Misgar ustalar qanday vazifani bajargan?", a: "Misni eritib, undan turli mehnat qurollari quyishgan." },
+      { q: "17. Kulollar o‘z mahsulotlarini qayerda pishirishgan?", a: "Loydan turli idish-tovoqlar yasab, ularni maxsus xumdonda pishirishgan." },
+      { q: "18. Oddiy misrliklarning uylari qanday materialdan qurilgan?", a: "Loy suvalgan papirus poyalaridan qurilgan." },
+      { q: "19. Zodagonlarning uylari nimadan barpo etilgan?", a: "Oftobda quritilgan xom g‘ishtdan qurilgan." },
+      { q: "20. Fir’avnlarning saroylari va ibodatxonalar qaysi ashyodan qurilgan?", a: "Mustahkam toshdan barpo etilgan." },
+      { q: "21. Misrda kemasozlar qayiq va kemalarni qanday materiallardan yasashgan?", a: "Qamishdan qayiqlar, yog‘ochdan esa kemelia (kemalar) qurishgan." },
+      { q: "22. Qadimgi Misrda ilk kichik davlatlar nima deb atalgan va ularni kim boshqargan?", a: "«Nom» deb atalgan va ularni «nomarxlar» boshqargan." },
+      { q: "23. Dastlab Misr hududida qanday ikkita podsholik mavjud bo‘lgan?", a: "Quyi (Shimoliy) Misr va Yuqori (Janubiy) Misr podsholiklari." },
+      { q: "24. Misr qachon, kim tomonidan yagona davlatga birlashtirildi va uning poytaxti qaysi shahar bo‘ldi?", a: "Miloddan avvalgi 3000-yilda Yuqori Misr hukmdori Menes tomonidan birlashtirildi, poytaxti Memfis shahri bo‘ldi." },
+      { q: "25. Yagona davlat parchalangach, vaqt o‘tib qayta birlashgan Misrning yangi poytaxti qaysi shahar bo‘ldi?", a: "Fiva shahri bo‘lgan." }
     ];
 
     let fcIdx = 0;
@@ -570,282 +566,282 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST) ---
+    // --- 3. TEST SINOVI (25 TA TEST - TO'G'RI JAVOBING O'RNI ARALASHTIRILGAN VA TARTIBSIZ) ---
     const testQuestions = [
       {
-        q: "1. Qadimgi Misr janubida qaysi mamlakat bilan chegaradosh bo‘lgan?",
+        q: "1. Nil daryosi uzunligi va uning geografik joylashuvi to‘g‘ri ko‘rsatilgan javobni aniqlang.",
         options: [
-          "Liviya",
-          "Nubiya (Shimoliy Sudan)",
-          "Suriya",
-          "Finikiya"
+          "5 ming km; Afrika g‘arbida",
+          "6 ming km; Afrika shimoli-sharqida",
+          "7 ming km; Osiyo janubi-g‘arbida",
+          "4 ming km; Afrika markazida"
         ],
         correct: 1,
-        exp: "Misr janubda Nubiya (Shimoliy Sudan) bilan chegaradosh bo‘lgan."
+        exp: "Nil daryosi Afrika shimoli-sharqida joylashgan bo‘lib, uzunligi 6 ming kilometrni tashkil etadi."
       },
       {
-        q: "2. Misr g‘arbidagi cho‘lda joylashgan mamlakat va uning aholisi qanday atalgan?",
+        q: "2. Nil daryosining quyi qismidagi qora tuproqli serhosil dalalarning kengligi qanchani tashkil qilgan?",
         options: [
-          "Nubiya — dehqonlar",
-          "Liviya — ko‘chmanchi chorvadorlar",
-          "Falastin — dengizchilar",
-          "Sinay — konchilar"
+          "1 km dan 10 km gacha",
+          "10 km dan 50 km gacha",
+          "3 km dan 22 km gacha",
+          "500 metr dan 5 km gacha"
+        ],
+        correct: 2,
+        exp: "Daryoning quyi qismi 3 km dan 22 km gacha kenglikdagi qora tuproqli serhosil dalalardan iborat bo‘lgan."
+      },
+      {
+        q: "3. Qadimgi zamonlarda Nil vodiysini qoplagan chirmashib ketgan butazor o‘simlik qaysi edi?",
+        options: [
+          "Papirus",
+          "Lotos",
+          "Bambuk",
+          "Qamishzor"
+        ],
+        correct: 0,
+        exp: "Qadimda Nil vodiysini odam o‘tolmaydigan qalin papirus butalari qoplagan."
+      },
+      {
+        q: "4. Odamlar Nil daryosi qirg‘oqlaridagi yerlarni qachondan boshlab o‘zlashtirishga kirishdilar?",
+        options: [
+          "Mil. avv. 6-mingyillikda",
+          "Mil. avv. 3-mingyillik o‘rtalarida",
+          "Miloddan avvalgi 4-mingyillik boshlarida",
+          "Mil. avv. 2-mingyillik oxirida"
+        ],
+        correct: 2,
+        exp: "Miloddan avvalgi 4-mingyillik boshlarida odamlar Nil daryosi bo‘ylarini o‘zlashtira boshladilar."
+      },
+      {
+        q: "5. Qadimgi misrliklar kiyim-kechak tayyorlash uchun gazlamani qaysi o‘simlikdan to‘qishgan?",
+        options: [
+          "Paxta",
+          "Zig‘ir",
+          "Ipak",
+          "Kanop"
+        ],
+        correct: 3,
+        exp: "Misrliklar yetishtirilgan kanop tolasidan gazlama to‘qishgan."
+      },
+      {
+        q: "6. Misrda yerga sepilgan urug‘likni tuproqqa singdirish uchun qanday tadbir qo‘llanilgan?",
+        options: [
+          "Qoramollarni daladan haydab o‘tishgan",
+          "Ustidan qo‘lda tosh bostirib chiqilgan",
+          "Otlar yordamida yerni tekislashgan",
+          "Suv toshqini oqizib kelishi kutilgan"
+        ],
+        correct: 0,
+        exp: "Urug‘ qo‘lda sepilgach, uni tuproqqa singdirish uchun qoramollarni daladan haydab o‘tishgan."
+      },
+      {
+        q: "7. Qadimgi Misrda hosilni yig‘ib-terib olishda qaysi metalldan yasalgan o‘roqlardan foydalanilgan?",
+        options: [
+          "Temir o‘roqlar",
+          "Bronza o‘roqlar",
+          "Oltin o‘roqlar",
+          "Mis o‘roqlar"
+        ],
+        correct: 3,
+        exp: "Boshoqlarni mis o‘roqlar bilan o‘rib olishgan."
+      },
+      {
+        q: "8. Misrliklar g‘alla hosilini qanday usul bilan yanchishgan?",
+        options: [
+          "Boshoqlar ustidan hayvonlarni haydab o‘tish orqali",
+          "Tosh tegirmonlar yordamida",
+          "Qo‘lda tayoqlar bilan urib",
+          "Maxsus suv tegirmonlarida"
+        ],
+        correct: 0,
+        exp: "Bug‘doy yoki arpa bog‘lari ustidan hayvonlarni haydab o‘tish orqali don yanchilgan."
+      },
+      {
+        q: "9. Xirmonjoydan chiqqan donlarni sopol xumlarda saqlashdan asosiy maqsad nima edi?",
+        options: [
+          "Uzoq yurtlarga sotish uchun",
+          "Kemiruvchi zararkunandalardan himoyalash uchun",
+          "Fir’avn xazinasiga yashirish uchun",
+          "Suv toshqinidan asrash uchungina"
         ],
         correct: 1,
-        exp: "Misr g‘arbida Liviya cho‘li joylashgan bo‘lib, aholisi ko‘chmanchi chorvadorlar edi."
+        exp: "Donni son-sanoqsiz kemiruvchi zararkunandalardan himoya qilish uchun sopol xumlarda saqlangan."
       },
       {
-        q: "3. Memfis shahri orqali o‘tadigan yo‘l qaysi boy metall koni joylashgan hududga olib borgan?",
+        q: "10. Qadimgi Misrda hunarmandchilikning nechtadan ortiq kasb-hunar turi mavjud bo‘lgan?",
         options: [
-          "Oltin koniga boy Nubiyaga",
-          "Mis qazib olinadigan Sinay yarimoroliga",
-          "Kumush koniga boy Bobilga",
-          "Qalay koniga boy Kichik Osiyoga"
+          "10 dan ziyod",
+          "50 dan ziyod",
+          "30 dan ziyod",
+          "100 dan ziyod"
+        ],
+        correct: 2,
+        exp: "Darslikda keltirilishicha, Misrda hunarmandlarning 30 dan ziyod kasb-korlari bo‘lgan."
+      },
+      {
+        q: "11. Qadimgi Misrda oddiy aholining turarjoylari nimalardan qurilgan?",
+        options: [
+          "Mustahkam marmar toshlardan",
+          "Oftobda quritilgan xom g‘ishtdan",
+          "Pishiq paxsadan",
+          "Loy suvalgan papirus poyalaridan"
+        ],
+        correct: 3,
+        exp: "Oddiy misrliklarning uyi loy suvalgan papirus poyalaridan qilingan."
+      },
+      {
+        q: "12. Qadimgi Misrda zodagonlarning xonadonlari qanday materialdan barpo etilgan?",
+        options: [
+          "Pishiq g‘ishtdan",
+          "Yog‘och ustunlardan",
+          "Oftobda quritilgan xom g‘ishtdan",
+          "Papirus qamishlaridan"
+        ],
+        correct: 2,
+        exp: "Zodagonlarning uylari oftobda quritilgan xom g‘ishtdan qurilgan."
+      },
+      {
+        q: "13. Fir’avnlarning saroylari va ibodatxonalar asosan qanday xomashyodan barpo etilgan?",
+        options: [
+          "Qamish va yog‘ochdan",
+          "Toshdan",
+          "Xom g‘ishtdan",
+          "Loydan"
         ],
         correct: 1,
-        exp: "Memfis orqali o‘tgan yo‘l mis qazib olinadigan Sinay yarimoroliga olib borgan."
+        exp: "Fir’avnlarning saroylari va ibodatxonalar toshdan barpo etilgan."
       },
       {
-        q: "4. Mis va temir rudasiga hamda boshqa foydali qazilmalarga boy bo‘lgan Misrning shimoli-sharqiy qo‘shnilari qaysilar?",
+        q: "14. Misrlik kemasozlar qayiqlar va yirik kemalarni qanday materiallardan yasashgan?",
         options: [
-          "Liviya va Nubiya",
-          "Falastin va Suriya",
-          "Eron va Bobil",
-          "Yunoniston va Rim"
+          "Faqat teridan",
+          "Faqat mis plitalardan",
+          "Qamishdan qayiqlar, yog‘ochdan kemalar",
+          "Papirus va temirdan"
+        ],
+        correct: 2,
+        exp: "Kemasozlar qamishdan qayiqlar, yog‘ochdan esa kemalar qurardi."
+      },
+      {
+        q: "15. Qadimgi Misrda tarqoq manzilgohlar birlashuvidan hosil bo‘lgan kichik davlatlar qanday atalgan?",
+        options: [
+          "Nom",
+          "Polis",
+          "Viloyat",
+          "Satrap"
+        ],
+        correct: 0,
+        exp: "Tarqoq manzilgohlar birlashib «nom» deb atalgan kichik davlatlarni tashkil etgan."
+      },
+      {
+        q: "16. Kichik davlatlar — «nom»larni boshqargan hukmdorlar qanday nomlangan?",
+        options: [
+          "Fir’avnlar",
+          "Nomarxlar",
+          "Oqsoqollar",
+          "Satraplar"
         ],
         correct: 1,
-        exp: "Sinaydan shimolroqda joylashgan Falastin va Suriya mis hamda temir rudalariga boy bo‘lgan."
+        exp: "Nomlarni «nomarxlar» boshqargan."
       },
       {
-        q: "5. Qadimgi podsholik davrida Misr fir’avnlari tomonidan qaysi hudud bosib olinib, soliq to‘lashga majbur qilindi?",
+        q: "17. Qadimgi Misr dastlab qanday ikki yirik davlatga bo‘lingan edi?",
         options: [
-          "Suriya davlati",
-          "Sinay yarimoroli qabilalari",
-          "Finikiya shaharlari",
-          "Butun Eron hududi"
+          "Quyi (Shimoliy) va Yuqori (Janubiy) Misr",
+          "Sharqiy va G‘arbiy Misr",
+          "Memfis va Fiva podsholiklari",
+          "Nil va Qizil dengiz podsholiklari"
         ],
-        correct: 1,
-        exp: "Qadimgi podsholik davrida Sinay yarimoroli bosib olinib, mahalliy qabilalar soliq to‘lay boshladi."
+        correct: 0,
+        exp: "Biri Quyi (Shimoliy) Misrda, boshqasi esa Yuqori (Janubiy) Misrda podsholik qilgan."
       },
       {
-        q: "6. O‘rta podsholik fir’avnlari qaysi hududlarni Misr davlatiga qo‘shib olishga erishdilar?",
+        q: "18. Quyi va Yuqori Misr o‘rtasidagi urushda qaysi tomon g‘alaba qozondi?",
         options: [
-          "Liviya cho‘lini butunlay",
-          "Janubiy Falastin yerlari va Nubiya shimolini",
-          "Kichik Osiyo va Bobilni",
-          "Assuriya va Baqtriyani"
+          "Quyi Misr podshosi",
+          "Fiva shahrining zodagonlari",
+          "Kichik Osiyo qo‘shinlari",
+          "Yuqori Misr hukmdori Menes"
         ],
-        correct: 1,
-        exp: "O‘rta podsholik davrida Janubiy Falastin yerlari va Nubiya shimoli Misrga qo‘shib olindi."
+        correct: 3,
+        exp: "Urushda Yuqori Misr hukmdori Menes g‘alaba qozondi."
       },
       {
-        q: "7. Qadimgi Misrga ko‘chmanchi giksos qabilalari qaysi davrda bostirib kirdi?",
+        q: "19. Yuqori va Quyi Misr birlashtirilgan sana qaysi javobda to‘g‘ri ko‘rsatilgan?",
         options: [
-          "Mil. avv. 3000-yilda",
-          "Mil. avv. XVIII asr oxirida",
-          "Mil. avv. VII asrda",
-          "Mil. avv. 525-yilda"
+          "Miloddan avvalgi 3000-yilda",
+          "Miloddan avvalgi 4-mingyillik boshida",
+          "Miloddan avvalgi 2000-yilda",
+          "Miloddan avvalgi 1-mingyillikda"
         ],
-        correct: 1,
-        exp: "Miloddan avvalgi XVIII asr oxirida ko‘chmanchi giksos qabilalari Misrga hujum qildi."
+        correct: 0,
+        exp: "Miloddan avvalgi 3000-yilda ikkala davlat birlashtirildi."
       },
       {
-        q: "8. Giksoslar istilosi davrida Misrning qaysi qismi bosib olinib, talandi?",
+        q: "20. Birlashgan Misr davlatining birinchi fir’avni kim bo‘ldi?",
         options: [
-          "Faqat Fiva shahri",
-          "Quyi Misr hududlari",
-          "Janubiy Nubiya",
-          "Faqat Sinay tog‘lari"
-        ],
-        correct: 1,
-        exp: "Quyi Misrni bosib olgan giksoslar shahar va qishloqlarni ayovsiz taladilar."
-      },
-      {
-        q: "9. Giksoslar hukmronligi davrida ularga bo‘ysunmagan va soliq to‘lamagan yagona markaz qaysi edi?",
-        options: [
-          "Memfis shahri",
-          "Fiva shahri hukmdorlari",
-          "Sinay qabilalari",
-          "Sakkara shahri"
-        ],
-        correct: 1,
-        exp: "Faqat Fiva shahri hukmdorlarigina giksoslarga itoat qilmadi."
-      },
-      {
-        q: "10. Bosqinchilarga qarshi kurashda Misrning barcha nomlari kimning atrofiga birlasha boshladi?",
-        options: [
-          "Memfis nomarxlari atrofiga",
-          "Yuqori Misrning Fiva «nom»i fir’avni atrofiga",
-          "Liviya qabila boshliqlari atrofiga",
-          "Fors lashkarboshilari atrofiga"
-        ],
-        correct: 1,
-        exp: "Yuqori Misrning barcha «nom»lari Fiva fir’avni atrofiga birlashdi."
-      },
-      {
-        q: "11. Giksoslarni tor-mor etib, ularni mamlakatdan quvib chiqargan fir’avn kim?",
-        options: [
+          "Ramses",
           "Menes",
-          "Yaxmos",
-          "Tutmos II",
-          "Kambiz II"
+          "Tutanxamon",
+          "Xufu"
         ],
         correct: 1,
-        exp: "Fir’avn Yaxmos bir qancha janglarda giksoslarni tor-mor etib, mamlakatdan haydab chiqardi."
+        exp: "Birlashgan mamlakatning birinchi fir’avni Menes bo‘ldi."
       },
       {
-        q: "12. Fir’avn Yaxmos hukmronligi boshlanishi bilan Misr tarixida qaysi davr boshlandi?",
+        q: "21. Menes tomonidan asos solingan yagona davlatning poytaxti qaysi shahar edi?",
         options: [
-          "Qadimgi podsholik",
-          "O‘rta podsholik",
-          "Yangi podsholik",
-          "So‘nggi podsholik"
+          "Fiva",
+          "Luksor",
+          "Memfis",
+          "Qohira"
         ],
         correct: 2,
-        exp: "Yaxmos yangi sulolaga asos solib, Yangi podsholik davrini boshlab berdi."
+        exp: "Yagona va birlashgan davlat uchun yangi poytaxt Memfis shahri barpo etildi."
       },
       {
-        q: "13. Falastin, Finikiya va Suriyani istilo qilish dastlab qaysi fir’avn davrida boshlangan?",
+        q: "22. Vaqt o‘tib nomlar yana mustaqil bo‘lib, keyinchalik qayta birlashgan Misrning poytaxti qaysi shaharga ko‘chirildi?",
         options: [
-          "Menes davrida",
-          "Yaxmos davrida",
-          "Tutmos II davrida",
-          "Tutmos III davrida"
+          "Fiva",
+          "Memfis",
+          "Giza",
+          "Assuan"
+        ],
+        correct: 0,
+        exp: "Qayta birlashgan Misr davlatining poytaxti Fiva shahri bo‘lgan."
+      },
+      {
+        q: "23. Qadimgi Misrda dala ishlarida (omoch tortishda) qaysi ish hayvonidan foydalanilgan?",
+        options: [
+          "Ot",
+          "Tuya",
+          "Ho‘kiz",
+          "Eshak"
         ],
         correct: 2,
-        exp: "Fir’avn Tutmos II davrida Falastin, Finikiya va Suriyani istilo qilish boshlandi."
+        exp: "Misrliklar dala ishlarida ho‘kizlardan foydalanganlar."
       },
       {
-        q: "14. Old Osiyoda Misr hukmronligini uzil-kesil o‘rnatgan fir’avn kim?",
+        q: "24. Misrliklar o‘z yurtlarini nima sababdan «Qora tuproq» deb atashgan?",
         options: [
-          "Tutmos II",
-          "Tutmos III",
-          "Yaxmos",
-          "Kir II"
+          "Nil toshqinlari oqizib kelgan qora loyqa tuproq serhosil bo‘lgani sababli",
+          "Yer ostidan ko‘mir qazib olingani uchun",
+          "Qora rangli qumtoshlar ko‘p bo‘lgani uchun",
+          "Qora tusli daraxtlar o‘sgani sababli"
         ],
-        correct: 1,
-        exp: "Tutmos II dan keyin fir’avn Tutmos III yurishlarni davom ettirib, Old Osiyoda Misr hukmronligini o‘rnatdi."
+        correct: 0,
+        exp: "Nil daryosi olib kelgan chirindiga boy qora loyqa tuproq dalalarni serhosil qilgani sababli «Qora tuproq» deb atalgan."
       },
       {
-        q: "15. Yangi podsholik davrida Misr fir’avnlari asosiy bosqinchilik yurishlarini qaysi hududlarga qaratdilar?",
+        q: "25. Quyidagi atamalarning qaysi biri qadimgi Misr podsholarining unvonini bildiradi?",
         options: [
-          "Faqat Yevropa davlatlariga",
-          "Nubiya va Old Osiyo mamlakatlariga",
-          "Faqat Hindiston va Xitoyga",
-          "Kichik Osiyo va Yunonistonga"
+          "Xoqon",
+          "Nomarx",
+          "Podsho-knyaz",
+          "Fir’avn"
         ],
-        correct: 1,
-        exp: "Fir’avnlar Nubiya va Old Osiyo mamlakatlariga hujumni boshlab yubordilar."
-      },
-      {
-        q: "16. Misr uzoq tanaffusdan keyin yana yagona davlatga birlashib, iqtisodiyoti va madaniyati yuksala boshlagan davr?",
-        options: [
-          "Mil. avv. XVIII asr",
-          "Mil. avv. VII asr",
-          "Mil. avv. IV asr",
-          "Mil. avv. 525-yil"
-        ],
-        correct: 1,
-        exp: "Miloddan avvalgi VII asrda Misr yana yagona davlatga birlashdi."
-      },
-      {
-        q: "17. Forslar shohi Kir II ning o‘g‘li Kambiz II Misrga qachon bostirib kirdi va uni bosib oldi?",
-        options: [
-          "Mil. avv. 3000-yilda",
-          "Mil. avv. 525-yilda",
-          "Mil. avv. VII asrda",
-          "Mil. avv. XVIII asrda"
-        ],
-        correct: 1,
-        exp: "Kambiz II miloddan avvalgi 525-yilda Misrni bosib oldi."
-      },
-      {
-        q: "18. Miloddan avvalgi 525-yilda Misrni bosib olgan hukmdor kim edi?",
-        options: [
-          "Shoh Kir II",
-          "Shoh Kambiz II",
-          "Doro I",
-          "Kserks"
-        ],
-        correct: 1,
-        exp: "Shoh Kir II ning o‘g‘li Kambiz II Misrni zabt etdi."
-      },
-      {
-        q: "19. Qadimgi Misr fir’avnlari Falastin va Suriyadan asosan qanday tovarlarni olib kelishgan?",
-        options: [
-          "Ipak matolar va choy",
-          "Nodir hunarmandlik buyumlari va qimmatbaho toshlar",
-          "Qog‘oz va chinni idishlar",
-          "Ziravorlar va paxta"
-        ],
-        correct: 1,
-        exp: "Misrliklar bu o‘lkalardan nodir buyumlar va qimmatbaho toshlarni olib kelganlar."
-      },
-      {
-        q: "20. Quyidagi qaysi hudud Qadimgi Misr bilan to‘g‘ridan-to‘g‘ri quruqlik orqali chegaradosh bo‘lmagan?",
-        options: [
-          "Nubiya",
-          "Liviya",
-          "Finikiya",
-          "Sinay yarimoroli"
-        ],
-        correct: 2,
-        exp: "Finikiya Old Osiyoda (O‘rta dengiz bo‘yida) joylashgan bo‘lib, to‘g‘ridan-to‘g‘ri chegaradosh bo‘lmagan, keyinchalik istilo qilingan."
-      },
-      {
-        q: "21. Giksoslar istilosi davrida Misr mustaqilligining saqlanib qolgan tayanchi qaysi hudud edi?",
-        options: [
-          "Quyi Misr",
-          "Yuqori Misr (Fiva)",
-          "Sinay yarimoroli",
-          "Liviya cho‘li"
-        ],
-        correct: 1,
-        exp: "Yuqori Misrdagi Fiva shahri giksoslarga qarshi kurash markazi bo‘ldi."
-      },
-      {
-        q: "22. Qadimgi podsholik davrida fir’avnlarning Nubiya va Liviyaga qilgan yurishlarining asosiy oqibati nima bo‘lgan?",
-        options: [
-          "Bu hududlar bilan do‘stona savdo aloqalari o‘rnatildi",
-          "Shaharlar talanib, ko‘plab asirlar va chorva mollari haydab ketildi",
-          "Misr o‘z mustaqilligini yo‘qotdi",
-          "U yerlarda doimiy Misr shaharlari barpo etildi"
-        ],
-        correct: 1,
-        exp: "Fir’avnlar bu o‘lkalarni talab, asirlar va chorva mollarini egallab qaytishgan."
-      },
-      {
-        q: "23. Tutmos III ning harbiy yurishlari natijasida Misr qaysi mintaqada o‘z gegemonligini (hukmronligini) o‘rnatdi?",
-        options: [
-          "O‘rta Osiyoda",
-          "Old Osiyoda",
-          "G‘arbiy Yevropada",
-          "Janubiy Afrikada"
-        ],
-        correct: 1,
-        exp: "Tutmos III Old Osiyoda Misr hukmronligini o‘rnatdi."
-      },
-      {
-        q: "24. Ko‘chmanchi giksoslar zulmidan xalos bo‘lish uchun kurash qayerdan boshlandi?",
-        options: [
-          "Memfisdan",
-          "Fivadan",
-          "Sinaydan",
-          "Nubiyadan"
-        ],
-        correct: 1,
-        exp: "Giksoslarga qarshi ozodlik harakati Fiva shahridan boshlandi."
-      },
-      {
-        q: "25. Quyidagi voqealar xronologik tartibda to‘g‘ri ko‘rsatilgan qatorni aniqlang:\n1) Kambiz II ning Misrni bosib olishi;\n2) Giksoslarning Misrga bostirib kirishi;\n3) Yaxmos tomonidan Yangi podsholikka asos solinishi.",
-        options: [
-          "1, 2, 3",
-          "2, 3, 1",
-          "3, 2, 1",
-          "2, 1, 3"
-        ],
-        correct: 1,
-        exp: "2 (mil. avv. XVIII asr oxiri) -> 3 (giksoslar quvilgach) -> 1 (mil. avv. 525-yil)."
+        correct: 3,
+        exp: "Qadimgi Misr hukmdorlari «fir’avn» deb atalgan."
       }
     ];
 
@@ -909,7 +905,7 @@
       document.getElementById('quiz-result').style.display = 'flex';
       document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
       const fb = document.getElementById('q-feedback');
-      if(score >= 23) fb.innerText = "Mukammal natija! 7-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      if(score >= 23) fb.innerText = "Mukammal natija! 6-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
       else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
       else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
       window.scrollTo({ top: 0, behavior: 'smooth' });

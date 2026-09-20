@@ -397,28 +397,24 @@
 
     // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
-      // 1-bosqich: Geografiya va tabiat
       [
         { id: 1, left: "Nil daryosi uzunligi", right: "6 ming kilometr" },
         { id: 2, left: "Quyi oqim vodiysi kengligi", right: "3 km dan 22 km gacha" },
         { id: 3, left: "«Qora tuproq» / «Nil in’omi»", right: "Misrning qadimgi nomlari" },
         { id: 4, left: "Papirus", right: "Vodiyni qoplagan chirmashib ketgan butalar" }
       ],
-      // 2-bosqich: Dehqonchilik va xo‘jalik
       [
         { id: 5, left: "Kanop o‘simligi", right: "Yetishtirilib, gazlama to‘qilgan ekin" },
         { id: 6, left: "Qoramollar", right: "Ekilgan urug‘ni yerga singdirish uchun haydalgan" },
         { id: 7, left: "Mis o‘roqlar", right: "Boshoqlarni o‘rib olish uchun qo‘llanilgan qurol" },
         { id: 8, left: "Sopol xumlar", right: "Donni zararkunandalardan saqlash idishi" }
       ],
-      // 3-bosqich: Hunarmandchilik va qurilish
       [
         { id: 9, left: "Oddiy aholi uylari", right: "Loy suvalgan papirus poyalaridan qurilgan" },
         { id: 10, left: "Zodagonlar uylari", right: "Oftobda quritilgan xom g‘ishtdan qurilgan" },
         { id: 11, left: "Fir’avn saroylari va ibodatxonalar", right: "Mustahkam toshdan barpo etilgan" },
         { id: 12, left: "Misgar ustalar", right: "Misni eritib, turli mehnat qurollari quyganlar" }
       ],
-      // 4-bosqich: Davlatchilik va xronologiya
       [
         { id: 13, left: "Nomlar", right: "Qadimgi Misrdagi ilk kichik davlatlar" },
         { id: 14, left: "Nomarxlar", right: "Kichik nom davlatlarini boshqargan hukmdorlar" },
@@ -527,7 +523,7 @@
       { q: "18. Oddiy misrliklarning uylari qanday materialdan qurilgan?", a: "Loy suvalgan papirus poyalaridan qurilgan." },
       { q: "19. Zodagonlarning uylari nimadan barpo etilgan?", a: "Oftobda quritilgan xom g‘ishtdan qurilgan." },
       { q: "20. Fir’avnlarning saroylari va ibodatxonalar qaysi ashyodan qurilgan?", a: "Mustahkam toshdan barpo etilgan." },
-      { q: "21. Misrda kemasozlar qayiq va kemalarni qanday materiallardan yasashgan?", a: "Qamishdan qayiqlar, yog‘ochdan esa kemalar qurishgan." },
+      { q: "21. Misrda kemasozlar qayiq va kemalarni qanday materiallardan yasashgan?", a: "Qamishdan qayiqlar, yog‘ochdan esa kemelia (kemalar) qurishgan." },
       { q: "22. Qadimgi Misrda ilk kichik davlatlar nima deb atalgan va ularni kim boshqargan?", a: "«Nom» deb atalgan va ularni «nomarxlar» boshqargan." },
       { q: "23. Dastlab Misr hududida qanday ikkita podsholik mavjud bo‘lgan?", a: "Quyi (Shimoliy) Misr va Yuqori (Janubiy) Misr podsholiklari." },
       { q: "24. Misr qachon, kim tomonidan yagona davlatga birlashtirildi va uning poytaxti qaysi shahar bo‘ldi?", a: "Miloddan avvalgi 3000-yilda Yuqori Misr hukmdori Menes tomonidan birlashtirildi, poytaxti Memfis shahri bo‘ldi." },
@@ -570,259 +566,259 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST) ---
+    // --- 3. TEST SINOVI (25 TA TEST - TO'G'RI JAVOBING O'RNI ARALASHTIRILGAN) ---
     const testQuestions = [
       {
         q: "1. Nil daryosi uzunligi va uning geografik joylashuvi to‘g‘ri ko‘rsatilgan javobni aniqlang.",
         options: [
           "5 ming km; Afrika g‘arbida",
-          "6 ming km; Afrika shimoli-sharqida",
           "7 ming km; Osiyo janubi-g‘arbida",
+          "6 ming km; Afrika shimoli-sharqida",
           "4 ming km; Afrika markazida"
         ],
-        correct: 1,
+        correct: 2,
         exp: "Nil daryosi Afrika shimoli-sharqida joylashgan bo‘lib, uzunligi 6 ming kilometrni tashkil etadi."
       },
       {
         q: "2. Nil daryosining quyi qismidagi qora tuproqli serhosil dalalarning kengligi qanchani tashkil qilgan?",
         options: [
-          "1 km dan 10 km gacha",
           "3 km dan 22 km gacha",
+          "1 km dan 10 km gacha",
           "10 km dan 50 km gacha",
           "500 metr dan 5 km gacha"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Daryoning quyi qismi 3 km dan 22 km gacha kenglikdagi qora tuproqli serhosil dalalardan iborat bo‘lgan."
       },
       {
         q: "3. Qadimgi zamonlarda Nil vodiysini qoplagan chirmashib ketgan butazor o‘simlik qaysi edi?",
         options: [
           "Lotos",
-          "Papirus",
           "Bambuk",
-          "Qamishzor"
+          "Qamishzor",
+          "Papirus"
         ],
-        correct: 1,
+        correct: 3,
         exp: "Qadimda Nil vodiysini odam o‘tolmaydigan qalin papirus butalari qoplagan."
       },
       {
         q: "4. Odamlar Nil daryosi qirg‘oqlaridagi yerlarni qachondan boshlab o‘zlashtirishga kirishdilar?",
         options: [
+          "Miloddan avvalgi 4-mingyillik boshlarida",
           "Mil. avv. 6-mingyillikda",
-          "Mil. avv. 4-mingyillik boshlarida",
           "Mil. avv. 3-mingyillik o‘rtalarida",
           "Mil. avv. 2-mingyillik oxirida"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Miloddan avvalgi 4-mingyillik boshlarida odamlar Nil daryosi bo‘ylarini o‘zlashtira boshladilar."
       },
       {
         q: "5. Qadimgi misrliklar kiyim-kechak tayyorlash uchun gazlamani qaysi o‘simlikdan to‘qishgan?",
         options: [
-          "Paxta",
           "Kanop",
+          "Paxta",
           "Zig‘ir",
           "Ipak"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Misrliklar yetishtirilgan kanop tolasidan gazlama to‘qishgan."
       },
       {
         q: "6. Misrda yerga sepilgan urug‘likni tuproqqa singdirish uchun qanday tadbir qo‘llanilgan?",
         options: [
           "Ustidan qo‘lda tosh bostirib chiqilgan",
-          "Qoramollarni daladan haydab o‘tishgan",
           "Otlar yordamida yerni tekislashgan",
-          "Suv toshqini oqizib kelishi kutilgan"
+          "Suv toshqini oqizib kelishi kutilgan",
+          "Qoramollarni daladan haydab o‘tishgan"
         ],
-        correct: 1,
+        correct: 3,
         exp: "Urug‘ qo‘lda sepilgach, uni yerga singdirish uchun qoramollarni daladan haydab o‘tishgan."
       },
       {
         q: "7. Qadimgi Misrda hosilni yig‘ib-terib olishda qaysi metalldan yasalgan o‘roqlardan foydalanilgan?",
         options: [
-          "Temir o‘roqlar",
           "Mis o‘roqlar",
+          "Temir o‘roqlar",
           "Bronza o‘roqlar",
           "Oltin o‘roqlar"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Boshoqlarni mis o‘roqlar bilan o‘rib olishgan."
       },
       {
         q: "8. Misrliklar g‘alla hosilini qanday usul bilan yanchishgan?",
         options: [
           "Tosh tegirmonlar yordamida",
-          "Boshoqlar ustidan hayvonlarni haydab o‘tish orqali",
           "Qo‘lda tayoqlar bilan urib",
-          "Maxsus suv tegirmonlarida"
+          "Maxsus suv tegirmonlarida",
+          "Boshoqlar ustidan hayvonlarni haydab o‘tish orqali"
         ],
-        correct: 1,
+        correct: 3,
         exp: "Bug‘doy yoki arpa bog‘lari ustidan hayvonlarni haydab o‘tish orqali don yanchilgan."
       },
       {
         q: "9. Xirmonjoydan chiqqan donlarni sopol xumlarda saqlashdan asosiy maqsad nima edi?",
         options: [
-          "Uzoq yurtlarga sotish uchun",
           "Kemiruvchi zararkunandalardan himoyalash uchun",
+          "Uzoq yurtlarga sotish uchun",
           "Fir’avn xazinasiga yashirish uchun",
           "Suv toshqinidan asrash uchungina"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Donni son-sanoqsiz kemiruvchi zararkunandalardan himoyalash uchun sopol xumlarda saqlangan."
       },
       {
         q: "10. Qadimgi Misrda hunarmandchilikning nechtadan ortiq kasb-kor turlari mavjud bo‘lgan?",
         options: [
-          "10 dan ziyod",
           "30 dan ziyod",
+          "10 dan ziyod",
           "50 dan ziyod",
           "100 dan ziyod"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Darslikda keltirilishicha, Misrda hunarmandlarning 30 dan ziyod kasb-korlari bo‘lgan."
       },
       {
         q: "11. Qadimgi Misrda oddiy aholining turarjoylari nimalardan qurilgan?",
         options: [
           "Mustahkam marmar toshlardan",
-          "Loy suvalgan papirus poyalaridan",
           "Oftobda quritilgan xom g‘ishtdan",
+          "Loy suvalgan papirus poyalaridan",
           "Pishiq paxsadan"
         ],
-        correct: 1,
+        correct: 2,
         exp: "Oddiy misrliklarning uyi loy suvalgan papirus poyalaridan qilingan."
       },
       {
         q: "12. Qadimgi Misrda zodagonlarning xonadonlari qanday materialdan barpo etilgan?",
         options: [
-          "Pishiq g‘ishtdan",
           "Oftobda quritilgan xom g‘ishtdan",
+          "Pishiq g‘ishtdan",
           "Yog‘och ustunlardan",
           "Papirus qamishlaridan"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Zodagonlarning uylari oftobda quritilgan xom g‘ishtdan qurilgan."
       },
       {
         q: "13. Fir’avnlarning saroylari va ibodatxonalar asosan qanday xomashyodan barpo etilgan?",
         options: [
           "Xom g‘ishtdan",
-          "Toshdan",
           "Qamish va yog‘ochdan",
+          "Toshdan",
           "Loydan"
         ],
-        correct: 1,
+        correct: 2,
         exp: "Fir’avnlarning saroylari va ibodatxonalar toshdan barpo etilgan."
       },
       {
         q: "14. Misrlik kemasozlar qayiqlar va yirik kemalarni qanday materiallardan yasaganlar?",
         options: [
-          "Faqat teridan",
           "Qamishdan qayiqlar, yog‘ochdan kemalar",
+          "Faqat teridan",
           "Faqat mis plitalardan",
           "Papirus va temirdan"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Kemasozlar qamishdan qayiqlar, yog‘ochdan esa kemalar qurardi."
       },
       {
         q: "15. Qadimgi Misrda tarqoq manzilgohlar birlashuvidan hosil bo‘lgan kichik davlatlar qanday atalgan?",
         options: [
           "Polis",
-          "Nom",
           "Viloyat",
+          "Nom",
           "Satrap"
         ],
-        correct: 1,
+        correct: 2,
         exp: "Tarqoq manzilgohlar birlashib «nom» deb atalgan kichik davlatlarni tashkil etgan."
       },
       {
         q: "16. Kichik davlatlar — «nom»larni boshqargan hukmdorlar qanday nomlangan?",
         options: [
-          "Fir’avnlar",
           "Nomarxlar",
+          "Fir’avnlar",
           "Oqsoqollar",
           "Satraplar"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Nomlarni «nomarxlar» boshqargan."
       },
       {
         q: "17. Qadimgi Misr dastlab qanday ikki yirik davlatga bo‘lingan edi?",
         options: [
           "Sharqiy va G‘arbiy Misr",
-          "Quyi (Shimoliy) va Yuqori (Janubiy) Misr",
           "Memfis va Fiva podsholiklari",
+          "Quyi (Shimoliy) va Yuqori (Janubiy) Misr",
           "Nil va Qizil dengiz podsholiklari"
         ],
-        correct: 1,
+        correct: 2,
         exp: "Biri Quyi (Shimoliy) Misrda, boshqasi esa Yuqori (Janubiy) Misrda podsholik qilgan."
       },
       {
         q: "18. Quyi va Yuqori Misr o‘rtasidagi urushda qaysi tomon g‘alaba qozondi?",
         options: [
-          "Quyi Misr podshosi",
           "Yuqori Misr hukmdori Menes",
+          "Quyi Misr podshosi",
           "Fiva shahrining zodagonlari",
           "Kichik Osiyo qo‘shinlari"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Urushda Yuqori Misr hukmdori Menes g‘alaba qozondi."
       },
       {
         q: "19. Yuqori va Quyi Misr birlashtirilgan sana qaysi javobda to‘g‘ri ko‘rsatilgan?",
         options: [
           "Miloddan avvalgi 4-mingyillik boshida",
-          "Miloddan avvalgi 3000-yilda",
           "Miloddan avvalgi 2000-yilda",
+          "Miloddan avvalgi 3000-yilda",
           "Miloddan avvalgi 1-mingyillikda"
         ],
-        correct: 1,
+        correct: 2,
         exp: "Miloddan avvalgi 3000-yilda ikkala davlat birlashtirildi."
       },
       {
         q: "20. Birlashgan Misr davlatining birinchi fir’avni kim bo‘ldi?",
         options: [
           "Tutanxamon",
-          "Menes",
           "Ramses",
-          "Xufu"
+          "Xufu",
+          "Menes"
         ],
-        correct: 1,
+        correct: 3,
         exp: "Birlashgan mamlakatning birinchi fir’avni Menes bo‘ldi."
       },
       {
         q: "21. Menes tomonidan asos solingan yagona davlatning poytaxti qaysi shahar edi?",
         options: [
-          "Fiva",
           "Memfis",
+          "Fiva",
           "Luksor",
           "Qohira"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Yagona va birlashgan davlat uchun yangi poytaxt Memfis shahri barpo etildi."
       },
       {
         q: "22. Vaqt o‘tib nomlar yana mustaqil bo‘lib, keyinchalik qayta birlashgan Misrning poytaxti qaysi shaharga ko‘chirildi?",
         options: [
           "Memfis",
-          "Fiva",
           "Giza",
-          "Assuan"
+          "Assuan",
+          "Fiva"
         ],
-        correct: 1,
+        correct: 3,
         exp: "Qayta birlashgan Misr davlatining poytaxti Fiva shahri bo‘lgan."
       },
       {
         q: "23. Qadimgi Misrda dala ishlarida (omoch tortishda) qaysi ish hayvonidan foydalanilgan?",
         options: [
-          "Ot",
           "Ho‘kiz",
+          "Ot",
           "Tuya",
           "Eshak"
         ],
-        correct: 1,
+        correct: 0,
         exp: "Misrliklar dala ishlarida ho‘kizlardan foydalanganlar."
       },
       {
@@ -839,12 +835,12 @@
       {
         q: "25. Quyidagi atamalarning qaysi biri qadimgi Misr podsholarining unvonini bildiradi?",
         options: [
-          "Xoqon",
-          "Fir’avn",
           "Nomarx",
-          "Podsho-knyaz"
+          "Xoqon",
+          "Podsho-knyaz",
+          "Fir’avn"
         ],
-        correct: 1,
+        correct: 3,
         exp: "Qadimgi Misr hukmdorlari «fir’avn» deb atalgan."
       }
     ];

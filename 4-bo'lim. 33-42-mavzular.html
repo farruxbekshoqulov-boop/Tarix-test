@@ -420,7 +420,7 @@
       ],
       // 4-bosqich: Salavkiylar va Yunon-Baqtriya
       [
-        { id: 13, left: "Mil. avv. 312-yil", right: "Salavk Bobil va Suriya hududida o‘z davlatiga asos solgan sana" },
+        { id: 13, left: "Mil. avv. 312-yil", right: "Salavk Bobil hukmdori bo‘lib, Salavkiylar davlatiga asos solgan yil" },
         { id: 14, left: "Kampir qal’a va Uzundara", right: "Salavkiylar va Yunon-Baqtriya davriga oid muhim qo‘rg‘onlar" },
         { id: 15, left: "Mil. avv. 250-yil", right: "Baqtriya Salavkiylardan ajralib chiqib, mustaqil bo‘lgan yil" },
         { id: 16, left: "Diodot", right: "Yunon-Baqtriya podsholigiga asos solgan shahar hokimi" }
@@ -540,7 +540,7 @@
       { q: "3. Forslarni suvsiz sahroda adashtirib yuborgan afsonaviy sak cho‘poni kim?", a: "Shiroq." },
       { q: "4. Ahamoniylar davlatida bosib olingan hududlar qanday ma’muriy birliklarga bo‘lingan?", a: "Satrapiyalarga." },
       { q: "5. 1877-yilda Qubodiyon vohasidan topilgan yuksak san’at namunalari majmuasi qanday ataladi?", a: "Amudaryo (Oks) xazinasi." },
-      { q: "6. Makedoniyalik Aleksandr O‘rta Osiyoga qachon bostirib kirgan va qarshilik ko‘rsatgan sarkarda kim?", a: "Mil. avv. 334-yilda (yurishlar davrida); Spitaman boshchilik qilgan." },
+      { q: "6. Makedoniyalik Aleksandr Sharqqa yurishni qachon boshlagan va Sug‘diyonada istilochilarga qarshi kurashga kim boshchilik qilgan?", a: "Aleksandr Sharqqa yurishni miloddan avvalgi 334-yilda boshlagan; Sug‘diyonadagi qarshilikka Spitaman boshchilik qilgan." },
       { q: "7. Sirdaryo bo‘yida Aleksandr tomonidan qaysi shahar barpo etilgan?", a: "Aleksandriya Esxata (Chekka Aleksandriya)." },
       { q: "8. Salavkiylar davlati qachon va kim tomonidan tuzilgan?", a: "Miloddan avvalgi 312-yilda sarkarda Salavk tomonidan." },
       { q: "9. Yunon-Baqtriya davlati qachon Salavkiylardan ajralib chiqdi va unga kim asos soldi?", a: "Miloddan avvalgi 250-yilda shahar hokimi Diodot tomonidan." },
@@ -574,7 +574,7 @@
       { q: "37. Doro I ning isyonlarni bostirgani haqidagi qoyatosh yozuvlari qanday ataladi?", a: "Behistun yozuvlari." },
       { q: "38. Massagetlar qabilasining malikasi kim edi?", a: "To‘maris." },
       { q: "39. Xitoy elchisi Chjan Szyan Farg‘ona vodiysiga qaysi daryo bo‘ylab kelgan?", a: "Norin daryosi bo‘ylab." },
-      { q: "40. Kushon davrida qishloq xo‘jaligida suv chiqarish uchun qanday qurilma ishlatilgan?", a: "Chig‘ir va suv tegirmoni." }
+      { q: "40. Kushon davrida suv chiqarish uchun qanday moslama ishlatilgan, suv tegirmonidan esa nima maqsadda foydalanilgan?", a: "Suv chiqarish uchun chig‘ir ishlatilgan; suv tegirmonidan un yanchish va boshqa xo‘jalik ishlarida foydalanilgan." }
     ];
 
     let fcIdx = 0;
@@ -965,7 +965,7 @@
           "Chig‘ir"
         ],
         correct: 3, // D
-        exp: "Kushonlar davrida qishloq xo‘jaligida suv chiqaradigan chig‘ir va suv tegirmonidan foydalanildi."
+        exp: "Kushonlar davrida suv chiqarish uchun chig‘irdan foydalanilgan; suv tegirmoni esa un yanchishda qo‘llanilgan."
       },
       {
         q: "33. Qadimgi O‘rta Osiyo jangchilarining xanjari qanday atalgan?",
@@ -979,15 +979,10 @@
         exp: "O‘rta Osiyo jangchilari xanjar — akinak va qilichlar bilan qurollangan."
       },
       {
-        q: "34. Kushon davlati qachon parchalanib ketdi?",
-        options: [
-          "Milodiy I asrda",
-          "Milodiy III asrda",
-          "Milodiy V asrda",
-          "Milodiy VIII asrda"
-        ],
-        correct: 1, // B
-        exp: "Milodiy III asrda Kushon davlati parchalanib ketadi."
+        q: "34. Hukmdor nomi bitilgan tanga zarb qilish va pul islohoti qaysi kushon podshosi davrida boshlandi?",
+        options: ["Kudzula Kadfiz", "Vima Kadfiz", "Kanishka", "Diodot"],
+        correct: 1,
+        exp: "Vima Kadfiz davrida hukmdor nomi bitilgan tanga zarb qilinib, pul islohoti amalga oshirilgan."
       },
       {
         q: "35. Qadimgi O‘rta Osiyo shahar mudofaasida pishiq loydan tayyorlangan nimalardan foydalanilgan?",
@@ -1131,7 +1126,18 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Variantlar har urinishda aralashtiriladi: A–B–C–D naqshi saqlanib qolmaydi.
+    function shuffleOptions() {
+      testQuestions.forEach(q => {
+        const opts = q.options.map((text, i) => ({ text, correct: i === q.correct }));
+        opts.sort(() => Math.random() - 0.5);
+        q.options = opts.map(o => o.text);
+        q.correct = opts.findIndex(o => o.correct);
+      });
+    }
+
     // Dastlabki ishga tushirish
+    shuffleOptions();
     initMatch();
     loadFlashcard();
     loadTestQuestion();

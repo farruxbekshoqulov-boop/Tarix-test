@@ -159,9 +159,7 @@
       background: rgba(16, 185, 129, 0.3);
       border-color: var(--success);
       color: #6ee7b7;
-      visibility: hidden;
-      opacity: 0;
-      transform: scale(0.8);
+      pointer-events: none;
       transition: all 0.3s;
     }
 
@@ -400,7 +398,7 @@
       // 1-bosqich: Kushon davlatining tashkil topishi
       [
         { id: 1, left: "Mil. avv. 140–130-yillar", right: "Yuechji qabilalari Yunon-Baqtriyani bosib olgan davr" },
-        { id: 2, left: "Milodiy I asr", right: "Yuechjilar orasida Kushon xonodoni yuksalib, davlat asos solingan davr" },
+        { id: 2, left: "Milodiy I asr", right: "Yuechjilar orasida Kushon xonadoni yuksalib, davlat asos solingan davr" },
         { id: 3, left: "Kudzula Kadfiz", right: "Yuechji qabilalarining mulklarini birlashtirgan birinchi kushon hukmdori" },
         { id: 4, left: "Vima Kadfiz va Kanishka", right: "Kudzuladan keyin hokimiyat tepasiga kelgan mashhur kushon podsholari" }
       ],
@@ -481,48 +479,30 @@
 
     function onMatchClick(btn) {
       if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
-
-      if (!selectedMatchBtn) {
-        selectedMatchBtn = btn;
-        btn.classList.add('selected');
-      } else {
-        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
-          btn.classList.add('matched');
-          selectedMatchBtn.classList.add('matched');
-          selectedMatchBtn.classList.remove('selected');
-          selectedMatchBtn = null;
-          matchesRemaining--;
-          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
-
+      if (!selectedMatchBtn) { selectedMatchBtn = btn; btn.classList.add('selected'); return; }
+      if (selectedMatchBtn.dataset.id === btn.dataset.id) {
+        const first = selectedMatchBtn, second = btn;
+        first.classList.remove('selected'); first.classList.add('matched'); second.classList.add('matched');
+        selectedMatchBtn = null; matchesRemaining--;
+        document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+        setTimeout(() => {
+          first.remove(); second.remove();
           if (matchesRemaining === 0) {
             currentMatchStage++;
-            setTimeout(() => {
-              if (currentMatchStage < matchStages.length) {
-                loadMatchStage();
-              } else {
-                document.getElementById('match-progress').style.width = '100%';
-                document.getElementById('match-play-box').style.display = 'none';
-                document.getElementById('match-finish-box').style.display = 'flex';
-              }
-            }, 500);
+            if (currentMatchStage < matchStages.length) loadMatchStage();
+            else { document.getElementById('match-progress').style.width = '100%'; document.getElementById('match-play-box').style.display = 'none'; document.getElementById('match-finish-box').style.display = 'flex'; }
           }
-        } else {
-          btn.classList.add('wrong');
-          selectedMatchBtn.classList.add('wrong');
-          
-          setTimeout(() => {
-            btn.classList.remove('wrong', 'selected');
-            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
-            selectedMatchBtn = null;
-          }, 400);
-        }
+        }, 380);
+      } else {
+        const first = selectedMatchBtn; first.classList.add('wrong'); btn.classList.add('wrong');
+        setTimeout(() => { first.classList.remove('wrong', 'selected'); btn.classList.remove('wrong'); selectedMatchBtn = null; }, 400);
       }
     }
 
     // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
     const flashcards = [
       { q: "1. Yuechji qabilalari Yunon-Baqtriya davlatini qachon bosib oldi?", a: "Miloddan avvalgi 140–130-yillar oralig‘ida." },
-      { q: "2. Kushon xonodoni qachon yuksalib, Kushon davlatiga asos solindi?", a: "Milodiy I asrda yuechjilar orasida." },
+      { q: "2. Kushon xonadoni qachon yuksalib, Kushon davlatiga asos solindi?", a: "Milodiy I asrda yuechjilar orasida." },
       { q: "3. Yuechji qabilalarining mulklarini birlashtirgan birinchi kushon hukmdori kim?", a: "Kudzula Kadfiz." },
       { q: "4. Kudzula Kadfiz davrida qaysi viloyat Kushon davlatiga qo‘shib olingan?", a: "Afg‘oniston va Hindiston viloyati — Kashmir." },
       { q: "5. Kushon podsholigi qaysi podsho davrida ulkan imperiyaga aylandi?", a: "Podsho Kanishka davrida." },
@@ -534,7 +514,7 @@
       { q: "11. Kushon davrida qaysi yozuv turi aramey yozuvi asosida rivojlandi?", a: "Kushon-baqtriya yozuvi." },
       { q: "12. Surxko‘tal (Afg‘oniston) va Kampirtepadan topilgan bitiklar qaysi alifboda yozilgan?", a: "Yunon alifbosidagi kushon bitiklari." },
       { q: "13. Amudaryoning quyi oqimi, Zarafshon va Qashqadaryoda qaysi yozuvlar keng tarqalgan edi?", a: "Xorazmiy va sug‘diy yozuvlar." },
-      { q: "14. Kushon davlati tashkil topayotganda Baqtriya va Sug‘diyona aholisi asosan qaysi dinchilikda edi?", a: "Zardushtiylik dinida." },
+      { q: "14. Kushon davlati tashkil topayotganda Baqtriya va Sug‘diyona aholisi asosan qaysi din e’tiqodida edi?", a: "Zardushtiylik dinida." },
       { q: "15. Kushon davlatiga Hindistonning qo‘shilishi bilan qaysi din kirib kela boshladi?", a: "Buddaviylik dini." },
       { q: "16. Surxon vohasida yirik buddaviylik ibodatxonalari joylashgan maskanlar qaysilar?", a: "Eski Termiz, Ayritom, Dalvarzintepa, Fayoztepa va Qoratepa." },
       { q: "17. Buddaviylik O‘rta Osiyoda qachongacha saqlanib qoldi?", a: "Milodiy VIII asrgacha (zardushtiylik bilan birga)." },
@@ -544,14 +524,14 @@
       { q: "21. Kanishka tangalarida uning siymosi qanday aks ettirilgan?", a: "To‘la libosda, qo‘lida tayoq yoki qurol ushlagan holda." },
       { q: "22. Kushon podsholigida tangalar qaysi metallardan tayyorlangan?", a: "Oltin, kumush va misdan." },
       { q: "23. Kushon shaklli yozuvning boshqa yozuvlardan farqli jihati nimada edi?", a: "Harflar burchakli va aylana shaklida yozilgan." },
-      { q: "24. Xolchayonda qaysi sulh yoki saroy qoldiqlari o‘rganilgan?", a: "Kushon hukmdorlarining saroyi va haykaltaroshlik namunalari." },
+      { q: "24. Xolchayonda nimalar o‘rganilgan?", a: "Kushon hukmdorlari saroyi, devoriy tasvirlar va haykaltaroshlikning yuksak san’atkorona namunalari." },
       { q: "25. Kushon davrida qaysi davlatlar bilan elchilik va savdo aloqalari olib borilgan?", a: "Hindiston, Xitoy va Rim imperiyasi bilan." },
       { q: "26. Chig‘ir deb nimaga aytiladi?", a: "Suv chiqaradigan maxsus qishloq xo‘jaligi moslamasiga." },
-      { q: "27. Kushon davlatining iqtisodiy rivojlanishiga nima eng ko‘p ta’sir ko‘rsatdi?", a: "Pul islohoti va xalqaro savdo yo‘llari." },
+      { q: "27. Vima Kadfiz davridagi pul islohoti nimaga ko‘maklashgan?", a: "Xo‘jalik va savdo-sotiq rivojiga." },
       { q: "28. Fayoztepa va Qoratepa yodgorliklari qayerda joylashgan?", a: "Eski Termiz yaqinida." },
       { q: "29. Kushon podsholigining ma’muriy va madaniy markazlari asosan qayerda joylashgan edi?", a: "Baqtriya va Janubiy O‘rta Osiyo hududlarida." },
       { q: "30. Kushon davrida shaharlar o‘zini qanday tuzilmaga bo‘lgan?", a: "Hukmdor qarorgohi, hunarmandlar mahallalari va turarjoy mavzelariga." },
-      { q: "31. Kushon shaxzodasining boshiga kiygan kiyimi nima bilan ajralib turadi?", a: "Baland va o‘tkir uchi tikilgan maxsus bosh kiyim (qalpoq) bilan." },
+      { q: "31. Kushon shahzodasining boshiga kiygan kiyimi nima bilan ajralib turadi?", a: "Baland va o‘tkir uchi tikilgan maxsus bosh kiyim (qalpoq) bilan." },
       { q: "32. Ayritom yodgorligidan topilgan san’at namunalarida asosan nimalar tasvirlangan?", a: "Dumbirachi va musiqachilar, cholg‘u asboblarini chalayotgan kishilar." },
       { q: "33. Kushon davrida qaysi xalqaro yo‘l orqali Rim va Xitoy bilan savdo qilingan?", a: "Buyuk Ipak yo‘li orqali." },
       { q: "34. Kushon davlati qaysi asrda inqirozga uchrab parchalanib ketdi?", a: "Milodiy III asrda." },
@@ -806,7 +786,7 @@
         exp: "Kushon podsholigi tarkibiga Hindistonning shimoliy qismi qo‘shib olingach, buddaviylik dini kirib kela boshladi."
       },
       {
-        q: "20. Kushon shaxzodasi tasvirlangan haykalda uning bosh kiyimi qanday shaklda?",
+        q: "20. Kushon shahzodasi tasvirlangan haykalda uning bosh kiyimi qanday shaklda?",
         options: [
           "Keng shlyapa",
           "Draparli salla",
@@ -814,7 +794,7 @@
           "Baland va o‘tkir uchi tikilgan bosh kiyim"
         ],
         correct: 3, // D
-        exp: "Kushon shaxzodasi tasvirlangan haykaltaroshlikda baland va o‘tkir uchi tikilgan bosh kiyim ko‘rsatilgan."
+        exp: "Kushon shahzodasi tasvirlangan haykaltaroshlikda baland va o‘tkir uchi tikilgan bosh kiyim ko‘rsatilgan."
       },
       {
         q: "21. Ayritom yodgorligidan topilgan san’at namunalarida nimalar tasvirlangan?",
@@ -869,7 +849,7 @@
           "Milodiy III asrda"
         ],
         correct: 0, // A
-        exp: "Milodiy I asrda yuechjilar orasida Kushon xonodoni yuksalib, Kushon davlatiga asos solinadi."
+        exp: "Milodiy I asrda yuechjilar orasida Kushon xonadoni yuksalib, Kushon davlatiga asos solinadi."
       },
       {
         q: "26. Kushon davlati qachon parchalanib ketgan?",
@@ -963,12 +943,12 @@
         q: "34. Kushon davlatining tashkil topishida asosiy rol o‘ynagan xonadon qaysi?",
         options: [
           "Ahamoniylar",
-          "Kushon xonodoni",
+          "Kushon xonadoni",
           "Salavkiylar",
           "Arshakiylar"
         ],
         correct: 1, // B
-        exp: "Milodiy I asrda yuechjilar orasida Kushon xonodoni yuksalib, Kushon davlatiga asos solinadi."
+        exp: "Milodiy I asrda yuechjilar orasida Kushon xonadoni yuksalib, Kushon davlatiga asos solinadi."
       },
       {
         q: "35. Kushon davrida qaysi xo‘jalik tarmog‘i yangi texnikalar evaziga rivojlandi?",

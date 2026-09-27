@@ -566,17 +566,17 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (25 TA MATN ASOSIDAGI TEST - TO'G'RI JAVoblar 0, 1, 2, 3 UCHUN TENG TAQSIMLANGAN) ---
+    // --- 3. TEST SINOVI (25 TA TEST - TO'G'RI JAVOB INDEKSLARI ANIQ TEKshirib CHIQILDI) ---
     const testQuestions = [
       {
         q: "1. Misrda yagona uzunlik o‘lchovi sifatida joriy etilgan «podsho tirsagi» necha santimetrga teng bo‘lgan?",
         options: [
           "45,0 santimetrga",
           "50,0 santimetrga",
-          "60,5 santimetrga",
-          "52,5 santimetrga"
+          "52,5 santimetrga",
+          "60,5 santimetrga"
         ],
-        correct: 3, // D
+        correct: 2, // "52,5 santimetrga" indeksi 2
         exp: "Qo‘llar uzunligi turlicha bo‘lgani sababli «podsho tirsagi» yagona o‘lchov qilib belgilangan va u 52,5 sm ga teng bo‘lgan."
       },
       {
@@ -587,7 +587,7 @@
           "1000 ta",
           "365 ta"
         ],
-        correct: 1, // B
+        correct: 1, // "750 ta" indeksi 1
         exp: "Misrliklar alifbosi 750 ta iyeroglifdan iborat bo‘lgan."
       },
       {
@@ -598,7 +598,7 @@
           "Quyosh soyasi ustunlari orqali",
           "Olovli shamlar orqali"
         ],
-        correct: 0, // A
+        correct: 0, // "24 ta bo‘lmaga..." indeksi 0
         exp: "Misrda vaqt 24 ta bo‘lmaga ajratilgan maxsus idishdan iborat suv soatlari yordamida o‘lchangan."
       },
       {
@@ -609,7 +609,7 @@
           "Sharl Rollen",
           "Genrix Shliman"
         ],
-        correct: 2, // C
+        correct: 1, // "Jak-Fransua Shampolyon" indeksi 1
         exp: "Fransuz olimi Jak-Fransua Shampolyon 1822-yilda Misr matnlarini o‘qishga muvaffaq bo‘ldi."
       },
       {
@@ -620,7 +620,7 @@
           "354 kun: qamariy 12 oy",
           "365 kun: 30 kundan 12 oy va ortib qolgan 5 kunlik bayram"
         ],
-        correct: 3, // D
+        correct: 3, // "365 kun: 30 kundan..." indeksi 3
         exp: "Misrliklar yilni 365 kun qilib, 30 kundan 12 oyga taqsimlagan, ortgan 5 kunni bayram deb hisobga kiritmagan."
       },
       {
@@ -631,18 +631,18 @@
           "«Muqaddas bitiklar»",
           "«Fonetik belgilar»"
         ],
-        correct: 1, // B
+        correct: 1, // "«Muqaddas kalom»..." indeksi 1
         exp: "Dastlab duolar yozilgani uchun yozuv «muqaddas kalom» yoki «ma’budlar kalomi» deb nomlangan."
       },
       {
-        q: "7. Misr tabiblar qaysi amaliyot jarayonida insonning ichki a’zolari tuzilishini chuqur o‘rganganlar?",
+        q: "7. Misr tabiblari qaysi amaliyot jarayonida insonning ichki a’zolari tuzilishini chuqur o‘rganganlar?",
         options: [
           "Dorivor o‘simliklarni yig‘ishda",
           "Jang maydonlarida jarohatlarni davolashda",
           "Mumiyolangan mayitlarni tayyorlash jarayonida",
           "Ibodatxona qurbonliklarini so‘yishda"
         ],
-        correct: 2, // C
+        correct: 2, // "Mumiyolangan mayitlarni..." indeksi 2
         exp: "Mumiyolangan mayitlarni tayyorlash jarayonida misrliklar odamning ichki tuzilishini ham yaxshi o‘rganganlar."
       },
       {
@@ -653,7 +653,7 @@
           "Besh barmoqqa",
           "Olti barmoqqa"
         ],
-        correct: 0, // A
+        correct: 0, // "To‘rt barmoqqa" indeksi 0
         exp: "Darslikdagi chizmaga ko‘ra, bir kaft = to‘rt barmoqqa teng bo‘lgan."
       },
       {
@@ -664,7 +664,7 @@
           "Londondagi Britaniya muzeyida",
           "Berlin muzeyida"
         ],
-        correct: 2, // C
+        correct: 2, // "Londondagi Britaniya..." indeksi 2
         exp: "Bugungi kunda Rozett bitiktoshi Londondagi Britaniya muzeyida saqlanmoqda."
       },
       {
@@ -675,7 +675,7 @@
           "«Ma’budlar surati»",
           "«Toshdagi rasmlar»"
         ],
-        correct: 1, // B
+        correct: 1, // "«Muqaddas bitiklar»" indeksi 1
         exp: "Qadimgi yunonlar ularni «iyerogliflar» («muqaddas bitiklar») deb atashgan."
       },
       {
@@ -686,7 +686,7 @@
           "8 ta kaft",
           "7 ta kaft"
         ],
-        correct: 3, // D
+        correct: 3, // "7 ta kaft" indeksi 3
         exp: "Darslikdagi o‘lchov qoidasiga ko‘ra, bir tirsak = yettita kaftga teng bo‘lgan."
       },
       {
@@ -697,7 +697,7 @@
           "Qamish bargidan",
           "Lotos gulidan"
         ],
-        correct: 1, // B
+        correct: 1, // "Papirus butasi..." indeksi 1
         exp: "Iyerogliflar papirus poyasidan ishlangan maxsus qog‘ozga yozilgan."
       },
       {
@@ -708,7 +708,7 @@
           "Faqat jarrohlik pichoqlari",
           "Qizdirilgan temir parchalari"
         ],
-        correct: 0, // A
+        correct: 0, // "Giyohlar damlamasi..." indeksi 0
         exp: "Davolash muolajasida giyohlar damlamasi, ma’danli suvlar va tuzdan keng foydalanilgan."
       },
       {
@@ -719,7 +719,7 @@
           "Tekislangan qora yog‘och taxtachalarga",
           "Qo‘rg‘oshin yupqa plitalarga"
         ],
-        correct: 0, // A
+        correct: 0, // "Sopol idishlar..." indeksi 0
         exp: "Ta’lim olayotganda o‘quvchilar sopol idishlar parchasiga yoki ohaktoshga yozishgan."
       },
       {
@@ -730,7 +730,7 @@
           "Mexanika",
           "Geometriya"
         ],
-        correct: 3, // D
+        correct: 3, // "Geometriya" indeksi 3
         exp: "Maydon hajmini o‘lchash zarurati tufayli geometriya (yer yuzasini o‘lchash ilmi) fani dunyoga keldi."
       },
       {
@@ -741,7 +741,7 @@
           "Daraxt ko‘miridan tayyorlangan qorakuya",
           "Hayvon qonidan"
         ],
-        correct: 0, // A
+        correct: 0, // "Turli rangdagi..." indeksi 0
         exp: "Turli rangdagi mineral bo‘yoqlar siyoh vazifasini o‘tagan."
       },
       {
@@ -752,7 +752,7 @@
           "Boshqa davlatlar bilan chegaralarni belgilash",
           "Urug‘ qadash va hosil yig‘ish (Nil toshqini) vaqtlarini oldindan bilish ehtiyoji"
         ],
-        correct: 3, // D
+        correct: 3, // "Urug‘ qadash va hosil..." indeksi 3
         exp: "Ziroatkorlar qachon urug‘ qadash va hosil yig‘ishni bilishi zarurligi tufayli yulduzlarni kuzatib, astronomiyani yaratdilar."
       },
       {
@@ -763,7 +763,7 @@
           "Qadimgi misr va qadimgi yunon",
           "Bobil va oromiy"
         ],
-        correct: 2, // C
+        correct: 2, // "Qadimgi misr va..." indeksi 2
         exp: "Toshga qadimgi misr va qadimgi yunon tillarida bir xil ma’nodagi bitik chekilgan edi."
       },
       {
@@ -774,7 +774,7 @@
           "Harbiy kazarmalarda o‘qitilgan",
           "Shaharlarda tabiblarga ta’lim beruvchi maxsus maktablar bo‘lgan"
         ],
-        correct: 3, // D
+        correct: 3, // "Shaharlarda tabiblarga..." indeksi 3
         exp: "Misr shaharlarida tabiblarga ta’lim beruvchi maxsus maktablar bo‘lgan."
       },
       {
@@ -785,7 +785,7 @@
           "Soliq to‘lashdan ozod qilinmagan oddiy xizmatkorlar bo‘lgan",
           "Faqat ibodatxonalardan tashqariga chiqishi taqiqlangan"
         ],
-        correct: 1, // B
+        correct: 1, // "Yuksak savodxon..." indeksi 1
         exp: "Husnixat san’atini egallaganlar yuksak savodxon sanalgan, katta imtiyoz va izzat-hurmatga ega bo‘lgan."
       },
       {
@@ -796,7 +796,7 @@
           "Kasrlar, maxrajlar va murakkab hisob-kitoblarni",
           "Differensial tenglamalarni"
         ],
-        correct: 2, // C
+        correct: 2, // "Kasrlar, maxrajlar..." indeksi 2
         exp: "Misrliklar oddiy arifmetikadan tashqari kasrlar, maxrajlar va murakkab hisoblarni bilishgan."
       },
       {
@@ -807,7 +807,7 @@
           "Idishga tushgan suv tomchilarining soni bilan",
           "Quyosh nurining suvga tushish burchagi bilan"
         ],
-        correct: 0, // A
+        correct: 0, // "Bir bo‘lmadan ikkinchisiga..." indeksi 0
         exp: "Bir bo‘lmadan ikkinchisiga oqib o‘tadigan suvning hajmi bir soat deb hisoblangan."
       },
       {
@@ -818,7 +818,7 @@
           "Harflar vositasida",
           "Faqat raqamlar orqali"
         ],
-        correct: 1, // B
+        correct: 1, // "Rasm ko‘rinishida" indeksi 1
         exp: "Dastlab har bir so‘z rasm ko‘rinishida yozilgan."
       },
       {
@@ -829,7 +829,7 @@
           "Britaniya muzeyi tashkil etildi",
           "Qadimgi Misr yozuvlari va tarixi «tilga kirib», sivilizatsiyani o‘rganish imkoni tug‘ildi"
         ],
-        correct: 3, // D
+        correct: 3, // "Qadimgi Misr yozuvlari..." indeksi 3
         exp: "Ushbu kashfiyotdan so‘ng papirus va toshlardagi bitiklar o‘qilib, Misr sivilizatsiyasini o‘rganishga yo‘l ochildi."
       },
       {
@@ -840,7 +840,7 @@
           "Kaftning kengligini",
           "Ikki qo‘lning yoyilgan uzunligini"
         ],
-        correct: 0, // A
+        correct: 0, // "Tirsakdan barmoqlar..." indeksi 0
         exp: "Misrda asosiy o‘lchov birligi «tirsak» bo‘lib, u tirsakdan barmoqlar uchigacha bo‘lgan uzunlikka teng edi."
       }
     ];
@@ -905,7 +905,7 @@
       document.getElementById('quiz-result').style.display = 'flex';
       document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
       const fb = document.getElementById('q-feedback');
-      if(score >= 23) fb.innerText = "Mukammal natija! 10-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+      if(score >= 20) fb.innerText = "Mukammal natija! 10-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
       else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
       else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
       window.scrollTo({ top: 0, behavior: 'smooth' });

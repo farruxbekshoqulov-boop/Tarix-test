@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>6-§. Nil vodiysi va uning aholisi</title>
+  <title>7-§. Qadimgi Misr va qo‘shni davlatlar</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -47,28 +47,28 @@
       -webkit-backdrop-filter: blur(18px);
       border: 1.5px solid var(--card-border);
       border-radius: 24px;
-      padding: 14px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
     }
 
     .tab-nav {
       display: flex;
       background: rgba(15, 23, 42, 0.7);
-      padding: 4px;
+      padding: 5px;
       border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      gap: 4px;
+      gap: 6px;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 10px 2px;
+      padding: 12px 4px;
       border: none;
       background: transparent;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--text-muted);
       border-radius: 10px;
@@ -85,7 +85,7 @@
     .tab-content {
       display: none;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .tab-content.active { display: flex; }
@@ -100,16 +100,16 @@
       background: rgba(59, 130, 246, 0.25);
       color: #93c5fd;
       border: 1px solid rgba(59, 130, 246, 0.4);
-      padding: 4px 12px;
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
       text-transform: uppercase;
     }
 
     .progress-track {
       width: 100%;
-      height: 6px;
+      height: 7px;
       background: rgba(255, 255, 255, 0.12);
       border-radius: 999px;
       overflow: hidden;
@@ -127,25 +127,25 @@
     .match-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 10px;
       margin: 6px 0;
     }
 
     .match-btn {
       background: rgba(30, 41, 59, 0.95);
       border: 2px solid rgba(255, 255, 255, 0.16);
-      border-radius: 12px;
-      padding: 12px 8px;
+      border-radius: 14px;
+      padding: 14px 10px;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 700;
       cursor: pointer;
       text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 56px;
-      line-height: 1.3;
+      min-height: 62px;
+      line-height: 1.35;
       transition: all 0.2s ease;
     }
 
@@ -178,34 +178,34 @@
       background: rgba(15, 23, 42, 0.55);
       border: 2px dashed rgba(255, 255, 255, 0.22);
       border-radius: 18px;
-      padding: 16px;
+      padding: 18px;
       margin: 6px 0;
       text-align: center;
-      min-height: 180px;
+      min-height: 200px;
     }
 
-    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-q { font-size: 18px; font-weight: 800; line-height: 1.45; color: #f8fafc; }
     .fc-a {
-      font-size: 16px; font-weight: 700; color: #34d399;
+      font-size: 17px; font-weight: 700; color: #34d399;
       background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
-      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+      border-radius: 12px; padding: 14px; margin-top: 14px; line-height: 1.45; display: none;
     }
 
     /* TEST */
-    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
-    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    .q-title { font-size: 17.5px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.45; margin-bottom: 8px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; }
     
     .opt-btn {
       background: rgba(15, 23, 42, 0.85);
       border: 1.5px solid rgba(255, 255, 255, 0.16);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 14.5px;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 15.5px;
       font-weight: 600;
       color: #f1f5f9;
       cursor: pointer;
       text-align: left;
-      line-height: 1.35;
+      line-height: 1.4;
       transition: all 0.15s ease;
     }
 
@@ -215,14 +215,14 @@
     .exp-box {
       background: rgba(59, 130, 246, 0.2);
       border-left: 4px solid var(--primary);
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-size: 13.5px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 14.5px;
       font-weight: 600;
       color: #bfdbfe;
-      line-height: 1.4;
+      line-height: 1.45;
       display: none;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .action-btn {
@@ -230,9 +230,9 @@
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #ffffff;
       border: none;
-      padding: 14px;
+      padding: 15px;
       border-radius: 14px;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
@@ -266,15 +266,15 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 12px;
+      gap: 14px;
       padding: 20px 0;
     }
 
     .finish-badge {
-      width: 75px; height: 75px; border-radius: 50%;
+      width: 80px; height: 80px; border-radius: 50%;
       background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px; font-weight: 900; color: #60a5fa;
+      font-size: 26px; font-weight: 900; color: #60a5fa;
     }
   </style>
 </head>
@@ -288,24 +288,24 @@
       <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (25)</button>
     </div>
 
-    <!-- 1. MOSLASH (4 BOSQICH) -->
+    <!-- 1. MOSLASH (5 BOSQICH) -->
     <div id="tab-match" class="tab-content active">
       <div id="match-play-box">
         <div class="header-bar">
-          <span class="badge" id="match-stage-badge">Bosqich: 1 / 4</span>
-          <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
+          <span id="match-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
         <div class="match-grid" id="match-container"></div>
       </div>
 
       <div id="match-finish-box" class="finish-state">
-        <div style="font-size: 50px;">🏆</div>
-        <h2 style="font-size: 20px; font-weight: 800;">4 ta bosqich yakunlandi!</h2>
-        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Barcha atamalarni muvaffaqiyatli mosladingiz. Endi 25 talik Savol-Javob qismiga o‘tamizmi?
+        <div style="font-size: 55px;">🏆</div>
+        <h2 style="font-size: 22px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
+        <p style="font-size: 16px; color: var(--text-muted); max-width: 340px; line-height: 1.4;">
+          Barcha qo‘shni davlatlar va fir’avnlar istilolariga oid tushunchalarni muvaffaqiyatli mosladingiz. Endi 25 talik Savol-Javob qismiga o‘tamizmi?
         </p>
-        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:10px;">
           <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
           <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
         </div>
@@ -316,8 +316,8 @@
     <div id="tab-cards" class="tab-content">
       <div id="fc-play-box">
         <div class="header-bar">
-          <span class="badge">6-§ Trenajyor</span>
-          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+          <span class="badge">7-§ Trenajyor</span>
+          <span id="fc-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
 
@@ -333,12 +333,12 @@
       </div>
 
       <div id="fc-finish-box" class="finish-state">
-        <div style="font-size: 50px;">🎉</div>
-        <h2 style="font-size: 20px; font-weight: 800;">25 ta savol tugadi!</h2>
-        <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
+        <div style="font-size: 55px;">🎉</div>
+        <h2 style="font-size: 22px; font-weight: 800;">25 ta savol tugadi!</h2>
+        <p style="font-size: 16px; color: var(--text-muted); max-width: 340px; line-height: 1.4;">
           Barcha muhim faktlarni mustahkamlab oldingiz. Endi 25 talik Test sinoviga o‘tamizmi?
         </p>
-        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:10px;">
           <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
           <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
         </div>
@@ -349,8 +349,8 @@
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
-          <span class="badge">6-§ Test Sinovi</span>
-          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
+          <span class="badge">7-§ Test Sinovi</span>
+          <span id="q-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 25</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
 
@@ -360,11 +360,11 @@
       </div>
 
       <div id="quiz-result" class="finish-state">
-        <div style="font-size: 50px;" id="res-avatar">🏆</div>
+        <div style="font-size: 55px;" id="res-avatar">🏆</div>
         <div class="finish-badge" id="q-score">0/25</div>
-        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
-        <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
-        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
+        <h2 style="font-size: 22px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <p id="q-feedback" style="font-size: 16px; color: var(--text-muted); max-width: 340px; line-height: 1.4;"></p>
+        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:10px;">
           <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
           <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
         </div>
@@ -395,31 +395,37 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH) ---
+    // --- 1. MOSLASH (5 BOSQICH) ---
     const matchStages = [
       [
-        { id: 1, left: "Nil daryosi uzunligi", right: "6 ming kilometr" },
-        { id: 2, left: "Quyi oqim vodiysi kengligi", right: "3 km dan 22 km gacha" },
-        { id: 3, left: "«Qora tuproq» / «Nil in’omi»", right: "Misrning qadimgi nomlari" },
-        { id: 4, left: "Papirus", right: "Vodiyni qoplagan chirmashib ketgan butalar" }
+        { id: 1, left: "Nubiya", right: "Misr janubida joylashgan va keyinchalik fir’avnlar bosib olgan o‘lka" },
+        { id: 2, left: "Liviya cho‘li", right: "Misrning g‘arbida joylashgan, ko‘chmanchi chorvadorlar yashaydigan hudud" },
+        { id: 3, left: "Falastin", right: "Sinay yarimorolidan shimolroqda joylashgan qo‘shni o‘lka" },
+        { id: 4, left: "Suriya", right: "Falastinning yonida joylashgan, mis va temir rudalariga boy mamlakat" }
       ],
       [
-        { id: 5, left: "Kanop o‘simligi", right: "Yetishtirilib, gazlama to‘qilgan ekin" },
-        { id: 6, left: "Qoramollar", right: "Ekilgan urug‘ni yerga singdirish uchun haydalgan" },
-        { id: 7, left: "Mis o‘roqlar", right: "Boshoqlarni o‘rib olish uchun qo‘llanilgan qurol" },
-        { id: 8, left: "Sopol xumlar", right: "Donni zararkunandalardan saqlash idishi" }
+        { id: 5, left: "Giksoslar", right: "Mil. avv. XVIII asr oxirida Misrga hujum qilib egallagan ko‘chmanchi qabilalar" },
+        { id: 6, left: "Yaxmos", right: "Giksoslarni tor-mor etib, Yangi podshohlik sulolasiga asos solgan fir’avn" },
+        { id: 7, left: "Tutmos II", right: "Davrida Falastin, Finikiya va Suriya to‘la istilo qilina boshlangan fir’avn" },
+        { id: 8, left: "Tutmos III", right: "Old Osiyoda misrliklar hukmronligini qat’iy o‘rnatgan fir’avn" }
       ],
       [
-        { id: 9, left: "Oddiy aholi uylari", right: "Loy suvalgan papirus poyalaridan qurilgan" },
-        { id: 10, left: "Zodagonlar uylari", right: "Oftobda quritilgan xom g‘ishtdan qurilgan" },
-        { id: 11, left: "Fir’avn saroylari va ibodatxonalar", right: "Mustahkam toshdan barpo etilgan" },
-        { id: 12, left: "Misgar ustalar", right: "Misni eritib, turli mehnat qurollari quyganlar" }
+        { id: 9, left: "Finikiya", right: "Misr fir’avnlari bosib olgan Old Osiyo mamlakatlaridan biri" },
+        { id: 10, left: "Fiva shahri", right: "Giksoslarga itoat qilmay, ozodlik harakatiga bosh bo‘lgan markaz" },
+        { id: 11, left: "Memfis shahri", right: "Quyi Misrdagi, qadimgi savdo yo‘llari kesishgan shahar" },
+        { id: 12, left: "Sinay yarimoroli", right: "Mis qazib olingan va dastlabki bosib olingan hudud" }
       ],
       [
-        { id: 13, left: "Nomlar", right: "Qadimgi Misrdagi ilk kichik davlatlar" },
-        { id: 14, left: "Nomarxlar", right: "Kichik nom davlatlarini boshqargan hukmdorlar" },
-        { id: 15, left: "Mil. avv. 3000-yil", right: "Menes tomonidan Misrning birlashtirilishi" },
-        { id: 16, left: "Memfis va Fiva", right: "Birlashgan Misr davlatining poytaxtlari" }
+        { id: 13, left: "Kir II", right: "Forslarning ulkan lashkar to‘plagan shahanshohi" },
+        { id: 14, left: "Kambiz II", right: "Kir II ning o‘g‘li, mil. avv. 525-yilda Misrni bosib olgan forslar hukmdori" },
+        { id: 15, left: "Mil. avv. 525-yil", right: "Kambiz II boshchiligidagi forslar Misrni egallagan sana" },
+        { id: 16, left: "Mil. avv. VII asr", right: "Misr yana yagona davlatga birlashib, madaniyatda yuksalish boshlangan davr" }
+      ],
+      [
+        { id: 17, left: "«Nom»lar", right: "Mayda jamoalar va viloyatlar (giksoslar davrida ularga bo‘linib ketgandi)" },
+        { id: 18, left: "Soliqlar", right: "Mahalliy qabilalar va bosib olingan hududlar Misrga to‘lagan majburiy to‘lov" },
+        { id: 19, left: "O‘ljalar", right: "Fir’avnlar yurishlarida qo‘lga kiritilgan asirlar, chorva mollar va boyliklar" },
+        { id: 20, left: "Yangi podshohlik", right: "Yaxmos giksoslarni quvib chiqargach boshlangan qudratli davr" }
       ]
     ];
 
@@ -503,31 +509,31 @@
 
     // --- 2. SAVOL-JAVOB (25 TA SAVOL) ---
     const flashcards = [
-      { q: "1. Nil daryosi Afrikaning qaysi qismida oqadi va uning uzunligi qancha?", a: "Afrika shimoli-sharqida joylashgan bo‘lib, uzunligi 6 ming kilometrni tashkil etadi." },
-      { q: "2. Nil daryosining quyi qismidagi qora tuproqli serhosil dalalarning kengligi qancha bo‘lgan?", a: "3 kilometrdan 22 kilometrgacha kenglikda bo‘lgan." },
-      { q: "3. Vodiyliklar o‘z yurtlarini qanday nomlar bilan atashgan?", a: "«Qora tuproq» yoki «Nil in’omi» deb nom berishgan." },
-      { q: "4. Qadimgi zamonlarda Nil vodiysini qanday o‘simlik butalari qoplab yotgan?", a: "Odam o‘tolmaydigan qalin papirus butalari chirmashib ketgan botqoqliklar qoplagan." },
-      { q: "5. Nil vodiysi botqoqliklari va suvlarida qanday xavfli jonivorlar yashagan?", a: "Suvda son-sanoqsiz timsohlar, botqoqliklarda zaharli ilonlar, quruq yerlarda yovvoyi hayvonlar galasi yashagan." },
-      { q: "6. Odamlar Nil daryosi qirg‘oqlaridagi yerlarni qachondan boshlab o‘zlashtirishga kirishdilar?", a: "Miloddan avvalgi 4-mingyillik boshlarida." },
-      { q: "7. Qadimgi Misrda qaysi g‘alla ekinlari asosiy o‘rinni egallagan?", a: "Bug‘doy va arpa ekilgan." },
-      { q: "8. Misrliklar kiyim-kechak uchun gazlamani qaysi o‘simlikdan to‘qishgan?", a: "Yetishtirilgan kanop tolasidan gazlama to‘qishgan." },
-      { q: "9. Nil vodiysida qanday poliz, meva va sabzavotlar yetishtirilgan?", a: "Uzum, qovun, anor, xurmo, piyoz, bodring, loviya kabilar." },
-      { q: "10. Qadimgi Misrda sepilgan urug‘ni yerga singdirish qanday usulda amalga oshirilgan?", a: "Urug‘ qo‘lda sepilgach, uni tuproqqa singdirish uchun daladan qoramollar haydab o‘tilgan." },
-      { q: "11. Misrliklar qaysi uy hayvonlarini boqishgan va ulardan qanday foydalanishgan?", a: "Sigir, qo‘y-echki boqishgan, ho‘kizlardan esa dala ishlarida (omoch tortishda) foydalanishgan." },
-      { q: "12. Boshoqlar qanday qurol bilan o‘rib olingan?", a: "Mis o‘roqlar bilan o‘rib olingan." },
-      { q: "13. O‘rib olingan g‘alla hosili qanday usulda yanchilgan?", a: "Maxsus joyga tashlanib, bug‘doy yoki arpa bog‘lari ustidan hayvonlarni haydab o‘tish orqali yanchilgan." },
-      { q: "14. Xirmondan chiqqan don nima maqsadda sopol xumlarda saqlangan?", a: "Donni son-sanoqsiz kemiruvchi zararkunandalardan himoya qilish uchun." },
-      { q: "15. Qadimgi Misr hunarmandligida qanchadan ortiq kasb-hunar turi mavjud bo‘lgan?", a: "30 dan ziyod kasb-kor turlari bo‘lgan." },
-      { q: "16. Misgar ustalar qanday vazifani bajargan?", a: "Misni eritib, undan turli mehnat qurollari quyishgan." },
-      { q: "17. Kulollar o‘z mahsulotlarini qayerda pishirishgan?", a: "Loydan turli idish-tovoqlar yasab, ularni maxsus xumdonda pishirishgan." },
-      { q: "18. Oddiy misrliklarning uylari qanday materialdan qurilgan?", a: "Loy suvalgan papirus poyalaridan qurilgan." },
-      { q: "19. Zodagonlarning uylari nimadan barpo etilgan?", a: "Oftobda quritilgan xom g‘ishtdan qurilgan." },
-      { q: "20. Fir’avnlarning saroylari va ibodatxonalar qaysi ashyodan qurilgan?", a: "Mustahkam toshdan barpo etilgan." },
-      { q: "21. Misrda kemasozlar qayiq va kemalarni qanday materiallardan yasashgan?", a: "Qamishdan qayiqlar, yog‘ochdan esa kemelia (kemalar) qurishgan." },
-      { q: "22. Qadimgi Misrda ilk kichik davlatlar nima deb atalgan va ularni kim boshqargan?", a: "«Nom» deb atalgan va ularni «nomarxlar» boshqargan." },
-      { q: "23. Dastlab Misr hududida qanday ikkita podsholik mavjud bo‘lgan?", a: "Quyi (Shimoliy) Misr va Yuqori (Janubiy) Misr podsholiklari." },
-      { q: "24. Misr qachon, kim tomonidan yagona davlatga birlashtirildi va uning poytaxti qaysi shahar bo‘ldi?", a: "Miloddan avvalgi 3000-yilda Yuqori Misr hukmdori Menes tomonidan birlashtirildi, poytaxti Memfis shahri bo‘ldi." },
-      { q: "25. Yagona davlat parchalangach, vaqt o‘tib qayta birlashgan Misrning yangi poytaxti qaysi shahar bo‘ldi?", a: "Fiva shahri bo‘lgan." }
+      { q: "1. Qadimgi Misr janubda qaysi o‘lka bilan chegaradosh bo‘lgan?", a: "Nubiya (Shimoliy Sudan) bilan." },
+      { q: "2. Misrning g‘arbida qaysi cho‘l va shu nomdagi mamlakat joylashgan?", a: "Liviya cho‘li." },
+      { q: "3. Qaysi shahar orqali o‘tadigan yo‘l Sinay yarimoroliga olib borgan va u yerda nima qazib olingan?", a: "Memfis shahri; mis qazib olingan." },
+      { q: "4. Sinay yarimorolidan shimolroqda qaysi qo‘shni o‘lka joylashgan?", a: "Falastin." },
+      { q: "5. Falastinning yonida joylashgan, mis va temir rudalariga boy mamlakat qaysi?", a: "Suriya." },
+      { q: "6. Misrliklar Falastin va Suriyadan nimalar olib kelishgan?", a: "Hunarmandlar yasagan nodir buyumlar va qimmatbaho toshlar." },
+      { q: "7. Qadimgi podshohlik davrida qaysi hudud bosib olinib, mahalliy qabilalar soliq to‘lay boshlagan?", a: "Sinay yarimoroli." },
+      { q: "8. Qaysi fir’avnlar Nubiya va Liviyaga yurish qilib asirlar va boyliklarni egallab olishgan?", a: "Qadimgi podshohlik fir’avnlari." },
+      { q: "9. O‘rta podshohlik fir’avnlari Misrga qaysi hududlarni qo‘shib olishga muvaffaq bo‘lishdi?", a: "Janubiy Falastin yerlari va Nubiya shimolini." },
+      { q: "10. Mil. avv. XVIII asr oxirida Misrga qaysi ko‘chmanchi qabilalar hujum qildi?", a: "Giksoslar." },
+      { q: "11. Giksoslar Misrni egallab olgach qanday harakatlar qildilar?", a: "Misrliklar shaharlari va qishloqlarini ayovsiz talab, odamlarni asirlikka haydab ketdilar." },
+      { q: "12. Giksoslar hukmronligi davrida qaysi shahar ularga itoat qilmay qoldi?", a: "Fiva shahri." },
+      { q: "13. Giksoslarga qarshi ozodlik kurashiga qaysi shahar atrofidagi nomlar birlashdi?", a: "Fiva shahri atrofida." },
+      { q: "14. Qaysi fir’avn giksoslarni tor-mor etib, ularni Misrdan haydab chiqardi?", a: "Fir’avn Yaxmos." },
+      { q: "15. Yaxmos giksoslarni quvib chiqargach qaysi yangi davr boshlandi?", a: "Yangi podshohlik davri." },
+      { q: "16. Yangi podshohlik davrida qaysi fir’avnlar davrida Falastin, Finikiya va Suriya istilo qilindi?", a: "Fir’avn Tutmos II va Tutmos III davrida." },
+      { q: "17. Old Osiyoda misrliklar hukmronligi qaysi fir’avn davrida qat’iy o‘rnatildi?", a: "Fir’avn Tutmos III davrida." },
+      { q: "18. Mil. avv. VII asrda Misrda qanday o‘zgarish yuz berdi?", a: "Misr yana yagona davlatga birlashib, iqtisodiyoti va madaniyatida yuksalish boshlandi." },
+      { q: "19. Forslarning ulkan lashkar to‘plagan shahanshohi kim edi?", a: "Kir II." },
+      { q: "20. Kir II ning o‘g‘li — forslar hukmdori mil. avv. 525-yilda Misrni bosib olgan shaxs kim?", a: "Kambiz II." },
+      { q: "21. Kambiz II Misrni qachon bosib oldi?", a: "Mil. avv. 525-yilda." },
+      { q: "22. Liviya cho‘li aholisi qanday turmush tarzini olib borgan?", a: "Ko‘chmanchi chorvadorlar bo‘lgan." },
+      { q: "23. Fiva shahrining hukmdorlari atrofiga nima maqsadda birlasha boshladilar?", a: "Bosqinchilar (giksoslar) zulmidan xalos bo‘lish tardaddida." },
+      { q: "24. Misrning qo‘shni davlatlari qaysilar edi?", a: "Nubiya, Liviya, Falastin, Suriya va Finikiya." },
+      { q: "25. Yaxmos qo‘shinlari giksoslarni haydab chiqarib, qaysi sulolaga asos soldi?", a: "Yangi fir’avnlar sulolasi asoschisiga aylandi." }
     ];
 
     let fcIdx = 0;
@@ -566,282 +572,282 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (25 TA TEST - TO'G'RI JAVOBING O'RNI ARALASHTIRILGAN VA TARTIBSIZ) ---
+    // --- 3. TEST SINOVI (25 TA TEST) ---
     const testQuestions = [
       {
-        q: "1. Nil daryosi uzunligi va uning geografik joylashuvi to‘g‘ri ko‘rsatilgan javobni aniqlang.",
+        q: "1. Qadimgi Misr janubda qaysi o‘lka bilan chegaradosh bo‘lgan?",
         options: [
-          "5 ming km; Afrika g‘arbida",
-          "6 ming km; Afrika shimoli-sharqida",
-          "7 ming km; Osiyo janubi-g‘arbida",
-          "4 ming km; Afrika markazida"
-        ],
-        correct: 1,
-        exp: "Nil daryosi Afrika shimoli-sharqida joylashgan bo‘lib, uzunligi 6 ming kilometrni tashkil etadi."
-      },
-      {
-        q: "2. Nil daryosining quyi qismidagi qora tuproqli serhosil dalalarning kengligi qanchani tashkil qilgan?",
-        options: [
-          "1 km dan 10 km gacha",
-          "10 km dan 50 km gacha",
-          "3 km dan 22 km gacha",
-          "500 metr dan 5 km gacha"
-        ],
-        correct: 2,
-        exp: "Daryoning quyi qismi 3 km dan 22 km gacha kenglikdagi qora tuproqli serhosil dalalardan iborat bo‘lgan."
-      },
-      {
-        q: "3. Qadimgi zamonlarda Nil vodiysini qoplagan chirmashib ketgan butazor o‘simlik qaysi edi?",
-        options: [
-          "Papirus",
-          "Lotos",
-          "Bambuk",
-          "Qamishzor"
+          "Nubiya (Shimoliy Sudan)",
+          "Liviya",
+          "Falastin",
+          "Suriya"
         ],
         correct: 0,
-        exp: "Qadimda Nil vodiysini odam o‘tolmaydigan qalin papirus butalari qoplagan."
+        exp: "Misr janubda Nubiya (Shimoliy Sudan) bilan chegaradosh bo‘lgan."
       },
       {
-        q: "4. Odamlar Nil daryosi qirg‘oqlaridagi yerlarni qachondan boshlab o‘zlashtirishga kirishdilar?",
+        q: "2. Misrning g‘arbida qaysi cho‘l va shu nomdagi mamlakat joylashgan?",
         options: [
-          "Mil. avv. 6-mingyillikda",
-          "Mil. avv. 3-mingyillik o‘rtalarida",
-          "Miloddan avvalgi 4-mingyillik boshlarida",
-          "Mil. avv. 2-mingyillik oxirida"
+          "Arabiston cho‘li",
+          "Liviya cho‘li",
+          "Qizilqum",
+          "Sahroi Kabir"
+        ],
+        correct: 1,
+        exp: "Misr g‘arbida Liviya cho‘li joylashgan."
+      },
+      {
+        q: "3. Mil. avv. XVIII asr oxirida Misrga hujum qilib, uning hududlarini egallagan ko‘chmanchi qabilalar kimlar edi?",
+        options: [
+          "Forslar",
+          "Nubiyaliklar",
+          "Giksoslar",
+          "Axeeylar"
         ],
         correct: 2,
-        exp: "Miloddan avvalgi 4-mingyillik boshlarida odamlar Nil daryosi bo‘ylarini o‘zlashtira boshladilar."
+        exp: "Mil. avv. XVIII asr oxirida ko‘chmanchi giksos qabilalari Misrga hujum qildi."
       },
       {
-        q: "5. Qadimgi misrliklar kiyim-kechak tayyorlash uchun gazlamani qaysi o‘simlikdan to‘qishgan?",
+        q: "4. Giksoslarni tor-mor etib, ularni Misrdan haydab chiqargan va Yangi podshohlik sulolasiga asos solgan fir’avn kim?",
         options: [
-          "Paxta",
-          "Zig‘ir",
-          "Ipak",
-          "Kanop"
+          "Tutmos III",
+          "Kambiz II",
+          "Ramses II",
+          "Yaxmos"
         ],
         correct: 3,
-        exp: "Misrliklar yetishtirilgan kanop tolasidan gazlama to‘qishgan."
+        exp: "Fir’avn Yaxmos giksoslarni tor-mor etib, ularni Misrdan haydab chiqardi."
       },
       {
-        q: "6. Misrda yerga sepilgan urug‘likni tuproqqa singdirish uchun qanday tadbir qo‘llanilgan?",
+        q: "5. Qaysi fir’avn davrida Falastin, Finikiya va Suriya to‘la istilo qilinib, Old Osiyoda misrliklar hukmronligi o‘rnatildi?",
         options: [
-          "Qoramollarni daladan haydab o‘tishgan",
-          "Ustidan qo‘lda tosh bostirib chiqilgan",
-          "Otlar yordamida yerni tekislashgan",
-          "Suv toshqini oqizib kelishi kutilgan"
+          "Tutmos III",
+          "Yaxmos",
+          "Kir II",
+          "Mina"
         ],
         correct: 0,
-        exp: "Urug‘ qo‘lda sepilgach, uni tuproqqa singdirish uchun qoramollarni daladan haydab o‘tishgan."
+        exp: "Fir’avn Tutmos III davrida Old Osiyoda misrliklar hukmronligi o‘rnatildi."
       },
       {
-        q: "7. Qadimgi Misrda hosilni yig‘ib-terib olishda qaysi metalldan yasalgan o‘roqlardan foydalanilgan?",
+        q: "6. Giksoslar hukmronligi davrida ularga itoat etmagan va ozodlik kurashining markaziga aylangan shahar qaysi?",
         options: [
-          "Temir o‘roqlar",
-          "Bronza o‘roqlar",
-          "Oltin o‘roqlar",
-          "Mis o‘roqlar"
-        ],
-        correct: 3,
-        exp: "Boshoqlarni mis o‘roqlar bilan o‘rib olishgan."
-      },
-      {
-        q: "8. Misrliklar g‘alla hosilini qanday usul bilan yanchishgan?",
-        options: [
-          "Boshoqlar ustidan hayvonlarni haydab o‘tish orqali",
-          "Tosh tegirmonlar yordamida",
-          "Qo‘lda tayoqlar bilan urib",
-          "Maxsus suv tegirmonlarida"
-        ],
-        correct: 0,
-        exp: "Bug‘doy yoki arpa bog‘lari ustidan hayvonlarni haydab o‘tish orqali don yanchilgan."
-      },
-      {
-        q: "9. Xirmonjoydan chiqqan donlarni sopol xumlarda saqlashdan asosiy maqsad nima edi?",
-        options: [
-          "Uzoq yurtlarga sotish uchun",
-          "Kemiruvchi zararkunandalardan himoyalash uchun",
-          "Fir’avn xazinasiga yashirish uchun",
-          "Suv toshqinidan asrash uchungina"
-        ],
-        correct: 1,
-        exp: "Donni son-sanoqsiz kemiruvchi zararkunandalardan himoya qilish uchun sopol xumlarda saqlangan."
-      },
-      {
-        q: "10. Qadimgi Misrda hunarmandchilikning nechtadan ortiq kasb-hunar turi mavjud bo‘lgan?",
-        options: [
-          "10 dan ziyod",
-          "50 dan ziyod",
-          "30 dan ziyod",
-          "100 dan ziyod"
-        ],
-        correct: 2,
-        exp: "Darslikda keltirilishicha, Misrda hunarmandlarning 30 dan ziyod kasb-korlari bo‘lgan."
-      },
-      {
-        q: "11. Qadimgi Misrda oddiy aholining turarjoylari nimalardan qurilgan?",
-        options: [
-          "Mustahkam marmar toshlardan",
-          "Oftobda quritilgan xom g‘ishtdan",
-          "Pishiq paxsadan",
-          "Loy suvalgan papirus poyalaridan"
-        ],
-        correct: 3,
-        exp: "Oddiy misrliklarning uyi loy suvalgan papirus poyalaridan qilingan."
-      },
-      {
-        q: "12. Qadimgi Misrda zodagonlarning xonadonlari qanday materialdan barpo etilgan?",
-        options: [
-          "Pishiq g‘ishtdan",
-          "Yog‘och ustunlardan",
-          "Oftobda quritilgan xom g‘ishtdan",
-          "Papirus qamishlaridan"
-        ],
-        correct: 2,
-        exp: "Zodagonlarning uylari oftobda quritilgan xom g‘ishtdan qurilgan."
-      },
-      {
-        q: "13. Fir’avnlarning saroylari va ibodatxonalar asosan qanday xomashyodan barpo etilgan?",
-        options: [
-          "Qamish va yog‘ochdan",
-          "Toshdan",
-          "Xom g‘ishtdan",
-          "Loydan"
-        ],
-        correct: 1,
-        exp: "Fir’avnlarning saroylari va ibodatxonalar toshdan barpo etilgan."
-      },
-      {
-        q: "14. Misrlik kemasozlar qayiqlar va yirik kemalarni qanday materiallardan yasashgan?",
-        options: [
-          "Faqat teridan",
-          "Faqat mis plitalardan",
-          "Qamishdan qayiqlar, yog‘ochdan kemalar",
-          "Papirus va temirdan"
-        ],
-        correct: 2,
-        exp: "Kemasozlar qamishdan qayiqlar, yog‘ochdan esa kemalar qurardi."
-      },
-      {
-        q: "15. Qadimgi Misrda tarqoq manzilgohlar birlashuvidan hosil bo‘lgan kichik davlatlar qanday atalgan?",
-        options: [
-          "Nom",
-          "Polis",
-          "Viloyat",
-          "Satrap"
-        ],
-        correct: 0,
-        exp: "Tarqoq manzilgohlar birlashib «nom» deb atalgan kichik davlatlarni tashkil etgan."
-      },
-      {
-        q: "16. Kichik davlatlar — «nom»larni boshqargan hukmdorlar qanday nomlangan?",
-        options: [
-          "Fir’avnlar",
-          "Nomarxlar",
-          "Oqsoqollar",
-          "Satraplar"
-        ],
-        correct: 1,
-        exp: "Nomlarni «nomarxlar» boshqargan."
-      },
-      {
-        q: "17. Qadimgi Misr dastlab qanday ikki yirik davlatga bo‘lingan edi?",
-        options: [
-          "Quyi (Shimoliy) va Yuqori (Janubiy) Misr",
-          "Sharqiy va G‘arbiy Misr",
-          "Memfis va Fiva podsholiklari",
-          "Nil va Qizil dengiz podsholiklari"
-        ],
-        correct: 0,
-        exp: "Biri Quyi (Shimoliy) Misrda, boshqasi esa Yuqori (Janubiy) Misrda podsholik qilgan."
-      },
-      {
-        q: "18. Quyi va Yuqori Misr o‘rtasidagi urushda qaysi tomon g‘alaba qozondi?",
-        options: [
-          "Quyi Misr podshosi",
-          "Fiva shahrining zodagonlari",
-          "Kichik Osiyo qo‘shinlari",
-          "Yuqori Misr hukmdori Menes"
-        ],
-        correct: 3,
-        exp: "Urushda Yuqori Misr hukmdori Menes g‘alaba qozondi."
-      },
-      {
-        q: "19. Yuqori va Quyi Misr birlashtirilgan sana qaysi javobda to‘g‘ri ko‘rsatilgan?",
-        options: [
-          "Miloddan avvalgi 3000-yilda",
-          "Miloddan avvalgi 4-mingyillik boshida",
-          "Miloddan avvalgi 2000-yilda",
-          "Miloddan avvalgi 1-mingyillikda"
-        ],
-        correct: 0,
-        exp: "Miloddan avvalgi 3000-yilda ikkala davlat birlashtirildi."
-      },
-      {
-        q: "20. Birlashgan Misr davlatining birinchi fir’avni kim bo‘ldi?",
-        options: [
-          "Ramses",
-          "Menes",
-          "Tutanxamon",
-          "Xufu"
-        ],
-        correct: 1,
-        exp: "Birlashgan mamlakatning birinchi fir’avni Menes bo‘ldi."
-      },
-      {
-        q: "21. Menes tomonidan asos solingan yagona davlatning poytaxti qaysi shahar edi?",
-        options: [
-          "Fiva",
-          "Luksor",
           "Memfis",
-          "Qohira"
-        ],
-        correct: 2,
-        exp: "Yagona va birlashgan davlat uchun yangi poytaxt Memfis shahri barpo etildi."
-      },
-      {
-        q: "22. Vaqt o‘tib nomlar yana mustaqil bo‘lib, keyinchalik qayta birlashgan Misrning poytaxti qaysi shaharga ko‘chirildi?",
-        options: [
-          "Fiva",
-          "Memfis",
+          "Fiva shahri",
           "Giza",
-          "Assuan"
+          "Aleksandriya"
         ],
-        correct: 0,
-        exp: "Qayta birlashgan Misr davlatining poytaxti Fiva shahri bo‘lgan."
+        correct: 1,
+        exp: "Faqat Fiva shahri hukmdorlari giksoslarga itoat qilmadi va kurash markazi bo‘ldi."
       },
       {
-        q: "23. Qadimgi Misrda dala ishlarida (omoch tortishda) qaysi ish hayvonidan foydalanilgan?",
+        q: "7. Forslarning shahanshohi Kir II ning o‘g‘li — mil. avv. 525-yilda Misrni bosib olgan hukmdor kim?",
         options: [
-          "Ot",
-          "Tuya",
-          "Ho‘kiz",
-          "Eshak"
+          "Doro I",
+          "Kserks",
+          "Kambiz II",
+          "Artakserks"
         ],
         correct: 2,
-        exp: "Misrliklar dala ishlarida ho‘kizlardan foydalanganlar."
+        exp: "Kir II ning o‘g‘li Kambiz II mil. avv. 525-yilda Misrni bosib oldi."
       },
       {
-        q: "24. Misrliklar o‘z yurtlarini nima sababdan «Qora tuproq» deb atashgan?",
+        q: "8. Sinay yarimorolidan shimolroqda joylashgan va misrliklar qimmatbaho buyumlar olib kelgan qo‘shni o‘lka qaysi?",
         options: [
-          "Nil toshqinlari oqizib kelgan qora loyqa tuproq serhosil bo‘lgani sababli",
-          "Yer ostidan ko‘mir qazib olingani uchun",
-          "Qora rangli qumtoshlar ko‘p bo‘lgani uchun",
-          "Qora tusli daraxtlar o‘sgani sababli"
-        ],
-        correct: 0,
-        exp: "Nil daryosi olib kelgan chirindiga boy qora loyqa tuproq dalalarni serhosil qilgani sababli «Qora tuproq» deb atalgan."
-      },
-      {
-        q: "25. Quyidagi atamalarning qaysi biri qadimgi Misr podsholarining unvonini bildiradi?",
-        options: [
-          "Xoqon",
-          "Nomarx",
-          "Podsho-knyaz",
-          "Fir’avn"
+          "Nubiya",
+          "Liviya",
+          "Suriya",
+          "Falastin"
         ],
         correct: 3,
-        exp: "Qadimgi Misr hukmdorlari «fir’avn» deb atalgan."
+        exp: "Sinay yarimorolidan shimolroqda Falastin joylashgan."
+      },
+      {
+        q: "9. Falastinning yonida joylashgan, mis va temir rudalariga boy qo‘shni mamlakat qaysi?",
+        options: [
+          "Suriya",
+          "Nubiya",
+          "Liviya",
+          "Bobil"
+        ],
+        correct: 0,
+        exp: "Suriya mis va temir rudalariga boy edi."
+      },
+      {
+        q: "10. Qadimgi podshohlik davrida qaysi hudud bosib olinib, mahalliy qabilalar Misrga soliq to‘lay boshlagan?",
+        options: [
+          "Quyi Mesopotamiya",
+          "Sinay yarimoroli",
+          "Kichik Osiyo",
+          "Krit oroli"
+        ],
+        correct: 1,
+        exp: "Qadimgi podshohlik davrida Sinay yarimoroli bosib olingandi."
+      },
+      {
+        q: "11. O‘rta podshohlik fir’avnlari Misrga qaysi hududlarni qo‘shib olishga muvaffaq bo‘lishdi?",
+        options: [
+          "Butun Mesopotamiyani",
+          "Kichik Osiyo qirg‘oqlarini",
+          "Janubiy Falastin yerlari va Nubiya shimolini",
+          "Egey dengizi orollarini"
+        ],
+        correct: 2,
+        exp: "O‘rta podshohlik fir’avnlari Janubiy Falastin yerlari va Nubiya shimolini qo‘shib olgan."
+      },
+      {
+        q: "12. Mil. avv. 525-yilda forslar tomonidan bosib olingan qadimgi sivilizatsiya qaysi?",
+        options: [
+          "Shumer",
+          "Assuriya",
+          "Urartu",
+          "Misr"
+        ],
+        correct: 3,
+        exp: "Mil. avv. 525-yilda Kambiz II Misrni bosib olgan."
+      },
+      {
+        q: "13. Liviya cho‘lida yashovchi aholi qanday turmush tarzini olib borgan?",
+        options: [
+          "Ko‘chmanchi chorvadorlar",
+          "O‘troq dehqonlar",
+          "Dengiz qaroqchilari",
+          "Hunarmand savdogarlar"
+        ],
+        correct: 0,
+        exp: "Liviya cho‘lida ko‘chmanchi chorvadorlar yashagan."
+      },
+      {
+        q: "14. Giksoslar Misrni egallab olgach, mamlakat qanday holatga tushgandi?",
+        options: [
+          "Ko‘plab mayda «nom»larga bo‘linib ketgandi",
+          "Kuchli imperiyaga aylangandi",
+          "Boshqa davlatga qaram bo‘lmagandi",
+          "Tinchlik va farovonlik yuzaga kelgandi"
+        ],
+        correct: 0,
+        exp: "Bu vaqtda podshohlik ko‘plab mayda «nom»larga bo‘linib ketgandi."
+      },
+      {
+        q: "15. Misrliklar qo‘shni Falastin va Suriyadan asosan nimalar olib kelishgan?",
+        options: [
+          "Arzon oziq-ovqat mahsulotlarini",
+          "Hunarmandlar yasagan nodir buyumlar va qimmatbaho toshlarni",
+          "Paxta va matolarni",
+          "Qog‘oz va papiruslarni"
+        ],
+        correct: 1,
+        exp: "Misrliklar Falastin va Suriyadan hunarmandlar yasagan nodir buyumlar va qimmatbaho toshlar olib kelgan."
+      },
+      {
+        q: "16. Mil. avv. VII asrda Misrda qanday ijobiy o‘zgarish yuz berdi?",
+        options: [
+          "Misr yana yagona davlatga birlashib, iqtisodiyoti va madaniyatida yuksalish boshlandi",
+          "Mamlakat parchalanib ketdi",
+          "Poytaxt Nubiyaga ko‘chirildi",
+          "Dehqonchilik butunlay tugatildi"
+        ],
+        correct: 0,
+        exp: "Mil. avv. VII asrda Misr yana yagona davlatga birlashib, yuksalish boshlandi."
+      },
+      {
+        q: "17. Giksoslar zulmidan xalos bo‘lish maqsadida Fiva shahri atrofida kimlar birlasha boshladi?",
+        options: [
+          "Chet ellik yollanma askarlar",
+          "«Nom»lar hukmdorlari",
+          "Liviya qabilalari",
+          "Dengiz savdogarlari"
+        ],
+        correct: 1,
+        exp: "Bosqinchilar zulmidan qutulish uchun «nom»lar hukmdorlari Fiva shahri atrofida birlasha boshladi."
+      },
+      {
+        q: "18. Qadimgi Misrga janubdan qo‘shni bo‘lgan Nubiya o‘lkasi hozirgi qaysi davlat hududiga to‘g‘ri keladi?",
+        options: [
+          "Liviya",
+          "Sudan (Shimoliy Sudan)",
+          "Efiopiya",
+          "Keniya"
+        ],
+        correct: 1,
+        exp: "Nubiya (Shimoliy Sudan) Misr bilan janubda chegaradosh bo‘lgan."
+      },
+      {
+        q: "19. Fir’avn Tutmos II davrida qaysi hududlarni istilo qilish boshlangan edi?",
+        options: [
+          "Falastin, Finikiya va Suriya",
+          "Kichik Osiyo va Mesopotamiya",
+          "Krit va Kipr orollari",
+          "Arabiston yarimoroli"
+        ],
+        correct: 0,
+        exp: "Tutmos II davrida Falastin, Finikiya va Suriyani istilo qilish boshlandi."
+      },
+      {
+        q: "20. Misr fir’avnlari Nubiya va Liviyaga nima maqsadda yurishlar uyushtirganlar?",
+        options: [
+          "Faqat ilm-fan o‘rganish uchun",
+          "Shaharlarni talash, asirlar, chorva mollar va boyliklarni egallab olish uchun",
+          "Diniy ibodatxonalar qurish uchun",
+          "Yangi savdo yo‘llarini ochish uchun"
+        ],
+        correct: 1,
+        exp: "Fir’avnlar Nubiya va Liviyaga yurish qilib, shaharlarni taladi, asirlar va chorva mollarini olib keldi."
+      },
+      {
+        q: "21. Giksoslar hujumi qaysi davrga to‘g‘ri keladi?",
+        options: [
+          "Mil. avv. XVIII asr oxiriga",
+          "Mil. avv. V asr boshiga",
+          "Mil. avv. X asrga",
+          "Mil. avv. XII asrga"
+        ],
+        correct: 0,
+        exp: "Mil. avv. XVIII asr oxirida ko‘chmanchi giksos qabilalari Misrga hujum qildi."
+      },
+      {
+        q: "22. Qadimgi Misr uchun muhim bo‘lgan Sinay yarimorolidan asosiy nima qazib olingan?",
+        options: [
+          "Oltin va kumush",
+          "Mis",
+          "Toshko‘mir",
+          "Qimmatbaho marvarid"
+        ],
+        correct: 1,
+        exp: "Sinay yarimorolidan mis qazib olingan."
+      },
+      {
+        q: "23. Forslar hukmdori Kambiz II Misrni qaysi yilda bosib olgan?",
+        options: [
+          "Mil. avv. 525-yilda",
+          "Mil. avv. 330-yilda",
+          "Mil. avv. 711-yilda",
+          "Mil. avv. 1000-yilda"
+        ],
+        correct: 0,
+        exp: "Kambiz II mil. avv. 525-yilda Misrni bosib oldi."
+      },
+      {
+        q: "24. Giksoslar Misrni egallagach, qaysi shahardan boshqa barcha hududlar ularga itoat qilgan?",
+        options: [
+          "Memfis",
+          "Fiva",
+          "Giza",
+          "Sais"
+        ],
+        correct: 1,
+        exp: "Faqat Fiva shahri hukmdorlari giksoslarga itoat qilmadi."
+      },
+      {
+        q: "25. Yangi podshohlik davrining boshlanishi kimning nomi bilan bog‘liq?",
+        options: [
+          "Yaxmos",
+          "Menes",
+          "Ramses",
+          "Tutmos"
+        ],
+        correct: 0,
+        exp: "Yaxmos giksoslarni quvib chiqargach, Yangi podshohlik davri boshlandi."
       }
     ];
 
@@ -903,11 +909,18 @@
       document.getElementById('quiz-body').style.display = 'none';
       document.getElementById('sticky-bar').style.display = 'none';
       document.getElementById('quiz-result').style.display = 'flex';
+      
+      // Foizni to'g'ri hisoblash (To'g'ri javoblar / Umumiy savollar * 100)
+      const percentage = Math.round((score / testQuestions.length) * 100);
+
       document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
       const fb = document.getElementById('q-feedback');
-      if(score >= 23) fb.innerText = "Mukammal natija! 6-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
-      else if(score >= 15) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
-      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
+      
+      // Foizdan kelib chiqib rag'batlantiruvchi matn
+      if(percentage >= 90) fb.innerText = `Mukammal natija! 7-§ ni ${percentage}% ga o‘zlashtiribsiz 🏆`;
+      else if(percentage >= 60) fb.innerText = `Yaxshi natija! 7-§ ni ${percentage}% ga o‘zlashtirdingiz. Xatolar ustida ishlab, yana bir bor takrorlang 👍`;
+      else fb.innerText = `Natijangiz ${percentage}%. Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚`;
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 

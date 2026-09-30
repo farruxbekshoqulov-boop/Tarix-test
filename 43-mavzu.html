@@ -1,1 +1,294 @@
-<!doctype html><html lang="uz"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>43-§. Qadimgi Italiya va uning aholisi</title><style>:root{--primary:#3b82f6;--accent:#8b5cf6;--success:#10b981;--danger:#ef4444;--text:#fff;--text-muted:#94a3b8;--card-bg:rgba(30,41,59,.95);--card-border:rgba(255,255,255,.16)}*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}html,body{background:radial-gradient(circle at top right,#1e1b4b,#0f172a 60%,#020617);color:var(--text);min-height:100vh}body{display:flex;justify-content:center;padding:10px 10px 100px}.app-card{width:100%;max-width:540px;background:var(--card-bg);backdrop-filter:blur(18px);border:1.5px solid var(--card-border);border-radius:24px;padding:14px;display:flex;flex-direction:column;gap:12px;box-shadow:0 20px 45px rgba(0,0,0,.5)}.tab-nav{display:flex;background:rgba(15,23,42,.7);padding:4px;border-radius:14px;border:1px solid #ffffff1a;gap:4px}.tab-btn{flex:1;padding:10px 2px;border:0;background:transparent;font-size:14px;font-weight:800;color:var(--text-muted);border-radius:10px}.tab-btn.active,.action-btn{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:0 4px 14px #3b82f659}.tab-content{display:none;flex-direction:column;gap:10px}.tab-content.active{display:flex}.header-bar{display:flex;justify-content:space-between;align-items:center}.badge{background:#3b82f640;color:#93c5fd;border:1px solid #3b82f666;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800}.progress-track{width:100%;height:6px;background:#ffffff1f;border-radius:999px;overflow:hidden;margin:6px 0}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#38bdf8,#818cf8)}.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}.match-btn,.opt-btn{background:rgba(15,23,42,.85);border:1.5px solid #ffffff29;border-radius:12px;padding:12px 10px;color:#f1f5f9;font-size:14px;font-weight:650;text-align:left;line-height:1.35}.match-btn{text-align:center;min-height:56px}.selected{border-color:#38bdf8!important;background:#38bdf840!important}.matched,.correct{background:#10b98159!important;border-color:var(--success)!important;color:#a7f3d0!important}.wrong,.incorrect{background:#ef444459!important;border-color:var(--danger)!important;color:#fecaca!important}.flashcard-area{display:flex;flex-direction:column;justify-content:center;background:#0f172a8c;border:2px dashed #ffffff38;border-radius:18px;padding:16px;margin:6px 0;text-align:center;min-height:180px}.fc-q,.q-title{font-size:16.5px;font-weight:800;line-height:1.4}.fc-a,.exp-box{display:none;margin-top:12px;padding:12px;border-radius:12px;background:#064e3b99;color:#a7f3d0;font-weight:700;line-height:1.4}.exp-box{background:#3b82f633;color:#bfdbfe;border-left:4px solid var(--primary);border-radius:8px;font-size:13.5px}.options-grid{display:flex;flex-direction:column;gap:8px}.action-btn{width:100%;border:0;padding:14px;border-radius:14px;font-size:16px;font-weight:800;margin-top:8px}.sticky-bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#0f172af5;padding:10px 16px 14px;display:flex;justify-content:center;z-index:9}.sticky-bottom-bar button{max-width:540px;margin:0 auto}.finish-state{display:none;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:20px 0}.finish-badge{width:75px;height:75px;border-radius:50%;border:3px solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#60a5fa}</style><body><div class="app-card"><div class="tab-nav"><button class="tab-btn active" onclick="tab('m')">🧩 Moslash</button><button class="tab-btn" onclick="tab('c')">🧠 Savol-Javob (30)</button><button class="tab-btn" onclick="tab('t')">📝 Test (32)</button></div><div id="m" class="tab-content active"><div id="match"><div class="header-bar"><span class="badge" id="mb"></span><span id="mc"></span></div><div class="progress-track"><div id="mf" class="progress-fill"></div></div><div id="mg" class="match-grid"></div></div><div id="md" class="finish-state"><div>🏆</div><h2>5 ta bosqich yakunlandi!</h2><button class="action-btn" onclick="tab('c')">Savol-javobga o‘tish ➔</button></div></div><div id="c" class="tab-content"><div id="cards"><div class="header-bar"><span class="badge">43-§ Trenajyor</span><span id="cc"></span></div><div class="progress-track"><div id="cf" class="progress-fill"></div></div><div class="flashcard-area"><div id="cq" class="fc-q"></div><div id="ca" class="fc-a"></div></div><button id="reveal" class="action-btn">👁 Javobni ko‘rish</button><button id="cn" class="action-btn" style="display:none">Keyingi savol ➔</button></div><div id="cd" class="finish-state"><h2>30 ta savol tugadi!</h2><button class="action-btn" onclick="tab('t')">Testga o‘tish ➔</button></div></div><div id="t" class="tab-content"><div id="test"><div class="header-bar"><span class="badge">43-§ Test sinovi</span><span id="tc"></span></div><div class="progress-track"><div id="tf" class="progress-fill"></div></div><div id="tq" class="q-title" style="margin:12px 0"></div><div id="to" class="options-grid"></div><div id="te" class="exp-box"></div></div><div id="td" class="finish-state"><div class="finish-badge" id="score"></div><h2>Sinov yakunlandi!</h2><p id="fb"></p><button class="action-btn" onclick="restart()">Qaytadan ishlash 🔄</button></div></div></div><div id="stick" class="sticky-bottom-bar" style="display:none"><button class="action-btn" onclick="nextT()">Keyingi savol ➔</button></div><script>const M=[[['Apennin yarimoroli','Italiya joylashgan yarimorol'],['Italiya','Buzoqchalar mamlakati'],['Po','Eng katta daryo'],['Italiklar','Qadimgi qabilalar']],[['Etrusklar','Shimoli-g‘arbda yashagan qabilalar'],['VIII asr','12 shahar-davlat tuzilgan davr'],['Karfagen','Finikiya koloniyasi'],['Yunon qo‘shini','G‘alaba qozongan kuch']],[['Tibr','Rim boshlangan daryo'],['Yetti tepalik','Harbiy qulay joylashuv'],['753-yil','Rimga asos solingan yil'],['Romul va Rem','Rim asoschilari']],[['Ona bo‘ri','Egizaklarni emizgan'],['Cho‘pon','Egizaklarni tarbiyalagan'],['Kapitoliy','Qal’a bunyod etilgan tepalik'],['Daryo va botqoqlik','Tabiiy himoya']],[['Tarkviniy','Hokimiyatni zo‘rlik bilan egallagan'],['Qo‘zg‘olon','Tarkviniyga qarshi harakat'],['509-yil','Respublika asosi'],['Respublika','Bir kishi hokimiyatini cheklagan tuzum']]];const F=[['Italiya qaysi yarimorolni egallagan?','Apennin yarimorolni.'],['Italiya so‘zining ma’nosi?','Buzoqchalar mamlakati.'],['Eng katta daryo?','Po daryosi.'],['Shimoli-g‘arbda kim yashagan?','Etrusklar.'],['Etrusklar nechta davlat tuzgan?','12 ta.'],['Karfagen qayerda?','Afrikaning shimoliy sohilida.'],['Rim qaysi daryo bo‘yida?','Tibr daryosi bo‘yida.'],['Rim nechta tepalikda?','Yettita.'],['Rim qachon asos solingan?','Mil. avv. 753-yilda.'],['Rim asoschilari?','Romul va Rem.'],['Egizaklarni kim emizgan?','Ona bo‘ri.'],['Egizaklarni kim tarbiyalagan?','Cho‘pon.'],['Rim timsoli?','Egizaklarni emizgan ona bo‘ri.'],['Qal’a qayerda qurilgan?','Kapitoliy tepaligida.'],['Hukmdorlar qanday aniqlangan?','Saylash orqali.'],['Hukmdor vazifalari?','Harbiy boshliq, sudya va kohin.'],['Tarkviniy nima qilgan?','Hokimiyatni zo‘rlik bilan egallagan.'],['Respublika qachon?','Mil. avv. 509-yilda.'],['Asosiy mashg‘ulot?','Dehqonchilik va chorvachilik.'],['Iqlim qanday?','Iliq.'],['Etrusklar kim bilan kurashgan?','Yunon koloniyalari bilan.'],['Kim yunonlarni tor-mor qilgan?','Yunon qo‘shini etrusklar va karfagenliklarni tor-mor qilgan.'],['Karfagen qaysi xalq koloniyasi?','Finikiyaliklar.'],['Rimni nima himoyalagan?','Daryo va botqoqlik.'],['Yetti tepalik nimaga qulay?','Harbiy jihatdan.'],['Tarkviniyga nima qilingan?','Shahardan haydalgan.'],['Respublika nimani cheklagan?','Bir kishi qo‘lidagi butun hokimiyatni.'],['Yunonlar o‘tloqni nima uchun topgan?','Sigir o‘tlatish uchun.'],['Manzilgohlar nimaga aylangan?','Katta shaharga.'],['Etrusklarning mashg‘uloti?','Dehqonchilik.']];const raw=[['Italiya qaysi yarimorol?','Apennin|Bolqon|Peloponnes|Attika',0],['Italiya so‘zi nimani anglatadi?','Tog‘lar|Buzoqchalar mamlakati|Dengizlar|Quyoshli o‘lka',1],['Eng katta daryo?','Tibr|Nil|Po|Efrat',2],['Qadimgi qabilalar?','Etrusklar|Finikiyaliklar|Yunonlar|Italiklar',3],['Etrusklar qayerda?','Shimoli-g‘arb|Shimoli-sharq|Janubi-g‘arb|Janubi-sharq',0],['Etrusklar nechta davlat tuzgan?','7|12|20|5',1],['Etrusklar qachon davlat tuzgan?','753-yil|VIII asr|509-yil|VI asr',1],['Karfagen qayerda?','Yevropa|Kichik Osiyo|Shimoliy Afrika|Misr',2],['Karfagen qaysi xalq koloniyasi?','Yunon|Etrusk|Italik|Finikiya',3],['Etrusklar kim bilan kurashgan?','Yunon koloniyalari|Rimliklar|Misrliklar|Saklar',0],['Kim etrusklarni tor-mor qilgan?','Rim|Yunon qo‘shini|Fors|Makedon',1],['Rim qaysi daryo bo‘yida?','Po|Nil|Tibr|Dajla',2],['Rim nechta tepalikda?','Yettita|Beshta|To‘qqizta|Uchta',0],['Rimni nima himoyalagan?','Tog‘|Daryo va botqoqlik|Dengiz|Cho‘l',1],['Rim qachon asos solingan?','509-yil|VIII asr|753-yil|312-yil',2],['Rimga kim asos solgan?','Tarkviniy|Romul va Rem|Cho‘pon|Etrusklar',1],['Egizaklarni kim emizgan?','Ona bo‘ri|Cho‘pon|Kohin|Baliqchi',0],['Egizaklarni kim tarbiyalagan?','Kohin|Sarkarda|Cho‘pon|Savdogar',2],['Rim timsoli?','Kapitoliy|Tibr|Etrusk qalqoni|Ona bo‘ri',3],['Qal’a qaysi tepalikda?','Palatin|Aventin|Esquilin|Kapitoliy',3],['Hukmdorlar qanday aniqlangan?','Saylash|Meros|Qur’a|Urush',0],['Hukmdor kim bo‘lgan?','Harbiy boshliq, sudya va kohin|Savdogar|Dehqon|Tabib',0],['Tarkviniy nima qilgan?','Shahar qurgan|Hokimiyatni egallagan|Ko‘chgan|Ittifoq tuzgan',1],['Tarkviniyga qarshi nima?','Qo‘zg‘olon|Yurish|Ittifoq|Ko‘chish',0],['Respublika qachon?','753-yil|VIII asr|509-yil|312-yil',2],['Respublika nimani cheklagan?','Bir kishi hokimiyati|Saylov|Sud|Qo‘shin',0],['Yunonlar o‘tloqni nima uchun topgan?','Sigir o‘tlatish|Bug‘doy|Kema|Tuz',0],['Iqlim?','Qattiq sovuq|Iliq|Qurg‘oqchil|Yomg‘irli',1],['Asosiy mashg‘ulot?','Dengizchilik|Dehqonchilik va chorvachilik|Konchilik|Qaroqchilik',1],['Yetti tepalik nimaga qulay?','Harbiy jihatdan|Savdoga|Konchilikka|Baliqchilikka',0],['Manzilgohlar nimaga aylangan?','Katta shaharga|Portga|Qishloqqa|Koloniyaga',0],['Podsho hokimiyati ag‘darilishi nimaga asos?','Rim respublikasi|Karfagen|Etrusk ittifoqi|Yunon koloniyasi',0]];const T=raw.map(x=>({q:x[0],o:x[1].split('|'),k:x[2]}));function sh(a){return a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1])}function tab(x){document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));document.getElementById(x).classList.add('active');event?.target?.classList.add('active');stick.style.display='none'}let a=0,s,r;function lm(){let x=M[a];s=null;r=4;mb.textContent='Bosqich: '+(a+1)+' / 5';mc.textContent='Qoldi: 4 ta juftlik';mf.style.width=a/5*100+'%';mg.innerHTML='';let z=[];x.forEach((v,i)=>z.push([v[0],i],[v[1],i]));sh(z).forEach(v=>{let b=document.createElement('button');b.className='match-btn';b.textContent=v[0];b.dataset.i=v[1];b.onclick=()=>pm(b);mg.append(b)})}function pm(b){if(!s){s=b;b.classList.add('selected');return}if(s.dataset.i==b.dataset.i){s.className=b.className='match-btn matched';s=null;if(!--r){++a;setTimeout(()=>a<5?lm():(match.style.display='none',md.style.display='flex'),350)}}else{let q=s;b.classList.add('wrong');q.classList.add('wrong');setTimeout(()=>{b.className=q.className='match-btn';s=null},300)}}let ci=0;function lc(){cc.textContent=ci+1+'/30';cf.style.width=(ci+1)/30*100+'%';cq.textContent=F[ci][0];ca.textContent=F[ci][1];ca.style.display='none';reveal.style.display='block';cn.style.display='none'}reveal.onclick=()=>{ca.style.display='block';reveal.style.display='none';cn.style.display='block'};cn.onclick=()=>++ci<30?lc():(cards.style.display='none',cd.style.display='flex');let ti=0,sc=0;function lt(){let x=T[ti],z=sh(x.o.map((v,i)=>[v,i==x.k]));tc.textContent=ti+1+'/32';tf.style.width=ti/32*100+'%';tq.textContent=x.q;to.innerHTML='';te.style.display='none';z.forEach(v=>{let b=document.createElement('button');b.className='opt-btn';b.textContent=v[0];b.onclick=()=>ans(b,v[1],z,x.o[x.k]);to.append(b)});stick.style.display='none'}function ans(b,k,z,a){[...to.children].forEach((v,i)=>{v.disabled=true;if(z[i][1])v.classList.add('correct')});k?sc++:b.classList.add('incorrect');te.textContent='💡 Izoh: To‘g‘ri javob — '+a;te.style.display='block';stick.style.display='flex'}function nextT(){++ti<32?lt():(test.style.display='none',stick.style.display='none',td.style.display='flex',score.textContent=sc+'/32',fb.textContent=sc>=29?'Mukammal natija!':sc>=20?'Yaxshi natija!':'Mavzuni qayta o‘qing.')}function restart(){ti=sc=0;td.style.display='none';test.style.display='block';lt()}lm();lc();lt();</script></body></html>
+<!DOCTYPE html><html lang="uz"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>43-§. Qadimgi Italiya va uning aholisi</title><script src="https://telegram.org/js/telegram-web-app.js"></script><style>
+    :root {
+      --primary: #3b82f6;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.95);
+      --card-border: rgba(255, 255, 255, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background: radial-gradient(circle at top right, #1e1b4b, #0f172a 60%, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 10px 10px 100px 10px;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid var(--card-border);
+      border-radius: 24px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.7);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 2px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: var(--text-muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tab-content.active { display: flex; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: rgba(59, 130, 246, 0.25);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      transition: width 0.3s ease;
+    }
+
+    /* MATCH GAME */
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .match-btn {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      line-height: 1.3;
+      transition: all 0.2s ease;
+    }
+
+    .match-btn.selected {
+      border-color: #38bdf8;
+      background: rgba(56, 189, 248, 0.25);
+      transform: scale(0.97);
+    }
+
+    .match-btn.matched {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--success);
+      color: #6ee7b7;
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s;
+    }
+
+    .match-btn.wrong {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--danger);
+    }
+
+    /* FLASHCARD */
+    .flashcard-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.55);
+      border: 2px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      margin: 6px 0;
+      text-align: center;
+      min-height: 180px;
+    }
+
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
+    .fc-a {
+      font-size: 15.5px; font-weight: 700; color: #34d399;
+      background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
+    }
+
+    /* TEST */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
+    
+    .opt-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.35;
+      transition: all 0.15s ease;
+    }
+
+    .opt-btn.correct { background: rgba(16, 185, 129, 0.35) !important; border-color: var(--success) !important; color: #a7f3d0 !important; font-weight: 700; }
+    .opt-btn.incorrect { background: rgba(239, 68, 68, 0.35) !important; border-color: var(--danger) !important; color: #fecaca !important; }
+    
+    .exp-box {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid var(--primary);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #bfdbfe;
+      line-height: 1.4;
+      display: none;
+      margin-top: 6px;
+    }
+
+    .action-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      margin-top: 8px;
+    }
+
+    /* QOTIB TURADIGAN PASTKI TUGMA */
+    .sticky-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px 16px 14px 16px;
+      display: flex;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .sticky-bottom-bar button {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .finish-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+      padding: 20px 0;
+    }
+
+    .finish-badge {
+      width: 75px; height: 75px; border-radius: 50%;
+      background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
+    }
+  </style></head><body><div class="app-card"><div class="tab-nav"><button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button><button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (30)</button><button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button></div><div class="tab-content active" id="tab-match"><div id="match-play-box"><div class="header-bar"><span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span><span id="match-counter">Qoldi: 4 ta juftlik</span></div><div class="progress-track"><div class="progress-fill" id="match-progress"></div></div><div class="match-grid" id="match-container"></div></div><div class="finish-state" id="match-finish-box"><div style="font-size:50px">🏆</div><h2>5 ta bosqich yakunlandi!</h2><p>Barcha juftliklarni mosladingiz.</p><button class="action-btn" onclick="switchTab('cards')">Savol-javobga o‘tish ➔</button><button class="action-btn" onclick="initMatch()">Qaytadan moslash 🔄</button></div></div><div class="tab-content" id="tab-cards"><div id="fc-play-box"><div class="header-bar"><span class="badge">43-§ Trenajyor</span><span id="fc-counter">1 / 30</span></div><div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div><div class="flashcard-area"><div class="fc-q" id="fc-question"></div><div class="fc-a" id="fc-answer"></div></div><button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button><button class="action-btn" id="fc-next-btn" style="display:none" onclick="nextFlashcard()">Keyingi savol ➔</button></div><div class="finish-state" id="fc-finish-box"><div style="font-size:50px">🎉</div><h2>30 ta savol tugadi!</h2><button class="action-btn" onclick="switchTab('quiz')">Testga o‘tish ➔</button><button class="action-btn" onclick="restartCards()">Qaytadan takrorlash 🔄</button></div></div><div class="tab-content" id="tab-quiz"><div id="quiz-body"><div class="header-bar"><span class="badge">43-§ Test Sinovi</span><span id="q-counter">1 / 32</span></div><div class="progress-track"><div class="progress-fill" id="q-progress"></div></div><div class="q-title" id="q-title"></div><div class="options-grid" id="q-options"></div><div class="exp-box" id="q-explanation"></div></div><div class="finish-state" id="quiz-result"><div style="font-size:50px">🏆</div><div class="finish-badge" id="q-score">0/32</div><h2>Sinov yakunlandi!</h2><p id="q-feedback"></p><button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button><button class="action-btn" onclick="initMatch();switchTab('match')">🧩 Boshidan boshlash</button></div></div></div><div class="sticky-bottom-bar" id="sticky-bar" style="display:none"><button class="action-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button></div><script>
+if(window.Telegram&&window.Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}
+const matchStages=[[["Apennin yarimoroli", "Italiya egallagan yarimorol"], ["Italiya", "«Buzoqchalar mamlakati»"], ["Po daryosi", "Apennin yarimorolidagi eng katta daryo"], ["Italiklar", "Yarimorolning qadimgi qabilalari"]], [["Etrusklar", "Italiyaning shimoli-g‘arbida yashagan qabilalar"], ["Mil. avv. VIII asr", "Etrusklar 12 ta shahar-davlat tuzgan davr"], ["Karfagen", "Shimoliy Afrika sohilidagi Finikiya koloniyasi"], ["Yunon qo‘shini", "Etrusklar va karfagenliklarni tor-mor qilgan kuch"]], [["Tibr daryosi", "Rim shahri paydo bo‘lgan manzilgohlar joylashgan daryo"], ["Yettita tepalik", "Rimning harbiy jihatdan qulay joylashuvi"], ["Mil. avv. 753-yil", "Rimga asos solingan yil (rivoyatga ko‘ra)"], ["Romul va Rem", "Rim shahriga asos solgan egizaklar"]], [["Ona bo‘ri", "Egizaklarni emizib boqqan jonivor"], ["Cho‘pon", "Egizaklarni topib tarbiyalagan kishi"], ["Kapitoliy tepaligi", "Rim qal’asi qurilgan tepalik"], ["Daryo va botqoqliklar", "Rim aholisini himoya qilgan tabiiy to‘siqlar"]], [["Mag‘rur Tarkviniy", "Saylangan hukmdorni o‘ldirib, hokimiyatni egallagan kishi"], ["Qo‘zg‘olon", "Tarkviniy zulmiga qarshi ko‘tarilgan harakat"], ["Mil. avv. 509-yil", "Rim respublikasi asosi yaratilgan yil"], ["Respublika", "Hokimiyat bir kishi qo‘lida jamlanmaydigan boshqaruv shakli"]]],flashcards=[["Italiya qaysi yarimorolda joylashgan?", "Apennin yarimorolida."], ["«Italiya» so‘zi qanday ma’noni bildiradi?", "«Buzoqchalar mamlakati» ma’nosini bildiradi."], ["Apennin yarimorolidagi eng katta daryo qaysi?", "Po daryosi."], ["Apennin yarimorolining qadimgi qabilalari qanday atalgan?", "Italiklar deb atalgan."], ["Italiyaning shimoli-g‘arbiy qismida qaysi qabilalar yashagan?", "Etrusklar yashagan."], ["Etrusklarning asosiy mashg‘uloti nima bo‘lgan?", "Dehqonchilik."], ["Etrusklar Italiyada qachon 12 ta shahar-davlat tuzgan?", "Miloddan avvalgi VIII asrda."], ["Karfagen shahri qayerda joylashgan edi?", "Afrikaning shimoliy sohilida."], ["Karfagen qaysi xalqning koloniyasi bo‘lgan?", "Finikiyaliklarning koloniyasi."], ["Etrusklar Sharq bilan erkin savdo qilish uchun kimlar bilan kurash boshlagan?", "Yunon koloniyalari bilan."], ["Etrusklar va karfagenliklarni keyinchalik kim tor-mor etgan?", "Yunon qo‘shini."], ["Rim shahri qaysi daryo bo‘yidagi manzilgohlardan boshlangan?", "Tibr daryosi bo‘yidagi dehqonchilik manzilgohlaridan."], ["Rim shahri nechta tepalikda joylashgan?", "Yettita tepalikda."], ["Rim aholisini qo‘shni qabilalar hujumidan nimalar himoya qilgan?", "Daryo va botqoqliklar."], ["Rivoyatga ko‘ra, Rim shahriga qachon asos solingan?", "Miloddan avvalgi 753-yilda."], ["Rivoyatga ko‘ra, Rim shahriga kimlar asos solgan?", "Aka-uka Romul va Rem."], ["Chaqaloq Romul va Remni qaysi jonivor emizib boqqan?", "Ona bo‘ri."], ["Egizaklarni keyinchalik kim topib tarbiyalagan?", "Cho‘pon."], ["Bugungi kunda Rim shahrining timsoli nima hisoblanadi?", "Egizaklarni emizgan ona bo‘ri."], ["Dushmanlardan himoyalanish uchun Rimning qaysi tepaligida qal’a qurilgan?", "Kapitoliy tepaligida."], ["Qadimgi rimliklar dastlab hukmdorlarini qanday tanlagan?", "Saylashgan."], ["Qadimgi Rim hukmdorlari qanday uch vazifani bajargan?", "Harbiy boshliq, sudya va kohin bo‘lishgan."], ["Mag‘rur Tarkviniy hokimiyatni qanday egallagan?", "Saylangan hukmdorni o‘ldirib, hokimiyatni egallagan."], ["Rim aholisi Tarkviniyning zulmiga qanday javob bergan?", "Qo‘zg‘olon ko‘tarib, uni shahardan haydab yuborgan."], ["Rim respublikasining asosi qachon yaratilgan?", "Miloddan avvalgi 509-yilda."], ["Rim aholisi yangi boshqaruvda nimaga yo‘l qo‘ymaslikka qaror qilgan?", "Butun hokimiyat bir kishi qo‘lida jamlanishiga."], ["Yunon kolonistlari Italiyadagi o‘tloqlardan nima uchun foydalangan?", "Sigirlarni o‘tlatish uchun."], ["Qadimgi Italiyaning iqlimi qanday bo‘lgan?", "Iliq bo‘lgan, qurg‘oqchilik ham, qattiq sovuq ham bo‘lmagan."], ["Qadimgi Italiya aholisining asosiy mashg‘ulotlari nimalardan iborat bo‘lgan?", "Dehqonchilik va chorvachilikdan."], ["Rimning yetti tepalikda joylashishi nima jihatdan qulay bo‘lgan?", "Harbiy jihatdan."]],testQuestions=[["Italiya qaysi yarimorolni to‘liq egallagan edi?", ["Apennin yarimoroli", "Bolqon yarimoroli", "Peloponnes yarimoroli", "Kichik Osiyo yarimoroli"], 0], ["«Italiya» so‘zi qanday ma’noni bildiradi?", ["«Tog‘lar mamlakati»", "«Buzoqchalar mamlakati»", "«Dengizlar mamlakati»", "«O‘tloqlar mamlakati»"], 1], ["Apennin yarimorolidagi eng katta daryo qaysi?", ["Tibr daryosi", "Arno daryosi", "Po daryosi", "Rubikon daryosi"], 2], ["Apennin yarimorolining qadimgi qabilalari qanday nomlangan?", ["Etrusklar", "Yunonlar", "Finikiyaliklar", "Italiklar"], 3], ["Etrusklar Italiyaning qaysi qismida yashagan?", ["Shimoli-g‘arbida", "Shimoli-sharqida", "Janubi-g‘arbida", "Janubi-sharqida"], 0], ["Etrusklar Italiyada nechta shahar-davlat tuzgan?", ["7 ta", "12 ta", "10 ta", "15 ta"], 1], ["Etrusklar Italiyada qachon 12 ta shahar-davlat tuzgan?", ["Mil. avv. VII asrda", "Mil. avv. IX asrda", "Mil. avv. VIII asrda", "Mil. avv. VI asrda"], 2], ["Karfagen shahar-davlati qayerda joylashgan edi?", ["Italiyaning g‘arbiy sohilida", "Bolqon yarimorolining janubida", "Sitsiliya orolining shimolida", "Afrikaning shimoliy sohilida"], 3], ["Karfagen qaysi xalqning koloniyasi bo‘lgan?", ["Finikiyaliklarning", "Yunonlarning", "Etrusklarning", "Italiklarning"], 0], ["Etrusklar Sharq bilan savdo uchun kimlar bilan kurashgan?", ["Karfagenliklar bilan", "Yunon koloniyalari bilan", "Rimliklar bilan", "Italiklar bilan"], 1], ["Etrusklar va karfagenliklarni quruqlik va dengizda kim tor-mor etgan?", ["Rim qo‘shini", "Finikiya qo‘shini", "Yunon qo‘shini", "Etrusk qo‘shini"], 2], ["Rim shahri qaysi daryo bo‘yidagi manzilgohlardan boshlangan?", ["Po daryosi", "Arno daryosi", "Rubikon daryosi", "Tibr daryosi"], 3], ["Rim shahri nechta tepalikda joylashgan edi?", ["Yettita", "Beshta", "Oltita", "Sakkizta"], 0], ["Rimning yetti tepalikda joylashishi qaysi jihatdan qulay edi?", ["Savdo jihatidan", "Harbiy jihatdan", "Dengizchilik jihatidan", "Konchilik jihatidan"], 1], ["Rivoyatga ko‘ra, Rim shahriga qachon asos solingan?", ["Mil. avv. 509-yilda", "Mil. avv. 754-yilda", "Mil. avv. 753-yilda", "Mil. avv. 752-yilda"], 2], ["Rivoyatga ko‘ra, Rim shahriga kimlar asos solgan?", ["Romul va Tarkviniy", "Rem va Tarkviniy", "Romul va cho‘pon", "Romul va Rem"], 3], ["Rivoyatga ko‘ra, chaqaloq egizaklarni qaysi jonivor emizib boqqan?", ["Ona bo‘ri", "Ona ayiq", "Ona kiyik", "Ona tulki"], 0], ["Egizak Romul va Remni kim topib tarbiyalagan?", ["Kohin", "Cho‘pon", "Harbiy boshliq", "Savdogar"], 1], ["Bugungi kunda Rim shahrining timsoli nima hisoblanadi?", ["Kapitoliy qal’asi", "Yetti tepalik", "Egizaklarni emizgan ona bo‘ri", "Tibrdagi manzilgohlar"], 2], ["Rimda dushmanlardan himoyalanish uchun qal’a qaysi tepalikda qurilgan?", ["Palatin tepaligida", "Aventin tepaligida", "Esquilin tepaligida", "Kapitoliy tepaligida"], 3], ["Qadimgi rimliklar dastlab hukmdorlarini qanday aniqlashgan?", ["Saylash orqali", "Meros yo‘li bilan", "Qur’a tashlash orqali", "Tashqi hukmdor tayinlashi bilan"], 0], ["Rim hukmdorlari bir vaqtning o‘zida qanday vazifalarni bajargan?", ["Harbiy boshliq, savdogar va sudya", "Harbiy boshliq, sudya va kohin", "Kohin, elchi va dehqon", "Sudya, savdogar va elchi"], 1], ["Mag‘rur Tarkviniy hokimiyatni qanday qo‘lga olgan?", ["Hukmdor saylovida g‘olib bo‘lib", "Hukmdordan meros olib", "Saylangan hukmdorni o‘ldirib", "Yunon qo‘shini yordamida"], 2], ["Mag‘rur Tarkviniy zulmiga qarshi Rim aholisi nima qilgan?", ["Uni yana saylagan", "Karfagen bilan ittifoq tuzgan", "Shahardan ko‘chib ketgan", "Qo‘zg‘olon ko‘tarib, uni haydagan"], 3], ["Rim respublikasining asosi qachon yaratilgan?", ["Mil. avv. 509-yilda", "Mil. avv. 508-yilda", "Mil. avv. 753-yilda", "Mil. avv. 510-yilda"], 0], ["Rimliklar podsho hokimiyati ag‘darilgach nimaga yo‘l qo‘ymaslikka qaror qilgan?", ["Hukmdorlarni saylashga", "Hokimiyatning bir kishida jamlanishiga", "Sud ishlarini yuritishga", "Harbiy boshliq tayinlashga"], 1], ["Yunon kolonistlari Italiyadagi o‘tloqlarda qaysi hayvonni boqishga sharoit topgan?", ["Qo‘ylarni", "Otlarni", "Sigirlarni", "Echkilarni"], 2], ["Qadimgi Italiyaning iqlimi darslikda qanday tavsiflangan?", ["Qattiq sovuq va qurg‘oqchil", "Faqat yomg‘irli va sovuq", "Yozlari doim qurg‘oqchil", "Iliq, qurg‘oqchilik va qattiq sovuqsiz"], 3], ["Qadimgi Italiya aholisining asosiy mashg‘ulotlari nimalar edi?", ["Dehqonchilik va chorvachilik", "Baliqchilik va dengiz savdosi", "Konchilik va hunarmandchilik", "Ovchilik va dengizchilik"], 0], ["Daryo va botqoqlik Rim aholisiga qanday foyda bergan?", ["Savdo yo‘llarini yopgan", "Qo‘shni qabilalar hujumidan himoya qilgan", "Shaharni yetti qismga ajratgan", "Karfagen bilan aloqani kuchaytirgan"], 1], ["Tibr bo‘yidagi kichik dehqonchilik manzilgohlari birlashib nimaga aylangan?", ["Finikiya koloniyasiga", "Kichik qishloqqa", "Katta shaharga", "Etrusklar ittifoqiga"], 2], ["Mil. avv. 509-yilda podsho hokimiyatining ag‘darilishi nimaga asos yaratgan?", ["Yunon koloniyasiga", "Etrusklar ittifoqiga", "Karfagen shahar-davlatiga", "Rim respublikasiga"], 3]];
+const E=id=>document.getElementById(id);
+function switchTab(tab){['match','cards','quiz'].forEach(x=>{E('tab-btn-'+x).classList.toggle('active',x===tab);E('tab-'+x).classList.toggle('active',x===tab)});E('sticky-bar').style.display='none';window.scrollTo(0,0)}
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let stage=0,picked=null,remaining=0,locked=false,epoch=0;
+function initMatch(){epoch++;stage=0;E('match-play-box').style.display='block';E('match-finish-box').style.display='none';loadMatchStage()}
+function loadMatchStage(){epoch++;picked=null;locked=false;const pool=matchStages[stage];remaining=pool.length;E('match-stage-badge').textContent=`Bosqich: ${stage+1} / ${matchStages.length}`;E('match-counter').textContent=`Qoldi: ${remaining} ta juftlik`;E('match-progress').style.width=(stage/matchStages.length*100)+'%';const cards=[];pool.forEach(([left,right],i)=>{cards.push({id:i,text:left});cards.push({id:i,text:right})});shuffle(cards);const box=E('match-container');box.replaceChildren();cards.forEach(c=>{const b=document.createElement('button');b.className='match-btn';b.textContent=c.text;b.dataset.id=c.id;b.onclick=()=>onMatchClick(b);box.appendChild(b)})}
+function onMatchClick(b){if(locked||b.classList.contains('matched'))return;if(b===picked){b.classList.remove('selected');picked=null;return}if(!picked){picked=b;b.classList.add('selected');return}const first=picked;picked=null;locked=true;if(first.dataset.id===b.dataset.id){first.classList.remove('selected');first.classList.add('matched');b.classList.add('matched');remaining--;E('match-counter').textContent=`Qoldi: ${remaining} ta juftlik`;const token=epoch;setTimeout(()=>{if(token!==epoch)return;first.remove();b.remove();locked=false;if(!remaining){stage++;if(stage<matchStages.length)loadMatchStage();else{E('match-progress').style.width='100%';E('match-play-box').style.display='none';E('match-finish-box').style.display='flex'}}},360)}else{first.classList.add('wrong');b.classList.add('wrong');setTimeout(()=>{first.classList.remove('selected','wrong');b.classList.remove('wrong');locked=false},400)}}
+let cardIndex=0;
+function loadFlashcard(){const [q,a]=flashcards[cardIndex];E('fc-counter').textContent=`${cardIndex+1} / ${flashcards.length}`;E('fc-progress').style.width=((cardIndex+1)/flashcards.length*100)+'%';E('fc-question').textContent=q;E('fc-answer').textContent=a;E('fc-answer').style.display='none';E('fc-toggle-btn').style.display='block';E('fc-next-btn').style.display='none'}
+function toggleAnswer(){E('fc-answer').style.display='block';E('fc-toggle-btn').style.display='none';E('fc-next-btn').style.display='block'}
+function nextFlashcard(){cardIndex++;if(cardIndex<flashcards.length)loadFlashcard();else{E('fc-play-box').style.display='none';E('fc-finish-box').style.display='flex'}window.scrollTo(0,0)}
+function restartCards(){cardIndex=0;E('fc-play-box').style.display='block';E('fc-finish-box').style.display='none';loadFlashcard()}
+let testIndex=0,score=0,answered=false,currentOptions=[];
+function loadTestQuestion(){answered=false;const [q,opts,key]=testQuestions[testIndex];currentOptions=shuffle(opts.map((text,i)=>({text,right:i===key})));E('q-counter').textContent=`${testIndex+1} / ${testQuestions.length}`;E('q-progress').style.width=(testIndex/testQuestions.length*100)+'%';E('q-title').textContent=`${testIndex+1}. ${q}`;const box=E('q-options');box.replaceChildren();currentOptions.forEach((o,i)=>{let b=document.createElement('button');b.className='opt-btn';b.textContent='ABCD'[i]+'. '+o.text;b.onclick=()=>selectOpt(i);box.appendChild(b)});E('q-explanation').style.display='none';E('sticky-bar').style.display='none'}
+function selectOpt(i){if(answered)return;answered=true;const buttons=[...E('q-options').children];buttons.forEach((b,j)=>{b.disabled=true;if(currentOptions[j].right)b.classList.add('correct');else if(j===i)b.classList.add('incorrect')});if(currentOptions[i].right)score++;E('q-explanation').textContent='💡 Izoh: To‘g‘ri javob — '+currentOptions.find(x=>x.right).text+'.';E('q-explanation').style.display='block';E('q-progress').style.width=((testIndex+1)/testQuestions.length*100)+'%';E('sticky-bar').style.display='flex'}
+function nextTestQuestion(){if(!answered)return;testIndex++;if(testIndex<testQuestions.length)loadTestQuestion();else showQuizResult();window.scrollTo(0,0)}
+function showQuizResult(){E('quiz-body').style.display='none';E('sticky-bar').style.display='none';E('quiz-result').style.display='flex';E('q-score').textContent=score+'/'+testQuestions.length;E('q-feedback').textContent=score===32?'Barcha savollarga to‘g‘ri javob berdingiz!':score>=29?'A’lo natija! Xatolaringizni ham takrorlang.':score>=20?'Yaxshi natija. Xatolar ustida ishlang.':'Mavzuni qayta o‘qib chiqing.'}
+function restartTest(){testIndex=0;score=0;E('quiz-body').style.display='block';E('quiz-result').style.display='none';loadTestQuestion()}
+initMatch();loadFlashcard();loadTestQuestion();
+</script></body></html>

@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>45-§. Rim respublikasida hayot</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
+<!DOCTYPE html><html lang="uz"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>45-§. Rim respublikasida hayot</title><script src="https://telegram.org/js/telegram-web-app.js"></script><style>
     :root {
       --primary: #3b82f6;
       --accent: #8b5cf6;
@@ -85,7 +78,7 @@
     .tab-content {
       display: none;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .tab-content.active { display: flex; }
@@ -100,9 +93,9 @@
       background: rgba(59, 130, 246, 0.25);
       color: #93c5fd;
       border: 1px solid rgba(59, 130, 246, 0.4);
-      padding: 6px 14px;
+      padding: 4px 12px;
       border-radius: 20px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
     }
@@ -145,7 +138,7 @@
       align-items: center;
       justify-content: center;
       min-height: 62px;
-      line-height: 1.35;
+      line-height: 1.3;
       transition: all 0.2s ease;
     }
 
@@ -159,7 +152,6 @@
       background: rgba(16, 185, 129, 0.3);
       border-color: var(--success);
       color: #6ee7b7;
-      visibility: hidden;
       opacity: 0;
       transform: scale(0.8);
       transition: all 0.3s;
@@ -184,28 +176,28 @@
       min-height: 200px;
     }
 
-    .fc-q { font-size: 18px; font-weight: 800; line-height: 1.45; color: #f8fafc; }
+    .fc-q { font-size: 16.5px; font-weight: 800; line-height: 1.4; color: #f8fafc; }
     .fc-a {
-      font-size: 17px; font-weight: 700; color: #34d399;
+      font-size: 15.5px; font-weight: 700; color: #34d399;
       background: rgba(6, 78, 59, 0.6); border: 1.5px solid rgba(52, 211, 153, 0.4);
-      border-radius: 12px; padding: 14px; margin-top: 14px; line-height: 1.45; display: none;
+      border-radius: 12px; padding: 12px; margin-top: 12px; line-height: 1.4; display: none;
     }
 
     /* TEST */
-    .q-title { font-size: 17.5px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.45; margin-bottom: 8px; }
-    .options-grid { display: flex; flex-direction: column; gap: 10px; }
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #f8fafc; line-height: 1.4; margin-bottom: 6px; }
+    .options-grid { display: flex; flex-direction: column; gap: 8px; }
     
     .opt-btn {
       background: rgba(15, 23, 42, 0.85);
       border: 1.5px solid rgba(255, 255, 255, 0.16);
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 15.5px;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14.5px;
       font-weight: 600;
       color: #f1f5f9;
       cursor: pointer;
       text-align: left;
-      line-height: 1.4;
+      line-height: 1.35;
       transition: all 0.15s ease;
     }
 
@@ -215,14 +207,14 @@
     .exp-box {
       background: rgba(59, 130, 246, 0.2);
       border-left: 4px solid var(--primary);
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 14.5px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
       font-weight: 600;
       color: #bfdbfe;
-      line-height: 1.45;
+      line-height: 1.4;
       display: none;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .action-btn {
@@ -230,9 +222,9 @@
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #ffffff;
       border: none;
-      padding: 15px;
+      padding: 14px;
       border-radius: 14px;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
@@ -266,750 +258,36 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      gap: 14px;
+      gap: 12px;
       padding: 20px 0;
     }
 
     .finish-badge {
-      width: 80px; height: 80px; border-radius: 50%;
+      width: 75px; height: 75px; border-radius: 50%;
       background: rgba(59, 130, 246, 0.25); border: 3px solid var(--primary);
       display: flex; align-items: center; justify-content: center;
-      font-size: 26px; font-weight: 900; color: #60a5fa;
+      font-size: 24px; font-weight: 900; color: #60a5fa;
     }
-  </style>
-</head>
-<body>
-
-  <div class="app-card">
-
-    <div class="tab-nav">
-      <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
-      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (29)</button>
-      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button>
-    </div>
-
-    <!-- 1. MOSLASH (5 BOSQICH) -->
-    <div id="tab-match" class="tab-content active">
-      <div id="match-play-box">
-        <div class="header-bar">
-          <span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span>
-          <span id="match-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
-        <div class="match-grid" id="match-container"></div>
-      </div>
-
-      <div id="match-finish-box" class="finish-state">
-        <div style="font-size: 55px;">🏆</div>
-        <h2 style="font-size: 22px; font-weight: 800;">5 ta bosqich yakunlandi!</h2>
-        <p style="font-size: 16px; color: var(--text-muted); max-width: 340px; line-height: 1.4;">
-          Barcha atamalar va Rim hayotiga oid tushunchalarni muvaffaqiyatli mosladingiz. Endi 29 talik Savol-Javob qismiga o‘tamizmi?
-        </p>
-        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:10px;">
-          <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
-          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch()">Qaytadan moslash 🔄</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. SAVOL-JAVOB (29 TA SAVOL) -->
-    <div id="tab-cards" class="tab-content">
-      <div id="fc-play-box">
-        <div class="header-bar">
-          <span class="badge">45-§ Trenajyor</span>
-          <span id="fc-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 29</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
-
-        <div class="flashcard-area">
-          <div class="fc-q" id="fc-question">Yuklanmoqda...</div>
-          <div class="fc-a" id="fc-answer"></div>
-        </div>
-
-        <div>
-          <button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button>
-          <button class="action-btn" id="fc-next-btn" style="display:none;" onclick="nextFlashcard()">Keyingi savol ➔</button>
-        </div>
-      </div>
-
-      <div id="fc-finish-box" class="finish-state">
-        <div style="font-size: 55px;">🎉</div>
-        <h2 style="font-size: 22px; font-weight: 800;">29 ta savol tugadi!</h2>
-        <p style="font-size: 16px; color: var(--text-muted); max-width: 340px; line-height: 1.4;">
-          Barcha muhim faktlarni mustahkamlab oldingiz. Endi 32 talik Test sinoviga o‘tamizmi?
-        </p>
-        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:10px;">
-          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
-          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. TEST SINOVI (32 TA ARALASH TEST - TO'G'RI JAVOB O'RINLARI ARALASHGAN) -->
-    <div id="tab-quiz" class="tab-content">
-      <div id="quiz-body">
-        <div class="header-bar">
-          <span class="badge">45-§ Test Sinovi</span>
-          <span id="q-counter" style="font-size: 14px; font-weight: 800; color: var(--text-muted);">1 / 32</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
-
-        <div class="q-title" id="q-title">Yuklanmoqda...</div>
-        <div class="options-grid" id="q-options"></div>
-        <div class="exp-box" id="q-explanation"></div>
-      </div>
-
-      <div id="quiz-result" class="finish-state">
-        <div style="font-size: 55px;" id="res-avatar">🏆</div>
-        <div class="finish-badge" id="q-score">0/32</div>
-        <h2 style="font-size: 22px; font-weight: 800;">Sinov yakunlandi!</h2>
-        <p id="q-feedback" style="font-size: 16px; color: var(--text-muted); max-width: 340px; line-height: 1.4;"></p>
-        <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:10px;">
-          <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
-          <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- HAR DOIM EKRANDA QOTIB TURUVCHI TUGMA -->
-  <div class="sticky-bottom-bar" id="sticky-bar" style="display: none;">
-    <button class="action-btn" id="q-next-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button>
-  </div>
-
-  <script>
-    if (window.Telegram && window.Telegram.WebApp) {
-      Telegram.WebApp.ready();
-      Telegram.WebApp.expand();
-    }
-
-    function switchTab(tab) {
-      ['match', 'cards', 'quiz'].forEach(t => {
-        document.getElementById(`tab-btn-${t}`).classList.remove('active');
-        document.getElementById(`tab-${t}`).classList.remove('active');
-      });
-      document.getElementById(`tab-btn-${tab}`).classList.add('active');
-      document.getElementById(`tab-${tab}`).classList.add('active');
-      document.getElementById('sticky-bar').style.display = 'none';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // --- 1. MOSLASH (5 BOSQICH) ---
-    const matchStages = [
-      [
-        { id: 1, left: "Mozaikalar", right: "Shisha yoki tosh parchalaridan ishlangan bezakli suratlar" },
-        { id: 2, left: "Freskalar", right: "Xom suvoqqa ishlangan shohona uy-joy (villa) rasmlari" },
-        { id: 3, left: "Forum", right: "Shahar markazidagi bozor maydoni va xalq yig‘inlari joyi" },
-        { id: 4, left: "Akveduk", right: "Suvni bir necha qavatli ko‘prik orqali shaharga olib keluvchi inshoot" }
-      ],
-      [
-        { id: 5, left: "Pushti yo‘lli toga", right: "14 yoshga to‘lmagan o‘g‘il bolalar kiygan libos" },
-        { id: 6, left: "Oppoq toga", right: "Voyaga yetgan shaxs (va senatorlar) kiygan libos" },
-        { id: 7, left: "Qullar bozori", right: "Har bir shaharning qullar savdoga chiqariladigan maxsus joyi" },
-        { id: 8, left: "Isitish tizimi", right: "Pollar ostidan issiqlik keladigan badavlat uylar qulayligi" }
-      ],
-      [
-        { id: 9, left: "Yupiter", right: "Momaqaldiroq va yashin ma’budi (davlat homiysi)" },
-        { id: 10, left: "Neptun", right: "Dengiz ma’budi" },
-        { id: 11, left: "Mars", right: "Urush ma’budi" },
-        { id: 12, left: "Vesta", right: "Xonadon o‘chog‘i homiysi" }
-      ],
-      [
-        { id: 13, left: "Diana", right: "Ov ma’budasi" },
-        { id: 14, left: "Vulqon", right: "Olov va temirchilik ma’budi" },
-        { id: 15, left: "Merkuriy", right: "Savdo-sotiq ma’budi" },
-        { id: 16, left: "Qurbonliklar", right: "Muhim ish boshlashdan oldin ma’budlarga keltirilgan hadyalar" }
-      ],
-      [
-        { id: 17, left: "Pontifiklar", right: "Marosimlar o‘tkazilishini nazorat qilgan Rim ruhoniylari (kohinlar)" },
-        { id: 18, left: "Buyuk pontifik", right: "Pontifiklar hay’atiga rahbarlik qilgan bosh kohin" },
-        { id: 19, left: "Avgurlar", right: "Qushlarning parvozi, momaqaldiroq va qushlarga sepilgan donlarga qarab bashorat qilgan kohinlar" },
-        { id: 20, left: "Vesta ibodatxonasi", right: "Xonadon o‘chog‘i homiysi sharafiga muqaddas olov saqlangan ibodatxona" }
-      ]
-    ];
-
-    let currentMatchStage = 0;
-    let selectedMatchBtn = null;
-    let matchesRemaining = 4;
-
-    function initMatch() {
-      currentMatchStage = 0;
-      document.getElementById('match-play-box').style.display = 'block';
-      document.getElementById('match-finish-box').style.display = 'none';
-      loadMatchStage();
-    }
-
-    function loadMatchStage() {
-      const pool = matchStages[currentMatchStage];
-      matchesRemaining = pool.length;
-      
-      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
-      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
-      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
-      
-      let cards = [];
-      pool.forEach(p => {
-        cards.push({ id: p.id, text: p.left });
-        cards.push({ id: p.id, text: p.right });
-      });
-      cards.sort(() => 0.5 - Math.random());
-
-      const container = document.getElementById('match-container');
-      container.innerHTML = '';
-      cards.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = 'match-btn';
-        btn.innerText = c.text;
-        btn.dataset.id = c.id;
-        btn.onclick = () => onMatchClick(btn);
-        container.appendChild(btn);
-      });
-    }
-
-    function onMatchClick(btn) {
-      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
-
-      if (!selectedMatchBtn) {
-        selectedMatchBtn = btn;
-        btn.classList.add('selected');
-      } else {
-        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
-          btn.classList.add('matched');
-          selectedMatchBtn.classList.add('matched');
-          selectedMatchBtn.classList.remove('selected');
-          selectedMatchBtn = null;
-          matchesRemaining--;
-          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
-
-          if (matchesRemaining === 0) {
-            currentMatchStage++;
-            setTimeout(() => {
-              if (currentMatchStage < matchStages.length) {
-                loadMatchStage();
-              } else {
-                document.getElementById('match-progress').style.width = '100%';
-                document.getElementById('match-play-box').style.display = 'none';
-                document.getElementById('match-finish-box').style.display = 'flex';
-              }
-            }, 500);
-          }
-        } else {
-          btn.classList.add('wrong');
-          selectedMatchBtn.classList.add('wrong');
-          
-          setTimeout(() => {
-            btn.classList.remove('wrong', 'selected');
-            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
-            selectedMatchBtn = null;
-          }, 400);
-        }
-      }
-    }
-
-    // --- 2. SAVOL-JAVOB (29 TA SAVOL) ---
-    const flashcards = [
-      { q: "1. Rim shaharlari qanday reja asosida barpo etilgan?", a: "Puxta ishlangan reja asosida." },
-      { q: "2. Shaharlarda qanday jamoat va turarjoy binolari bo‘lgan?", a: "Ibodatxonalar, hammomlar, savdo rastalari va dorixonalar." },
-      { q: "3. Ko‘pchilik rimliklar qanday binolarda istiqomat qilishgan?", a: "2-3 qavatli binolarda." },
-      { q: "4. Badavlat odamlar o‘zlariga qanday uylar qurib olishgan?", a: "Koshona — villalar." },
-      { q: "5. Badavlat uylardagi qulayliklar nimalardan iborat bo‘lgan?", a: "Pollar isitilar, quvurlar orqali uylarga suv oqib kelar edi." },
-      { q: "6. Mozaikalar nimalardan ishlangan suratlar edi?", a: "Shisha yoki tosh parchalaridan." },
-      { q: "7. Shohona uy-joylar (villalar) devorlari qanday rasmlar bilan bezatilgan?", a: "Freskalar — xom suvoqqa ishlangan rasmlar bilan." },
-      { q: "8. Har bir shahar markazidagi bozor maydoni, xalq yig‘inlari joyi qanday atalgan?", a: "Forum." },
-      { q: "9. Suv shaharga qanday inshoot orqali oqib kelgan?", a: "Bir necha qavatli ko‘prikka o‘xshatib yasalgan akveduk orqali." },
-      { q: "10. Rim bozorlarida nimalarga talab ko‘p edi?", a: "Qullarga (har bir shaharning qullar bozori bo‘lgan)." },
-      { q: "11. O‘g‘il bolalar 14 yoshga to‘lgunga qadar qanday toga kiyishgan?", a: "Pushti yo‘lli toga." },
-      { q: "12. 14 yoshga to‘lib voyaga yetgan shaxslar qanday toga kiyishni boshlashgan?", a: "Oppoq toga." },
-      { q: "13. Senatorlar qanday toga kiyishgan?", a: "Harir oq toga." },
-      { q: "14. Rimlik ayollar qanday kiyimlar kiyishgan?", a: "Turli rangdagi ko‘ylaklar kiyib, bosh va yelkalariga ro‘mol tashlab yurishgan." },
-      { q: "15. Rimliklar kunlik hayotda kimlarga murojaat qilishgan?", a: "O‘z ma’budlariga madad va homiylik istab." },
-      { q: "16. Rimning bosh ma’budi, osmon, momaqaldiroq va yashin podshosi kim edi?", a: "Yupiter (davlat homiysi)." },
-      { q: "17. Dengiz ma’budi qanday nomlangan?", a: "Neptun." },
-      { q: "18. Urush ma’budi kim edi?", a: "Mars." },
-      { q: "19. Xonadon o‘chog‘i homiysi bo‘lgan ma’buda kim?", a: "Vesta." },
-      { q: "20. Ov ma’budasi qanday atalgan?", a: "Diana." },
-      { q: "21. Olov va temirchilik ma’budi kim edi?", a: "Vulqon." },
-      { q: "22. Savdo-sotiq ma’budi kim edi?", a: "Merkuriy." },
-      { q: "23. Diniy marosimlarning o‘tkazilishiga kimlar nazorat qilgan?", a: "Kohinlar — pontifiklar." },
-      { q: "24. Pontifiklar hay’atiga rahbarlik qilgan shaxs kim edi?", a: "Buyuk pontifik." },
-      { q: "25. Bashorat qilish qaysi kohinlar yordamida amalga oshirilgan?", a: "Avgurlar." },
-      { q: "26. Avgurlar nimalarga qarab bashorat qilishgan?", a: "Qushlarning parvozi, momaqaldiroq, chaqmoq, muqaddas qushlarga sepilgan donlarga qarab." },
-      { q: "27. Xonadon o‘chog‘i homiysi Vesta ibodatxonasida nima saqlangan?", a: "Muqaddas olov." },
-      { q: "28. Muqaddas olov nima uchun yonib turishi shart bo‘lgan?", a: "Olov yonib turar ekan, hayot mavjud deb hisoblashgan." },
-      { q: "29. Muhim ish boshlashdan oldin rimliklar nima qilishgan?", a: "Ma’budlarga qurbonliklar bag‘ishlashgan." }
-    ];
-
-    let fcIdx = 0;
-    function loadFlashcard() {
-      const card = flashcards[fcIdx];
-      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
-      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
-      document.getElementById('fc-question').innerText = card.q;
-      document.getElementById('fc-answer').innerText = card.a;
-      document.getElementById('fc-answer').style.display = 'none';
-      document.getElementById('fc-toggle-btn').style.display = 'block';
-      document.getElementById('fc-next-btn').style.display = 'none';
-    }
-
-    function toggleAnswer() {
-      document.getElementById('fc-answer').style.display = 'block';
-      document.getElementById('fc-toggle-btn').style.display = 'none';
-      document.getElementById('fc-next-btn').style.display = 'block';
-    }
-
-    function nextFlashcard() {
-      fcIdx++;
-      if (fcIdx < flashcards.length) loadFlashcard();
-      else {
-        document.getElementById('fc-play-box').style.display = 'none';
-        document.getElementById('fc-finish-box').style.display = 'flex';
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function restartCards() {
-      fcIdx = 0;
-      document.getElementById('fc-play-box').style.display = 'block';
-      document.getElementById('fc-finish-box').style.display = 'none';
-      loadFlashcard();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // --- 3. TEST SINOVI (32 TA ARALASH TEST - TO'G'RI JAVOB O'RINLARI TO'LIQ ARALASHTIRILGAN) ---
-    const testQuestions = [
-      {
-        q: "1. Shisha yoki tosh parchalaridan ishlangan bezakli suratlar nima deb atalgan?",
-        options: [
-          "Mozaikalar",
-          "Freskalar",
-          "Akveduk",
-          "Forum"
-        ],
-        correct: 0,
-        exp: "Uy mozaikalar — shisha yoki tosh parchalaridan ishlangan suratlar bilan bezatilgan."
-      },
-      {
-        q: "2. Suvni bir necha qavatli ko‘prikka o‘xshatib shaharga olib keluvchi inshoot qanday nomlangan?",
-        options: [
-          "Forum",
-          "Villa",
-          "Akveduk",
-          "Pontifik"
-        ],
-        correct: 2,
-        exp: "Suv shaharga bir necha qavatli ko‘prikka o‘xshash akveduk orqali oqib kelgan."
-      },
-      {
-        q: "3. Rimliklarning osmon, momaqaldiroq va yashin podshosi bo‘lgan bosh ma’budi kim edi?",
-        options: [
-          "Yupiter",
-          "Neptun",
-          "Mars",
-          "Vulqon"
-        ],
-        correct: 0,
-        exp: "Rimliklar bosh ma’budi, osmon, momaqaldiroq va yashin podshosi Yupiter edi."
-      },
-      {
-        q: "4. Marosimlar o‘tkazilishini nazorat qilgan Rim ruhoniylari (kohinlar) qanday atalgan?",
-        options: [
-          "Avgurlar",
-          "Pontifiklar",
-          "Senatorlar",
-          "Konsullar"
-        ],
-        correct: 1,
-        exp: "Marosimlar o‘tkazilishi ustidan kohinlar — pontifiklar rahbarlik qilgan."
-      },
-      {
-        q: "5. Xom suvoqqa ishlangan shohona uy-joy (villa) rasmlari qanday atalgan?",
-        options: [
-          "Mozaikalar",
-          "Akveduk",
-          "Freskalar",
-          "Toga"
-        ],
-        correct: 2,
-        exp: "Shohona uy-joylar — villalar devorlarini freskalar — xom suvoqqa ishlangan rasmlar bezatib turgan."
-      },
-      {
-        q: "6. O‘g‘il bolalar 14 yoshga to‘lgunga qadar qanday toga kiyib yurishgan?",
-        options: [
-          "Pushti yo‘lli toga",
-          "Oppoq toga",
-          "Harir toga",
-          "Qora toga"
-        ],
-        correct: 0,
-        exp: "Masalan, o‘g‘il bolalar 14 yoshga to‘langunga qadar pushti yo‘lli toga kiyishgan."
-      },
-      {
-        q: "7. Qushlarning parvozi, momaqaldiroq va qushlarga sepilgan donlarga qarab bashorat qilgan kohinlar kimlar edi?",
-        options: [
-          "Pontifiklar",
-          "Diktatorlar",
-          "Konsullar",
-          "Avgurlar"
-        ],
-        correct: 3,
-        exp: "Bashorat qilish kohin — avgurlar yordamida amalga oshirilgan."
-      },
-      {
-        q: "8. Rim shaharlari markazida joylashgan bozor maydoni va xalq yig‘inlari o‘tkaziladigan joy nima deb atalgan?",
-        options: [
-          "Forum",
-          "Palestra",
-          "Akropol",
-          "Agora"
-        ],
-        correct: 0,
-        exp: "Har bir shahar markazidagi forumda bozor maydoni, xalq yig‘inlari uchun joy va markaziy ibodatxona bo‘lgan."
-      },
-      {
-        q: "9. Rimliklarning dengiz ma’budi kim edi?",
-        options: [
-          "Yupiter",
-          "Mars",
-          "Neptun",
-          "Merkuriy"
-        ],
-        correct: 2,
-        exp: "Neptun — dengiz ma’budi."
-      },
-      {
-        q: "10. Xonadon o‘chog‘i homiysi bo‘lgan ma’buda qanday atalgan?",
-        options: [
-          "Vesta",
-          "Diana",
-          "Anaxita",
-          "Ishtar"
-        ],
-        correct: 0,
-        exp: "Vesta — xonadon o‘chog‘i homiysi."
-      },
-      {
-        q: "11. Urush ma’budi rimliklarda kim edi?",
-        options: [
-          "Vulqon",
-          "Mars",
-          "Merkuriy",
-          "Yupiter"
-        ],
-        correct: 1,
-        exp: "Mars — urush ma’budi."
-      },
-      {
-        q: "12. 14 yoshga to‘lib voyaga yetgan shaxslar qanday toga kiyishni boshlashgan?",
-        options: [
-          "Pushti yo‘lli toga",
-          "Qizil toga",
-          "Oppoq toga",
-          "Havoriy toga"
-        ],
-        correct: 2,
-        exp: "14 yoshga kirganlarida ular voyaga yetgan shaxs hisoblanar va oppoq toga kiya boshlar edi."
-      },
-      {
-        q: "13. Ov ma’budasi rimliklarda kim edi?",
-        options: [
-          "Diana",
-          "Vesta",
-          "Afina",
-          "Hatora"
-        ],
-        correct: 0,
-        exp: "Diana — ov ma’budasi."
-      },
-      {
-        q: "14. Olov va temirchilik ma’budi kim edi?",
-        options: [
-          "Merkuriy",
-          "Mars",
-          "Vulqon",
-          "Neptun"
-        ],
-        correct: 2,
-        exp: "Vulqon — olov va temirchilik ma’budi."
-      },
-      {
-        q: "15. Savdo-sotiq ma’budi kim edi?",
-        options: [
-          "Yupiter",
-          "Merkuriy",
-          "Vulqon",
-          "Mars"
-        ],
-        correct: 1,
-        exp: "Merkuriy — savdo-sotiq ma’budi."
-      },
-      {
-        q: "16. Pontifiklar hay’atiga rahbarlik qilgan bosh kohin qanday atalgan?",
-        options: [
-          "Avgur",
-          "Buyuk pontifik",
-          "Konsul",
-          "Diktator"
-        ],
-        correct: 1,
-        exp: "5 nafardan 15 nafargacha ruhoniylar jamlangan pontifiklar hay’atiga buyuk pontifik rahbarlik qilgan."
-      },
-      {
-        q: "17. Xonadon o‘chog‘i homiysi Vesta ibodatxonasida nima saqlangan?",
-        options: [
-          "Muqaddas olov",
-          "Oltin haykallar",
-          "Qadimiy qonunlar",
-          "Qurol-yarog‘lar"
-        ],
-        correct: 0,
-        exp: "Xonadon o‘chog‘i homiysi Vesta ibodatxonasida muqaddas olov saqlangan."
-      },
-      {
-        q: "18. Badavlat uylardagi isitish va qulaylik tizimi qanday ishlagan?",
-        options: [
-          "Faqat o‘tin yoqiladigan pechlar orqali",
-          "Issiq buloq suvlari yordamida",
-          "Pollar isitilar, quvurlar orqali uylarga suv oqib kelar edi",
-          "Derazalardan tushuvchi quyosh nuri orqali"
-        ],
-        correct: 2,
-        exp: "Bunday uylarda markaziy isitish tizimi bo‘lgan: pollar isitilar, quvurlar orqali uylarga suv oqib kelar edi."
-      },
-      {
-        q: "19. Rimda har bir shaharning qanday o‘ziga xos bozori bo‘lgan?",
-        options: [
-          "Zargarlik bozori",
-          "Qullar bozori",
-          "Kitob bozori",
-          "Baliq bozori"
-        ],
-        correct: 1,
-        exp: "Rim bozorlarida katta tovar bo‘lmish qullarga talab ko‘p edi. Har bir shaharning qullar savdoga chiqariladigan bozorlari bo‘lgan."
-      },
-      {
-        q: "20. Rimliklar urushda mag‘lubiyatga uchragudek bo‘lsa, buning sababini nimadan ko‘rishgan?",
-        options: [
-          "Dushman qo‘shini ko‘pligidan",
-          "Qurolning eskirganidan",
-          "«Marsning jahlini chiqardik» degan xayolga borishgan",
-          "Generallarning xatosidan"
-        ],
-        correct: 2,
-        exp: "Masalan, rimliklar jangda mag‘lubiyatga uchragudek bo‘lsa, demak, qaysidir ish bilan urush ma’budi Marsning jahlini chiqardik, degan xayolga borishgan."
-      },
-      {
-        q: "21. Rim senatorlari qanday toga kiyishgan?",
-        options: [
-          "Harir toga",
-          "Qora toga",
-          "Pushti toga",
-          "Qizil toga"
-        ],
-        correct: 0,
-        exp: "Xuddi shunday harir togani senatorlar ham kiyishgan."
-      },
-      {
-        q: "22. Rimliklar muhim ish boshlashdan oldin nima qilishgan?",
-        options: [
-          "Yig‘ilish o‘tkazishgan",
-          "Daryoda cho‘milishgan",
-          "Ma’budlarga qurbonliklar bag‘ishlar edi",
-          "Bayram uyushtirishgan"
-        ],
-        correct: 2,
-        exp: "Muhim ish boshlashdan oldin rimliklar bu ishda madad berishi uchun ma’budlarga qurbonliklar bag‘ishlar edi."
-      },
-      {
-        q: "23. Qadimgi Rimda ayollar kiyimi qanday bo‘lgan?",
-        options: [
-          "Faqat oq toga",
-          "Turli rangdagi ko‘ylaklar kiyib, bosh va yelkalariga ro‘mol tashlab yurishgan",
-          "Faqat charm kiyim",
-          "Faqat yopinchiq"
-        ],
-        correct: 1,
-        exp: "Rimlik ayollar turli rangdagi ko‘ylaklar kiyib, bosh va yelkalariga ro‘mol tashlab yurganlar."
-      },
-      {
-        q: "24. Rim shaharsozligida uylar va binolar qanday reja asosida qurilgan?",
-        options: [
-          "Tartibsiz va o‘zboshimcha",
-          "Faqat daryo bo‘ylab cho‘zilgan holda",
-          "Puxta ishlangan reja asosida",
-          "Faqat tog‘ tepasida"
-        ],
-        correct: 2,
-        exp: "Rim shaharlari oldindan puxta ishlangan reja asosida barpo etilgan."
-      },
-      {
-        q: "25. Vesta ibodatxonasidagi muqaddas olov nima uchun o‘chmasligi kerak edi?",
-        options: [
-          "Olov yonib turar ekan, hayot mavjud deb hisoblashgan",
-          "Ibodatxonani isitish uchun",
-          "Qurbonlik qilish uchun",
-          "Ovqat pishirish uchun"
-        ],
-        correct: 0,
-        exp: "Olov yonib turar ekan, hayot mavjud deb hisoblashgan."
-      },
-      {
-        q: "26. Rim shahar uylarining devorlari shohona villalarda nima bilan bezatilgan?",
-        options: [
-          "Gilamlar bilan",
-          "Yog‘och taxtalar bilan",
-          "Freskalar bilan",
-          "Temir listlar bilan"
-        ],
-        correct: 2,
-        exp: "Shohona uy-joylar — villalar devorlarini freskalar — xom suvoqqa ishlangan rasmlar bezatib turgan."
-      },
-      {
-        q: "27. Avgurlar bashorat qilish uchun nimalardan foydalanishmagan?",
-        options: [
-          "Yulduzlarning holatidan",
-          "Momaqaldiroq va chaqmoqdan",
-          "Qushlarning parvozidan",
-          "Muqaddas qushlarga sepilgan donlardan"
-        ],
-        correct: 0,
-        exp: "Avgurlar qushlar parvozi, momaqaldiroq, chaqmoq, muqaddas qushlarga sepilgan donlar, aks-sado va hokazolarga qarab bashorat qilgan."
-      },
-      {
-        q: "28. Qadimgi Rimda har bir fuqaroning kiyib yurgan liboslari nimani bildirgan?",
-        options: [
-          "Qaysi kasb egasi ekanini",
-          "Jamiyatdagi mavqeini",
-          "Qaysi shahardan kelganini",
-          "Qaysi millatga mansubligini"
-        ],
-        correct: 1,
-        exp: "Odamlar kiyib yuradigan liboslar ularning jamiyatdagi mavqeini bildirgan."
-      },
-      {
-        q: "29. Rim shaharlarida jamoat binolari qatorida yana nimalar bo‘lgan?",
-        options: [
-          "Hammomlar va dorixonalar",
-          "Faqat fabrikayklar",
-          "Faqat saroylar",
-          "Faqat kikloplar"
-        ],
-        correct: 0,
-        exp: "Shaharlarda ko‘plab chiroyli jamoat va turarjoy binolari, ibodatxonalar, hammomlar, savdo rastalari va dorixonalar bo‘lgan."
-      },
-      {
-        q: "30. Avgurlar bashorati natijasida agar alomatlar ko‘ngildagidek bo‘lmasa nima qilingan?",
-        options: [
-          "Urush boshlab yuborilgan",
-          "Kohinlar jazolangan",
-          "Ibodatxona yopilgan",
-          "Ishlar ma’lum muddatga kechiktirilgan"
-        ],
-        correct: 3,
-        exp: "Alomatlar ko‘ngildagidek bo‘lmasa, ishlar ma’lum muddatga kechiktirilar edi."
-      },
-      {
-        q: "31. Pompey shahrining qadimiy devorida qanday tasvir saqlangan?",
-        options: [
-          "Buyuk pontifik haykali",
-          "Qadimiy devorga ishlangan tasvir",
-          "Momaqaldiroq xudosi tasviri",
-          "Ona bo‘ri va bolalar"
-        ],
-        correct: 1,
-        exp: "Darslikdagi rasmda «Qadimgi devorga ishlangan tasvir. Pompey» tasvirlangan."
-      },
-      {
-        q: "32. Rimliklar o‘z ma’budlaridan nima istab murojaat qilishgan?",
-        options: [
-          "Yangi yerlar so‘rashgan",
-          "Hokimiyat so‘rashgan",
-          "Faqat boylik tilashgan",
-          "Madad va homiylik istab murojaat qilishgan"
-        ],
-        correct: 3,
-        exp: "Kundalik hayotda rimliklar o‘z ma’budlariga madad va homiylik istab murojaat etishardi."
-      }
-    ];
-
-    let tIdx = 0, score = 0;
-
-    function loadTestQuestion() {
-      const q = testQuestions[tIdx];
-      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
-      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
-      document.getElementById('q-title').innerText = q.q;
-
-      const optBox = document.getElementById('q-options');
-      optBox.innerHTML = '';
-
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.innerText = opt;
-        btn.onclick = () => selectOpt(idx);
-        optBox.appendChild(btn);
-      });
-
-      document.getElementById('q-explanation').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
-    }
-
-    function selectOpt(selectedIdx) {
-      const q = testQuestions[tIdx];
-      const buttons = document.querySelectorAll('.opt-btn');
-
-      buttons.forEach((btn, idx) => {
-        btn.onclick = null;
-        if(idx === q.correct) btn.classList.add('correct');
-        else if(idx === selectedIdx) btn.classList.add('incorrect');
-      });
-
-      if(selectedIdx === q.correct) {
-        score++;
-      }
-
-      const exp = document.getElementById('q-explanation');
-      exp.innerText = "💡 Izoh: " + q.exp;
-      exp.style.display = 'block';
-      
-      document.getElementById('sticky-bar').style.display = 'flex';
-    }
-
-    function nextTestQuestion() {
-      tIdx++;
-      if (tIdx < testQuestions.length) {
-        loadTestQuestion();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        showQuizResult();
-      }
-    }
-
-    function showQuizResult() {
-      document.getElementById('quiz-body').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
-      document.getElementById('quiz-result').style.display = 'flex';
-      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
-      const fb = document.getElementById('q-feedback');
-      if(score >= 29) fb.innerText = "Mukammal natija! 45-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
-      else if(score >= 20) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
-      else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function restartTest() {
-      tIdx = 0; score = 0;
-      document.getElementById('quiz-body').style.display = 'block';
-      document.getElementById('quiz-result').style.display = 'none';
-      loadTestQuestion();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Dastlabki ishga tushirish
-    initMatch();
-    loadFlashcard();
-    loadTestQuestion();
-  </script>
-</body>
-</html>
+  </style></head><body><div class="app-card"><div class="tab-nav"><button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button><button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (29)</button><button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (32)</button></div><div class="tab-content active" id="tab-match"><div id="match-play-box"><div class="header-bar"><span class="badge" id="match-stage-badge">Bosqich: 1 / 5</span><span id="match-counter">Qoldi: 4 ta juftlik</span></div><div class="progress-track"><div class="progress-fill" id="match-progress"></div></div><div class="match-grid" id="match-container"></div></div><div class="finish-state" id="match-finish-box"><div style="font-size:55px">🏆</div><h2>5 ta bosqich yakunlandi!</h2><p>Barcha atama va tushunchalarni mosladingiz.</p><button class="action-btn" onclick="switchTab('cards')">Savol-javobga o‘tish ➔</button><button class="action-btn" onclick="initMatch()">Qaytadan moslash 🔄</button></div></div><div class="tab-content" id="tab-cards"><div id="fc-play-box"><div class="header-bar"><span class="badge">45-§ Trenajyor</span><span id="fc-counter">1 / 29</span></div><div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div><div class="flashcard-area"><div class="fc-q" id="fc-question"></div><div class="fc-a" id="fc-answer"></div></div><button class="action-btn" id="fc-toggle-btn" onclick="toggleAnswer()">👁 Javobni ko‘rish</button><button class="action-btn" id="fc-next-btn" style="display:none" onclick="nextFlashcard()">Keyingi savol ➔</button></div><div class="finish-state" id="fc-finish-box"><div style="font-size:55px">🎉</div><h2>29 ta savol tugadi!</h2><button class="action-btn" onclick="switchTab('quiz')">Testga o‘tish ➔</button><button class="action-btn" onclick="restartCards()">Qaytadan takrorlash 🔄</button></div></div><div class="tab-content" id="tab-quiz"><div id="quiz-body"><div class="header-bar"><span class="badge">45-§ Test sinovi</span><span id="q-counter">1 / 32</span></div><div class="progress-track"><div class="progress-fill" id="q-progress"></div></div><div class="q-title" id="q-title"></div><div class="options-grid" id="q-options"></div><div class="exp-box" id="q-explanation"></div></div><div class="finish-state" id="quiz-result"><div style="font-size:55px">🏆</div><div class="finish-badge" id="q-score">0/32</div><h2>Sinov yakunlandi!</h2><p id="q-feedback"></p><button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button><button class="action-btn" onclick="initMatch();switchTab('match')">🧩 Boshidan boshlash</button></div></div></div><div class="sticky-bottom-bar" id="sticky-bar" style="display:none"><button class="action-btn" onclick="nextTestQuestion()">Keyingi savol ➔</button></div><script>
+if(window.Telegram&&window.Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand()}
+const matchStages=[[["Mozaikalar", "Shisha yoki tosh parchalaridan ishlangan bezakli suratlar"], ["Freskalar", "Xom suvoqqa ishlangan devoriy rasmlar"], ["Forum", "Shahar markazidagi bozor, xalq yig‘inlari va ibodatxona joylashgan maydon"], ["Akveduk", "Shaharga suv olib keladigan ko‘prikka o‘xshash inshoot"]], [["Pushti yo‘lli toga", "14 yoshga to‘lgunga qadar o‘g‘il bolalar kiygan libos"], ["Oppoq toga", "14 yoshga kirgan yigitlar kiyishni boshlagan libos"], ["Harir toga", "Senatorlar ham kiygan toga"], ["2–3 qavatli uylar", "Ko‘pchilik shaharliklar yashagan binolar"]], [["Yupiter", "Rimning bosh ma’budi, osmon, momaqaldiroq va yashin podshosi"], ["Neptun", "Dengiz ma’budi"], ["Mars", "Urush ma’budi"], ["Vesta", "Xonadon o‘chog‘i homiysi"]], [["Diana", "Ov ma’budasi"], ["Vulqon", "Olov va temirchilik ma’budi"], ["Merkuriy", "Savdo-sotiq ma’budi"], ["Qurbonlik", "Muhim ish boshlashdan oldin ma’budlarga bag‘ishlangan hadya"]], [["Pontifiklar", "Diniy marosimlarni nazorat qilgan kohinlar"], ["Buyuk pontifik", "Pontifiklar hay’atiga rahbarlik qilgan bosh kohin"], ["Avgurlar", "Belgilarga qarab bashorat qilgan kohinlar"], ["Vesta ibodatxonasi", "Muqaddas olov saqlangan ibodatxona"]]],flashcards=[["Rim shaharlari qanday reja asosida barpo etilgan?", "Oldindan puxta ishlangan reja asosida."], ["Rim shaharlarida qanday binolar va maskanlar bo‘lgan?", "Jamoat va turarjoy binolari, ibodatxonalar, hammomlar, savdo rastalari va dorixonalar."], ["Ko‘pchilik shaharliklar necha qavatli binolarda yashagan?", "2–3 qavatli binolarda."], ["Badavlat rimliklar o‘zlariga qanday uy-joylar qurishgan?", "Koshonalar — villalar."], ["Badavlat kishilarning uylarida qanday qulayliklar bo‘lgan?", "Markaziy isitish tizimi; pollar isitilgan va quvurlar orqali suv oqib kelgan."], ["Mozaikalar qanday materiallardan ishlangan?", "Shisha yoki tosh parchalaridan."], ["Freska nima?", "Xom suvoqqa ishlangan devoriy rasm."], ["Rim shahrining markaziy bozor va yig‘in maydoni nima deb atalgan?", "Forum."], ["Rim shaharlariga suv qaysi inshootlar orqali keltirilgan?", "Ko‘prikka o‘xshash akveduklar orqali."], ["Rim bozorlarida qaysi tovar sifatida ko‘rilgan kishilarga talab katta bo‘lgan?", "Qullarga."], ["Rimda o‘g‘il bolalar 14 yoshga to‘lgunga qadar qanday toga kiygan?", "Pushti yo‘lli toga."], ["14 yoshga kirgan rimlik yigitlar qanday toga kiya boshlagan?", "Oppoq toga."], ["Rim senatorlari qanday toga kiygan?", "Harir toga."], ["Rim ayollari qanday kiyingan?", "Turli rangdagi ko‘ylaklar kiyib, bosh va yelkalariga ro‘mol tashlagan."], ["Rimliklar muhim ish boshlashdan oldin ma’budlar uchun nima qilishgan?", "Ma’budlarga qurbonliklar bag‘ishlashgan."], ["Rimning bosh ma’budi va davlat homiysi kim hisoblangan?", "Yupiter."], ["Rimliklarning dengiz ma’budi kim bo‘lgan?", "Neptun."], ["Urush ma’budi rimliklarda qanday nomlangan?", "Mars."], ["Rimliklarning xonadon o‘chog‘i homiysi kim bo‘lgan?", "Vesta."], ["Ov ma’budasi kim hisoblangan?", "Diana."], ["Olov va temirchilik ma’budi qanday nomlangan?", "Vulqon."], ["Savdo-sotiq ma’budi kim bo‘lgan?", "Merkuriy."], ["Diniy marosimlar ustidan qaysi kohinlar nazorat olib borgan?", "Pontifiklar."], ["Pontifiklar hay’atiga kim rahbarlik qilgan?", "Buyuk pontifik."], ["Avgurlar qanday vazifa bajargan?", "Turli belgilarga qarab bashorat qilgan."], ["Avgurlar qaysi belgilar asosida bashorat qilgan?", "Qushlar parvozi, momaqaldiroq, chaqmoq, muqaddas qushlarga sepilgan donlar va boshqa belgilarga qarab."], ["Vesta ibodatxonasida nima saqlangan?", "Muqaddas olov."], ["Rimliklar Vesta ibodatxonasidagi olovning yonib turishini qanday talqin qilgan?", "Olov yonib turgan ekan, hayot mavjud deb hisoblashgan."], ["Qadimgi Rimda kishining kiyimi nimani bildirgan?", "Uning jamiyatdagi mavqeini."]],testQuestions=[["Rim shaharlari qanday reja asosida qurilgan?", ["Oldindan puxta ishlangan reja asosida", "Faqat eski ko‘chalarni saqlab qolgan holda", "Har bir uy alohida, umumiy rejasiz", "Faqat shahar tashqarisida to‘g‘ri ko‘chalar bilan"], 0], ["Rim shaharlarida ko‘pchilik aholi qanday uylarda yashagan?", ["Bir qavatli villalarda", "Ikki–uch qavatli binolarda", "Faqat shahar tashqarisidagi koshonalarda", "Ibodatxona qoshidagi xonalarda"], 1], ["Badavlat odamlarning koshona uy-joylari qanday atalgan?", ["Forumlar", "Akveduklar", "Villalar", "Freskalar"], 2], ["Shisha yoki tosh parchalaridan ishlangan suratlar nima deb atalgan?", ["Freskalar", "Haykallar", "Relieflar", "Mozaikalar"], 3], ["Xom suvoqqa ishlangan devoriy rasmlar qanday atalgan?", ["Freskalar", "Mozaikalar", "Haykaltaroshlik", "O‘yma naqshlar"], 0], ["Rim shahri markazidagi bozor va yig‘inlar maydoni qanday atalgan?", ["Villa", "Forum", "Akveduk", "Ibodatxona"], 1], ["Shaharlarga suv olib keluvchi ko‘prikka o‘xshash inshoot nima edi?", ["Forum", "Villa", "Akveduk", "Freska"], 2], ["Rimdagi badavlat uylarning isitish tizimi qanday ishlagan?", ["Uylarga faqat quyosh nurini yo‘naltirgan", "Tashqi ayvonda olov yoqilgan", "Faqat xonadagi bitta o‘choq ishlagan", "Pollar isitilgan, quvurlar orqali suv oqib kelgan"], 3], ["Rim bozorlarida qaysi tovar sifatida ko‘rilgan kishilarga talab katta edi?", ["Qullarga", "Hunarmandlarga", "Dehqonlarga", "Savdogarlarga"], 0], ["Rimda o‘g‘il bolalar 14 yoshga to‘lgunga qadar qanday toga kiygan?", ["Harir toga", "Pushti yo‘lli toga", "Oppoq toga", "Qora toga"], 1], ["14 yoshga kirgach, rimlik yigitlar qanday toga kiyishni boshlagan?", ["Pushti yo‘lli toga", "Harir toga", "Oppoq toga", "Qizil toga"], 2], ["Darslikka ko‘ra, Rim senatorlari qanday toga kiygan?", ["Pushti yo‘lli toga", "Oddiy qora toga", "Qizil yo‘lli toga", "Harir toga"], 3], ["Kiyim-kechak rimliklarning nimasi haqida ma’lumot bergan?", ["Jamiyatdagi mavqei", "Qaysi daryo bo‘yida yashagani", "Nechta ma’budga ishongani", "Qaysi bozorda savdo qilgani"], 0], ["Rimning bosh ma’budi va davlat homiysi kim edi?", ["Mars", "Yupiter", "Neptun", "Vulqon"], 1], ["Rimliklarda dengiz ma’budi kim hisoblangan?", ["Merkuriy", "Mars", "Neptun", "Yupiter"], 2], ["Rimliklarda urush ma’budi kim bo‘lgan?", ["Neptun", "Yupiter", "Merkuriy", "Mars"], 3], ["Xonadon o‘chog‘i homiysi qaysi ma’buda edi?", ["Vesta", "Diana", "Yunona", "Minerva"], 0], ["Rimliklarning ov ma’budasi qanday nomlangan?", ["Vesta", "Diana", "Yunona", "Minerva"], 1], ["Olov va temirchilik ma’budi kim edi?", ["Merkuriy", "Mars", "Vulqon", "Neptun"], 2], ["Savdo-sotiq ma’budi kim edi?", ["Yupiter", "Mars", "Neptun", "Merkuriy"], 3], ["Rimda diniy marosimlarni nazorat qilgan kohinlar qanday atalgan?", ["Pontifiklar", "Avgurlar", "Konsullar", "Liktorlar"], 0], ["Pontifiklar hay’atiga kim rahbarlik qilgan?", ["Oddiy avgur", "Buyuk pontifik", "Konsul", "Liktor"], 1], ["Rimliklarda belgilarga qarab bashorat qilgan kohinlar kim edi?", ["Pontifiklar", "Senatorlar", "Avgurlar", "Liktorlar"], 2], ["Pontifiklar hay’ati tarkibida nechadan nechagacha ruhoniy bo‘lgan?", ["2 nafardan 5 nafargacha", "3 nafardan 12 nafargacha", "12 nafardan 20 nafargacha", "5 nafardan 15 nafargacha"], 3], ["Avgurlar qaysi belgilarga qarab bashorat qilgan?", ["Qushlar parvozi, momaqaldiroq, chaqmoq va muqaddas qushlarga sepilgan donlarga", "Faqat ibodatxona devoridagi yozuvlarga", "Faqat oy va yulduzlarning joylashishiga", "Faqat shahar maydonidagi mozaikalarga"], 0], ["Avgurlar alomatlarni ko‘ngildagidek deb topmasa nima qilingan?", ["Marosim darhol boshqa shaharga ko‘chirilgan", "Ishlar ma’lum muddatga kechiktirilgan", "Kohinlar hay’ati tarqatilgan", "Ma’budlarga ishonish to‘xtatilgan"], 1], ["Vesta ibodatxonasida nima saqlangan?", ["Ruhoniylar bitiklari", "Harbiy bayroqlar", "Muqaddas olov", "Shahar xazinasi"], 2], ["Rimliklar Vesta ibodatxonasidagi olovning yonib turishini nimaga bog‘lagan?", ["Faqat isitish tizimining ishlashiga", "Bozorning ochilishiga", "Urush boshlanishiga", "Hayotning mavjudligiga"], 3], ["Rimliklar muhim ish boshlashdan oldin ma’budlarga nima bag‘ishlagan?", ["Qurbonliklar", "Saylov varaqalari", "Qonun lavhalari", "Shahar rejasi"], 0], ["Darslikda Rim shaharlarida qaysi muassasalar ham bo‘lgani qayd etilgan?", ["Faqat qo‘rg‘onlar va minoralar", "Hammomlar, savdo rastalari va dorixonalar", "Faqat harbiy qarorgohlar", "Faqat saroy va zindonlar"], 1], ["Rim ayollari kiyimiga xos qaysi tavsif darslikka mos?", ["Faqat erkaklarnikiga o‘xshash toga kiyishgan", "Faqat qora ko‘ylak kiyishgan", "Turli rangdagi ko‘ylaklar kiyib, ro‘mol tashlab yurishgan", "Kiyim o‘rniga zirh kiyishgan"], 2], ["Rimliklar jangda yengilsa, darslikda ular qaysi ma’budning jahli chiqqan deb o‘ylagani aytilgan?", ["Yupiter", "Neptun", "Merkuriy", "Mars"], 3]];
+const E=id=>document.getElementById(id);
+function switchTab(tab){['match','cards','quiz'].forEach(x=>{E('tab-btn-'+x).classList.toggle('active',x===tab);E('tab-'+x).classList.toggle('active',x===tab)});E('sticky-bar').style.display='none';window.scrollTo(0,0)}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let stage=0,picked=null,remaining=0,locked=false,epoch=0;
+function initMatch(){epoch++;stage=0;E('match-play-box').style.display='block';E('match-finish-box').style.display='none';loadMatchStage()}
+function loadMatchStage(){epoch++;picked=null;locked=false;const pool=matchStages[stage];remaining=pool.length;E('match-stage-badge').textContent=`Bosqich: ${stage+1} / ${matchStages.length}`;E('match-counter').textContent=`Qoldi: ${remaining} ta juftlik`;E('match-progress').style.width=(stage/matchStages.length*100)+'%';const cards=[];pool.forEach(([left,right],i)=>{cards.push({id:i,text:left});cards.push({id:i,text:right})});shuffle(cards);const box=E('match-container');box.replaceChildren();cards.forEach(c=>{const b=document.createElement('button');b.className='match-btn';b.textContent=c.text;b.dataset.id=c.id;b.onclick=()=>onMatchClick(b);box.appendChild(b)})}
+function onMatchClick(b){if(locked||b.classList.contains('matched'))return;if(b===picked){b.classList.remove('selected');picked=null;return}if(!picked){picked=b;b.classList.add('selected');return}const first=picked;picked=null;locked=true;if(first.dataset.id===b.dataset.id){first.classList.remove('selected');first.classList.add('matched');b.classList.add('matched');remaining--;E('match-counter').textContent=`Qoldi: ${remaining} ta juftlik`;const token=epoch;setTimeout(()=>{if(token!==epoch)return;first.remove();b.remove();locked=false;if(!remaining){stage++;if(stage<matchStages.length)loadMatchStage();else{E('match-progress').style.width='100%';E('match-play-box').style.display='none';E('match-finish-box').style.display='flex'}}},350)}else{first.classList.add('wrong');b.classList.add('wrong');const token=epoch;setTimeout(()=>{if(token!==epoch)return;first.classList.remove('selected','wrong');b.classList.remove('wrong');locked=false},400)}}
+let cardIndex=0;
+function loadFlashcard(){const [q,a]=flashcards[cardIndex];E('fc-counter').textContent=`${cardIndex+1} / ${flashcards.length}`;E('fc-progress').style.width=((cardIndex+1)/flashcards.length*100)+'%';E('fc-question').textContent=`${cardIndex+1}. ${q}`;E('fc-answer').textContent=a;E('fc-answer').style.display='none';E('fc-toggle-btn').style.display='block';E('fc-next-btn').style.display='none'}
+function toggleAnswer(){E('fc-answer').style.display='block';E('fc-toggle-btn').style.display='none';E('fc-next-btn').style.display='block'}
+function nextFlashcard(){cardIndex++;if(cardIndex<flashcards.length)loadFlashcard();else{E('fc-play-box').style.display='none';E('fc-finish-box').style.display='flex'}window.scrollTo(0,0)}
+function restartCards(){cardIndex=0;E('fc-play-box').style.display='block';E('fc-finish-box').style.display='none';loadFlashcard()}
+let testIndex=0,score=0,answered=false,currentOptions=[];
+function loadTestQuestion(){answered=false;const [q,opts,key]=testQuestions[testIndex];currentOptions=shuffle(opts.map((text,i)=>({text,right:i===key})));E('q-counter').textContent=`${testIndex+1} / ${testQuestions.length}`;E('q-progress').style.width=(testIndex/testQuestions.length*100)+'%';E('q-title').textContent=`${testIndex+1}. ${q}`;const box=E('q-options');box.replaceChildren();currentOptions.forEach((o,i)=>{const b=document.createElement('button');b.className='opt-btn';b.textContent='ABCD'[i]+'. '+o.text;b.onclick=()=>selectOpt(i);box.appendChild(b)});E('q-explanation').style.display='none';E('sticky-bar').style.display='none'}
+function selectOpt(i){if(answered)return;answered=true;const buttons=[...E('q-options').children];buttons.forEach((b,j)=>{b.disabled=true;if(currentOptions[j].right)b.classList.add('correct');else if(j===i)b.classList.add('incorrect')});if(currentOptions[i].right)score++;E('q-explanation').textContent='💡 Izoh: To‘g‘ri javob — '+currentOptions.find(x=>x.right).text+'.';E('q-explanation').style.display='block';E('q-progress').style.width=((testIndex+1)/testQuestions.length*100)+'%';E('sticky-bar').style.display='flex'}
+function nextTestQuestion(){if(!answered)return;testIndex++;if(testIndex<testQuestions.length)loadTestQuestion();else showQuizResult();window.scrollTo(0,0)}
+function showQuizResult(){E('quiz-body').style.display='none';E('sticky-bar').style.display='none';E('quiz-result').style.display='flex';E('q-score').textContent=score+'/'+testQuestions.length;E('q-feedback').textContent=score===32?'Barcha savollarga to‘g‘ri javob berdingiz!':score>=29?'A’lo natija! Xatolarni ham takrorlang.':score>=20?'Yaxshi natija. Xatolar ustida ishlang.':'Mavzuni qayta o‘qib chiqing.'}
+function restartTest(){testIndex=0;score=0;E('quiz-body').style.display='block';E('quiz-result').style.display='none';loadTestQuestion()}
+initMatch();loadFlashcard();loadTestQuestion();
+</script></body></html>

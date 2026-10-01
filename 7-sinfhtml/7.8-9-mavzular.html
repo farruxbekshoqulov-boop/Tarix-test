@@ -384,7 +384,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) -->
+    <!-- 3. TEST SINOVI (38 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -433,30 +433,30 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 1-ustun atamalar, 2-ustun izohlar) ---
+    // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
       [
-        { id: 1, left: "Bumin xoqon", right: "Oltoy va Janubiy Sibir turkiy qabilalarini birlastirgan xoqonlik asoschisi (555-yil)" },
-        { id: 2, left: "Istami yabg‘u", right: "Oltoy xoqonligining g'arbiy qismiga boshchilik qilgan, «Yabg'u xoqon» unvonini olgan arbob" },
-        { id: 3, left: "Xusrav I Anushirvon", right: "Eftaliylarga qarshi turklar bilan harbiy ittifoq tuzgan sosoniylar hukmdori" },
-        { id: 4, left: "El", right: "Turk xoqonligining davlat mafkurasidagi atamasi («qadimiy el», «tangri el»)" }
+        { id: 1, left: "Bumin xoqon", right: "VI asr o'rtalarida Oltoy va Janubiy Sibirda Turk xoqonligiga asos solgan hukmdor" },
+        { id: 2, left: "Istami yabg‘u", right: "Turk xoqonligining g'arbiy qismiga boshchilik qilgan shaxs" },
+        { id: 3, left: "Xusrav I Anushirvon", right: "Eftaliylarga qarshi turklar bilan harbiy ittifoq tuzgan sosoniylar shohi" },
+        { id: 4, left: "El", right: "Turk xoqonligining davlat mafkurasidagi «qadimiy el», «turk eli» tushunchasi" }
       ],
       [
-        { id: 5, left: "Ashina xonadoni", right: "Hokimiyat faqat Tangri tomonidan in'om etilgan deb e'tiqod qilingan qadimgi turkiy sulola" },
+        { id: 5, left: "Ashina xonadoni", right: "Hokimiyat Tangri tomonidan in'om etilgan deb e'tiqod qilingan qadimgi sulola" },
         { id: 6, left: "Shod", right: "O'n ming suvoriysiga ega bo'lgan tuman (armiya) boshlig'i" },
-        { id: 7, left: "Tuman", right: "O'n o'q el sardori, ya'ni o'n ming suvoriydan iborat harbiy birlik" },
-        { id: 8, left: "Budun (qora budun)", right: "Ko'chmanchi chorvador aholining umumiy nomi" }
+        { id: 7, left: "Yabg'u", right: "O'n o'q budun yoki elining hokimi unvoni" },
+        { id: 8, left: "Budun", right: "Ko'chmanchi chorvador aholining umumiy nomi («qora budun»)" }
       ],
       [
-        { id: 9, left: "Samarqand", right: "«Turk qonunnomasi» amal qilgan va ibodatxonada saqlangan shahar" },
+        { id: 9, left: "Samarqand", right: "«Turk qonunnomasi» amalda bo'lib, ibodatxonada saqlangan shahar" },
         { id: 10, left: "Ajinatepa", right: "Farg'ona vodiysi va Qo'rg'ontepa yaqinida topilgan buddizm yodgorligi (12 metrli budda)" },
         { id: 11, left: "Urxun-Yenisey", right: "Tangri yagona, abadiy, hayot beruvchi deya bitilgan qadimgi yodgorliklar" },
-        { id: 12, left: "Qovunchi madaniyati", right: "Hozirgi Toshkent viloyati Yangiyo'l shahri hududidagi qadimgi katakomba qabrlari topilgan madaniyat" }
+        { id: 12, left: "Qovunchi madaniyati", right: "Hozirgi Toshkent viloyati Yangiyo'l shahri hududidagi katakomba qabrlari" }
       ],
       [
         { id: 13, left: "Katakomba", right: "Yer ostidagi maxsus gumbazli, g'ishtin yoki tuproqli qabrlar" },
         { id: 14, left: "Yetti ota-bobo", right: "Qadimgi turkiylarda jang maydonida qahramonlik ko'rsatib, yaxshi bilish talab etilgan ajdodlar" },
-        { id: 15, left: "Shomonlik", right: "Turk xoqonligining mafkurasiy asosini tashkil etgan, osmonga sig'inish e'tiqodi" },
+        { id: 15, left: "Shomonlik", right: "Turk xoqonligining mafkuraviy asosi (ajdodlarga, Osmonga, yer-suvga sig'inish)" },
         { id: 16, left: "Sharqiy va G'arbiy", right: "Turk xoqonligi VI asrning 80-yillari oxirida bo'lingan ikki qism" }
       ]
     ];
@@ -552,44 +552,44 @@
 
     // --- 2. SAVOL-JAVOB (38 TA SAVOL) ---
     const flashcards = [
-      { q: "1. Turk xoqonligi qaysi asr o'rtalarida tashkil topdi?", a: "VI asr o'rtalarida." },
+      { q: "1. Turk xoqonligi qachon tashkil topdi?", a: "VI asr o'rtalarida." },
       { q: "2. Turk xoqonligiga asos solgan shaxs kim?", a: "Bumin xoqon." },
       { q: "3. Bumin xoqonga qanday unvon berilgan?", a: "«Yabg'u xoqon»." },
-      { q: "4. Turk xoqonligining tashkil topgan yili sifatida qaysi yil ko'rsatiladi?", a: "555-yil." },
-      { q: "5. Oltoy xoqonligining g'arbiy qismiga kim boshchilik qilgan?", a: "Istami yabg'u." },
+      { q: "4. Turk xoqonligi qayerda tashkil topgan?", a: "Oltoy va Janubiy Sibirda." },
+      { q: "5. Turk xoqonligining g'arbiy qismiga kim boshchilik qilgan?", a: "Istami yabg'u." },
       { q: "6. Eftaliylarga qarshi sosoniylar shohi bilan turklar o'rtasida qachon ittifoq tuzilgan?", a: "563–567-yillarda." },
       { q: "7. Sosoniylar hukmdori Xusrav I Anushirvon kim bilan ittifoq tuzgan?", a: "Turk xoqoni Istami yabg'u bilan." },
-      { q: "8. Eftaliylar davlati parchalangach, Amudaryoning janubiy qirg'oqlarigacha bo'lgan yerlar kimning tasarrufigacha o'tdi?", a: "Turk xoqonligi tasarrufiga." },
+      { q: "8. Eftaliylar davlati parchalangach, Amudaryoning janubiy qirg'oqlarigacha bo'lgan yerlar kimning tasarrufiga o'tdi?", a: "Turk xoqonligi tasarrufiga." },
       { q: "9. Turk xoqonligi VI asrning 80-yillari oxirida nechta qismga bo'lindi?", a: "Ikkiga: Sharqiy turk xoqonligi va G'arbiy turk xoqonligiga." },
       { q: "10. Sharqiy turk xoqonligining poytaxti qayer bo'lgan?", a: "O'tukan." },
       { q: "11. G'arbiy turk xoqonligining poytaxti qayer bo'lgan?", a: "Yettisuv." },
       { q: "12. Turk xoqonligining davlat mafkurasida asosiy tushuncha qanday nomlangan?", a: "«El» («qadimiy el», «turk eli»)." },
       { q: "13. Xoqon hokimiyati kimning xonadoniga in'om etilgan deb e'tiqod qilingan?", a: "Tangri tomonidan Ashina xonadoniga." },
       { q: "14. Agar xoqon o'z iqtidorini ko'rsata olmasa nima deb tushunilgan?", a: "«Tangri bergan siyosiy hokimiyat yana Tangri tomonidan qaytarib olinadi»." },
-      { q: "15. Turk xoqonligida davlat qanday hujjatlar asosida boshqarilgan?", a: "Yozma qonunchilik hujjatlari bilan." },
+      { q: "15. Turk xoqonligida davlat qanday hujjatlar asosida boshqarilgan?", a: "Yozma qonunchilik hujjatlari bilan («Turk qonunnomasi»)." },
       { q: "16. «Turk qonunnomasi» qayerda amalda bo'lib, qayerda saqlangan?", a: "Samarqandda, ibodatxonada saqlangan." },
       { q: "17. Qadimiy Sug'dda oldi-sotdi va nikohni qayd etish qanday tuzilgan?", a: "Guvohlar o'rtasida yozma shaklda tuzilib, muhr bilan tasdiqlangan." },
-      { q: "18. Turk xoqonligida e'tiqodlarning ko'rinishlari qaysilar edi?", a: "Tengrilichilik, zardushtiylik, moniylik, nasroniylik, shomonlik, buddizm." },
+      { q: "18. Turk xoqonligida e'tiqodlarning ko'rinishlari qaysilar edi?", a: "Shomonlik, zardushtiylik, moniylik, nasroniylik, buddizm." },
       { q: "19. Urxun-Yenisey yodgorlik bitiklarida Tangri qanday sifatlar bilan ulug'langan?", a: "Yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi, hukm qiluvchi." },
-      { q: "20. Toxaristonda olamning ibtidosi nechta qarama-qarshi yaratuvchidan iborat deb bilingan?", a: "Ikkita: yorug'lik va ezgulik hamda zulmat va yovuzlik." },
+      { q: "20. Toxaristonda olamning ibtidosi nechta qarama-qarshi kuchdan iborat deb bilingan?", a: "Ikkita: yorug'lik va ezgulik hamda zulmat va yovuzlik." },
       { q: "21. Toxaristonda moniy dinining arkoni nimalar hisoblangan?", a: "Ibodat, ro'za, sadaqa." },
-      { q: "22. Turkiy xalqlarda qadimda nima ilohiylashtirilgan?", a: "Bo'ri (ko'p nishonlarda bo'ri tasviri bo'lgan)." },
+      { q: "22. Turkiy xalqlarda qadimda nima ilohiylashtirilgan?", a: "Bo'ri." },
       { q: "23. Tangrilichilik ta'limotiga ko'ra Tangrining doimiy makoni qayer bo'lgan?", a: "Osmon." },
       { q: "24. Tangrilichilikda to'rt tomoni teng salb qanday nomlangan?", a: "«Adji»." },
-      { q: "25. Turkiylar o'limni qanday tushungan?", a: "Ikkinchi hayotga o'tish deb bilishgan." },
-      { q: "26. Turkiylar o'likni dafn etganda nima bilan birga ko'mgan?", a: "Kiyim-kechagi va kundalik zarur buyumlari bilan." },
+      { q: "25. Turkiylar o'limni qanday tushunishgan?", a: "Ikkinchi hayotga o'tish deb." },
+      { q: "26. Turkiylar marhum dafn etilganda nima bilan birga ko'mgan?", a: "Kiyim-kechagi va kundalik zarur buyumlari bilan." },
       { q: "27. O'n ming suvoriysiga ega bo'lgan tuman boshlig'i kim deb atalgan?", a: "«Shod»." },
       { q: "28. O'n o'q budun yoki elining hokimi qanday unvon bilan atalgan?", a: "«Yabg'u»." },
       { q: "29. Ko'chmanchi chorvador aholi qanday nomlar bilan yuritilgan?", a: "«Budun» yoki «qora budun»." },
-      { q: "30. Xoqonlik eng kuchaygan davrda qayerdan qayergacha bo'lgan hududni egallagan?", a: "Oxota dengizidan Qrim yarimoroligacha, Sibirdan Hindistongacha." },
+      { q: "30. Turk xoqonligining asosiy hududlari qayerlarni o'z ichiga olgan?", a: "Yettisuv, Sharqiy Turkiston, Sirdaryo va Amudaryo havzalari." },
       { q: "31. Farg'ona vodiysi Qo'rg'ontepa yaqinidagi buddizm yodgorligi qanday nomlanadi?", a: "Ajinatepa." },
       { q: "32. Ajinatepadagi budda haykalining bo'yi necha metrga boradi?", a: "12 metrga." },
       { q: "33. Ajinatepa budda haykali hozir qayerda saqlanadi?", a: "Dushanbe shahridagi Milliy arxeologiya muzeyida." },
       { q: "34. «Qovunchi madaniyati» qaysi hududga tegishli?", a: "Hozirgi Toshkent viloyati Yangiyo'l shahri hududiga." },
       { q: "35. Qovunchi madaniyati davri qabrlari qanday tuzilgan?", a: "Yer ostidagi maxsus gumbazli katakomba qabrlardan." },
       { q: "36. Turkiylarda o'zidan oldingi necha ota-bobo faoliyatini yaxshi bilish talab etilgan?", a: "Yetti ota-bobo." },
-      { q: "37. Qadimgi turklarda ruhlarga sig'inish va qom (shomon)lar tomonidan olib borilgan e'tiqod qanday atalgan?", a: "Shomonlik (qomlik)." },
-      { q: "38. Turk xoqonligining asosiy harbiy-ma'muriy boshqaruvi nimaga tayangan?", a: "Urug'-aymoqchilik udumlariga." }
+      { q: "37. Qadimgi turklarda shomonlar qanday atalgan?", a: "«Qom»." },
+      { q: "38. Turk xoqonligining asosiy boshqaruvi nimaga tayangan?", a: "Urug'-aymoqchilik udumlariga asoslangan harbiy-ma'muriy boshqaruvga." }
     ];
 
     let fcIdx = 0;
@@ -628,10 +628,10 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
+    // --- 3. TEST SINOVI (38 TA TEST) ---
     const testQuestions = [
       {
-        q: "1. Turk xoqonligi qaysi asr o'rtalarida tashkil topgan?",
+        q: "1. Turk xoqonligi qachon tashkil topgan?",
         options: ["VI asr o'rtalarida", "IV asr o'rtalarida", "VIII asr o'rtalarida", "V asr o'rtalarida"],
         correct: 0,
         exp: "Turk xoqonligi VI asr o'rtalarida tashkil topgan."
@@ -649,13 +649,13 @@
         exp: "Bumin xoqonga «Yabg'u xoqon» unvoni berilgan."
       },
       {
-        q: "4. Turk xoqonligining tashkil topgan yili sifatida qaysi yil ko'rsatiladi?",
-        options: ["563-yil", "555-yil", "576-yil", "584-yil"],
+        q: "4. Turk xoqonligi qayerda tashkil topgan?",
+        options: ["Sirdaryo bo'ylarida", "Oltoy va Janubiy Sibirda", "Yettisuv vohasida", "Sharqiy Turkistonda"],
         correct: 1,
-        exp: "Manbalarda 555-yil ko'rsatib o'tilgan."
+        exp: "Xoqonlik VI asr o'rtalarida Oltoy va Janubiy Sibirda tashkil topgan."
       },
       {
-        q: "5. Oltoy xoqonligining g'arbiy qismiga kim boshchilik qilgan?",
+        q: "5. Turk xoqonligining g'arbiy qismiga kim boshchilik qilgan?",
         options: ["Bumin xoqon", "Istami yabg'u", "Kultegin", "Tonyuquq"],
         correct: 1,
         exp: "G'arbiy qismiga Istami yabg'u boshchilik qilgan."
@@ -674,7 +674,7 @@
       },
       {
         q: "8. Turk xoqonligi VI asrning 80-yillari oxirida nechta qismga bo'lindi?",
-        options: ["Uchta qismga", "To'rtta qismga", "Ikkiga: Sharqiy va G'arbiy turk xoqonligiga", "Bo'linmagan"],
+        options: ["Uchta qismga", "To'rtta qismga", "Ikkiga: Sharqiy turk xoqonligi va G'arbiy turk xoqonligiga", "Bo'linmagan"],
         correct: 2,
         exp: "Xoqonlik Sharqiy va G'arbiy turk xoqonligiga bo'lindi."
       },
@@ -704,25 +704,25 @@
       },
       {
         q: "13. Qadimiy Sug'dda oldi-sotdi va nikohni qayd etish qanday tuzilgan edi?",
-        options: ["Faqat og'zaki kelishuv asosida", "Guvohlar o'rtasida yozma shaklda tuzilib, muhr bilan tasdiqlangan", "Faqat diniy qasam bilan", "Faqat qabila kengashi qarori bilan"],
+        options: ["Og'zaki kelishuv asosida", "Guvohlar o'rtasida yozma shaklda tuzilib, muhr bilan tasdiqlangan", "Diniy qasam bilan", "Qabila kengashi qarori bilan"],
         correct: 1,
         exp: "Yozma shaklda tuzilib, muhr bilan tasdiqlangan."
       },
       {
         q: "14. Urxun-Yenisey yodgorlik bitiklarida Tangri qanday sifatlar bilan ulug'langan?",
-        options: ["Faqat g'azabkor va jazolovchi", "Yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi, hukm qiluvchi", "Faqat tabiat ilohi sifatida", "Faqat jangchi iloh sifatida"],
+        options: ["G'azabkor va jazolovchi sifatida", "Yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi, hukm qiluvchi", "Tabiat ilohi sifatida", "Jangchi iloh sifatida"],
         correct: 1,
         exp: "Tangri yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi sifatida ulug'langan."
       },
       {
         q: "15. Toxaristonda olamning ibtidosi nechta qarama-qarshi kuchdan iborat deb bilingan?",
-        options: ["Bitta kuchdan", "Uchta kuchdan", "Ikkita: yorug'lik va ezgulik hamda zulmat va yovuzlik", "To'rtta tabiat unsuri"],
+        options: ["Bitta kuchdan", "Uchta kuchdan", "Ikkita: yorug'lik va ezgulik hamda zulmat va yovuzlik", "To'rtta tabiat unsuridan"],
         correct: 2,
         exp: "Olamning ibtidosi ikkita qarama-qarshi kuchdan iborat deb bilingan."
       },
       {
         q: "16. Toxaristonda moniy dinining arkoni nimalar hisoblangan?",
-        options: ["Faqat qurbonlik keltirish", "Ibodat, ro'za, sadaqa", "Faqat ziyorat qilish", "Faqat muqaddas kitobni yodlash"],
+        options: ["Qurbonlik keltirish", "Ibodat, ro'za, sadaqa", "Ziyorat qilish va sadaqa", "Muqaddas kitobni o'qish"],
         correct: 1,
         exp: "Moniy dinining arkoni ibodat, ro'za, sadaqa hisoblangan."
       },
@@ -769,10 +769,10 @@
         exp: "Chorvador aholi «budun» yoki «qora budun» deb yuritilgan."
       },
       {
-        q: "24. Xoqonlik eng kuchaygan davrda qayerdan qayergacha bo'lgan hududni egallagan?",
-        options: ["Faqat O'rta Osiyoni", "Oxota dengizidan Qrim yarimoroligacha, Sibirdan Hindistongacha", "Faqat Xitoy va Eronni", "Faqat Dashti Qipchoqni"],
+        q: "24. Turk xoqonligining asosiy hududlari qayerlarni o'z ichiga olgan?",
+        options: ["Faqat O'rta Osiyoni", "Yettisuv, Sharqiy Turkiston, Sirdaryo va Amudaryo havzalari", "Xitoy va Eronni", "Dashti Qipchoqni"],
         correct: 1,
-        exp: "Xoqonlik Oxota dengizidan Qrimgacha, Sibirdan Hindistongacha bo'lgan hududni egallagan."
+        exp: "Hududlar Yettisuv, Sharqiy Turkiston, Sirdaryo va Amudaryo havzalarini o'z ichiga olgan."
       },
       {
         q: "25. Farg'ona vodiysi Qo'rg'ontepa yaqinidagi buddizm yodgorligi qanday nomlanadi?",
@@ -818,7 +818,7 @@
       },
       {
         q: "32. Turk xoqonligining asosiy boshqaruvi nimaga tayangan?",
-        options: ["Faqat yollanma armiyaga", "Urug'-aymoqchilik udumlariga asoslangan harbiy-ma'muriy boshqaruvga", "Faqat diniy qonunlarga", "Faqat shahar hokimlariga"],
+        options: ["Yollanma armiyaga", "Urug'-aymoqchilik udumlariga asoslangan harbiy-ma'muriy boshqaruvga", "Diniy qonunlarga", "Shahar hokimlariga"],
         correct: 1,
         exp: "Boshqaruv urug'-aymoqchilik udumlariga tayangan."
       },
@@ -835,8 +835,8 @@
         exp: "Xusrav I 531–579-yillarda hukmronlik qilgan."
       },
       {
-        q: "35. Turk xoqonligida o'limni qanday marosim bilan o'tkazishgan?",
-        options: ["Faqat kuydirishgan", "Jasad kiyim-kechagi va kundalik buyumlari bilan birga dafn etishgan", "Faqat suvga oqizishgan", "Faqat maxsus minoraga qo'yishgan"],
+        q: "35. Turk xoqonligida marhum dafn etilganda qanday tartibga amal qilingan?",
+        options: ["Jasadni kuydirishgan", "Jasad kiyim-kechagi va kundalik buyumlari bilan birga dafn etishgan", "Suvga oqizishgan", "Maxsus minoraga qo'yishgan"],
         correct: 1,
         exp: "Jasad kiyim-kechagi va kundalik buyumlari bilan birga dafn etilgan."
       },
@@ -848,13 +848,13 @@
       },
       {
         q: "37. Qovunchi madaniyatiga oid qabrlardan nimalar topilgan?",
-        options: ["Faqat oltin taqinchoqlar", "Temirdan ishlangan harbiy va mehnat qurollari hamda sopol idishlar", "Faqat tangalar", "Faqat bronza haykallar"],
+        options: ["Oltin taqinchoqlar", "Temirdan ishlangan harbiy va mehnat qurollari hamda sopol idishlar", "Tangalar", "Bronza haykallar"],
         correct: 1,
         exp: "Temirdan ishlangan qurollar va sopol idishlar topilgan."
       },
       {
         q: "38. Turk xoqonligi tashkil topgan davrda uning hududi qayergacha cho'zilgan edi?",
-        options: ["Faqat Oltoy va Yettisuvgacha", "Sirdaryo va Orol dengizi bo'ylarigacha", "Faqat Farg'ona vodiysigacha", "Faqat Xitoy chegarasigacha"],
+        options: ["Oltoy va Yettisuvgacha", "Sirdaryo va Orol dengizi bo'ylarigacha", "Farg'ona vodiysigacha", "Xitoy chegarasigacha"],
         correct: 1,
         exp: "Sirdaryo va Orol dengizi bo'ylarigacha cho'zilgan edi."
       }

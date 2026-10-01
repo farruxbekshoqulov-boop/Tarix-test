@@ -1164,7 +1164,7 @@
       if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
       
       if (fb) {
-        if(score >= 36) fb.innerText = "Mukammal natija! Sanalarni 100% to‘liq o‘zlashtiribsiz 🏆";
+        if(score >= 36) fb.innerText = "Mukammal natija! Barcha savollarga to‘g‘ri javob berdingiz 🏆";
         else if(score >= 28) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
         else fb.innerText = "Sanalarni qayta o‘qib chiqish tavsiya etiladi 📚";
       }
@@ -1181,7 +1181,9 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function shuffleTestOptions(){testQuestions.forEach(q=>{const a=q.options.map((text,index)=>({text,correct:index===q.correct}));for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}q.options=a.map(x=>x.text);q.correct=a.findIndex(x=>x.correct)})}
     // Dastlabki ishga tushirish
+    shuffleTestOptions();
     initMatch();
     loadFlashcard();
     loadTestQuestion();

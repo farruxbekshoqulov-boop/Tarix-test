@@ -384,7 +384,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (32 TA TEST - To'g'ri javoblar o'rni har xil aralashtirilgan: A, C, D, B, C, A, D, B...) -->
+    <!-- 3. TEST SINOVI (32 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -433,29 +433,29 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 1-ustun atamalar, 2-ustun izohlar) ---
+    // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
       [
         { id: 1, left: "Xioniylar", right: "IV asrda turkiy qabilalardan bo'lib Zarafshon vohasiga kelgan elat" },
-        { id: 2, left: "Kidariylar", right: "V asrning 20-yillarida Sirdaryo va Orol bo'ylari orqali kirib kelgan chorvachilar" },
-        { id: 3, left: "Oq xunnnar", right: "G'arb tarixchilari xioniylarni atagan nom" },
+        { id: 2, left: "Kidariylar", right: "V asrning 20-yillarida Sirdaryo va Orol bo'ylari orqali kirib kelganlar" },
+        { id: 3, left: "Oq xunlar", right: "G'arb tarixchilari xioniylarni atagan nom" },
         { id: 4, left: "Toxarlar", right: "Xorazm va Amudaryo havzasiga kirib kelgan, kushonlarning avlodlari" }
       ],
       [
-        { id: 5, left: "Kidar", right: "Kidariylarga boshchilik qilgan ismli hukmdor" },
-        { id: 6, left: "Sidolo jujanlar", right: "Yuechjilar (kushonlar) hukmdori, kidariylarga hujum qilgan" },
-        { id: 7, left: "Bolo (Balx)", right: "Kidariylar davlatining poytaxtiga aylantirilgan shahar" },
+        { id: 5, left: "Kidar", right: "Toxarlarga boshchilik qilgan ismli hukmdor" },
+        { id: 6, left: "Sido-lo", right: "Yuechjilar (kushonlar) hukmdori, kidariylarga hujum qilgan" },
+        { id: 7, left: "Balx (Bolo)", right: "Kidariylar davlatining poytaxtiga aylantirilgan shahar" },
         { id: 8, left: "K. Trever", right: "Xioniylar IV asrning 70-yillarida kuchaygan deya ta'riflagan tarixchi" }
       ],
       [
         { id: 9, left: "456-yil", right: "Kidariylar va sosoniylar o'rtasida to'qnashuv bo'lgan yil" },
         { id: 10, left: "Braxmiy yozuvi", right: "Kidariylarning tangalari zarb etilgan yozuv turi" },
         { id: 11, left: "Kidara Kushon sha", right: "Kidariylar tangalarida yozilgan yozuv" },
-        { id: 12, left: "Ikkita", right: "O'rganishimiz xulosasidagi xioniylar va kidariylar davlatlari soni" }
+        { id: 12, left: "Ikkita hokim", right: "Kidariylar tangalarini bir vaqtning o'zida zarb etgan shaxslar" }
       ],
       [
         { id: 13, left: "Gupta davlati", right: "Kidariylar Hindistonda egallab, 75 yil hukmronlik qilgan davlat" },
-        { id: 14, left: "Eftaliylar", right: "Xioniylarning keyinchalik o'ziga tobe bo'lib qolgan qudratli qabilasi" },
+        { id: 14, left: "Eftaliylar", right: "Keyinchalik xioniylar tobe bo'lib qolgan qudratli qabila" },
         { id: 15, left: "Xitoy", right: "Kidariylar o'z elchilarini yuborgan buyuk davlat" },
         { id: 16, left: "Gandhar", right: "Kidara shimolga yurish qilib bo'ysundirgan 5 ta davlat qatoridagi hudud" }
       ]
@@ -552,37 +552,37 @@
 
     // --- 2. SAVOL-JAVOB (32 TA SAVOL) ---
     const flashcards = [
-      { q: "1. Xioniylar qaysi asrda turkiy qabilalardan bo'lib Zarafshon vohasiga egallagan?", a: "IV asrda." },
-      { q: "2. Xioniylarning markazi qaysi viloyat bo'lgan?", a: "Toxariston (Shimoliy Hindiston, Afg'oniston, Xuroson qismi ham kiritilgan)." },
-      { q: "3. Xioniylarning asli vatani ayrim tadqiqotchilar fikricha qayerda joylashgan?", a: "Orol dengizi bo'yida." },
+      { q: "1. Turkiy qabilalardan bo'lgan xioniylar qaysi asrda Zarafshon vohasini egallaganlar?", a: "IV asrda." },
+      { q: "2. Xioniylarning markazi qaysi hudud bo'lgan?", a: "Toxariston." },
+      { q: "3. Xioniylarning asli vatani ayrim tadqiqotchilar fikricha qayerda edi?", a: "Orol dengizi bo'yida." },
       { q: "4. G'arb tarixchilari xioniylarni qanday atashgan?", a: "«Oq xunlar»." },
       { q: "5. Xioniylar bu hududda necha yildan ortiq hukmronlik qilgan?", a: "120 yildan ortiq." },
       { q: "6. Kidariylar qaysi asrda Sirdaryo va Orol bo'ylari orqali kirib kelgan?", a: "V asrning 20-yillarida." },
       { q: "7. Kidariylar qayerlarga kirib kelgan?", a: "Xorazm va Amudaryo havzasiga." },
       { q: "8. Toxariylar kimlarning avlodlari bo'lgan?", a: "Kushonlarning avlodlari." },
-      { q: "9. Kidariylar davlatining poytaxti qaysi shahar bo'lgan?", a: "Balx (Bolo)." },
+      { q: "9. Kidariylar davlatining poytaxti qaysi shahar bo'lgan?", a: "Balx (Bolo) shahri." },
       { q: "10. Kidariylar dastlab qayerda yashagan?", a: "Sharqiy Turkistonda." },
-      { q: "11. Yuechjilar (kushonlar) hukmdori Sido-lo jujanlar hujumi tufayli qayerga ko'chgan?", a: "Bolo (Balx)ga." },
+      { q: "11. Yuechjilar (kushonlar) hukmdori Sido-lo kimlarning hujumi tufayli Bologa ko'chgan?", a: "Jujanlar hujumi tufayli." },
       { q: "12. Kidariylar Hindistonda qaysi davlatni egallab, 75 yil hukmronlik qilgan?", a: "Gupta davlatini." },
       { q: "13. Kidariylar qayerga elchilar yuborgan?", a: "Xitoyga." },
-      { q: "14. Tarixchi K. Trever fikricha, xioniylar qachon o'zining kuchaygan pallasiga kirgan?", a: "IV asrning 70-yillarida." },
-      { q: "15. Xioniylarning kuchayishi natijasida ularning siyosiy ahvoli o'zgarib kimlarga tobe bo'lib qolgan?", a: "Eftaliylarga tobe bo'lib qolgan." },
+      { q: "14. Tarixchi K. Trever fikricha, xioniylar qachon kuchaygan pallasiga kirgan?", a: "IV asrning 70-yillarida." },
+      { q: "15. Xioniylar keyinchalik kimlarga tobe bo'lib qolgan?", a: "Eftaliylarga." },
       { q: "16. Kidariylarning sosoniylar bilan to'qnashuvi qaysi yilda yuz berdi?", a: "456-yilda." },
-      { q: "17. 456-yildagi to'qnashuvda kimlar yengildi?", a: "Kidariylar sosoniylardan yengiladi." },
+      { q: "17. 456-yildagi to'qnashuvda kidariylar kimlardan yengildi?", a: "Sosoniylardan." },
       { q: "18. Mag'lubiyatdan so'ng kidariylar qayerga chekindi?", a: "Shimoliy Hindistonga." },
       { q: "19. Kidariylarning tangalari qaysi yozuvda zarb etilgan?", a: "Braxmiy yozuvida." },
       { q: "20. Kidariylar tangalarida qanday yozuv bitilgan?", a: "«Kidara Kushon sha»." },
-      { q: "21. Kidariylar tangalaridagi yozuvdagi so'z kimga tegishli bo'lgan?", a: "Ikkita (ikkita hukmdor/hokim tomonidan zarb etilgan)." },
-      { q: "22. Xioniylar va kidariylarning ijtimoiy-iqtisodiy tizimi haqidagi ma'lumotlar bizgacha yetib kelganmi?", a: "Afsuski, yetib kelmagan." },
+      { q: "21. Kidariylar tangasidagi yozuv nechta hokim tomonidan zarb etilganini ko'rsatadi?", a: "Ikkita hokim tomonidan." },
+      { q: "22. Xioniylar va kidariylarning ijtimoiy-iqtisodiy tizimi haqidagi ma'lumotlar yetib kelganmi?", a: "Afsuski, yetib kelmagan." },
       { q: "23. Xioniylar dastlab qaysi vohani egallagan?", a: "Zarafshon vohasini." },
-      { q: "24. Xioniylar qayerga qarab yurish qilgan?", a: "Janub tomonga." },
+      { q: "24. Xioniylar Zarafshondan qayerga qarab yurish qilgan?", a: "Janub tomonga." },
       { q: "25. Xioniylar qaysi podshohlik hududida hukmronlik qilishgan?", a: "Kushon podshohligi hududida." },
-      { q: "26. Xioniylarni xalq orasida yana qanday atashgan?", a: "«Oq xunnnar»." },
-      { q: "27. Kidariylarga kim ismli hukmdor boshchilik qilgan?", a: "Kidar." },
-      { q: "28. Kidara Shimoliy Hindistonga yurish qilib nechta davlatni o'ziga bo'ysundirgan?", a: "5 ta davlatni." },
-      { q: "29. Gandhardan shimoldagi nechta davlat kidariylar qo'liga o'tgan?", a: "5 ta." },
-      { q: "30. Kidariylar qayerda sosoniylar bilan to'qnashgan?", a: "Eron sosoniylari bilan." },
-      { q: "31. Kidariylar tangasidagi ikkita ism kimlarga tegishli bo'lgan?", a: "Mahalliy hokim va kidariylar hukmdoriga." },
+      { q: "26. Xioniylarni g'arb tarixchilari qanday atagan?", a: "«Oq xunlar»." },
+      { q: "27. Toxariylarga kim ismli hukmdor boshchilik qilgan?", a: "Kidar." },
+      { q: "28. Kidara Shimoliy Hindistonga yurish qilib nechta davlatni bo'ysundirgan?", a: "5 ta davlatni." },
+      { q: "29. Gandhardan shimoldagi nechta davlat kidariylar qo'liga o'tgan?", a: "5 ta davlat." },
+      { q: "30. Kidariylar qayerdagi sosoniylar bilan to'qnashgan?", a: "Janubdagi Eron sosoniylari bilan." },
+      { q: "31. Kidariylar tangasidagi yozuvlar kimlarga tegishli bo'lgan?", a: "Mahalliy hokim va kidariylar hukmdoriga." },
       { q: "32. Xioniylar va kidariylar tarixi asosan qaysi asrlarga to'g'ri keladi?", a: "IV–V asrlarga." }
     ];
 
@@ -622,232 +622,197 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (32 TA TEST - To'g'ri javoblar o'rni har xil aralashtirilgan: A, C, D, B, C, A, D, B...) ---
+    // --- 3. TEST SINOVI (32 TA TEST - Tuzatilgan va mantiqli) ---
     const testQuestions = [
-      // 1. Correct: A (index 0)
       {
-        q: "1. Xioniylar qaysi asrda turkiy qabilalardan bo'lib Zarafshon vohasiga kelgan?",
+        q: "1. Turkiy qabilalardan bo'lgan xioniylar qaysi asrda Zarafshon vohasini egallaganlar?",
         options: ["IV asrda", "VI asrda", "VIII asr boshida", "X asrda"],
         correct: 0,
-        exp: "Xioniylar IV asrda Zarafshon vohasiga egallagan."
+        exp: "Xioniylar IV asrda Zarafshon vohasini egallagan."
       },
-      // 2. Correct: C (index 2)
       {
         q: "2. Xioniylarning markazi qaysi hudud bo'lgan?",
-        options: ["Faqat Zarafshon", "Faqat Xorazm", "Toxariston", "Faqat Farg'ona"],
+        options: ["Zarafshon", "Xorazm", "Toxariston", "Farg'ona"],
         correct: 2,
         exp: "Xioniylarning markazi Toxariston bo'lgan."
       },
-      // 3. Correct: D (index 3)
       {
         q: "3. G'arb tarixchilari xioniylarni qanday atashgan?",
         options: ["Sarmatlar", "Massagetlar", "Kushonlar", "«Oq xunlar»"],
         correct: 3,
         exp: "G'arb tarixchilari xioniylarni «oq xunlar» deb atagan."
       },
-      // 4. Correct: B (index 1)
       {
         q: "4. Kidariylar qaysi asrda Sirdaryo va Orol bo'ylari orqali kirib kelgan?",
         options: ["IV asrda", "V asrning 20-yillarida", "VI asr oxirida", "VII asrda"],
         correct: 1,
         exp: "Kidariylar V asrning 20-yillarida kirib kelgan."
       },
-      // 5. Correct: C (index 2)
       {
         q: "5. Kidariylar davlatining poytaxti qaysi shahar bo'lgan?",
         options: ["Samarqand", "Buxoro", "Balx (Bolo)", "Marv"],
         correct: 2,
         exp: "Balx shahri kidariylar davlatining poytaxtiga aylantirilgan."
       },
-      // 6. Correct: A (index 0)
       {
         q: "6. Kidariylar Hindistonda qaysi davlatni egallab, 75 yil hukmronlik qilgan?",
         options: ["Gupta davlatini", "Maurya imperiyasini", "Kushon podshohligini", "Boburiylar davlatini"],
         correct: 0,
         exp: "Kidariylar Hindistonda Gupta davlatini egallab, 75 yil hukmronlik qilgan."
       },
-      // 7. Correct: D (index 3)
       {
         q: "7. Tarixchi K. Trever fikricha, xioniylar qachon o'zining kuchaygan pallasiga kirgan?",
         options: ["IV asr boshida", "V asr oxirida", "III asr oxirida", "IV asrning 70-yillarida"],
         correct: 3,
         exp: "K. Trever fikricha, xioniylar IV asrning 70-yillarida kuchaygan pallasiga kirgan."
       },
-      // 8. Correct: B (index 1)
       {
         q: "8. Kidariylarning sosoniylar bilan to'qnashuvi qaysi yilda yuz berdi?",
         options: ["305-yilda", "456-yilda", "567-yilda", "620-yilda"],
         correct: 1,
         exp: "456-yilda kidariylar va sosoniylar o'rtasida to'qnashuv bo'lib o'tgan."
       },
-
-      // 9. Correct: A (index 0)
       {
         q: "9. Mag'lubiyatdan so'ng kidariylar qayerga chekindi?",
         options: ["Shimoliy Hindistonga", "Xitoyga", "Kichik Osiyoga", "Dashti Qipchoqqa"],
         correct: 0,
         exp: "Sosoniylardan yengilgach, kidariylar Shimoliy Hindistonga chekindilar."
       },
-      // 10. Correct: C (index 2)
       {
         q: "10. Kidariylarning tangalari qaysi yozuvda zarb etilgan?",
         options: ["Arab yozuvida", "Yunon yozuvida", "Braxmiy yozuvida", "Sug'd yozuvida"],
         correct: 2,
         exp: "Kidariylar tangalari braxmiy yozuvida zarb etilgan."
       },
-      // 11. Correct: D (index 3)
       {
         q: "11. Kidariylar tangalarida qanday yozuv bitilgan?",
         options: ["«Kidar shohi»", "«Buyuk Kushon»", "«Soxibqiron Kidar»", "«Kidara Kushon sha»"],
         correct: 3,
         exp: "Tangalarda «Kidara Kushon sha» degan yozuv bitilgan edi."
       },
-      // 12. Correct: B (index 1)
       {
         q: "12. Xioniylar va kidariylarning ijtimoiy-iqtisodiy tizimi haqidagi ma'lumotlar bizgacha yetib kelganmi?",
-        options: ["To'liq yetib kelgan", "Afsuski, yetib kelmagan", "Faqat qonunlar to'plami saqlangan", "Faqat saroy xaritalari saqlangan"],
+        options: ["To'liq yetib kelgan", "Afsuski, yetib kelmagan", "Qonunlar to'plami saqlangan", "Saroy xaritalari saqlangan"],
         correct: 1,
         exp: "Afsuski, ularning ijtimoiy-iqtisodiy tizimi haqida ma'lumot yetib kelmagan."
       },
-      // 13. Correct: C (index 2)
       {
         q: "13. Xioniylar dastlab qaysi hududni egallagan edilar?",
-        options: ["Faqat Farg'ona vodiysini", "Faqat Toshkent vohasini", "Zarafshon vohasini", "Faqat Qashqadaryoni"],
+        options: ["Farg'ona vodiysini", "Toshkent vohasini", "Zarafshon vohasini", "Qashqadaryoni"],
         correct: 2,
         exp: "Xioniylar dastlab Zarafshon vohasini egallashgan."
       },
-      // 14. Correct: A (index 0)
       {
         q: "14. Xioniylarning asli vatani ayrim tadqiqotchilar fikricha qayerda edi?",
         options: ["Orol dengizi bo'yida", "Kaspiy dengizi janubida", "Boltiq bo'yida", "Qora dengiz sohilida"],
         correct: 0,
         exp: "Xioniylarning asli vatani Orol dengizi bo'yida deb taxmin qilinadi."
       },
-      // 15. Correct: D (index 3)
       {
         q: "15. Xioniylar bu hududda necha yildan ortiq hukmronlik qilgan?",
         options: ["50 yildan ortiq", "80 yildan ortiq", "100 yildan ortiq", "120 yildan ortiq"],
         correct: 3,
         exp: "Xioniylar bu hududda 120 yildan ortiq hukmronlik qildi."
       },
-      // 16. Correct: B (index 1)
       {
         q: "16. Kidariylar qaysi xalqning avlodlari hisoblangan?",
         options: ["Sarmatlarning", "Kushonlarning (yuechjilar)", "Massagetlarning", "Soylarning"],
         correct: 1,
         exp: "Toxariylar kushonlarning avlodlari bo'lgan."
       },
-
-      // 17. Correct: A (index 0)
       {
         q: "17. Kidariylar dastlab qayerda yashaganlar?",
         options: ["Sharqiy Turkistonda", "Kichik Osiyoda", "Mesopotamiyada", "Eron hududida"],
         correct: 0,
         exp: "Manbalarga ko'ra, kidariylar dastlab Sharqiy Turkistonda yashagan."
       },
-      // 18. Correct: C (index 2)
       {
         q: "18. Yuechjilar hukmdori Sido-lo kimlarning hujumi tufayli o'z qarorgohini Bologa ko'chirgan?",
         options: ["Sosoniylar", "Xioniylar", "Jujanlar", "Turklar"],
         correct: 2,
         exp: "Jujanlar hujumi tufayli Sido-lo qarorgohini Bologa (Balxga) ko'chirgan."
       },
-      // 19. Correct: D (index 3)
       {
         q: "19. Kidara Shimoliy Hindistonga yurish qilib nechta davlatni o'ziga bo'ysundirgan?",
         options: ["2 ta", "3 ta", "4 ta", "5 ta"],
         correct: 3,
         exp: "Kidara Gandhardan shimoldagi 5 ta davlatni o'ziga bo'ysundirgan."
       },
-      // 20. Correct: B (index 1)
       {
         q: "20. Xioniylarning kuchayishi natijasida ularning siyosiy ahvoli o'zgarib kimlarga tobe bo'lib qoldi?",
         options: ["Sosoniylarga", "Eftaliylarga", "Xitoy imperiyasiga", "Arab xalifaligiga"],
         correct: 1,
         exp: "Xioniylar keyinchalik eftaliylarga tobe bo'lib qoldilar."
       },
-      // 21. Correct: C (index 2)
       {
         q: "21. Kidariylar tangasidagi yozuv nechta hokim tomonidan zarb etilganligini ko'rsatadi?",
         options: ["Bitta", "Uchta", "Ikkita", "To'rtta"],
         correct: 2,
         exp: "Tangalar ikkita hokim tomonidan zarb etilganligini bildiradi."
       },
-      // 22. Correct: A (index 0)
       {
         q: "22. Kidariylar qayerga o'z elchilarini yuborganlar?",
-        options: ["Xitoyga", "Vizantiyaga", "Rimga", "Hindistonga (faqat mahalliy)"],
+        options: ["Xitoyga", "Vizantiyaga", "Rimga", "Hindistonga"],
         correct: 0,
         exp: "Kidariylar Xitoyga elchilar yuborganlar."
       },
-      // 23. Correct: D (index 3)
       {
         q: "23. Xioniylar qaysi podshohlik hududida hukmronlik qilishgan?",
         options: ["Qang' davlati", "Dovon podshohligi", "Baqtriya podshohligi", "Kushon podshohligi"],
         correct: 3,
         exp: "Xioniylar Kushon podshohligi hududida hukmronlik qilishgan."
       },
-      // 24. Correct: B (index 1)
       {
         q: "24. Kidariylarga qaysi ismli hukmdor boshchilik qilgan?",
         options: ["Afrig'", "Kidar", "Sido-lo", "Shovshafar"],
         correct: 1,
         exp: "Kidariylarga Kidar ismli hukmdor boshchilik qilgan."
       },
-
-      // 25. Correct: A (index 0)
       {
         q: "25. Xioniylar qaysi davlat hududidan janubga qarab yurish qilganlar?",
         options: ["Zarafshon vohasidan", "Sirdaryo quyi oqimidan", "Farg'ona vodiysidan", "Yettisuvdan"],
         correct: 0,
         exp: "Xioniylar Zarafshon vohasini egallab, janubga qarab yurish qilganlar."
       },
-      // 26. Correct: C (index 2)
       {
-        q: "26. Kidariylar va sosoniylar o'rtasidagi to'qnashuv qayerdagi munosabatlarni yomonlashtirgan edi?",
-        options: ["Sharqiy Eron bilan", "Shimoliy Hindiston bilan", "Janubiy Eron sosoniylari bilan", "Xorazm bilan"],
+        q: "26. Kidariylarning qaysi davlat bilan munosabatlari yomonlashib borishi natijasida 456-yilda to'qnashuv yuz berdi?",
+        options: ["Xitoy imperiyasi bilan", "Gupta davlati bilan", "Eron sosoniylari bilan", "Jujanlar bilan"],
         correct: 2,
-        exp: "Kidariylarning janubdagi Eron sosoniylari bilan munosabatlari yomonlashgan."
+        exp: "Kidariylarning janubdagi Eron sosoniylari bilan munosabatlari yomonlashib, 456-yilda to'qnashuv bo'lgan."
       },
-      // 27. Correct: D (index 3)
       {
         q: "27. Kidariylar sosoniylardan mag'lub bo'lgach, qayerdagi hududlarga chekindilar?",
         options: ["Eronning ichki qismiga", "Arabiston cho'llariga", "Dashti Qipchoqqa", "Shimoliy Hindistonga"],
         correct: 3,
         exp: "456-yildagi mag'lubiyatdan so'ng Shimoliy Hindistonga chekindilar."
       },
-      // 28. Correct: B (index 1)
       {
         q: "28. Xioniylar va kidariylar tarixi asosan qaysi davrni o'z ichiga oladi?",
         options: ["I–II asrlarni", "IV–V asrlarni", "VI–VII asrlarni", "VIII–IX asrlarni"],
         correct: 1,
         exp: "Mavzu nomi bo'yicha IV–V asrlarni o'z ichiga oladi."
       },
-      // 29. Correct: C (index 2)
       {
         q: "29. Kidariylar tangalaridagi yozuvlar qaysi tilda/yozuvda bitilgan?",
         options: ["Sug'd tilida", "Xorazm yozuvida", "Braxmiy yozuvida", "Xitoy iyeroglifida"],
         correct: 2,
         exp: "Tangalardagi yozuvlar braxmiy yozuvida edi."
       },
-      // 30. Correct: A (index 0)
       {
         q: "30. Xioniylar nomi bilan bog'liq bo'lgan qabilalarning kelib chiqishi qaysi guruhga mansub?",
         options: ["Turkiy qabilalar", "Eroniy qabilalar", "Slavyan qabilalari", "Fin-ugor qabilalari"],
         correct: 0,
         exp: "Xioniylar turkiy qabilalardan biri bo'lgan."
       },
-      // 31. Correct: D (index 3)
       {
         q: "31. Kidariylar hukmronligi davrida Hindistonda qaysi sulola davlati yengilgan edi?",
         options: ["Maurya", "Shatavahana", "Chola", "Gupta davlati"],
         correct: 3,
         exp: "Kidariylar Hindistonda Gupta davlatini yengib egallagan."
       },
-      // 32. Correct: B (index 1)
       {
         q: "32. Xioniylarning boshlang'ich davrdagi asosiy harakat yo'nalishi qaysi tomonga bo'lgan?",
-        options: ["Faqat shimolga", "Janub tomonga", "Faqat g'arbga", "Faqat sharqqa"],
+        options: ["Shimolga", "Janub tomonga", "G'arbga", "Sharqqa"],
         correct: 1,
         exp: "Xioniylar Zarafshondan janub tomonga yurish qilganlar."
       }

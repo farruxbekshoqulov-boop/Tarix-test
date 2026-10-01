@@ -384,7 +384,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (32 TA TEST - Variantlar muvozanati: 8 tadan A, B, C, D to'g'ri javob) -->
+    <!-- 3. TEST SINOVI (32 TA TEST - Aralash variantlar) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -433,31 +433,31 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 1-ustun atamalar, 2-ustun izohlar) ---
+    // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
       [
-        { id: 1, left: "Afrig'iylar", right: "Xorazmda III-X asrlarda hukmronlik qilgan xorazmshohlar sulolasi" },
-        { id: 2, left: "Afrig'", right: "Afrig'iylar sulolasining asoschisi" },
-        { id: 3, left: "Burgut va lochin", right: "Xorazmning hukmronlik ramzlari" },
-        { id: 4, left: "Tuproqqal'a", right: "Xorazm davlatining dastlabki poytaxti" }
+        { id: 1, left: "Afrig'iylar", right: "Xorazmda III–X asrlarda hukmronlik qilgan xorazmshohlar sulolasi" },
+        { id: 2, left: "Afrig'", right: "Afrig'iylar sulolasiga asos solgan xorazmshoh" },
+        { id: 3, left: "Burgut va lochin", right: "Xorazmning qadimiy hukmronlik ramzlari" },
+        { id: 4, left: "Tuproqqal'a", right: "Xorazmning qadimgi poytaxti (Ellikqal'a tumani)" }
       ],
       [
-        { id: 5, left: "Kat shahri", right: "305-yilda xorazmshoh Afrig' ko'chib kelgan qadimgi poytaxt" },
-        { id: 6, left: "Alfir qasri", right: "Kat shahrida Afrig' qurdirgan yangi shoh saroyi" },
-        { id: 7, left: "Shovshafar tangasi", right: "Afrig'iy podshohining surati tushirilgan tanga" },
-        { id: 8, left: "Mobadlar", right: "Zardushtiy ruhoniylar, din marosimlarini bajaruvchilar" }
+        { id: 5, left: "Kat shahri", right: "305-yilda xorazmshoh Afrig' qarorgohini ko'chirgan yangi poytaxt" },
+        { id: 6, left: "Alfir qasri", right: "Kat shahrida Afrig' qurdirgan ikki qavatli shoh saroyi" },
+        { id: 7, left: "Kumush tangalar", right: "Orqa tomoniga suvoriy tasvirlari tushirilgan mustaqillik belgisi" },
+        { id: 8, left: "Mobadlar", right: "Zardushtiy ibodatxonalarida diniy marosimlarni bajaruvchi ruhoniylar" }
       ],
       [
-        { id: 9, left: "Xubbi", right: "Xorazm afsonalaridagi suv ilohi, suvning saqlovchisi" },
+        { id: 9, left: "Xubbi", right: "Xorazm afsonalaridagi suv ilohi va suvning saqlovchisi" },
         { id: 10, left: "Jamshid", right: "Xubbi dom-daraksiz g'oyib bo'lgan davrdagi hukmdor" },
         { id: 11, left: "Istaxriy", right: "«Xorazm Jayhunning butun foydasini ola bilgan mamlakatdir» degan olim" },
         { id: 12, left: "Abu Rayhon Beruniy", right: "Afrig'iy podshohlari va kumush tangalar zarb etilishi haqida yozgan olim" }
       ],
       [
-        { id: 13, left: "Pontifik", right: "Diniy marosimlarni avloddan avlodga saqlab qoluvchi oliy ruhoniy" },
-        { id: 14, left: "O'git-pandlari", right: "Zardushtiy ziyoratchilar va yoshlarga o'rgatilgan axloqiy qoidalar" },
-        { id: 15, left: "Yolg'on gapirish", right: "Xorazm ta'lim-tarbiya tizimida katta jinoyat deb hisoblangan illat" },
-        { id: 16, left: "Kumush tangalar", right: "Afrig'iy podshohlari davrida zarb etilgan mustaqillik belgisi" }
+        { id: 13, left: "Ezgu fikr, ezgu so'z...", right: "Zardushtiylik ta'lim-tarbiyasining asosiy axloqiy tamoyillari" },
+        { id: 14, left: "Yolg'on gapirish", right: "Xorazm ta'lim-tarbiya tizimida eng katta jinoyat deb hisoblangan" },
+        { id: 15, left: "Qoraqum sahrosi", right: "Xorazm vohasiga tutashib ketgan ulkan qumli hudud" },
+        { id: 16, left: "Qorako'l ko'li", right: "Xorazmdan boshlangan qum tepaliklar chegarasi borib yetadigan joy" }
       ]
     ];
 
@@ -553,37 +553,37 @@
     // --- 2. SAVOL-JAVOB (32 TA SAVOL) ---
     const flashcards = [
       { q: "1. Amudaryo qayerdagi muzliklardan boshlanadi?", a: "Hindiqushning shimoliy yonbag'irlaridagi muzliklardan." },
-      { q: "2. Amudaryo qaysi shahardan o'tgach, hech qanday irmoqlarsiz jazirama sahrolar ichidan oqadi?", a: "Surxon qo'shilgan joyning quyidan boshlab." },
-      { q: "3. Xorazm vohasiga qaysi sahro tutashib ketgan?", a: "Qoraqum sahrosi." },
-      { q: "4. Xorazm vohasidan o'tgach, qum tepaliklar chegarasi qayerga buriladi va qayerga borib yetadi?", a: "Shimoliy-g'arb tomonga burilib, Qorako'l ko'ligacha borib yetadi." },
-      { q: "5. Xorazm davlatining dastlabki poytaxti qayer bo'lgan?", a: "Hozirgi Ellikqal'a tumanida joylashgan qadimgi Tuproqqal'a." },
-      { q: "6. Tuproqqal'a shahar devorining o'rtasida nima bo'lgan?", a: "Darvozaxona." },
-      { q: "7. Tuproqqal'ada markazdan yuqoriroqda nima joylashgan edi?", a: "Ibodatxona majmuasi." },
-      { q: "8. Qasr imoratlari necha qavatli shoh saroyi bo'lgan?", a: "Ikki qavatli." },
-      { q: "9. Xorazm poytaxti bo'lgan shahrining umumiy maydoni qancha edi?", a: "20 gektarni tashkil etgan." },
-      { q: "10. Qang' davlati tarkibidan dastlab ajralib chiqqan sulola kimlar edi?", a: "Afrig'iylar sulolasi." },
-      { q: "11. Afrig'iylar sulolasining asoschisi kim?", a: "Afrig'." },
+      { q: "2. Daryo baland qoyali tog'lar orasidan o'tgach nima qiladi?", a: "Har kilometrda bir necha metrga pasayib boradi." },
+      { q: "3. Amudaryoga qayer kelib qo'shilgach, irmoqlarsiz oqadi?", a: "Surxon kelib qo'shilgan joyning quyidan boshlab." },
+      { q: "4. Xorazm vohasiga qaysi sahro tutashib ketgan?", a: "Qoraqum sahrosi." },
+      { q: "5. Qum tepaliklar chegarasi qayerga borib yetadi?", a: "Qorako'l ko'ligacha." },
+      { q: "6. Xorazm davlatining qadimgi poytaxti qayer bo'lgan?", a: "Tuproqqal'a (Ellikqal'a tumani)." },
+      { q: "7. Tuproqqal'a shahar devorining o'rtasida nima bo'lgan?", a: "Darvozaxona." },
+      { q: "8. Tuproqqal'ada markazdan yuqoriroqda nima joylashgan edi?", a: "Ibodatxona majmuasi." },
+      { q: "9. Qasr imoratlari necha qavatli shoh saroyi bo'lgan?", a: "Ikki qavatli." },
+      { q: "10. Qang' davlati tarkibidan qaysi sulola ajralib chiqqan?", a: "Afrig'iylar sulolasi." },
+      { q: "11. Afrig'iylar sulolasi Xorazmda qaysi asrlarda hukmronlik qilgan?", a: "III–X asrlarda." },
       { q: "12. Xorazmning hukmronlik ramzlari nimalar edi?", a: "Burgut va lochin." },
-      { q: "13. Milodiy 305-yilda xorazmshoh Afrig' o'z qarorgohini qayerga ko'chirdi?", a: "Kat shahriga." },
-      { q: "14. Kat shahrida yangi saroy qurdirgan shoh kim?", a: "Afrig'." },
-      { q: "15. Afrig'iy podshohlari qaysi tangalarni zarb etgan?", a: "Orqa tomoniga suvoriy tasvirlari tushirilgan kumush tangalar." },
+      { q: "13. Milodiy 305-yilda xorazmshoh Afrig' qarorgohini qayerga ko'chirdi?", a: "Kat shahriga." },
+      { q: "14. Kat shahrida Afrig' qurdirgan saroy qanday atalgan?", a: "Alfir qasri." },
+      { q: "15. Afrig'iy podshohlari qanday tangalar zarb etgan?", a: "Orqa tomoniga suvoriy tasvirlari tushirilgan kumush tangalar." },
       { q: "16. Xorazmda VIII asrgacha qaysi dinning ta'siri kuchli bo'lgan?", a: "Zardushtiylik dinining." },
-      { q: "17. Zardushtiy ibodatxonalarida diniy marosimlarni bajaruvchi ruhoniylar kimlar edi?", a: "Mobadlar." },
-      { q: "18. Ta'lim maskanlarida bolalarga asosan nimalardan saboq berilgan?", a: "O'qish, yozish va jang san'atidan." },
-      { q: "19. Xorazm ta'lim tizimida nima katta jinoyat deb hisoblangan?", a: "Yolg'on gapirish." },
-      { q: "20. Xorazmda Amudaryo bilan bog'liq qaysi suv ilohi haqida afsonalar bor?", a: "Xubbi." },
-      { q: "21. Xubbi dom-daraksiz g'oyib bo'lgan vaqtda taxtda o'tirgan hukmdor kim?", a: "Jamshid." },
-      { q: "22. Xorazmda suv muqaddas hisoblangan, Xubbi esa nimaning saqlovchisi sifatida qadrlangan?", a: "Suvning saqlovchisi." },
-      { q: "23. Xorazmiliklar kimlar bilan madaniy-savdo aloqalarini yo'lga qo'ygan?", a: "Xuroson va Eron bilan." },
-      { q: "24. Xorazm diyori qaysi sohalar yuqori darajada rivojlangan edi?", a: "Sug'orma dehqonchilik, hunarmandchilik, chorvachilik va savdo-sotiq." },
-      { q: "25. Xorazm hunarmandlari tomonidan yasalgan narsalar nimani bezab turgan?", a: "Sopol idishlar saroylarni bezab turgan." },
-      { q: "26. Olim Istaxriy Xorazm haqida qanday ta'rif bergan?", a: "«Xorazm Jayhunning butun foydasini ola bilgan mamlakatdir»." },
-      { q: "27. Afrig'iylar qaysi asrlarda hukmronlik qilgan xorazmshohlar sulolasi?", a: "III–X asrlarda." },
-      { q: "28. Afrig'iy podshohining nomi bilan bog'liq tanga qaysi?", a: "Shovshafar tangasi." },
-      { q: "29. Xorazmda zardushtiy bolalarga qanday tamoyillar o'rgatilgan?", a: "«Bolalarga ... fikr, ezgu ..., ... amal tamoyillari»." },
-      { q: "30. Xorazmda qayiqlarning burnida kimning haykali o'rnatilgan edi?", a: "Xubbi ayolning." },
-      { q: "31. Xorazm davlati poytaxti Tuproqqal'a hozir qayerda joylashgan?", a: "Ellikqal'a tumanida." },
-      { q: "32. Xorazm poytaxti ko'chirilgan Kat shahri qayerda joylashgan edi?", a: "Qadimgi poytaxt yonida." }
+      { q: "17. Zardushtiy ibodatxonalarida marosimlarni bajaruvchi ruhoniylar kimlar edi?", a: "Mobadlar." },
+      { q: "18. Xorazm ta'lim maskanlarida bolalarga nimalar o'rgatilgan?", a: "O'qish, yozish va jang san'atidan saboq berilgan." },
+      { q: "19. Xorazmda eng katta jinoyat nima deb hisoblangan?", a: "Yolg'on gapirish." },
+      { q: "20. Xorazm afsonalaridagi suv ilohi kim edi?", a: "Xubbi." },
+      { q: "21. Xubbi g'oyib bo'lgan vaqtda taxtda o'tirgan hukmdor kim?", a: "Jamshid ismli hukmdor." },
+      { q: "22. Xubbi nimaning saqlovchisi sifatida qadrlangan?", a: "Suvning saqlovchisi." },
+      { q: "23. Xorazmiliklar qaysi davlatlar bilan aloqa qilgan?", a: "Xuroson, Eron, Vizantiya va turklar bilan." },
+      { q: "24. Xorazmda qaysi xo'jalik tarmog'i yuqori bo'lgan?", a: "Sug'orma dehqonchilik va hunarmandchilik." },
+      { q: "25. Xorazm hunarmandlari yasagan idishlar nimani bezagan?", a: "Saroylarni." },
+      { q: "26. Istaxriy Xorazm haqida nima degan?", a: "«Xorazm Jayhunning butun foydasini ola bilgan mamlakatdir»." },
+      { q: "27. Xorazm poytaxti bo'lgan shaharning umumiy maydoni qancha edi?", a: "20 gektarni tashkil etgan." },
+      { q: "28. Abu Rayhon Beruniy nimalar haqida yozib qoldirgan?", a: "Afrig'iy podshohlari va kumush tangalar zarb etilishi haqida." },
+      { q: "29. Zardushtiylik ta'lim-tarbiyasining bosh tamoyili nima edi?", a: "Ezgu fikr, ezgu so'z, ezgu amal." },
+      { q: "30. Qayiqlarning burnida kimning haykali o'rnatilgan edi?", a: "Xubbining onasining." },
+      { q: "31. Tuproqqal'a hozirgi qaysi tumanda joylashgan?", a: "Ellikqal'a tumanida." },
+      { q: "32. Afrig'iylar sulolasining oxiri qaysi asrga to'g'ri keladi?", a: "X asrga." }
     ];
 
     let fcIdx = 0;
@@ -622,31 +622,30 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (32 TA TEST - Variantlar muvozanati: 8 tadan A, B, C, D to'g'ri javob) ---
+    // --- 3. TEST SINOVI (32 TA TEST - Aralashtirilgan va "faqat" so'zisiz) ---
     const testQuestions = [
-      // 1-8: To'g'ri javobi A (index 0) bo'lgan 8 ta savol
       {
         q: "1. Amudaryo qayerdagi muzliklardan boshlanadi?",
-        options: ["Hindiqushning shimoliy yonbag'irlaridagi muzliklardan", "Faqat Pomir cho'qqilaridan", "Faqat Tyan-Shan tog'laridan", "Faqat Qoraqum qumlaridan"],
-        correct: 0,
+        options: ["Pomir cho'qqilaridan", "Hindiqushning shimoliy yonbag'irlaridagi muzliklardan", "Tyan-Shan tog'laridan", "Qoraqum qumlaridan"],
+        correct: 1,
         exp: "Amudaryo Hindiqushning shimoliy yonbag'irlaridagi muzliklardan boshlanadi."
       },
       {
         q: "2. Xorazm vohasiga qaysi sahro tutashib ketgan?",
-        options: ["Qoraqum sahrosi", "Qizilqum sahrosi", "Sahroi Kabir", "Takla-Makon sahrosi"],
-        correct: 0,
+        options: ["Qizilqum sahrosi", "Sahroi Kabir", "Qoraqum sahrosi", "Takla-Makon sahrosi"],
+        correct: 2,
         exp: "Xorazm vohasiga Qoraqum sahrosi tutashib ketgan."
       },
       {
-        q: "3. Xorazm davlatining dastlabki poytaxti qayer bo'lgan?",
-        options: ["Qadimgi Tuproqqal'a", "Kat shahri", "Buxoro", "Samarqand"],
-        correct: 0,
+        q: "3. Xorazm davlatining qadimgi poytaxti qayer bo'lgan?",
+        options: ["Kat shahri", "Tuproqqal'a", "Buxoro", "Samarqand"],
+        correct: 1,
         exp: "Xorazmning dastlabki poytaxti Tuproqqal'a bo'lgan."
       },
       {
         q: "4. Qang' davlati tarkibidan dastlab ajralib chiqqan sulola kimlar edi?",
-        options: ["Afrig'iylar sulolasi", "Somoniylar sulolasi", "Qoraxoniylar sulolasi", "G'aznaviylar sulolasi"],
-        correct: 0,
+        options: ["Somoniylar sulolasi", "Qoraxoniylar sulolasi", "Afrig'iylar sulolasi", "G'aznaviylar sulolasi"],
+        correct: 2,
         exp: "Qang' davlatidan dastlab Afrig'iylar sulolasi ajralib chiqqan."
       },
       {
@@ -657,177 +656,165 @@
       },
       {
         q: "6. Xorazmda VIII asrgacha qaysi dinning ta'siri kuchli bo'lgan?",
-        options: ["Zardushtiylik dinining", "Islom dinining", "Buddizm dinining", "Xristianlik dinining"],
-        correct: 0,
+        options: ["Islom dinining", "Zardushtiylik dinining", "Buddizm dinining", "Xristianlik dinining"],
+        correct: 1,
         exp: "VIII asrgacha Xorazmda zardushtiylik dini ta'siri kuchli edi."
       },
       {
-        q: "7. Xorazm ta'lim tizimida nima katta jinoyat deb hisoblangan?",
-        options: ["Yolg'on gapirish", "Kitob o'qimaslik", "Jang qilmaslik", "Suvni tejash"],
-        correct: 0,
-        exp: "Xorazm ta'limida yolg'on gapirish katta jinoyat deb hisoblangan."
+        q: "7. Xorazm ta'lim tizimida nima eng katta jinoyat deb hisoblangan?",
+        options: ["Kitob o'qimaslik", "Jang qilmaslik", "Suvni tejash", "Yolg'on gapirish"],
+        correct: 3,
+        exp: "Xorazm ta'limida yolg'on gapirish eng katta jinoyat deb hisoblangan."
       },
       {
-        q: "8. Xorazm afsonalaridagi suv ilohi va uning nomi qanday edi?",
+        q: "8. Xorazm afsonalaridagi suv ilohining nomi qanday edi?",
         options: ["Xubbi", "Anaxita", "Ishtar", "Anais"],
         correct: 0,
         exp: "Xorazm afsonalarida suv ilohi Xubbi deb atalgan."
       },
-
-      // 9-16: To'g'ri javobi B (index 1) bo'lgan 8 ta savol
       {
-        q: "9. Amudaryo qaysi shahardan o'tgach, hech qanday irmoqlarsiz jazirama sahrolar ichidan oqadi?",
-        options: ["Buxorodan keyin", "Surxon qo'shilgan joyning quyidan boshlab", "Xiva shahridan so'ng", "Urganchdan o'tgach"],
-        correct: 1,
+        q: "9. Amudaryo qaysi daryo yoki soy qo'shilgach irmoqlarsiz oqadi?",
+        options: ["Zarafshon", "Qashqadaryo", "Surxon kelib qo'shilgan joyning quyidan boshlab", "Chirchiq"],
+        correct: 2,
         exp: "Surxon qo'shilgan joyning quyidan boshlab daryo irmoqlarsiz oqadi."
       },
       {
         q: "10. Tuproqqal'a shahar devorining o'rtasida nima bo'lgan?",
-        options: ["Katta bozor", "Darvozaxona", "Ibodatxona", "Saroy bog'i"],
-        correct: 1,
+        options: ["Darvozaxona", "Katta bozor", "Ibodatxona", "Saroy bog'i"],
+        correct: 0,
         exp: "Shahar devorining o'rtasida darvozaxona bo'lgan."
       },
       {
         q: "11. Afrig'iylar sulolasining asoschisi kim?",
-        options: ["Shovshafar", "Afrig'", "Alaeddin", "Arslonxon"],
-        correct: 1,
+        options: ["Afrig'", "Shovshafar", "Alaeddin", "Arslonxon"],
+        correct: 0,
         exp: "Afrig'iylar sulolasining asoschisi Afrig' edi."
       },
       {
-        q: "12. Afrig'iy podshohlari qaysi tangalarni zarb etgan?",
-        options: ["Faqat oltin tangalar", "Orqa tomoniga suvoriy tasvirlari tushirilgan kumush tangalar", "Faqat mis chaqalar", "Bronza medallar"],
-        correct: 1,
+        q: "12. Afrig'iy podshohlari qanday tangalar zarb etgan?",
+        options: ["Oltin tangalar", "Mis chaqalar", "Orqa tomoniga suvoriy tasvirlari tushirilgan kumush tangalar", "Bronza medallar"],
+        correct: 2,
         exp: "Ular orqa tomoniga suvoriy tasvirlari tushirilgan kumush tangalar zarb etgan."
       },
       {
-        q: "13. Zardushtiy ibodatxonalarida diniy marosimlarni bajaruvchi ruhoniylar kimlar edi?",
-        options: ["Oyinlar", "Mobadlar", "Qozilar", "Vazirlar"],
-        correct: 1,
+        q: "13. Zardushtiy ibodatxonalarida marosimlarni bajaruvchi ruhoniylar kimlar edi?",
+        options: ["Mobadlar", "Oyinlar", "Qozilar", "Vazirlar"],
+        correct: 0,
         exp: "Diniy marosimlarni bajaruvchi ruhoniylar mobadlar deb atalgan."
       },
       {
-        q: "14. Xorazmiliklar kimlar bilan madaniy-savdo aloqalarini yo'lga qo'ygan?",
-        options: ["Faqat Xitoy bilan", "Xuroson va Eron bilan", "Faqat Rim bilan", "Faqat Vizantiya bilan"],
+        q: "14. Xorazmiliklar kimlar bilan faol aloqa o'rnatgan?",
+        options: ["Xitoy", "Xuroson, Eron, Vizantiya va turklar", "Rim", "Hindiston"],
         correct: 1,
-        exp: "Xorazmiliklar Xuroson va Eron bilan madaniy-savdo aloqalarini yo'lga qo'ygan."
+        exp: "Xorazmiliklar Xuroson, Eron, Vizantiya va turklar bilan aloqa qilgan."
       },
       {
         q: "15. Olim Istaxriy Xorazm haqida qanday ta'rif bergan?",
-        options: ["«Xorazm eng boy shahardir»", "«Xorazm Jayhunning butun foydasini ola bilgan mamlakatdir»", "«Xorazm sahrodagi jannatdir»", "«Xorazm dengiz bo'yidagi o'lkadir»"],
-        correct: 1,
+        options: ["«Xorazm eng boy shahardir»", "«Xorazm sahrodagi jannatdir»", "«Xorazm Jayhunning butun foydasini ola bilgan mamlakatdir»", "«Xorazm dengiz bo'yidagi o'lkadir»"],
+        correct: 2,
         exp: "Istaxriy Xorazmni Jayhunning foydasini ola bilgan mamlakat deb ta'riflagan."
       },
       {
-        q: "16. Afrig'iylar qaysi asrlarda hukmronlik qilgan xorazmshohlar sulolasi?",
-        options: ["I–II asrlarda", "III–X asrlarda", "XI–XIV asrlarda", "XV–XIX asrlarda"],
-        correct: 1,
+        q: "16. Afrig'iylar Xorazmda qaysi asrlarda hukmronlik qilgan?",
+        options: ["III–X asrlarda", "I–II asrlarda", "XI–XIV asrlarda", "XV–XIX asrlarda"],
+        correct: 0,
         exp: "Afrig'iylar III–X asrlarda hukmronlik qilgan."
       },
-
-      // 17-24: To'g'ri javobi C (index 2) bo'lgan 8 ta savol
       {
         q: "17. Xorazm vohasidan o'tgach, qum tepaliklar chegarasi qayerga buriladi?",
-        options: ["Sharqqa", "Janubga", "Shimoliy-g'arb tomonga", "G'arbga"],
-        correct: 2,
+        options: ["Shimoliy-g'arb tomonga", "Janubga", "Sharqqa", "G'arbga"],
+        correct: 0,
         exp: "Qum tepaliklar chegarasi shimoliy-g'arb tomonga buriladi."
       },
       {
         q: "18. Tuproqqal'ada markazdan yuqoriroqda nima joylashgan edi?",
-        options: ["Katta bozor", "Harbiy ombor", "Ibodatxona majmuasi", "Hokim saroyi"],
-        correct: 2,
+        options: ["Harbiy ombor", "Ibodatxona majmuasi", "Katta bozor", "Hokim saroyi"],
+        correct: 1,
         exp: "Markazdan yuqoriroqda ibodatxona majmuasi joylashgan edi."
       },
       {
-        q: "19. Xorazmning hukmronlik ramzlari nimalar edi?",
-        options: ["Arslon va yo'lbars", "Qo'y va tulki", "Burgut va lochin", "Bo'ri va burgut"],
-        correct: 2,
+        q: "19. Xorazmning qadimiy hukmronlik ramzlari nimalar edi?",
+        options: ["Arslon va yo'lbars", "Burgut va lochin", "Qo'y va tulki", "Bo'ri va burgut"],
+        correct: 1,
         exp: "Xorazmning hukmronlik ramzlari burgut va lochin edi."
       },
       {
-        q: "20. Ta'lim maskanlarida bolalarga asosan nimalardan saboq berilgan?",
-        options: ["Faqat she'riyatdan", "Faqat astranomiyadan", "O'qish, yozish va jang san'atidan", "Faqat dehqonchilikdan"],
+        q: "20. Xorazm ta'lim maskanlarida bolalarga nimalar o'rgatilgan?",
+        options: ["She'riyat", "Astronomiya", "O'qish, yozish va jang san'atidan saboq berilgan", "Dehqonchilik"],
         correct: 2,
         exp: "Bolalarga o'qish, yozish va jang san'atidan saboq berilgan."
       },
       {
-        q: "21. Xubbi dom-daraksiz g'oyib bo'lgan vaqtda taxtda o'tirgan hukmdor kim?",
-        options: ["Doro", "Kir", "Jamshid", "Afrig'"],
-        correct: 2,
+        q: "21. Xubbi g'oyib bo'lgan vaqtda taxtda o'tirgan hukmdor kim edi?",
+        options: ["Jamshid ismli hukmdor", "Kir", "Doro", "Afrig'"],
+        correct: 0,
         exp: "Xubbi g'oyib bo'lgan vaqtda Jamshid hukmdor edi."
       },
       {
-        q: "22. Xorazm diyori qaysi sohalar yuqori darajada rivojlangan edi?",
-        options: ["Faqat baliqchilik va ovchilik", "Faqat ko'chmanchilik", "Sug'orma dehqonchilik, hunarmandchilik, chorvachilik va savdo-sotiq", "Faqat kemaсозlik"],
-        correct: 2,
-        exp: "Xorazmda sug'orma dehqonchilik, hunarmandchilik, chorvachilik va savdo-sotiq rivojlangan edi."
+        q: "22. Xorazmda qaysi xo'jalik tarmoqlari yuqori rivojlangan edi?",
+        options: ["Baliqchilik va ovchilik", "Sug'orma dehqonchilik va hunarmandchilik", "Ko'chmanchilik", "Kemasozlik"],
+        correct: 1,
+        exp: "Xorazmda sug'orma dehqonchilik va hunarmandchilik rivojlangan."
       },
       {
-        q: "23. Xorazm hunarmandlari tomonidan yasalgan narsalar nimani bezab turgan?",
-        options: ["Faqat oddiy uylarni", "Faqat ko'cha devorlarini", "Sopol idishlar saroylarni bezab turgan", "Faqat qurollarni"],
-        correct: 2,
+        q: "23. Xorazm hunarmandlari yasagan sopol idishlar nimani bezab turgan?",
+        options: ["Oddiy uylarni", "Ko'cha devorlarini", "Qurollarni", "Saroylarni"],
+        correct: 3,
         exp: "Hunarmandlar yasagan sopol idishlar saroylarni bezab turgan."
       },
       {
-        q: "24. Xorazm poytaxti Tuproqqal'a hozir qayerda joylashgan?",
-        options: ["Xiva shahrida", "Urganch tumanida", "Ellikqal'a tumanida", "Beruniy tumanida"],
-        correct: 2,
+        q: "24. Xorazmning qadimgi poytaxti Tuproqqal'a hozir qayerda joylashgan?",
+        options: ["Xiva shahrida", "Ellikqal'a tumanida", "Urganch tumanida", "Beruniy tumanida"],
+        correct: 1,
         exp: "Tuproqqal'a hozirgi Ellikqal'a tumanida joylashgan."
       },
-
-      // 25-32: To'g'ri javobi D (index 3) bo'lgan 8 ta savol
       {
         q: "25. Xorazm vohasidan o'tgach, qum tepaliklar qayerga borib yetadi?",
-        options: ["Orol dengiziga", "Kaspiy dengiziga", "Buxoro vohasiga", "Qorako'l ko'ligacha"],
-        correct: 3,
+        options: ["Orol dengiziga", "Kaspiy dengiziga", "Qorako'l ko'ligacha", "Buxoro vohasiga"],
+        correct: 2,
         exp: "Qum tepaliklar chegarasi Qorako'l ko'ligacha borib yetadi."
       },
       {
-        q: "26. Qasr imoratlari necha qavatli shoh saroyi bo'lgan?",
-        options: ["Bir qavatli", "Uch qavatli", "To'rt qavatli", "Ikki qavatli"],
-        correct: 3,
+        q: "26. Tuproqqal'adagi qasr imoratlari necha qavatli shoh saroyi bo'lgan?",
+        options: ["Ikki qavatli", "Uch qavatli", "To'rt qavatli", "Bir qavatli"],
+        correct: 0,
         exp: "Qasr imoratlari ikki qavatli shoh saroyi bo'lgan."
       },
       {
-        q: "27. Xorazm poytaxti bo'lgan shahrining umumiy maydoni qancha edi?",
-        options: ["5 gektar", "10 gektar", "50 gektar", "20 gektarni tashkil etgan"],
-        correct: 3,
+        q: "27. Xorazm poytaxti bo'lgan shaharning umumiy maydoni qancha edi?",
+        options: ["5 gektar", "10 gektar", "20 gektarni tashkil etgan", "50 gektar"],
+        correct: 2,
         exp: "Xorazm poytaxtining umumiy maydoni 20 gektarni tashkil etgan."
       },
       {
-        q: "28. Kat shahrida yangi saroy qurdirgan shoh kim?",
-        options: ["Afrig'", "Shovshafar", "Jamshid", "Xubbi"],
-        correct: 0, // wait, let's make sure it goes to D (index 3) to keep balance:
-        // Let's rewrite options so index 3 is correct.
-      },
-      {
-        q: "28. Kat shahrida yangi saroy qurdirgan shoh kim edi?",
-        options: ["Faqat qabila sardori", "Faqat tashqi elchi", "Faqat tashrif buyurgan savdogar", "Xorazmshoh Afrig'"],
-        correct: 3,
+        q: "28. Kat shahrida yangi Alfir qasr-saroyini kim qurdirgan?",
+        options: ["Shovshafar", "Xorazmshoh Afrig'", "Jamshid", "Xubbi"],
+        correct: 1,
         exp: "Kat shahrida yangi saroyni Afrig' qurdirgan."
       },
       {
-        q: "29. Xorazmda suv muqaddas hisoblangan, Xubbi esa nimaning saqlovchisi sifatida qadrlangan?",
-        options: ["Faqat qum bo'ronining", "Faqat yer osti boyligining", "Faqat osmon yulduzining", "Suvning saqlovchisi"],
+        q: "29. Xorazmda Xubbi nimaning saqlovchisi sifatida qadrlangan?",
+        options: ["Qum bo'ronining", "Yer osti boyligining", "Osmon yulduzining", "Suvning saqlovchisi"],
         correct: 3,
         exp: "Xubbi suvning saqlovchisi sifatida qadrlangan."
       },
       {
-        q: "30. Afrig'iy podshohining nomi bilan bog'liq tanga qaysi?",
-        options: ["Doro tangasi", "Aleksandr tangasi", "Samoniy tangasi", "Shovshafar tangasi"],
-        correct: 3,
-        exp: "Afrig'iy podshohi Shovshafar tangasi mavjud."
+        q: "30. Abu Rayhon Beruniy ma'lumotiga ko'ra, Afrig'iy podshohlari tangalariga nimaning surati tushirilgan?",
+        options: ["Arslon", "Burgut", "Suvoriy", "Tuya"],
+        correct: 2,
+        exp: "Tangalarga suvoriy tasvirlari tushirilgan."
       },
       {
         q: "31. Xorazmda qayiqlarning burnida kimning haykali o'rnatilgan edi?",
-        options: ["Jamshidning", "Afrig'ning", "Istaxriyning", "Xubbi ayolning"],
-        correct: 3,
-        exp: "Qayiqlarning burnida Xubbi ayolning haykali o'rnatilgan edi."
+        options: ["Xubbining onasining", "Jamshidning", "Afrig'ning", "Istaxriyning"],
+        correct: 0,
+        exp: "Qayiqlarning burnida Xubbining onasining haykali o'rnatilgan edi."
       },
       {
-        q: "32. Xorazm poytaxti ko'chirilgan Kat shahri qayerda joylashgan edi?",
-        options: ["Tog' etagida", "Sahro o'rtasida", "Daryo qirg'og'ida", "Qadimgi poytaxt yonida"],
-        correct: 3,
-        exp: "Kat shahri qadimgi poytaxt yonida joylashgan edi."
+        q: "32. Xorazm poytaxti ko'chirilgan Kat shahri qayerda bunyod etilgan?",
+        options: ["Tog' etagida", "Sahro o'rtasida", "Qadimgi poytaxt yonida", "Daryo qirg'og'ida"],
+        correct: 2,
+        exp: "Kat shahri qadimgi poytaxt yonida qayta tiklangan."
       }
     ];
 

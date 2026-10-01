@@ -407,7 +407,7 @@
       [
         { id: 1, left: "Apennin yarimoroli", right: "Italiya joylashgan hudud" },
         { id: 2, left: "«Italiya» nomi", right: "«Buzoqchalar mamlakati» ma’nosini bildiradi" },
-        { id: 3, left: "Mil. avv. 753-yil", right: "Rivoyatga ko‘ra Rim shahriga asos solingan sana" },
+        { id: 3, left: "Mil. avv. 753-yil", right: "Rivoyatga ko‘ra Rim shahriga Romul va Rem asos solgan yil" },
         { id: 4, left: "Romul va Rem", right: "Rimga asos solgan aka-uka ikizaklar" }
       ],
       // 2-bosqich: Rim respublikasi va organlar
@@ -441,14 +441,14 @@
       // 6-bosqich: Sezar va respublikaning qulashi
       [
         { id: 21, left: "Mil. avv. 49-yil", right: "Yuliy Sezar Rubikon daryosidan kechib o‘tgan sana" },
-        { id: 22, left: "«Qur’a tashlandi!»", right: "Sezar Rubikondan o‘tayotganda aytgan mashhur iborasi" },
+        { id: 22, left: "Rubikon daryosi", right: "Yuliy Sezar mil. avv. 49-yilda kechib o‘tgan daryo" },
         { id: 23, left: "Mil. avv. 44-yil", right: "Yuliy Sezar Senatda fitnachilar tomonidan o‘ldirilgan yil" },
         { id: 24, left: "Brut", right: "Sezarga qarshi fitnaga rahbarlik qilgan uning do‘sti" }
       ],
       // 7-bosqich: Imperiya va Oktavian Avgust
       [
         { id: 25, left: "Mil. avv. 29-yil", right: "Oktavian Senatdan imperator unvoni va Avgust nomini olgan sana" },
-        { id: 26, left: "Mark Antoniy va Kleopatra", right: "Oktavian tomonidan mag‘lub etilgan Misr hukmdorlari" },
+        { id: 26, left: "Mark Antoniy va Kleopatra", right: "Oktavian tomonidan flotlari tor-mor etilgan ittifoqchilar" },
         { id: 27, left: "Milodiy II asr boshlari", right: "Rim imperiyasining «oltin asri» (Trayan davri)" },
         { id: 28, left: "Trayan ustuni", right: "Daklar bilan urush manzaralari tasvirlangan 40 metrli inshoot" }
       ],
@@ -780,9 +780,9 @@
       },
       {
         q: "22. Milodiy 395-yilda Rim imperiyasi nechta qismga bo‘lindi?",
-        options: ["Uchta qismga", "Ikki qismga (G‘arbiy va Sharqiy)", "To‘rtta qismga", "Beshita qismga"],
+        options: ["Uchta qismga", "Ikki qismga (G‘arbiy va Sharqiy)", "To‘rtta qismga", "Besh qismga"],
         correct: 1,
-        exp: "Imparator Feodosiy o‘limidan so‘ng milodiy 395-yili Rim imperiyasi ikkiga bo‘lindi."
+        exp: "Imperator Feodosiy o‘limidan so‘ng milodiy 395-yili Rim imperiyasi ikkiga bo‘lindi."
       },
       {
         q: "23. Alarix boshchiligidagi german qabilalari — gotlar Rimni qachon qurshab olib talaganlar?",
@@ -971,7 +971,7 @@
       if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
       
       if (fb) {
-        if(score >= 36) fb.innerText = "Mukammal natija! V Bo‘limni 100% to‘liq o‘zlashtiribsiz 🏆";
+        if(score === testQuestions.length) fb.innerText = "Mukammal natija! Barcha savollarga to‘g‘ri javob berdingiz 🏆";
         else if(score >= 28) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
         else fb.innerText = "V Bo‘lim mavzularini qayta o‘qib chiqish tavsiya etiladi 📚";
       }
@@ -988,7 +988,15 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function shuffleTestOptions() {
+      testQuestions.forEach(question => {
+        const tagged=question.options.map((text,index)=>({text,correct:index===question.correct}));
+        for(let i=tagged.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[tagged[i],tagged[j]]=[tagged[j],tagged[i]];}
+        question.options=tagged.map(item=>item.text); question.correct=tagged.findIndex(item=>item.correct);
+      });
+    }
     // Dastlabki ishga tushirish
+    shuffleTestOptions();
     initMatch();
     loadFlashcard();
     loadTestQuestion();

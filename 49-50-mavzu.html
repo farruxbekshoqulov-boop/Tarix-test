@@ -424,7 +424,7 @@
       [
         { id: 13, left: "Vifleyem", right: "Milodiy I asr boshlarida Iso tug‘ilgan Falastindagi shahar" },
         { id: 14, left: "Pontiy Pilat", right: "Iso payg‘ambarga o‘lim jazosini tasdiqlagan Rim noibi" },
-        { id: 15, left: "Golgofa tog‘i", right: "Iso payg‘ambar dafn etilgan va keyinchalik qayta tirilib osmonga ko‘tarilgan joy" },
+        { id: 15, left: "Golgofa tog‘i", right: "Iso jasadi dafn qilingan joy; rivoyatga ko‘ra, uchinchi kuni qayta tirilgan joy" },
         { id: 16, left: "Iso Masih", right: "Uchinchi kuni qayta tirilib, osmonga ko‘tarilgan deb ishongan shaxs" }
       ],
       [
@@ -537,7 +537,7 @@
       { q: "2. Badavlat kishilar yashaydigan tepaliklar bag‘rida nimalar paydo bo‘lgan?", a: "Tomoshabog‘lar va chorbo‘g‘lar." },
       { q: "3. Rim imperatorlari poytaxt aholisi uchun qanday majmualar qurdirishgan?", a: "«Termalar» deb atalgan ko‘rkam hammomlar." },
       { q: "4. Yunoncha «termos» so‘zi qanday ma’noni bildiradi?", a: "«Issiq»." },
-      { q: "5. Termalar qoshida nimalar faoliyat yuritgan?", a: "Suzish uchun haysenyurlar, sport zallari va kutubxona." },
+      { q: "5. Termalar qoshida nimalar faoliyat yuritgan?", a: "Suzish uchun hovuzlar, sport zallari va kutubxona." },
       { q: "6. Kambag‘al rimliklarning farzandlari nima sababdan maktabda o‘qishmagan?", a: "Xo‘jalik ishlarida ota-onalariga yordam berganliklari sababli." },
       { q: "7. Badavlat xonadon farzandlari maktabga necha yoshdan qatnashgan?", a: "6 yoshdan." },
       { q: "8. Yozuvni o‘rganayotgan bolalar harflarni qanday taxtachalarga o‘yib yozishgan?", a: "Mum qoplangan taxtachalarga stil deb ataluvchi metall tayoqcha bilan." },
@@ -703,7 +703,7 @@
         q: "13. Rimliklar qanday yangi qurilish materialini ixtiro qilishgan?",
         options: ["Beton", "Pishiq g‘isht", "Marmar", "Granit"],
         correct: 0,
-        exp: "Rimliklar yangi qurilish materialil bo‘lmish betonni ixtiro qilishgan."
+        exp: "Rimliklar yangi qurilish materiali bo‘lmish betonni ixtiro qilishgan."
       },
       {
         q: "14. Xristianlik dini qachon vujudga kelgan?",
@@ -745,7 +745,7 @@
         q: "20. Rimdagi termalar qanday imkoniyatlarga ega bo‘lgan?",
         options: ["Faqat suv quyish uchun", "Faqat uchrashuv uchun", "Faqat sport uchun", "Suzish hovuzlari, sport zallari va kutubxona"],
         correct: 3,
-        exp: "Termalarda suzish uchun haysenyurlar, sport zallari va kutubxona bo‘lgan."
+        exp: "Termalarda suzish uchun hovuzlar, sport zallari va kutubxona bo‘lgan."
       },
       {
         q: "21. Betonning ishlatilishi rimliklarga qanday imkon bergan?",
@@ -802,16 +802,16 @@
         exp: "Amfiteatrlar, sirklar va teatrlar, ibodatxonalar, saroylar, triumf arkalari barpo etildi."
       },
       {
-        q: "30. Iso payg‘ambar necha yoshida odamlarga Xudyo oyatlari haqida hikoyalar so‘zlay boshlagan?",
+        q: "30. Iso payg‘ambar necha yoshida odamlarga Xudo oyatlari haqida hikoyalar so‘zlay boshlagan?",
         options: ["20 yoshida", "30 yoshida", "40 yoshida", "12 yoshida"],
         correct: 1,
         exp: "Rivoyatga ko‘ra, 30 yoshida Iso o‘n ikki nafar shogirdi bilan Falastin bo‘ylab sayohat qilib..."
       },
       {
         q: "31. Qadimgi Rimda har bir termada nimalar mavjud bo‘lgan?",
-        options: ["Faqat issiq suv", "Faqat savdo rastalari", "Suzish uchun haysenyurlar, sport zallari va kutubxona", "Faqat dindorlar yig‘ini"],
+        options: ["Faqat issiq suv", "Faqat savdo rastalari", "Suzish uchun hovuzlar, sport zallari va kutubxona", "Faqat dindorlar yig‘ini"],
         correct: 2,
-        exp: "Termalarda suzish uchun haysenyurlar, sport zallari, shuningdek kutubxona bo‘lgan."
+        exp: "Termalarda suzish uchun hovuzlar, sport zallari, shuningdek kutubxona bo‘lgan."
       },
       {
         q: "32. Xristian jamoalarining yetakchilari va peshvolari kimlar edi?",
@@ -821,7 +821,7 @@
       },
       {
         q: "33. Qadimgi Rimda tarixchilar va ularning asarlari moslashtirilganda qaysi biri xato?",
-        options: ["Tit Liviy — «Rim tarixi»", "Plutarx — sarkardalar hayoti", "Kvint Kursiy Ruf — «Makedoniyalik Aleksandr tarixi»", "Gerodot — «Panteon tarixi»"],
+        options: ["Tit Liviy — «Rim tarixi»", "Plutarx — sarkardalar hayoti", "Kvint Kursiy Ruf — «Makedoniyalik Aleksandr tarixi»", "Tit Liviy — «Makedoniyalik Aleksandr tarixi»"],
         correct: 3,
         exp: "Gerodot bu mavzuga tegishli emas va Panteon tarixi degan asar yo‘q."
       },
@@ -922,7 +922,7 @@
       if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
       
       if (fb) {
-        if(score >= 32) fb.innerText = "Mukammal natija! 49–50-§ ni 100% to‘liq o‘zlashtiribsiz 🏆";
+        if(score === testQuestions.length) fb.innerText = "Mukammal natija! Barcha savollarga to‘g‘ri javob berdingiz 🏆";
         else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
         else fb.innerText = "Mavzu darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
       }
@@ -939,7 +939,16 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Dastlabki ishga tushirish (xavfsiz va to‘g‘ridan-to‘g‘ri chaqiruv)
+    function shuffleTestOptions() {
+      testQuestions.forEach(question => {
+        const tagged = question.options.map((text, index) => ({ text, correct: index === question.correct }));
+        for (let i = tagged.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [tagged[i], tagged[j]] = [tagged[j], tagged[i]]; }
+        question.options = tagged.map(item => item.text);
+        question.correct = tagged.findIndex(item => item.correct);
+      });
+    }
+    // Dastlabki ishga tushirish
+    shuffleTestOptions();
     initMatch();
     loadFlashcard();
     loadTestQuestion();

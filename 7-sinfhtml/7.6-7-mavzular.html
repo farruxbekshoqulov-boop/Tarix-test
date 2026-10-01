@@ -384,7 +384,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (36 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) -->
+    <!-- 3. TEST SINOVI (36 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -433,11 +433,11 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 1-ustun atamalar, 2-ustun izohlar) ---
+    // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
       [
         { id: 1, left: "Eftaliylar", right: "V–VI asrlarda Eftalon sulolasiga mansub qabila ittifoqi" },
-        { id: 2, left: "Vaxshunvar", right: "Eftaliylar davlatining asoschisi ekanligi aytiladigan shoh ismi" },
+        { id: 2, left: "Eftalon", right: "Eftaliylar ittifoqining nomi kelib chiqqan shoh ismi" },
         { id: 3, left: "Katulf", right: "Firdavsiyning «Shohnoma»sida tilga olingan eftaliylar podshosi" },
         { id: 4, left: "Poykand", right: "Arab manbalarida «Madina at-tujjor» («Savdogarlar shahri») deb atalgan shahar" }
       ],
@@ -448,15 +448,15 @@
         { id: 8, left: "Zahoki Maron", right: "Naxshab vohasidagi eftaliylar davriga oid yadroviy yodgorlik/qal'a" }
       ],
       [
-        { id: 9, left: "Shahri Vayron", right: "Buxorodagi eftaliylar davriga oid qadimiy qal'a/shahar" },
+        { id: 9, left: "Shahri Vayron", right: "Buxorodagi eftaliylar davriga oid qadimiy qal'a/shahar xarobasi" },
         { id: 10, left: "Fir qal'asi", right: "Xorazmdagi eftaliylar davriga oid arxeologik yodgorlik" },
         { id: 11, left: "Peroz", right: "484-yilda eftaliylarga qarshi urushda halok bo'lgan sosoniylar shohi" },
-        { id: 12, left: "Prokopiy Kesariyskiy", right: "Eftaliylarning adolatli mezonlari va ahliga g'amxo'rligini yozgan vizantiyalik tarixchi" }
+        { id: 12, left: "Prokopiy Kesariyskiy", right: "Eftaliylarning adolatli mezonlari va ahliga g'amxo'rligini yozgan tarixchi" }
       ],
       [
-        { id: 13, left: "Baqtriya yozuvi", right: "Eftaliylar alifbosi asos qilib olingan yozuv turi (25 harfli)" },
+        { id: 13, left: "Baqtriya yozuvi", right: "25 harfdan iborat eftaliylar alifbosi asos qilib olingan yozuv turi" },
         { id: 14, left: "Zog'ariq, Darg'om", right: "Turon hududida qazilgan yirik qadimiy sug'orish kanallari" },
-        { id: 15, left: "Tangalar", right: "Buxoro, Poykand, Naxshab va Samarqandda mahalliy hokimlar chiqargan pul" },
+        { id: 15, left: "Turk elchisi", right: "568–569-yillarda Vizantiya imperatori huzurida eftaliylar haqida gapirgan shaxs" },
         { id: 16, left: "Kengash", right: "Saltanatning obro'li a'zolari va urug' boshliqlaridan iborat oliy organ" }
       ]
     ];
@@ -555,25 +555,25 @@
       { q: "1. Eftaliylar qaysi asrlarda Turon hududida hukmronlik qilgan?", a: "V–VI asrlarda." },
       { q: "2. Eftaliylar qabilalar ittifoqiga kim asos solgan?", a: "Eftalon sulolasiga mansub qabilalar." },
       { q: "3. «Eftalon» so'zi nimani anglatadi?", a: "Shoh ismidan olingan." },
-      { q: "4. Firdavsiyning «Shohnoma» asarida eftaliylar podshosi kim deb yuritiladi?", a: "Katulf (Shohnomadagi Gatfarga o'xshatilgan)." },
+      { q: "4. Firdavsiyning «Shohnoma» asarida eftaliylar podshosi kim deb yuritiladi?", a: "Katulf." },
       { q: "5. Eftaliylar davlatining dastlabki poytaxti qayerda bo'lgan?", a: "Buxoro yaqinidagi Poykent va Varaxsha shaharlari." },
-      { q: "6. Eftaliylar davlatining hududi qaysi o'lkalarni o'z ichiga olgan?", a: "O'rta Osiyodan tashqari Sharqiy Turkiston, Afg'oniston, Shimoliy Hindiston va hozirgi Pokiston." },
-      { q: "7. Eftaliylar davlat boshqaruvida hokimiyat qanday amalga oshirilgan?", a: "Yakka hukmdor tomonidan boshqarilgan." },
+      { q: "6. Eftaliylar davlatining hududi qaysi o'lkalarni o'z ichiga olgan?", a: "O'rta Osiyodan tashqari Sharqiy Turkiston, Afg'oniston, Shimoliy Hindiston va Pokiston." },
+      { q: "7. Eftaliylar davlat boshqaruvida hokimiyat qanday amalga oshirilgan?", a: "Yakka hukmdor tomonidan." },
       { q: "8. Eftaliylarda vorislik qanday tartibda hal etilgan?", a: "Avlodga o'tmay, kengash munosib nomzodni aniqlab taqdim etgan." },
-      { q: "9. Eftaliylardagi oliy kengash kimlardan iborat bo'lgan?", a: "Saltanatning obro'li kishilari va obro'li a'zolaridan." },
+      { q: "9. Eftaliylardagi oliy kengash kimlardan iborat bo'lgan?", a: "Saltanatning obro'li kishilari va urug' boshliqlaridan." },
       { q: "10. Mahalliy boshqaruv kimlar tomonidan olib borilgan?", a: "Mahalliy xonadonlar (sulolalar) tomonidan." },
-      { q: "11. Mahalliy hukmdorlar qanday unvonga ega bo'lgan va nima qilgan?", a: "Shoh (sho) unvoniga ega bo'lib, o'z kumush yoki mis tangalarini zarb etgan." },
+      { q: "11. Mahalliy hukmdorlar qanday unvonga ega bo'lgan va nima qilgan?", a: "Shoh (sho) unvoniga ega bo'lib, o'z tangalarini zarb etgan." },
       { q: "12. 484-yilda eftaliylarga qarshi urushda halok bo'lgan sosoniylar shohi kim?", a: "Peroz." },
       { q: "13. Eftaliylar davrida qaysi davlatlar bilan xalqaro savdoda faol qatnashgan?", a: "Xitoy, Hindiston, Eron va Vizantiya bilan." },
       { q: "14. Eftaliylar dastlab savdoda qaysi tangalardan foydalangan?", a: "Sosoniy hukmdorlarining kumush tangalaridan." },
       { q: "15. Qaysi shaharlarda mahalliy hokimlar o'z chaqa tangalarini chiqargan?", a: "Buxoro, Poykand, Vardona, Naxshab, Samarqand va Xorazmda." },
-      { q: "16. Eftaliylar davrida qaysi soha yuksak darajada rivojlangan?", a: "Shishasozlik (rangdorligi va tiniqligi Vizantiyadan ustun bo'lgan)." },
+      { q: "16. Eftaliylar davrida qaysi soha yuksak darajada rivojlangan?", a: "Shishasozlik." },
       { q: "17. Turon aholisi asosan qaysi tillarda so'zlashgan?", a: "Sug'd tili va turkiy tilda." },
-      { q: "18. Sug'd tili qanday vazifani bajargan?", a: "Xalqaro savdo tili sifatida Yettisuv, Farg'ona, Sharqiy Turkiston va Xitoyda qo'llanilgan." },
+      { q: "18. Sug'd tili qanday vazifani bajargan?", a: "Xalqaro savdo tili sifatida qo'llanilgan." },
       { q: "19. Eftaliylar alifbosi qaysi yozuv asosida shakllangan?", a: "Baqtriya yozuvi asosida (25 harfdan iborat)." },
       { q: "20. Eftaliylar davrida qizlar qanday harbiy mashqlarga jalb qilingan?", a: "Otda yurish, kamondan o'q otish kabi jismoniy mashqlarga." },
-      { q: "21. Eftaliylar asosman qaysi dinga e'tiqod qilishgan?", a: "Zardushtiylikka (shuningdek tangrilichilik, buddizm, moniylik ham bo'lgan)." },
-      { q: "22. Vizantiya elchisi Zemarxning 568–569-yillardagi ma'lumotiga ko'ra eftaliylar qayerda yashagan?", a: "Shaharlarda." },
+      { q: "21. Eftaliylar asosan qaysi dinga e'tiqod qilishgan?", a: "Zardushtiylikka." },
+      { q: "22. 568–569-yillarda Vizantiya imperatori huzurida bo'lgan turk elchisi eftaliylar haqida nima degan?", a: "«Ular shaharlik sulolalar, oliy hazratlari», — deb javob bergan." },
       { q: "23. V asrda Panjikentda barpo etilgan yangi shahar maydoni qancha bo'lgan?", a: "18 gektar." },
       { q: "24. Poykand shahri arab manbalarida qanday atalgan?", a: "«Madina at-tujjor» («Savdogarlar shahri»)." },
       { q: "25. Poykand shahri necha qismdan iborat yirik markaz bo'lgan?", a: "Uch qismli." },
@@ -626,7 +626,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (36 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
+    // --- 3. TEST SINOVI (36 TA TEST - "faqat" so'zisiz va tabiiy variantlar) ---
     const testQuestions = [
       {
         q: "1. Eftaliylar Turon hududida qaysi asrlarda hukmronlik qilganlar?",
@@ -654,7 +654,7 @@
       },
       {
         q: "5. Eftaliylarda vorislik qanday tartibda hal etilgan?",
-        options: ["Faqat to'ng'ich o'g'ilga o'tgan", "Avlodga o'tmay, eng munosib nomzodni kengash aniqlagan", "Xalq ovozi bilan saylangan", "Tasodifiy qura tashlash yo'li bilan"],
+        options: ["To'ng'ich o'g'ilga meros bo'lib qolgan", "Avlodga o'tmay, munosib nomzodni kengash aniqlagan", "Xalq tomonidan umumiy ovoz berish orqali saylangan", "Qura tashlash yo'li bilan aniqlangan"],
         correct: 1,
         exp: "Vorislik avlodga o'tmay, kengash munosib nomzodni aniqlab taqdim etgan."
       },
@@ -666,45 +666,45 @@
       },
       {
         q: "7. Eftaliylar davrida quyidagi qaysi shaharlarda mahalliy hokimlar o'z chaqa tangalarini chiqargan?",
-        options: ["Faqat Samarqandda", "Faqat Xorazmda", "Buxoro, Poykand, Vardona, Naxshab, Samarqand va Xorazmda", "Faqat Termizda"],
-        correct: 2,
+        options: ["Samarqand va Xorazmda", "Buxoro, Poykand, Vardona, Naxshab, Samarqand va Xorazmda", "Termiz va Chochda", "Nasaf va Nasiba shahrida"],
+        correct: 1,
         exp: "Buxoro, Poykand, Vardona, Naxshab, Samarqand va Xorazmda mahalliy hokimlar tanga chiqargan."
       },
       {
         q: "8. Eftaliylar davrida qaysi soha Vizantiyadan ham ustun darajada rivojlangan edi?",
-        options: ["Kulolchilik", "Shishasozlik", "Zargarlik", "Kematasozlik"],
+        options: ["Kulolchilik va qandolatchilik", "Shishasozlik", "Zargarlik va qurolsozlik", "Kematasozlik va to'qimachilik"],
         correct: 1,
         exp: "Shishasozlik rangdorligi va tiniqligi jihatidan Vizantiyadan ustun turgan."
       },
       {
         q: "9. Turon aholisi o'rtasida qaysi tillar muloqot vositasi bo'lgan?",
-        options: ["Sug'd tili va turkiy tilda", "Faqat arab tili", "Faqat yunon tili", "Faqat hind tili"],
+        options: ["Sug'd tili va turkiy tilda", "Arab va fors tillarida", "Yunon va lotin tillarida", "Hind va xitoy tillarida"],
         correct: 0,
         exp: "Aholi sug'd tili va turkiy tilda so'zlashgan."
       },
       {
         q: "10. Sug'd tili qanday maqomga ega edi?",
-        options: ["Faqat diniy til", "Faqat saroy tili", "Xalqaro savdo tili", "Faqat yozma adabiyot tili"],
+        options: ["Diniy marosimlar tili", "Saroy va devonxona tili", "Xalqaro savdo tili", "Yozma adabiyot va bitiklar tili"],
         correct: 2,
         exp: "Sug'd tili keng hududlarda xalqaro savdo tili sifatida qo'llanilgan."
       },
       {
-        q: "11. Eftaliylar alifbosi qaysi yozuv asosida shakllangan edi?",
-        options: ["Sug'd yozuvi", "Uyg'ur yozuvi", "Baqtriya yozuvi", "Lotin yozuvi"],
+        q: "11. Eftaliylar alifbosi qaysi yozuv asosida shakllangan edi va nechta harfdan iborat bo'lgan?",
+        options: ["Sug'd yozuvi, 20 harf", "Uyg'ur yozuvi, 30 harf", "Baqtriya yozuvi, 25 harf", "Lotin yozuvi, 26 harf"],
         correct: 2,
         exp: "Eftaliylar alifbosi Baqtriya yozuvi asosida shakllangan va 25 harfdan iborat bo'lgan."
       },
       {
         q: "12. Eftaliylar davrida qizlar qanday tarbiyaga jalb qilingan?",
-        options: ["Faqat uy xo'jaligiga", "Otda yurish, kamondan o'q otish kabi jismoniy mashqlarga", "Faqat musiqa va raqsga", "Faqat tibbiyotga"],
+        options: ["Uy xo'jaligi va mato to'qishga", "Otda yurish, kamondan o'q otish kabi jismoniy mashqlarga", "Musiqa, raqs va san'atga", "Tabobat va o'simlik yig'ishga"],
         correct: 1,
         exp: "Qizlar ham otda yurish, kamondan o'q otish kabi jismoniy mashqlarga jalb qilingan."
       },
       {
-        q: "13. Vizantiya elchisi Zemarxning 568–569-yillardagi ma'lumotiga ko'ra eftaliylar qayerda yashagan?",
-        options: ["Faqat ko'chmanchi o'tovlarda", "Shaharlarda", "Faqat tog' g'orlarida", "Faqat sahro chekkalarida"],
+        q: "13. 568–569-yillarda Vizantiya imperatori huzurida bo'lgan turk elchisi eftaliylar haqida nima degan?",
+        options: ["Ular tog'li hududlarda ko'chmanchi bo'lib yashaydi degan", "«Ular shaharlik sulolalar, oliy hazratlari», — deb javob bergan", "Ular savdo karvonlarini tunaydigan qabila degan", "Ular boshqa qit'aga ko'chib ketgan degan"],
         correct: 1,
-        exp: "Zemarx eftaliylar shaharlarda yashashini tasdiqlagan."
+        exp: "Turk elchisi imperatorning savoliga «Ular shaharlik sulolalar, oliy hazratlari» deb javob bergan."
       },
       {
         q: "14. V asrda Panjikentda barpo etilgan yangi shahar maydoni qancha edi?",
@@ -750,13 +750,13 @@
       },
       {
         q: "21. Turon hududida V asrda qazilgan yirik sug'orish kanallari qaysilar?",
-        options: ["Zog'ariq, Bo'zsuv, Darg'om", "Faqat Amudaryo tarmoqlari", "Faqat Zarafshon ariqlari", "Faqat Farg'ona kanallari"],
+        options: ["Zog'ariq, Bo'zsuv, Darg'om", "Amudaryo va Sirdaryo tarmoqlari", "Zarafshon va Qashqadaryo ariqlari", "Farg'ona va Toshkent kanallari"],
         correct: 0,
         exp: "Zog'ariq, Bo'zsuv, Darg'om kanallari shu davrda barpo etilgan."
       },
       {
         q: "22. Vizantiyalik tarixchi Prokopiy Kesariyskiy eftaliylar haqida nima deb yozgan?",
-        options: ["Ularning shafqatsizligi haqida", "Aholiga g'amxo'rlik ko'rsatishi va adolat mezoniga amal qilishi haqida", "Faqat jangovar taktikasi haqida", "Faqat badavlatligi haqida"],
+        options: ["Ularning urushdagi shafqatsizligi haqida", "Aholiga g'amxo'rlik ko'rsatishi va adolat mezoniga amal qilishi haqida", "Dengiz orqali savdo qilishi haqida", "Me'morchilik san'ati haqida"],
         correct: 1,
         exp: "Prokopiy Kesariyskiy ularning aholiga g'amxo'rligi va adolat mezonini yozgan."
       },
@@ -768,49 +768,49 @@
       },
       {
         q: "24. Eftaliylar davlatining harbiy qudrati nimaga tayangan?",
-        options: ["Faqat piyoda askarlarga", "Kuchli va uyushgan otliq qo'shinga", "Faqat yollanma jangchilarga", "Faqat dengiz flotiga"],
+        options: ["Piyoda askarlar soniga", "Kuchli va uyushgan otliq qo'shinga", "Yollanma jangchilar kuchiga", "Mudofaa devorlariga"],
         correct: 1,
         exp: "Davlat harbiy kuchga — kuchli otliq qo'shinga tayangan."
       },
       {
         q: "25. Eftaliylar davlatining hududi qaysi mintaqalarni o'z ichiga olgan?",
-        options: ["Faqat Movarounnahrni", "Faqat Eron va Iroqni", "O'rta Osiyodan tashqari Sharqiy Turkiston, Afg'oniston, Shimoliy Hindiston va Pokistonni", "Faqat Dashti Qipchoqni"],
+        options: ["Movarounnahr va Xorazm", "Eron va Iroq yerlari", "O'rta Osiyodan tashqari Sharqiy Turkiston, Afg'oniston, Shimoliy Hindiston va Pokiston", "Dashti Qipchoq hududlari"],
         correct: 2,
         exp: "Davlat keng hududlarni, jumladan Shimoliy Hindiston va Afg'onistonni o'z ichiga olgan."
       },
       {
         q: "26. Eftaliylar qaysi dinlarga e'tiqod qilishgan?",
-        options: ["Faqat islomga", "Faqat xristianlikka", "Asosan zardushtiylikka, shuningdek tangrilichilik, buddizm va moniylikka", "Faqat yahudiylikka"],
+        options: ["Islom diniga", "Xristianlik diniga", "Asosan zardushtiylikka, shuningdek tangrilichilik, buddizm va moniylikka", "Yahudiylikka"],
         correct: 2,
         exp: "Asosan zardushtiylik, shuningdek tangrilichilik, buddizm, moniylik ham bo'lgan."
       },
       {
         q: "27. Poykand shahri qanday tuzilishga ega yirik markaz bo'lgan?",
-        options: ["Bir qismli", "Ikki qismli", "Uch qismli", "To'rt qismli"],
+        options: ["Bir qismli mudofaa qal'asi", "Ikki qismli shahar", "Uch qismli yirik markaz", "To'rt qismli qo'rg'on"],
         correct: 2,
         exp: "Poykand uch qismli yirik markaz bo'lgan."
       },
       {
         q: "28. Eftaliylar davrida tashqi savdoda asosiy raqobat kimlar bilan olib borilgan?",
-        options: ["Sosoniy savdohorlari bilan sug'dylar vositachiligida", "Faqat xitoyliklar bilan", "Faqat rimliklar bilan", "Faqat hind savdogarlari bilan"],
+        options: ["Sosoniy savdogarlari bilan sug'dylar vositachiligida", "Xitoy savdogarlari bilan", "Rim imperiyasi savdogarlari bilan", "Hind savdogarlari bilan"],
         correct: 0,
         exp: "Sosoniy savdogarlari bilan raqobatda sug'dylar vositachilik qilgan."
       },
       {
         q: "29. Eftaliylar davrida qaysi shaharlarda shishasozlik rivojlangan edi?",
-        options: ["Faqat Toshkentda", "Turon shahrilarida (Buxoro, Samarqand va boshqalar)", "Faqat Marvda", "Faqat Balxda"],
+        options: ["Toshkent vohasida", "Turon shaharlarida (Buxoro, Samarqand va boshqalar)", "Marv va Balxda", "Sug'd qishloqlarida"],
         correct: 1,
-        exp: "Turon shahrilarida shishasozlik yuksak darajada rivojlangan edi."
+        exp: "Turon shaharlarida shishasozlik yuksak darajada rivojlangan edi."
       },
       {
         q: "30. Eftaliylar davlatida oliy kengash kimlardan tuzilgan edi?",
-        options: ["Faqat dehqonlardan", "Saltanatning obro'li kishilari va urug' boshliqlaridan", "Faqat tashqi elchilardan", "Faqat ruhoniylardan"],
+        options: ["Dehqonlar va hunarmandlardan", "Saltanatning obro'li kishilari va urug' boshliqlaridan", "Tashqi elchi va dindorlardan", "Aksil-hukumat vakillaridan"],
         correct: 1,
         exp: "Kengash saltanatning obro'li kishilari va urug' boshliqlaridan iborat edi."
       },
       {
         q: "31. Eftaliylar davrida bolalarga yoshligidan nima o'rgatilgan?",
-        options: ["Faqat diniy qoidalar", "Ta'lim-tarbiya berilib, o'g'il bolalar harbiy ishga, qizlar jismoniy mashqlarga o'rgatilgan", "Faqat savdo sirlari", "Faqat chet tillari"],
+        options: ["Diniy qoidalar va ibodatlar", "Ta'lim-tarbiya berilib, o'g'il bolalar harbiy ishga, qizlar jismoniy mashqlarga o'rgatilgan", "Savdo qoidalari va hisob-kitob", "Chet tillari va yozishmalar"],
         correct: 1,
         exp: "Bolalarga ta'lim berilib, o'g'il bolalar harbiy ishga, qizlar kamondan otishga o'rgatilgan."
       },
@@ -828,12 +828,12 @@
       },
       {
         q: "34. Eftaliylar davrida mahalliy hokimlar qanday tangalar muomalaga kiritgan?",
-        options: ["Faqat oltin tangalar", "Kumush va mis tangalar", "Faqat qog'oz pullar", "Faqat bronza medallar"],
+        options: ["Oltin va kumush tangalar", "Kumush va mis tangalar", "Qog'oz pullar va asarlar", "Bronza va temir medallar"],
         correct: 1,
         exp: "Mahalliy hokimlar kumush va mis tangalar zarb etgan."
       },
       {
-        q: "35. Eftaliylar davlati qaysi asrlarda kuch-quдрат cho'qqisiga erishgan?",
+        q: "35. Eftaliylar davlati qaysi asrlarda kuch-qudrat cho'qqisiga erishgan?",
         options: ["V asr boshida", "V–VI asrlarda", "VII asrda", "VIII asrda"],
         correct: 1,
         exp: "V–VI asrlarda Eftaliylar davlati yuksak taraqqiyotga erishgan."

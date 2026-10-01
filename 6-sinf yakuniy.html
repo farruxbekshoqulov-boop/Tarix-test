@@ -664,14 +664,24 @@
       },
       {
         q: "4. Hindistonda buddaviylik diniga asos solgan shaxs kim?",
-        options: ["Siddxarta Gautama (Buddha)", "Konfutsiy", "Zardusht", "Iso"],
-        correct: 2, // C
-        exp: "Mil. avv. VI asrda Hindistonda Siddxarta Gautama buddaviylik diniga asos solgan."
+        options: [
+          "Siddxarta Gautama (Buddha)",
+          "Konfutsiy",
+          "Zardusht",
+          "Iso"
+        ],
+        correct: 0,
+        exp: "Miloddan avvalgi VI asrda Hindistonda Siddxarta Gautama buddaviylik diniga asos solgan."
       },
       {
         q: "5. Xitoyda yagona imperiyaga asos solgan birinchi hukmdor kim?",
-        options: ["U-Di", "Sin Shixuandi", "Chjan Szyan", "Attila"],
-        correct: 3, // D
+        options: [
+          "U-Di",
+          "Sin Shixuandi",
+          "Chjan Szyan",
+          "Attila"
+        ],
+        correct: 1,
         exp: "Sin Shixuandi Xitoyda yagona imperiyaga asos solgan."
       },
       {
@@ -753,10 +763,15 @@
         exp: "Mil. avv. II asrda Buyuk ipak yo‘li vujudga kelgan."
       },
       {
-        q: "19. Rivoyatga ko‘ra Rim shahriga asos solgan aka-uka ikizaklar kimlar?",
-        options: ["Krass va Pompey", "Romul va Rem", "Sezar va Brut", "Oktavian va Antoniy"],
-        correct: 1, // B
-        exp: "Rivoyatga ko‘ra Rim shahriga mil. avv. 753-yilda aka-uka Romul va Rem asos solgan."
+        q: "19. Rivoyatga ko‘ra, Romul va Remni emizgan ona bo‘ri nimaning timsoli hisoblanadi?",
+        options: [
+          "Afina shahrining",
+          "Rim shahrining",
+          "Sparta davlatining",
+          "Karfagen shahrining"
+        ],
+        correct: 1,
+        exp: "Egizaklarni emizgan ona bo‘ri bugungi kunda Rimning timsoli hisoblanadi."
       },
       {
         q: "20. Rim respublikasi qachon e’lon qilingan?",
@@ -831,10 +846,15 @@
         exp: "Doro I ning isyonlarni bostirgani Behistun yozuvlarida qayd etilgan."
       },
       {
-        q: "32. Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi?",
-        options: ["Goplit", "Liktor", "Satrap", "Nomarx"],
-        correct: 3, // D
-        exp: "Goplit — Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi."
+        q: "32. Rimda qashshoq rimliklar manfaatini himoya qilgan va «veto» huquqiga ega lavozim nima deb atalgan?",
+        options: [
+          "Konsul",
+          "Diktator",
+          "Xalq tribuni",
+          "Senator"
+        ],
+        correct: 2,
+        exp: "Rim respublikasida xalq tribuni qashshoq rimliklar manfaatini himoya qilgan va veto huquqiga ega bo‘lgan."
       },
       {
         q: "33. Qadimgi Rimda dastlab faxriy unvon, keyinchalik mutlaq hukmdorni bildirgan so‘z?",
@@ -963,7 +983,7 @@
       if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
       
       if (fb) {
-        if(score >= 36) fb.innerText = "Mukammal natija! 6-sinf darsligini 100% to‘liq o‘zlashtiribsiz 🏆";
+        if(score === testQuestions.length) fb.innerText = "Mukammal natija! Barcha savollarga to‘g‘ri javob berdingiz 🏆";
         else if(score >= 28) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
         else fb.innerText = "6-sinf darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
       }
@@ -980,7 +1000,9 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function shuffleTestOptions(){testQuestions.forEach(question=>{const a=question.options.map((text,index)=>({text,correct:index===question.correct}));for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}question.options=a.map(x=>x.text);question.correct=a.findIndex(x=>x.correct)})}
     // Dastlabki ishga tushirish
+    shuffleTestOptions();
     initMatch();
     loadFlashcard();
     loadTestQuestion();

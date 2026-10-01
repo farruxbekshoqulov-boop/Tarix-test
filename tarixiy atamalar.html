@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Tarixiy atamalar lug‘ati — Trenajyor va Test</title>
+  <title>6-sinf Qadimgi dunyo tarixi — Yakuniy Umumiy Takrorlash</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -68,7 +68,7 @@
       padding: 10px 2px;
       border: none;
       background: transparent;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--text-muted);
       border-radius: 10px;
@@ -284,15 +284,15 @@
 
     <div class="tab-nav">
       <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
-      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
-      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (40)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (40)</button>
     </div>
 
-    <!-- 1. MOSLASH (6 BOSQICH) -->
+    <!-- 1. MOSLASH (8 BOSQICH) -->
     <div id="tab-match" class="tab-content active">
       <div id="match-play-box">
         <div class="header-bar">
-          <span class="badge" id="match-stage-badge">Bosqich: 1 / 6</span>
+          <span class="badge" id="match-stage-badge">Bosqich: 1 / 8</span>
           <span id="match-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">Qoldi: 4 ta juftlik</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="match-progress"></div></div>
@@ -301,9 +301,9 @@
 
       <div id="match-finish-box" class="finish-state">
         <div style="font-size: 50px;">🏆</div>
-        <h2 style="font-size: 20px; font-weight: 800;">6 ta bosqich yakunlandi!</h2>
+        <h2 style="font-size: 20px; font-weight: 800;">6-sinf bo‘yicha 8 ta bosqich yakunlandi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Barcha tarixiy atamalarni muvaffaqiyatli mosladingiz. Endi 35 talik Savol-Javob qismiga o‘tamizmi?
+          Qadimgi dunyo tarixi kitobining barcha boblarini muvaffaqiyatli takrorlab chiqdingiz. Endi 40 talik Savol-Javob qismiga o‘tamizmi?
         </p>
         <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o‘tish ➔</button>
@@ -312,12 +312,12 @@
       </div>
     </div>
 
-    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
+    <!-- 2. SAVOL-JAVOB (40 TA SAVOL) -->
     <div id="tab-cards" class="tab-content">
       <div id="fc-play-box">
         <div class="header-bar">
-          <span class="badge">Atamalar Lug‘ati</span>
-          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
+          <span class="badge">6-Sinf Yakuniy Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
 
@@ -334,23 +334,23 @@
 
       <div id="fc-finish-box" class="finish-state">
         <div style="font-size: 50px;">🎉</div>
-        <h2 style="font-size: 20px; font-weight: 800;">35 ta atama tugadi!</h2>
+        <h2 style="font-size: 20px; font-weight: 800;">40 ta savol tugadi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Barcha tushunchalarni mustahkamlab oldingiz. Endi 36 talik Test sinoviga o‘tamizmi?
+          Kitobdagi barcha asosiy mavzularni mustahkamlab oldingiz. Endi 40 talik Katta Test sinoviga o‘tamizmi?
         </p>
         <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
-          <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o‘tish ➔</button>
+          <button class="action-btn" onclick="switchTab('quiz')">📝 Katta Test sinoviga o‘tish ➔</button>
           <button class="action-btn" style="background: rgba(255,255,255,0.08); box-shadow:none;" onclick="restartCards()">Qaytadan takrorlash 🔄</button>
         </div>
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (36 TA ARALASH TEST - TARTIBI ALASHTIRILGAN) -->
+    <!-- 3. TEST SINOVI (40 TA TEST - TARTIBI ARALASHTIRILGAN) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
-          <span class="badge">Atamalar Testi</span>
-          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+          <span class="badge">6-Sinf Katta Test</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
 
@@ -361,8 +361,8 @@
 
       <div id="quiz-result" class="finish-state">
         <div style="font-size: 50px;" id="res-avatar">🏆</div>
-        <div class="finish-badge" id="q-score">0/36</div>
-        <h2 style="font-size: 20px; font-weight: 800;">Sinov yakunlandi!</h2>
+        <div class="finish-badge" id="q-score">0/40</div>
+        <h2 style="font-size: 20px; font-weight: 800;">6-Sinf Darsligi To‘liq Yakunlandi!</h2>
         <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
         <div style="width: 100%; margin-top: 10px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
@@ -401,43 +401,55 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (6 BOSQICH) ---
+    // --- 1. MOSLASH (8 BOSQICH) ---
     const matchStages = [
       [
-        { id: 1, left: "Agora", right: "Qadimgi Yunoniston shaharlarida xalq yig‘inlari joyi, markaziy maydon" },
-        { id: 2, left: "Akveduk", right: "Shaharga suv keladigan, ustida anhori bo‘lgan baland ko‘prik" },
-        { id: 3, left: "Altamir", right: "Ispaniyadagi so‘nggi paleolitga oid rasmlar topilgan g‘or" },
-        { id: 4, left: "Amfiteatr", right: "Sahna atrofida tomoshabinlar o‘tirishiga mo‘ljallangan tomsiz katta inshoot" }
+        { id: 1, left: "Paleolit", right: "Qadimgi tosh davri" },
+        { id: 2, left: "Arxeologiya", right: "Qazishmalar orqali moddiy manbalarni o‘rganuvchi fan" },
+        { id: 3, left: "Matriarxat", right: "Ilk urug‘ jamoasi — ona atrofida birlashgan davr" },
+        { id: 4, left: "«Avesto»", right: "O‘rta Osiyo tarixining eng qadimgi yozma manbasi" }
       ],
       [
-        { id: 5, left: "Animizm", right: "Insonni qurshab turgan muhitda jonlar va ruhlarning mavjudligiga ishonish" },
-        { id: 6, left: "Antik", right: "Lotinchadan tarjima qilinganda «qadimgi» degan ma’noni bildiradi" },
-        { id: 7, left: "Aramey yozuvi", right: "Mesopotamiyaning o‘rta qismida arameylar tomonidan yaratilgan 20 ta harfli yozuv" },
-        { id: 8, left: "Arxeologiya", right: "Ashyoviy manbalarni o‘rganuvchi va ular orqali o‘tmishni qayta tiklovchi fan" }
+        { id: 5, left: "Menes", right: "Mil. avv. 3000-yilda Misrni yagona davlatga birlashtirgan fir’avn" },
+        { id: 6, left: "Xammurapi", right: "Mesopotamiyada yagona qonunlar majmuasini yaratgan Bobil hukmdori" },
+        { id: 7, left: "Siddxarta Gautama", right: "Mil. avv. VI asrda Hindistonda buddaviylik diniga asos solgan shaxs" },
+        { id: 8, left: "Sin Shixuandi", right: "Xitoyda yagona imperiyaga asos solgan birinchi hukmdor" }
       ],
       [
-        { id: 9, left: "Buddaviylik", right: "Mil. avv. VI asrda Siddxarta Gautama tomonidan Hindistonda asos solingan din" },
-        { id: 10, left: "Falanga", right: "Og‘ir qurollangan askarlarning bir necha qatlam saf tortishi" },
-        { id: 11, left: "Falsafa", right: "Yunoncha «sevish» va «donishmandlik» tushunchalarini anglatuvchi fan" },
-        { id: 12, left: "Fir’avn", right: "Misr hukmdori; «ulug‘ xonadon» ma’nosini anglatadi" }
+        { id: 9, left: "Polis", right: "Yunonistonda mustaqil shahar-davlat" },
+        { id: 10, left: "Afina va Sparta", right: "Qadimgi Yunonistonning eng yirik ikki shahri" },
+        { id: 11, left: "Marafon jangi", right: "Mil. avv. 490-yilda yunonlar g‘alaba qozongan jang" },
+        { id: 12, left: "Makedoniyalik Aleksandr", right: "10 yil davomida ulkan Sharq saltanatini zabt etgan sarkarda" }
       ],
       [
-        { id: 13, left: "Goplit", right: "Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi" },
-        { id: 14, left: "Ibodatxona", right: "Muqaddas deb e’lon qilingan, odamlar xudolarga sig‘ingan bino yoki joy" },
-        { id: 15, left: "Imperator", right: "Qadimgi Rimda dastlab faxriy harbiy unvon, keyinchalik mutlaq hukmdor unvoni" },
-        { id: 16, left: "Imperiya", right: "Hukmdorning cheklanmagan hokimiyati joriy etilgan, ko‘plab xalqlarni bo‘ysundirgan davlat" }
+        { id: 13, left: "Kir II", right: "O‘rta Osiyoga yurish qilgan va massagetlar bilan jangda halok bo‘lgan fors shohi" },
+        { id: 14, left: "To‘maris", right: "Jasur massaget qabilasining malikasi" },
+        { id: 15, left: "Shiroq", right: "Forslarni suvsiz sahroda adashtirib yuborgan afsonaviy cho‘pon" },
+        { id: 16, left: "Spitaman", right: "Yunon-makedon istilochilariga qarshi ozodlik kurashiga rahbarlik qilgan sarkarda" }
       ],
       [
-        { id: 17, left: "Italiklar", right: "Apennin yarimorolida istiqomat qilgan qadimgi qabilalar" },
-        { id: 18, left: "Iyerogliflar", right: "Qadimgi yunonlar misrliklar yozuvini atagan «muqaddas bitiklar»" },
-        { id: 19, left: "Kapitoliy tepaligi", right: "Rimdagi eng baland tepalik va qal’a joylashgan maskan" },
-        { id: 20, left: "Konsul", right: "Respublika davrida Rimdagi oliy siyosiy lavozim" }
+        { id: 17, left: "Salavkiylar va Yunon-Baqtriya", right: "Makedoniyalik Aleksandr vafotidan so‘ng O‘rta Osiyoda tarqqiy etgan antik davlatlar" },
+        { id: 18, left: "Qo‘yqirilganqal’a", right: "Xorazmda kohinlar osmon jismlarini kuzatgan muhtasham inshoot" },
+        { id: 19, left: "Qang‘ va Davan", right: "Mil. avv. III asrda Farg‘ona va Sirdaryo bo‘ylarida tashkil topgan davlatlar" },
+        { id: 20, left: "Kanishka", right: "Kushon podsholigi ulkan imperiyaga aylangan davr hukmdori" }
       ],
       [
-        { id: 21, left: "Lojuvard", right: "Ko‘k rangdagi tabiiy tosh, ma’dan" },
-        { id: 22, left: "Respublika", right: "«Umumiy ish» ma’nosini anglatuvchi davlat boshqaruv shakli" },
-        { id: 23, left: "Termalar", right: "Qadimgi Rim shahridagi jamoat hammomlari" },
-        { id: 24, left: "Sivilizatsiya", right: "Jamiyat taraqqiyotining ancha yuksak darajasi (shahar, yozuv va davlat)" }
+        { id: 21, left: "Buyuk ipak yo‘li", right: "Mil. avv. II asrda vujudga kelib, Sharq va G‘arbni bog‘lagan savdo yo‘li" },
+        { id: 22, left: "Romul va Rem", right: "Rivoyatga ko‘ra Rim shahriga asos solgan aka-uka ikizaklar" },
+        { id: 23, left: "Mil. avv. 509-yil", right: "Rim respublikasi e’lon qilingan sana" },
+        { id: 24, left: "Xalq tribuni", right: "Rimda qashshoqlar manfaatini himoya qilgan va «veto» huquqiga ega lavozim" }
+      ],
+      [
+        { id: 25, left: "Kolizey", right: "50 ming tomoshabin sig‘diradigan Rimning eng katta amfiteatri" },
+        { id: 26, left: "Spartak", right: "Mil. avv. 74-yilda boshlangan yirik qullar qo‘zg‘oloni rahbari" },
+        { id: 27, left: "Yuliy Sezar", right: "Mil. avv. 49-yilda Rubikondan o‘tib, hokimiyatni egallagan sarkarda" },
+        { id: 28, left: "Oktavian Avgust", right: "Mil. avv. 29-yilda Rim imperiyasining asoschisiga aylangan hukmdor" }
+      ],
+      [
+        { id: 29, left: "Milodiy 395-yil", right: "Rim imperiyasining G‘arbiy va Sharqiy qismlarga bo‘lingan yili" },
+        { id: 30, left: "Milodiy 410-yil", right: "Alarix boshchiligidagi gotlar Rimni qurshab olib talagan yil" },
+        { id: 31, left: "Milodiy 476-yil", right: "Odoakr G‘arbiy Rim imperiyasini qulatgan va O‘rta asrlar boshlangan yil" },
+        { id: 32, left: "Milodiy 313-yil", right: "Imperator Konstantin xristianlikni qonuniy deb e’lon qilgan farmon chiqargan yil" }
       ]
     ];
 
@@ -531,43 +543,48 @@
       }
     }
 
-    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
+    // --- 2. SAVOL-JAVOB (40 TA SAVOL) ---
     const flashcards = [
-      { q: "1. Qadimgi Yunoniston shaharlarida xalq yig‘inlari o‘tkaziladigan markaziy maydon nima deb atalgan?", a: "Agora." },
-      { q: "2. Shaharga suv keladigan, ustida anhori bo‘lgan baland ko‘prik qanday nomlangan?", a: "Akveduk." },
-      { q: "3. Ispaniyadagi so‘nggi paleolitga oid qoyatosh rasmlari topilgan g‘or qaysi?", a: "Altamir." },
-      { q: "4. Sahna atrofida tomoshabinlar o‘tirishiga mo‘ljallangan tomsiz katta inshoot nima?", a: "Amfiteatr." },
-      { q: "5. Insonni qurshab turgan muhitda jonlar va ruhlarning mavjudligiga ishonish qanday atalgan?", a: "Animizm." },
-      { q: "6. «Antik» so‘zi lotinchadan tarjima qilinganda qanday ma’noni bildiradi?", a: "«Qadimgi»." },
-      { q: "7. Aramey yozuvi nechta harfdan iborat bo‘lgan?", a: "20 ta harfdan." },
-      { q: "8. Ashyoviy manbalarni o‘rganuvchi va ular orqali o‘tmishni tiklovchi fan?", a: "Arxeologiya." },
-      { q: "9. Miloddan avvalgi VI asrda Hindistonda Siddxarta Gautama asos solgan din?", a: "Buddaviylik." },
-      { q: "10. Og‘ir qurollangan askarlarning bir necha qatlam bo‘lib saf tortishi nima deb atalgan?", a: "Falanga." },
-      { q: "11. Falsafa so‘zi yunoncha qaysi tushunchalardan kelib chiqqan?", a: "«Filo» — sevish va «sofiya» — donishmandlik." },
-      { q: "12. «Fir’avn» so‘zining lug‘aviy ma’nosi nima?", a: "«Ulug‘ xonadon»." },
-      { q: "13. Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi kim?", a: "Goplit." },
-      { q: "14. Muqaddas deb e’lon qilingan, odamlar xudolarga sig‘ingan bino yoki joy?", a: "Ibodatxona." },
-      { q: "15. Qadimgi Rimda dastlab faxriy harbiy unvon bo‘lgan, keyinchalik mutlaq hukmdorni bildirgan so‘z?", a: "Imperator." },
-      { q: "16. Hukmdorning cheklanmagan hokimiyati joriy etilgan davlat turi?", a: "Imperiya." },
-      { q: "17. Apennin yarimorolida istiqomat qilgan qadimgi qabilalar kimlar?", a: "Italiklar." },
-      { q: "18. Qadimgi yunonlar misrliklar yozuvini qanday nomlashgan?", a: "Iyerogliflar («muqaddas bitiklar»)." },
-      { q: "19. Rimdagi eng baland tepalik va qal’a joylashgan maskan qaysi?", a: "Kapitoliy tepaligi." },
-      { q: "20. Respublika davrida Rimdagi oliy siyosiy lavozim qaysi?", a: "Konsul." },
-      { q: "21. Ko‘k rangdagi tabiiy tosh, qimmatbaho ma’dan qanday atalgan?", a: "Lojuvard." },
-      { q: "22. «Umumiy ish» ma’nosini anglatuvchi davlat boshqaruv shakli?", a: "Respublika." },
-      { q: "23. Qadimgi Rim shahridagi jamoat hammomlari qanday nomlangan?", a: "Termalar." },
-      { q: "24. Jamiyat taraqqiyotining ancha yuksak darajasi (shahar, yozuv va davlat) nima deb ataladi?", a: "Sivilizatsiya." },
-      { q: "25. Tepasida ibodatxonasi bo‘lgan zinapoyali yirik va baland inshoot nima?", a: "Zikkurat." },
-      { q: "26. Misrdagi ilk davlatlar qanday nomlangan?", a: "Nomlar." },
-      { q: "27. Qadimgi Misrdagi ilk davlatning hukmdori kim edi?", a: "Nomarx." },
-      { q: "28. Poyasi yozuv materiali tayyorlash uchun ishlatiladigan qamish qanday atalgan?", a: "Papirus." },
-      { q: "29. Rimning qadimgi tub aholisi kimlar edi?", a: "Patrisiylar." },
-      { q: "30. Fir’avnlar maqbarasi bo‘lgan mahobatli tosh inshoot nima?", a: "Piramida." },
-      { q: "31. Rimga ko‘chib kelgan odamlar va ularning avlodlari qanday atalgan?", a: "Plebeylar." },
-      { q: "32. Yunoncha «shahar» ma’nosini anglatuvchi atama?", a: "Polis." },
-      { q: "33. «Oqsoqollar kengashi» ma’nosini anglatuvchi davlat organi?", a: "Senat." },
-      { q: "34. Kanallar va ariqlar yordamida ekinlarni sug‘orish jarayoni?", a: "Sun’iy sug‘orish." },
-      { q: "35. Tanasi sherniki va boshi insonniki bo‘lgan ulkan haykal qanday atalgan?", a: "Sfinks." }
+      { q: "1. Insoniyat tarixidagi eng birinchi bosqich qanday atalgan?", a: "Ibtidoiy jamoa tuzumi." },
+      { q: "2. Qadimgi Misrni yagona davlatga birlashtirgan fir’avn kim?", a: "Menes (mil. avv. 3000-yil)." },
+      { q: "3. Mesopotamiyada yagona qonunlar majmuasini yaratgan Bobil hukmdori kim?", a: "Xammurapi." },
+      { q: "4. Hindistonda buddaviylik diniga asos solgan shaxs kim?", a: "Siddxarta Gautama (Buddha)." },
+      { q: "5. Xitoyda yagona imperiyaga asos solgan birinchi hukmdor kim?", a: "Sin Shixuandi." },
+      { q: "6. Qadimgi Yunonistonda mustaqil shahar-davlatlar qanday nomlangan?", a: "Polis." },
+      { q: "7. Qadimgi Yunonistonning eng yirik ikki shahri qaysilar edi?", a: "Afina va Sparta." },
+      { q: "8. Mil. avv. 490-yilda yunonlar g‘alaba qozongan jang qanday ataladi?", a: "Marafon jangi." },
+      { q: "9. 10 yil davomida ulkan Sharq saltanatini zabt etgan makedoniyalik sarkarda kim?", a: "Makedoniyalik Aleksandr." },
+      { q: "10. O‘rta Osiyoga yurish qilgan va massagetlar bilan jangda halok bo‘lgan fors shohi?", a: "Kir II." },
+      { q: "11. Mil. avv. 530-yilda massagetlar qabilasining malikasi kim edi?", a: "To‘maris." },
+      { q: "12. Forslarni suvsiz sahroda adashtirib yuborgan afsonaviy cho‘pon?", a: "Shiroq." },
+      { q: "13. Yunon-makedon istilochilariga qarshi ozodlik kurashiga rahbarlik qilgan sarkarda?", a: "Spitaman." },
+      { q: "14. Makedoniyalik Aleksandr vafotidan so‘ng O‘rta Osiyoda tarqqiy etgan antik davlatlar?", a: "Salavkiylar, Yunon-Baqtriya va Parfiya." },
+      { q: "15. Xorazmda kohinlar osmon jismlarini kuzatgan muhtasham inshoot qanday atalgan?", a: "Qo‘yqirilganqal’a." },
+      { q: "16. Mil. avv. III asrda Farg‘ona va Sirdaryo bo‘ylarida tashkil topgan qaysi davlatlar bor edi?", a: "Qang‘ va Davan." },
+      { q: "17. Kushon podsholigi ulkan imperiyaga aylangan davr hukmdori kim edi?", a: "Kanishka." },
+      { q: "18. Mil. avv. II asrda vujudga kelib, Sharq va G‘arbni bog‘lagan savdo yo‘li?", a: "Buyuk ipak yo‘li." },
+      { q: "19. Rivoyatga ko‘ra Rim shahriga asos solgan aka-uka ikizaklar kimlar?", a: "Romul va Rem (mil. avv. 753-yil)." },
+      { q: "20. Rim respublikasi qachon e’lon qilingan?", a: "Miloddan avvalgi 509-yilda." },
+      { q: "21. Rimda qashshoqlar manfaatini himoya qilgan va «veto» huquqiga ega lavozim?", a: "Xalq tribuni." },
+      { q: "22. 50 ming tomoshabin sig‘diradigan Rimning eng katta amfiteatri?", a: "Kolizey." },
+      { q: "23. Mil. avv. 74-yilda boshlangan yirik qullar qo‘zg‘oloni rahbari kim?", a: "Spartak." },
+      { q: "24. Mil. avv. 49-yilda Rubikondan o‘tib, hokimiyatni egallagan sarkarda kim?", a: "Yuliy Sezar." },
+      { q: "25. Mil. avv. 29-yilda Rim imperiyasining asoschisiga aylangan hukmdor?", a: "Oktavian Avgust." },
+      { q: "26. Rim imperiyasining G‘arbiy va Sharqiy qismlarga bo‘lingan yili qaysi?", a: "Milodiy 395-yil." },
+      { q: "27. Alarix boshchiligidagi gotlar Rimni qurshab olib talagan yil qaysi?", a: "Milodiy 410-yil." },
+      { q: "28. Odoakr G‘arbiy Rim imperiyasini qulatgan va O‘rta asrlar boshlangan yil?", a: "Milodiy 476-yil." },
+      { q: "29. Imperator Konstantin xristianlikni qonuniy deb e’lon qilgan farmon chiqargan yil?", a: "Milodiy 313-yil." },
+      { q: "30. O‘rta Osiyo tarixi bo‘yicha eng qadimgi yozma manba qaysi?", a: "«Avesto»." },
+      { q: "31. Fors shohi Doro I ning isyonlarni bostirgani haqidagi qoyatosh yozuvlari qanday ataladi?", a: "Behistun yozuvlari." },
+      { q: "32. Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi?", a: "Goplit." },
+      { q: "33. Qadimgi Rimda dastlab faxriy unvon, keyinchalik mutlaq hukmdorni bildirgan so‘z?", a: "Imperator." },
+      { q: "34. Rimning tub aholisi kimlar deb atalgan?", a: "Patrisiylar." },
+      { q: "35. Rimga ko‘chib kelgan odamlar va ularning avlodlari qanday atalgan?", a: "Plebeylar." },
+      { q: "36. Shisha yoki tosh parchalaridan ishlangan bezakli suratlar nima deb atalgan?", a: "Mozaikalar." },
+      { q: "37. Suvni bir necha qavatli ko‘prik orqali shaharga olib keluvchi inshoot qanday nomlangan?", a: "Akveduk." },
+      { q: "38. Rimliklarning osmon, momaqaldiroq va yashin podshosi bo‘lgan bosh ma’budi?", a: "Yupiter." },
+      { q: "39. Yerlarni ijaraga olib dehqonchilik qilgan erkin kambag‘allar qanday atalgan?", a: "Kolonlar." },
+      { q: "40. Milodiy 98-yilda Rim imperatori taxtini egallagan va daklar bilan urush olib borgan hukmdor?", a: "Trayan." }
     ];
 
     let fcIdx = 0;
@@ -625,223 +642,247 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (36 TA ARALASH TEST — TARTIBI QAT'IY ARALASHTIRILGAN) ---
+    // --- 3. TEST SINOVI (40 TA ARALASH TEST - TO‘G‘RI JAVOB TARTIBI ARALASHTIRILGAN) ---
     const testQuestions = [
       {
-        q: "1. Qadimgi Yunoniston shaharlarida xalq yig‘inlari o‘tkaziladigan markaziy maydon nima deb atalgan?",
-        options: ["Akveduk", "Agora", "Altamir", "Amfiteatr"],
+        q: "1. Insoniyat tarixidagi eng birinchi bosqich qanday atalgan?",
+        options: ["Quldorlik tuzumi", "Ibtidoiy jamoa tuzumi", "Feodalizm", "Urug‘chilik davri"],
         correct: 1, // B
-        exp: "Agora — Qadimgi Yunoniston shaharlarida xalq yig‘inlari joyi, markaziy maydon."
+        exp: "Insoniyat tarixi barcha xalqlarda ibtidoiy jamoa tuzumidan boshlangan."
       },
       {
-        q: "2. Shaharga suv keladigan, ustida anhori bo‘lgan baland ko‘prik qanday nomlangan?",
-        options: ["Akveduk", "Agora", "Amfiteatr", "Animizm"],
+        q: "2. Qadimgi Misrni yagona davlatga birlashtirgan fir’avn kim?",
+        options: ["Menes", "Xammurapi", "Xeops", "Doro I"],
         correct: 0, // A
-        exp: "Akveduk — shaharga suv keladigan, ustida anhori bo‘lgan baland ko‘prik."
+        exp: "Mil. avv. 3000-yilda fir’avn Menes Misrni yagona davlatga birlashtirdi."
       },
       {
-        q: "3. Ispaniyadagi so‘nggi paleolitga oid qoyatosh rasmlari topilgan g‘or qaysi?",
-        options: ["Amfiteatr", "Animizm", "Altamir", "Antik"],
-        correct: 2, // C
-        exp: "Altamir — Ispaniyadagi so‘nggi paleolitga oid rasmlar topilgan g‘or."
-      },
-      {
-        q: "4. Sahna atrofida tomoshabinlar o‘tirishiga mo‘ljallangan tomsiz katta inshoot nima?",
-        options: ["Animizm", "Antik", "Aramey yozuvi", "Amfiteatr"],
-        correct: 3, // D
-        exp: "Amfiteatr — sahna atrofida tomoshabinlar o‘tirishiga mo‘ljallangan kurilmalar bilan qurshalgan tomsiz katta inshoot."
-      },
-      {
-        q: "5. Insonni qurshab turgan muhitda jonlar va ruhlarning mavjudligiga ishonish qanday atalgan?",
-        options: ["Animizm", "Arxeologiya", "Antik", "Buddaviylik"],
-        correct: 0, // A
-        exp: "Animizm — insonni qurshab turgan muhitda jonlar va ruhlarning mavjudligiga ishonish."
-      },
-      {
-        q: "6. «Antik» so‘zi lotinchadan tarjima qilinganda qanday ma’noni bildiradi?",
-        options: ["Arxeologiya", "«Qadimgi»", "Buddaviylik", "Falanga"],
+        q: "3. Mesopotamiyada yagona qonunlar majmuasini yaratgan Bobil hukmdori kim?",
+        options: ["Kir II", "Xammurapi", "Sezar", "Trayan"],
         correct: 1, // B
-        exp: "Antik — lotincha «qadimgi» ma’nosini bildiradi."
+        exp: "Mil. avv. XVIII asrda Bobil hukmdori Xammurapi qonunlar majmuasini yaratdi."
       },
       {
-        q: "7. Aramey yozuvi nechta harfdan iborat bo‘lgan?",
-        options: ["Buddaviylik", "Falanga", "20 ta harfdan", "Falsafa"],
+        q: "4. Hindistonda buddaviylik diniga asos solgan shaxs kim?",
+        options: ["Siddxarta Gautama (Buddha)", "Konfutsiy", "Zardusht", "Iso"],
         correct: 2, // C
-        exp: "Aramey yozuvi 20 ta harfdan iborat bo‘lgan."
+        exp: "Mil. avv. VI asrda Hindistonda Siddxarta Gautama buddaviylik diniga asos solgan."
       },
       {
-        q: "8. Ashyoviy manbalarni o‘rganuvchi va ular orqali o‘tmishni qayta tiklovchi fan?",
-        options: ["Falanga", "Falsafa", "Fir’avn", "Arxeologiya"],
+        q: "5. Xitoyda yagona imperiyaga asos solgan birinchi hukmdor kim?",
+        options: ["U-Di", "Sin Shixuandi", "Chjan Szyan", "Attila"],
         correct: 3, // D
-        exp: "Arxeologiya — ashyoviy manbalarni o‘rganuvchi va o‘tmishni qayta tiklovchi fan."
+        exp: "Sin Shixuandi Xitoyda yagona imperiyaga asos solgan."
       },
       {
-        q: "9. Miloddan avvalgi VI asrda Hindistonda Siddxarta Gautama asos solgan din?",
-        options: ["Buddaviylik", "Falsafa", "Fir’avn", "Goplit"],
+        q: "6. Qadimgi Yunonistonda mustaqil shahar-davlatlar qanday nomlangan?",
+        options: ["Polis", "Nom", "Satrapiya", "Provinsiya"],
         correct: 0, // A
-        exp: "Buddaviylik — mil. avv. VI asrda Hindistonda Siddxarta Gautama tomonidan asos solingan din."
+        exp: "Yunonistonda mustaqil shahar-davlatlar polis deb atalgan."
       },
       {
-        q: "10. Og‘ir qurollangan askarlarning bir necha qatlam bo‘lib saf tortishi nima deb atalgan?",
-        options: ["Fir’avn", "Falanga", "Goplit", "Ibodatxona"],
+        q: "7. Qadimgi Yunonistonning eng yirik ikki shahri qaysilar edi?",
+        options: ["Rim va Karfagen", "Afina va Sparta", "Baqtra va Maroqanda", "Ershi va Bityan"],
         correct: 1, // B
-        exp: "Falanga — og‘ir qurollangan askarlarning bir necha 9 yoki 16 qator saf tortishi."
+        exp: "Afina va Sparta Qadimgi Yunonistonning eng yirik ikki shahri edi."
       },
       {
-        q: "11. Falsafa so‘zi yunoncha qaysi tushunchalardan kelib chiqqan?",
-        options: ["Goplit", "Ibodatxona", "«Filo» — sevish va «sofiya» — donishmandlik", "Imperator"],
+        q: "8. Mil. avv. 490-yilda yunonlar g‘alaba qozongan jang qanday ataladi?",
+        options: ["Salamin jangi", "Fermopil jangi", "Marafon jangi", "Marafon va Salamin"],
         correct: 2, // C
-        exp: "Falsafa — yunoncha filo – «sevish», sofiya – «donishmandlik» tushunchalarini anglatadi."
+        exp: "Mil. avv. 490-yilda Marafon tekisligidagi jangda yunonlar g‘alaba qozongan."
       },
       {
-        q: "12. «Fir’avn» so‘zining lug‘aviy ma’nosi nima?",
-        options: ["Ibodatxona", "Imperator", "Imperiya", "«Ulug‘ xonadon»"],
+        q: "9. 10 yil davomida ulkan Sharq saltanatini zabt etgan makedoniyalik sarkarda kim?",
+        options: ["Filipp II", "Kserks", "Doro III", "Makedoniyalik Aleksandr"],
         correct: 3, // D
-        exp: "Fir’avn — Misr hukmdori; «ulug‘ xonadon» ma’nosini anglatadi."
+        exp: "Makedoniyalik Aleksandr 10 yil davomida Sharqqa yurish qilib ulkan saltanatni zabt etdi."
       },
       {
-        q: "13. Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi kim?",
-        options: ["Goplit", "Imperator", "Imperiya", "Italiklar"],
+        q: "10. O‘rta Osiyoga yurish qilgan va massagetlar bilan jangda halok bo‘lgan fors shohi?",
+        options: ["Kir II", "Doro I", "Kserks", "Artakserks"],
         correct: 0, // A
-        exp: "Goplit — Qadimgi Yunoniston va yunon-makedon armiyalarining og‘ir qurollangan piyoda jangchisi."
+        exp: "Mil. avv. 530-yilda Kir II massagetlar ustiga yurish qilib halok bo‘lgan."
       },
       {
-        q: "14. Muqaddas deb e’lon qilingan, odamlar xudolarga sig‘ingan bino yoki joy?",
-        options: ["Imperator", "Ibodatxona", "Italiklar", "Iyerogliflar"],
+        q: "11. Mil. avv. 530-yilda massagetlar qabilasining malikasi kim edi?",
+        options: ["Roksana", "To‘maris", "Apama", "Kleopatra"],
         correct: 1, // B
-        exp: "Ibodatxona — muqaddas deb e’lon qilingan, odamlar xudolarga sig‘ingan bino yoki joy."
+        exp: "Mil. avv. 530-yilda massagetlar qabilasining malikasi To‘maris edi."
       },
       {
-        q: "15. Qadimgi Rimda dastlab faxriy harbiy unvon bo‘lgan, keyinchalik mutlaq hukmdorni bildirgan so‘z?",
-        options: ["Italiklar", "Iyerogliflar", "Imperator", "Kapitoliy"],
+        q: "12. Forslarni suvsiz sahroda adashtirib yuborgan afsonaviy cho‘pon?",
+        options: ["Frada", "Farasman", "Shiroq", "Dadarshish"],
         correct: 2, // C
-        exp: "Imperator — qadimgi Rimda dastlab faxriy harbiy unvon, keyinchalik mutlaq hukmdorga tegishli unvon."
+        exp: "Forslarni suvsiz sahroda cho‘pon Shiroq adashtirib yuborgan."
       },
       {
-        q: "16. Hukmdorning cheklanmagan hokimiyati joriy etilgan, ko‘plab xalqlarni o‘ziga bo‘ysundirgan davlat?",
-        options: ["Iyerogliflar", "Kapitoliy", "Konsul", "Imperiya"],
+        q: "13. Yunon-makedon istilochilariga qarshi ozodlik kurashiga rahbarlik qilgan sarkarda?",
+        options: ["Bess", "Oksiart", "Ranosbat", "Spitaman"],
         correct: 3, // D
-        exp: "Imperiya — hukmdorning cheklanmagan hokimiyati joriy etilgan, boshqa ko‘plab xalqlarni o‘ziga bo‘ysundirgan davlat."
+        exp: "Sug‘diyona va Baqtriyada Spitaman boshchiligida ozodlik kurashi bo‘lib o‘tgan."
       },
       {
-        q: "17. Apennin yarimorolida istiqomat qilgan qadimgi qabilalar kimlar?",
-        options: ["Italiklar", "Kapitoliy", "Konsul", "Lojuvard"],
+        q: "14. Makedoniyalik Aleksandr vafotidan so‘ng O‘rta Osiyoda tarqqiy etgan antik davlatlar?",
+        options: ["Salavkiylar, Yunon-Baqtriya va Parfiya", "Ahamoniylar va Bobil", "Misr va Ossuriya", "Qang‘ va Davan"],
         correct: 0, // A
-        exp: "Italiklar — Apennin yarimorolida istiqomat qilgan qadimgi qabilalar."
+        exp: "Salavkiylar, Yunon-Baqtriya va Parfiya singari antik davlatlar taraqqiy etdi."
       },
       {
-        q: "18. Qadimgi yunonlar misrliklar yozuvini qanday nomlashgan?",
-        options: ["Konsul", "Iyerogliflar", "Lojuvard", "Respublika"],
+        q: "15. Xorazmda kohinlar osmon jismlarini kuzatgan muhtasham inshoot qanday atalgan?",
+        options: ["Tuproqqal’a", "Qo‘yqirilganqal’a", "Oqchaxon qal’asi", "Jonbosqal’a"],
         correct: 1, // B
-        exp: "Iyerogliflar — qadimgi yunonlar misrliklar yozuvini shunday atashgan, «muqaddas bitiklar» ma’nosini anglatadi."
+        exp: "Qo‘yqirilganqal’a ibodatxonasidan kohinlar osmon jismlarining harakatlarini kuzatgan."
       },
       {
-        q: "19. Rimdagi eng baland tepalik va qal’a joylashgan maskan qaysi?",
-        options: ["Lojuvard", "Respublika", "Kapitoliy tepaligi", "Termalar"],
+        q: "16. Mil. avv. III asrda Farg‘ona va Sirdaryo bo‘ylarida tashkil topgan qaysi davlatlar bor edi?",
+        options: ["Baqtriya va Sug‘diyona", "Xorazm va Parfiya", "Qang‘ va Davan", "Kushon va Yuxan"],
         correct: 2, // C
-        exp: "Kapitoliy tepaligi — Rimdagi eng baland tepalik."
+        exp: "Mil. avv. III asrda Qang‘ va Davan davlatlari tashkil topgan."
       },
       {
-        q: "20. Respublika davrida Rimdagi oliy siyosiy lavozim qaysi?",
-        options: ["Termalar", "Sivilizatsiya", "Zikkurat", "Konsul"],
+        q: "17. Kushon podsholigi ulkan imperiyaga aylangan davr hukmdori kim edi?",
+        options: ["Kudzula Kadfiz", "Vima Kadfiz", "Diodot", "Kanishka"],
         correct: 3, // D
-        exp: "Konsul — respublika davrida Rimdagi oliy siyosiy lavozim."
+        exp: "Podsho Kanishka davrida Kushon podsholigi ulkan imperiyaga aylandi."
       },
       {
-        q: "21. Ko‘k rangdagi tabiiy tosh, qimmatbaho ma’dan qanday atalgan?",
-        options: ["Lojuvard", "Respublika", "Termalar", "Sivilizatsiya"],
+        q: "18. Mil. avv. II asrda vujudga kelib, Sharq va G‘arbni bog‘lagan savdo yo‘li?",
+        options: ["Buyuk ipak yo‘li", "Shoh yo‘li", "Lapis lazuli yo‘li", "Steppe yo‘li"],
         correct: 0, // A
-        exp: "Lojuvard — ko‘k rangdagi tabiiy tosh, ma’dan."
+        exp: "Mil. avv. II asrda Buyuk ipak yo‘li vujudga kelgan."
       },
       {
-        q: "22. «Umumiy ish» ma’nosini anglatuvchi davlat boshqaruv shakli?",
-        options: ["Termalar", "Respublika", "Sivilizatsiya", "Zikkurat"],
+        q: "19. Rivoyatga ko‘ra Rim shahriga asos solgan aka-uka ikizaklar kimlar?",
+        options: ["Krass va Pompey", "Romul va Rem", "Sezar va Brut", "Oktavian va Antoniy"],
         correct: 1, // B
-        exp: "Respublika — «umumiy ish» ma’nosini anglatadi, davlat boshqaruvi shakli."
+        exp: "Rivoyatga ko‘ra Rim shahriga mil. avv. 753-yilda aka-uka Romul va Rem asos solgan."
       },
       {
-        q: "23. Qadimgi Rim shahridagi jamoat hammomlari qanday nomlangan?",
-        options: ["Sivilizatsiya", "Zikkurat", "Termalar", "Nom"],
+        q: "20. Rim respublikasi qachon e’lon qilingan?",
+        options: ["Mil. avv. 753-yilda", "Mil. avv. 44-yilda", "Milodiy 476-yilda", "Miloddan avvalgi 509-yilda"],
+        correct: 3, // D (shartli ravishda C/D o‘rni almashtirildi) -> options[3]
+        exp: "Miloddan avvalgi 509-yilda Rim respublikasi e’lon qilingan."
+      },
+      {
+        q: "21. Rimda qashshoqlar manfaatini himoya qilgan va «veto» huquqiga ega lavozim?",
+        options: ["Konsul", "Diktator", "Xalq tribuni", "Senat raisi"],
         correct: 2, // C
-        exp: "Termalar — Qadimgi Rim shahridagi jamoat hammomlari."
+        exp: "Rim respublikasida xalq tribuni lavozimi ta’sis etilgan bo‘lib, «veto» huquqiga ega bo‘lgan."
       },
       {
-        q: "24. Jamiyat taraqqiyotining ancha yuksak darajasi (shahar, yozuv va davlat) nima deb ataladi?",
-        options: ["Zikkurat", "Nom", "Nomarx", "Sivilizatsiya"],
-        correct: 3, // D
-        exp: "Sivilizatsiya — qadimgi jamiyat taraqqiyotining ancha yuksak darajasi."
-      },
-      {
-        q: "25. Tepasida ibodatxonasi bo‘lgan zinapoyali yirik va baland inshoot nima?",
-        options: ["Zikkurat", "Nom", "Nomarx", "Papirus"],
-        correct: 0, // A
-        exp: "Zikkurat — tepasida ibodatxonasi bo‘lgan zinapoyali yirik va baland inshoot."
-      },
-      {
-        q: "26. Misrdagi ilk davlatlar qanday nomlangan?",
-        options: ["Nomarx", "Nom", "Papirus", "Patrisiylar"],
+        q: "22. 50 ming tomoshabin sig‘diradigan Rimning eng katta amfiteatri?",
+        options: ["Pantheon", "Kolizey", "Parfenon", "Forum"],
         correct: 1, // B
-        exp: "Nomlar — Misrdagi ilk davlatlar."
+        exp: "Kolizey — 50 ming tomoshabin sig‘diradigan Rimning eng katta amfiteatri."
       },
       {
-        q: "27. Qadimgi Misrdagi ilk davlatning hukmdori kim edi?",
-        options: ["Papirus", "Patrisiylar", "Nomarx", "Piramida"],
-        correct: 2, // C
-        exp: "Nomarx — Qadimgi Misrdagi ilk davlatning hukmdori."
-      },
-      {
-        q: "28. Poyasi yozuv materiali tayyorlash uchun ishlatiladigan qamish qanday atalgan?",
-        options: ["Piramida", "Plebeylar", "Polis", "Papirus"],
-        correct: 3, // D
-        exp: "Papirus — poyasi yozuv materiali tayyorlash uchun ishlatiladigan qamish."
-      },
-      {
-        q: "29. Rimning qadimgi tub aholisi kimlar edi?",
-        options: ["Patrisiylar", "Plebeylar", "Polis", "Respublika"],
+        q: "23. Mil. avv. 74-yilda boshlangan yirik qullar qo‘zg‘oloni rahbari kim?",
+        options: ["Spartak", "Yuliy Sezar", "Pompey", "Odoakr"],
         correct: 0, // A
+        exp: "Mil. avv. 74-yilda Spartak boshchiligida qullar qo‘zg‘oloni boshlangan."
+      },
+      {
+        q: "24. Mil. avv. 49-yilda Rubikondan o‘tib, hokimiyatni egallagan sarkarda kim?",
+        options: ["Krass", "Oktavian", "Mark Antoniy", "Yuliy Sezar"],
+        correct: 3, // D
+        exp: "Mil. avv. 49-yilda Yuliy Sezar Rubikon daryosidan o‘tib hokimiyatni egallagan."
+      },
+      {
+        q: "25. Mil. avv. 29-yilda Rim imperiyasining asoschisiga aylangan hukmdor?",
+        options: ["Oktavian Avgust", "Trayan", "Konstantin", "Feodosiy"],
+        correct: 0, // A
+        exp: "Mil. avv. 29-yilda Oktavian Senatdan imperator unvoni va Avgust nomini olib imperiyaga asos soldi."
+      },
+      {
+        q: "26. Rim imperiyasining G‘arbiy va Sharqiy qismlarga bo‘lingan yili qaysi?",
+        options: ["Milodiy 330-yil", "Milodiy 395-yil", "Milodiy 410-yil", "Milodiy 476-yil"],
+        correct: 1, // B
+        exp: "Milodiy 395-yilda Rim imperiyasi G‘arbiy va Sharqiy qismlarga bo‘lindi."
+      },
+      {
+        q: "27. Alarix boshchiligidagi gotlar Rimni qurshab olib talagan yil qaysi?",
+        options: ["Milodiy 395-yil", "Milodiy 455-yil", "Milodiy 410-yil", "Milodiy 476-yil"],
+        correct: 2, // C
+        exp: "Milodiy 410-yilda Alarix boshchiligidagi gotlar Rimni qurshab olib talagan."
+      },
+      {
+        q: "28. Odoakr G‘arbiy Rim imperiyasini qulatgan va O‘rta asrlar boshlangan yil?",
+        options: ["Milodiy 330-yil", "Milodiy 410-yil", "Milodiy 452-yil", "Milodiy 476-yil"],
+        correct: 3, // D
+        exp: "Milodiy 476-yilda Odoakr G‘arbiy Rim imperiyasini qulatdi va O‘rta asrlar boshlandi."
+      },
+      {
+        q: "29. Imperator Konstantin xristianlikni qonuniy deb e’lon qilgan farmon chiqargan yil?",
+        options: ["Milodiy 313-yil", "Milodiy 330-yil", "Milodiy 395-yil", "Milodiy 476-yil"],
+        correct: 0, // A
+        exp: "Milodiy 313-yilda imperator Konstantin xristianlikni qonuniy deb e’lon qilgan farmon chiqargan."
+      },
+      {
+        q: "30. O‘rta Osiyo tarixi bo‘yicha eng qadimgi yozma manba qaysi?",
+        options: ["Behistun yozuvlari", "«Avesto»", "«Tarix» asari", "«Geografiya»"],
+        correct: 1, // B
+        exp: "«Avesto» — O‘rta Osiyo tarixi bo‘yicha eng qadimgi yozma manba."
+      },
+      {
+        q: "31. Fors shohi Doro I ning isyonlarni bostirgani haqidagi qoyatosh yozuvlari qanday ataladi?",
+        options: ["Papirus yozuvlari", "Krit bitiklari", "Behistun yozuvlari", "Qadimgi Xorazm yozuvi"],
+        correct: 2, // C
+        exp: "Doro I ning isyonlarni bostirgani Behistun yozuvlarida qayd etilgan."
+      },
+      {
+        q: "32. Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi?",
+        options: ["Goplit", "Liktor", "Satrap", "Nomarx"],
+        correct: 3, // D
+        exp: "Goplit — Qadimgi Yunoniston va makedon armiyalarining og‘ir qurollangan piyoda jangchisi."
+      },
+      {
+        q: "33. Qadimgi Rimda dastlab faxriy unvon, keyinchalik mutlaq hukmdorni bildirgan so‘z?",
+        options: ["Imperator", "Konsul", "Diktator", "Senator"],
+        correct: 0, // A
+        exp: "Imperator — dastlab faxriy harbiy unvon, keyinchalik mutlaq hukmdor unvoni."
+      },
+      {
+        q: "34. Rimning tub aholisi kimlar deb atalgan?",
+        options: ["Plebeylar", "Patrisiylar", "Kolonlar", "Liktorlar"],
+        correct: 1, // B
         exp: "Patrisiylar — Rimning qadimgi tub aholisi."
       },
       {
-        q: "30. Fir’avnlar maqbarasi bo‘lgan mahobatli tosh inshoot nima?",
-        options: ["Plebeylar", "Piramida", "Polis", "Respublika"],
-        correct: 1, // B
-        exp: "Piramida — mahobatli tosh inshoot, fir’avnlar maqbarasi."
-      },
-      {
-        q: "31. Rimga ko‘chib kelgan odamlar va ularning avlodlari qanday atalgan?",
-        options: ["Polis", "Respublika", "Plebeylar", "Senat"],
+        q: "35. Rimga ko‘chib kelgan odamlar va ularning avlodlari qanday atalgan?",
+        options: ["Patrisiylar", "Senat", "Plebeylar", "Konsullar"],
         correct: 2, // C
         exp: "Plebeylar — Rimga ko‘chib kelgan odamlar va ularning avlodlari."
       },
       {
-        q: "32. Yunoncha «shahar» ma’nosini anglatuvchi atama?",
-        options: ["Respublika", "Senat", "Sun’iy sug‘orish", "Polis"],
+        q: "36. Shisha yoki tosh parchalaridan ishlangan bezakli suratlar nima deb atalgan?",
+        options: ["Akveduk", "Forum", "Freska", "Mozaikalar"],
         correct: 3, // D
-        exp: "Polis (yunoncha polis) — «shahar»."
+        exp: "Mozaikalar — shisha yoki tosh parchalaridan ishlangan bezakli suratlar."
       },
       {
-        q: "33. «Oqsoqollar kengashi» ma’nosini anglatuvchi davlat organi?",
-        options: ["Senat", "Sun’iy sug‘orish", "Sfinks", "Termalar"],
+        q: "37. Suvni bir necha qavatli ko‘prik orqali shaharga olib keluvchi inshoot qanday nomlangan?",
+        options: ["Akveduk", "Villa", "Termalar", "Panteon"],
         correct: 0, // A
-        exp: "Senat — «oqsoqollar kengashi» ma’nosini anglatadi."
+        exp: "Akveduk — suvni bir necha qavatli ko‘prik orqali shaharga olib keluvchi inshoot."
       },
       {
-        q: "34. Kanallar va ariqlar yordamida ekinlarni sug‘orish jarayoni?",
-        options: ["Sfinks", "Sun’iy sug‘orish", "Termalar", "Varvar"],
+        q: "38. Rimliklarning osmon, momaqaldiroq va yashin podshosi bo‘lgan bosh ma’budi?",
+        options: ["Neptun", "Yupiter", "Mars", "Vesta"],
         correct: 1, // B
-        exp: "Sun’iy sug‘orish — kanallar va ariqlar yordamida ekinlarni sug‘orish."
+        exp: "Yupiter — Rimliklarning bosh ma’budi, osmon, momaqaldiroq va yashin podshosi."
       },
       {
-        q: "35. Tanasi sherniki va boshi insonniki bo‘lgan ulkan haykal qanday atalgan?",
-        options: ["Termalar", "Varvar", "Sfinks", "Sivilizatsiya"],
+        q: "39. Yerlarni ijaraga olib dehqonchilik qilgan erkin kambag‘allar qanday atalgan?",
+        options: ["Patrisiylar", "Plebeylar", "Kolonlar", "Qullar"],
         correct: 2, // C
-        exp: "Sfinks — tanasi sherniki va boshi insonniki bo‘lgan, pyramidalarni qo‘riqlovchi ulkan haykal."
+        exp: "Kolonlar — yerlarni ijaraga olib dehqonchilik qilgan erkin kambag‘allar."
       },
       {
-        q: "36. Dastlab yunon tilida so‘zlashmaydigan har qanday chet mamlakatlik kishi keyinchalik madaniyatsiz odamlarga nisbatan ishlatilgan so‘z?",
-        options: ["Sivilizatsiya", "Zikkurat", "Nom", "Varvar"],
+        q: "40. Milodiy 98-yilda Rim imperatori taxtini egallagan va daklar bilan urush olib borgan hukmdor?",
+        options: ["Neron", "Kaligula", "Oktavian", "Trayan"],
         correct: 3, // D
-        exp: "Varvar — dastlab yunon tilida so‘zlashmaydigan har qanday chet mamlakatlik kishi."
+        exp: "Milodiy 98-yilda Trayan Rim imperatori taxtini egallab, daklar bilan urush olib borgan."
       }
     ];
 
@@ -922,9 +963,9 @@
       if (qScore) qScore.innerText = `${score}/${testQuestions.length}`;
       
       if (fb) {
-        if(score >= 32) fb.innerText = "Mukammal natija! Atamalar lug‘atini 100% to‘liq o‘zlashtiribsiz 🏆";
-        else if(score >= 23) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
-        else fb.innerText = "Lug‘atni qayta o‘qib chiqish tavsiya etiladi 📚";
+        if(score >= 36) fb.innerText = "Mukammal natija! 6-sinf darsligini 100% to‘liq o‘zlashtiribsiz 🏆";
+        else if(score >= 28) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, trenajyordan yana bir bor takrorlang 👍";
+        else fb.innerText = "6-sinf darsligini qayta o‘qib chiqish tavsiya etiladi 📚";
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -939,7 +980,9 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function shuffleTestOptions(){testQuestions.forEach(question=>{const a=question.options.map((text,index)=>({text,correct:index===question.correct}));for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}question.options=a.map(x=>x.text);question.correct=a.findIndex(x=>x.correct)})}
     // Dastlabki ishga tushirish
+    shuffleTestOptions();
     initMatch();
     loadFlashcard();
     loadTestQuestion();

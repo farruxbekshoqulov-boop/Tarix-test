@@ -63,7 +63,7 @@
     }
 
     .palace-header h1 {
-      font-size: 16.5px; /* Sarlavha kattalashtirildi */
+      font-size: 16.5px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -89,7 +89,7 @@
       padding: 11px 4px;
       border: none;
       background: transparent;
-      font-size: 13.5px; /* Menyu tugmalari kattalashtirildi */
+      font-size: 13.5px;
       font-weight: 800;
       color: #78350f;
       border-radius: 9px;
@@ -164,7 +164,7 @@
       border-radius: 12px;
       padding: 12px 8px;
       color: #291104;
-      font-size: 13px; /* Moslash yozuvlari kattalashtirildi */
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       text-align: center;
@@ -214,15 +214,15 @@
       box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; } /* Savollar kattalashtirildi */
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.45; color: #291104; }
     .fc-a {
-      font-size: 16px; font-weight: 700; color: #065f46;
+      font-size: 15.5px; font-weight: 700; color: #065f46;
       background: #ecfdf5; border: 1.5px solid #6ee7b7;
       border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
     }
 
     /* TEST */
-    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; } /* Test savoli kattalashtirildi */
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
     
     .opt-btn {
@@ -230,7 +230,7 @@
       border: 1.5px solid #d97706;
       border-radius: 12px;
       padding: 13px 15px;
-      font-size: 15px; /* Test variantlari kattalashtirildi */
+      font-size: 14.5px;
       font-weight: 600;
       color: #291104;
       cursor: pointer;
@@ -248,7 +248,7 @@
       border-left: 4px solid #b45309;
       padding: 12px 14px;
       border-radius: 8px;
-      font-size: 14px; /* Izoh yozuvi kattalashtirildi */
+      font-size: 14px;
       font-weight: 600;
       color: #78350f;
       line-height: 1.45;
@@ -263,7 +263,7 @@
       border: none;
       padding: 15px;
       border-radius: 14px;
-      font-size: 16.5px; /* Tugmalar kattalashtirildi */
+      font-size: 16.5px;
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 16px rgba(180, 83, 9, 0.4);
@@ -384,7 +384,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (40 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) -->
+    <!-- 3. TEST SINOVI (40 TA TEST - Har xil taqsimlangan javoblar va murakkab variantlar) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -433,13 +433,13 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 1-ustun atamalar, 2-ustun izohlar) ---
+    // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
       [
         { id: 1, left: "To'n yabg'u xoqon", right: "G'arbiy Turk xoqonligida 618–630-yillarda hukmronlik qilgan, boshqaruvni isloh qilgan hukmdor" },
         { id: 2, left: "Tudunlar", right: "Xoqonning noiblari bo'lib, mustaqil hokimliklar ustidan nazoratni kuchaytirgan" },
         { id: 3, left: "Suyab", right: "G'arbiy Turk xoqonligining asosiy qarorgoh shaharlaridan biri (Oq Bishim)" },
-        { id: 4, left: "Beshbaliq", right: "Turfon va G'arbiy xoqonlikda qarorgoh vazifasini bajargan shahar" },
+        { id: 4, left: "Beshbaliq", right: "Turfon hududida G'arbiy xoqonlik qarorgoh vazifasini bajargan shahar" },
         { id: 5, left: "Ixshid", right: "Sug'd va Farg'onada hukmronlik qilgan oliy hokim unvoni" }
       ],
       [
@@ -452,8 +452,8 @@
       [
         { id: 11, left: "Tudun", right: "Chochda hukmronlik qilgan hokim unvoni" },
         { id: 12, left: "Qurultoy", right: "Yirik siyosiy birlashmalar va shaharlarda o'tkazilgan yig'inlar" },
-        { id: 13, left: "Kirmagan", right: "Farg'ona va Sug'd siyosiy ittifoqiga nisbatan berilgan nom" },
-        { id: 14, left: "Afrosiyob", right: "Samarqand shahrining qadimgi xarobalari joyi (XX asr 60-yillarida topilgan devoriy rasmlar)" },
+        { id: 13, left: "Farg'ona maqomi", right: "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat bo'lgan" },
+        { id: 14, left: "Afrosiyob", right: "Samarqand shahrining qadimgi xarobalari joyi (devoriy rasmlar topilgan)" },
         { id: 15, left: "Zahoki Maron", right: "Naxshab vohasidagi eftaliylar va turklar davriga oid yodgorlik" }
       ],
       [
@@ -556,46 +556,46 @@
 
     // --- 2. SAVOL-JAVOB (40 TA SAVOL) ---
     const flashcards = [
-      { q: "1. G'arbiy Turk xoqonligida ijtimoiy, iqtisodiy va madaniy jihatdan nima ustun turgan?", a: "O'troq dehqonchilik, hunarmandchilik va savdo-sotiq." },
-      { q: "2. G'arbiy Turk xoqonligi qaysi yillarda o'zining yuksak taraqqiyotiga erishgan?", a: "VII asrning birinchi choragida." },
-      { q: "3. VII asrning birinchi choragida G'arbiy xoqonlikda kim hukmronlik qilgan?", a: "To'n yabg'u xoqon." },
-      { q: "4. To'n yabg'u xoqon hukmronlik qilgan yillar qaysi?", a: "618–630-yillar." },
-      { q: "5. To'n yabg'u xoqon boshqaruvda qanday islohot o'tkazgan?", a: "Viloyat hokimlarini xoqonlik ma'muriyati bilan bevosita bog'lash va nazoratni kuchaytirish maqsadida mahalliy hokimlargacha «yabg'u» unvonini bergan." },
-      { q: "6. Xitoy manbalariga ko'ra turklarning doimiy yashash joylari bo'lmasa-da, ularda nima bor edi?", a: "Har biriga ajratib berilgan yerlar." },
-      { q: "7. Ajratib berilgan yerlarda dehqonlar qanday ekinlar yetishtirgan?", a: "Asosan don ekinlari va mevali daraxtlar." },
-      { q: "8. Xoqonlikda soliq va o'lponlarni o'z vaqtida yig'ib olish uchun qanday tizim joriy etilgan?", a: "Maxsus ma'muriy va harbiy-siyosiy boshqaruv tizimi hamda noiblar — tudunlar." },
-      { q: "9. Xoqon o'z noiblari bo'lgan kimlar yordamida mustaqil hokimliklar ustidan nazoratni kuchaytirgan?", a: "Tudunlar yordamida." },
-      { q: "10. Xoqonlik o'z ehtiyojidan kelib chiqib yana qanday islohotlar qilgan?", a: "«O'nlik» tizimini yaratish, vassal hokimliklar hududida qarorgohlar barpo etish va boshqaruvni takomillashtirish." },
-      { q: "11. G'arbiy Turk xoqonligining qarorgoh vazifasini bajargan shaharlari qaysilar?", a: "Suyab (Oq Bishim), Beshbaliq (Turfon), Ek-tog' (Sharqiy Turkiston)." },
-      { q: "12. Davlat boshqaruvida xoqonlikning barcha bo'g'inlarida lavozim egalari nimaga ega bo'lishi shart bo'lgan?", a: "Harbiy unvonga." },
-      { q: "13. Sug'd va Farg'onada oliy hokim qanday atalgan?", a: "Ixshid." },
-      { q: "14. Toxaristonda oliy hokim qanday atalgan?", a: "Malikshoh." },
-      { q: "15. Xorazmda oliy hokim qanday atalgan?", a: "Xorazmshoh." },
-      { q: "16. Keshda oliy hokim qanday atalgan?", a: "Ixrid." },
-      { q: "17. Buxoroda oliy hokim qanday atalgan?", a: "Xudot." },
-      { q: "18. Ustrushanada oliy hokim qanday atalgan?", a: "Afshin." },
-      { q: "19. Chochda oliy hokim qanday atalgan?", a: "Tudun." },
-      { q: "20. Markaziy hokimiyatga bo'ysunuvchi bu hokimlar o'z mustaqilligini saqlash uchun nima qilgan?", a: "Faqat boj to'lab turishgan." },
-      { q: "21. Turk xoqonligida yirik siyosiy birlashmalar va shaharlarda nima o'tkazib turilgan?", a: "Qurultoylar." },
-      { q: "22. Farg'ona va Sug'd qanday siyosiy ittifoq tuzgan?", a: "Kirmagan." },
-      { q: "23. Xoqonlik hududidagi ko'chmanchi chorvadorlarning asosiy mashg'uloti nima bo'lgan?", a: "Chorvachilik." },
-      { q: "24. Shahar aholisi asosan nima bilan shug'ullangan?", a: "Hunarmandchilik va savdo-sotiq bilan." },
-      { q: "25. Xoqonlikda savdo aloqalarida kimlar vositachilik qilgan?", a: "Sug'd savdogarlari." },
-      { q: "26. VII asrning birinchi yarmida G'arbiy Turk xoqonligi kimlar bilan elchilik aloqalarini olib borgan?", a: "Xitoy, Eron va Vizantiya bilan." },
-      { q: "27. Bu davrda moddiy va ma'naviy madaniyat namunasi sifatida qaysi bitiklar muhim?", a: "Turk-runiy, Urxun-Yenisey yodgorlik bitiklari." },
-      { q: "28. Turon zaminida turkiy yozuv bilan bir qatorda qaysi yozuvlar keng qo'llanilgan?", a: "Sug'd va Xorazm yozuvlari." },
-      { q: "29. Sug'd-turk ikki tilliligi rasmiy odat ekanligi qaysi asarda qayd etilgan?", a: "Mahmud Qoshg'ariyning «Devonu lug'otit-turk» asarida." },
-      { q: "30. Turk xoqonligi davrida qaysi bayram keng nishonlangan?", a: "Navro'z bayrami." },
-      { q: "31. Turk xoqonligi davrida dehqonlar tomonidan yerlarni egallash jarayoni kuchayganda kimlar asoratga tushgan?", a: "Kashovarzlar qaram kadivarlarga aylangan." },
-      { q: "32. Buxoroda qo'zg'olon ko'targan xoqon xonadoniga mansub shaxs kim?", a: "Abruy." },
-      { q: "33. Abruyga qarshi kurashish uchun Buxoroga qo'shin yuborgan turk xoqoni kim?", a: "Qoracho'rin turk." },
-      { q: "34. Buxoroda shohriston qurib, u yigirma yil podshoh bo'lgan shaxs kim?", a: "Sheri Kishvar." },
-      { q: "35. Ajdodlarimiz o'z avlodlarini necha yoshidan boshlab bilim olishga va xat-savod o'rganishga jalb etgan?", a: "5 yoshidan." },
-      { q: "36. Bolalar balog'at yoshiga yetgach nima uchun boshqa davlatlarga yuborilgan?", a: "Dunyo tanish va savdo-tiyorat ishlarini o'rganish uchun." },
-      { q: "37. Xoqonlikda jinoyatchilikka qarshi qonunlarda qanday jazolar belgilangan?", a: "Qatl etish, a'zolarini kesish, mol-mulk tarzida tovon to'lash." },
-      { q: "38. XX asr 60-yillarida Samarqandda avtomobil yo'li qurilayotganda topilgan mashhur obida qanday ataladi?", a: "Afrosiyob rangli devoriy rasmlari." },
-      { q: "39. Afrosiyob devoriy rasmlarida qaysi davlatlardan kelgan elchilar tasvirlangan?", a: "Chag'oniyon, Toxariston, Sharqiy Turkiston, Choch, Chinu Mochin va Hindistondan." },
-      { q: "40. UNESCO tomonidan «Samarqand – madaniyatlar uchrashadigan makon» deb e'tirof etilgan shahar qaysi?", a: "Samarqand." }
+      { q: "1. G'arbiy Turk xoqonligining Sharqiy xoqonlikdan tubdan farq qiluvchi asosiy iqtisodiy xususiyati nimada edi?", a: "Aholi turmushida o'troq dehqonchilik, hunarmandchilik va savdo-sotiq ustun turganida." },
+      { q: "2. G'arbiy Turk xoqonligi o'zining yuksak taraqqiyot va qudrat cho'qqisiga qachon erishdi?", a: "VII asrning birinchi choragida." },
+      { q: "3. VII asrning birinchi choragida G'arbiy Turk xoqonligida islohotlar o'tkazgan hukmdor kim?", a: "To'n yabg'u xoqon." },
+      { q: "4. To'n yabg'u xoqonning hokimiyat tepasida bo'lgan yillari qaysi?", a: "618–630-yillar." },
+      { q: "5. To'n yabg'u xoqon mahalliy hokimlar ustidan nazoratni kuchaytirish uchun qanday siyosiy qadam tashladi?", a: "Mahalliy hukmdorlargacha bo'lgan qatlamga «yabg'u» unvonini berib, markaziy ma'muriyatga bo'ysundirdi." },
+      { q: "6. Xitoy manbalariga ko'ra, turklar doimiy shaharlarga ega bo'lmasa-da, ularning xo'jaligida qanday muhim tartib bor edi?", a: "Har bir qabila va urug'ga qat'iy ajratib berilgan yerlar mavjud edi." },
+      { q: "7. Ajratib berilgan yerlarda turkiy dehqonlar asosan qanday xo'jalik tarmoqlari bilan shug'ullangan?", a: "Don ekinlari yetishtirish va mevali daraxtzorlar barpo etish bilan." },
+      { q: "8. Xoqonlikda soliq va o'lponlarni o'z vaqtida yig'ib olish hamda hududlarni boshqarish uchun kimlar mas'ul bo'lgan?", a: "Xoqon noiblari — tudunlar." },
+      { q: "9. Tudunlar instituti G'arbiy Turk xoqonligi ma'muriyatida qanday vazifani bajargan?", a: "Vassal va mustaqil hokimliklar ustidan markaziy hokimiyat nazoratini ta'minlagan." },
+      { q: "10. Xoqonlikda davlat boshqaruvini mustahkamlash maqsadida qo'llanilgan harbiy-ma'muriy tizim qanday nomlangan?", a: "«O'nlik» tizimi." },
+      { q: "11. G'arbiy Turk xoqonligining boshqaruv qarorgohlari vazifasini o'tagan asosiy shaharlar qaysilar?", a: "Suyab (Oq Bishim) va Beshbaliq (Turfon)." },
+      { q: "12. G'arbiy Turk xoqonligida davlat lavozimlarini egallash uchun qanday qat'iy talab qo'yilgan edi?", a: "Barcha bo'g'indagi amaldorlar harbiy unvonga ega bo'lishi shart edi." },
+      { q: "13. Sug'd va Farg'onada hukmronlik qilgan mahalliy oliy hokim unvoni qanday edi?", a: "Ixshid." },
+      { q: "14. Toxariston hududida mahalliy hokimiyatni boshqargan hukmdor unvoni qanday atalgan?", a: "Malikshoh." },
+      { q: "15. Xorazm vohasida o'z sulolasini saqlab qolgan oliy hokim qanday unvonga ega edi?", a: "Xorazmshoh." },
+      { q: "16. Kesh (Shahrisabz) vohasida hokimlik qilgan mahalliy hukmdor unvoni nima edi?", a: "Ixrid." },
+      { q: "17. Buxoro vohasida hukmronlik qilgan mahalliy hokim qanday unvon bilan yuritilgan?", a: "Xudot." },
+      { q: "18. Ustrushana viloyatining hokimi qanday atalgan?", a: "Afshin." },
+      { q: "19. Choch (Toshkent) vohasining hukmdori qanday unvonga ega bo'lgan?", a: "Tudun." },
+      { q: "20. Markaziy hokimiyatga qaram bo'lgan bu mahalliy hokimlar o'z muxtoriyatini (mustaqilligini) qanday yo'l bilan saqlab qolgan?", a: "Markazga muntazam ravishda boj to'lab turish orqali." },
+      { q: "21. G'arbiy Turk xoqonligida muhim siyosiy masalalarni hal etish uchun yirik shaharlarda nima o'tkazilgan?", a: "Qurultoylar." },
+      { q: "22. G'arbiy Turk xoqonligi davrida Farg'ona vodiysining Sug'd siyosiy tuzilmalari bilan o'zaro munosabatlari qanday edi?", a: "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat sifatida mavjud bo'lgan." },
+      { q: "23. Xoqonlik tarkibidagi ko'chmanchi aholining asosiy iqtisodiy faoliyati nimadan iborat bo'lgan?", a: "Chorvachilik." },
+      { q: "24. O'troq shahar aholisi qaysi sohalar bo'yicha yuqori yutuqlarga erishgan?", a: "Hunarmandchilik va xalqaro savdo-sotiq." },
+      { q: "25. Xoqonlik hududidan o'tuvchi Buyuk Ipak yo'lida savdo aloqalarini olib borishda kimlar asosiy vositachi bo'lgan?", a: "Sug'd savdogarlari." },
+      { q: "26. VII asrning birinchi yarmida G'arbiy Turk xoqonligi tashqi siyosatda qaysi buyuk davlatlar bilan elchilik almashgan?", a: "Xitoy, Eron va Vizantiya bilan." },
+      { q: "27. Turk xoqonligi davriga oid yozma madaniyatimizning eng noyob yodgorliklari qaysilar?", a: "Turk-runiy va Urxun-Yenisey yodgorlik bitiklari." },
+      { q: "28. Turon zaminida turkiy yozuv bilan bir qatorda rasmiy ishlarda qaysi yozuvlar keng ishlatilgan?", a: "Sug'd va Xorazm yozuvlari." },
+      { q: "29. Sug'd-turk ikki tilliligining davlat va jamiyat hayotida keng tarqalgani qaysi o'rta asr asarida tasdiqlangan?", a: "Mahmud Qoshg'ariyning «Devonu lug'otit-turk» asarida." },
+      { q: "30. Qadimgi turklar va o'troq xalqlar tomonidan bahor faslida nishonlangan umumiy qadimiy bayram qaysi?", a: "Navro'z bayrami." },
+      { q: "31. Yerlarni egallash jarayoni kuchayganda erkin jamoa a'zolari bo'lgan kashovarzlar qanday qatlamga aylandi?", a: "Qaram kadivarlarga." },
+      { q: "32. Buxoroda mahalliy xalqqa qarshi isyon ko'tarib, xoqonlikda tartibsizlik keltirib chiqargan shaxs kim?", a: "Abruy." },
+      { q: "33. Abruy isyonini bostirish uchun Turk xoqoni tomonidan Buxoroga yuborilgan qo'shin boshlig'i kim?", a: "Qoracho'rin turk." },
+      { q: "34. Abruy qatl etilgach, Buxoroda shohriston qurib va yigirma yil podshoh bo'lgan turkzoda shoh kim edi?", a: "Sheri Kishvar." },
+      { q: "35. Ajdodlarimiz o'z avlodlarini necha yoshidan boshlab bilim olishga jalb etgan?", a: "5 yoshidan." },
+      { q: "36. O'smirlar balog'at yoshiga yetgach, ularning dunyoqarashini kengaytirish uchun qayerlarga yuborilgan?", a: "Boshqa mamlakatlarga (savdo-tiyorat va dunyo tanish uchun)." },
+      { q: "37. Xoqonlik qonunchiligida og'ir jinoyatlar (qotillik, sotqinlik) uchun qanday jazo turlari belgilangan?", a: "Qatl etish, a'zolarini kesish va mol-mulkni musodara qilish." },
+      { q: "38. XX asrning 60-yillarida Samarqandda avtomobil yo'li qurilayotganda topilgan jahonga mashhur moddiy meros obidasi nima?", a: "Afrosiyob rangli devoriy rasmlari." },
+      { q: "39. Afrosiyob devoriy rasmlarida qaysi o'rta asr davlatlaridan tashrif buyurgan elchilarning qabul marosimi tasvirlangan?", a: "Chag'oniyon, Toxariston, Sharqiy Turkiston, Choch, Chinu Mochin va Hindistondan." },
+      { q: "40. Xalqaro tashkilot tomonidan rasman «madaniyatlar uchrashadigan makon» degan yuksak ta'rif berilgan qadimgi Markaziy Osiyo shahri qaysi?", a: "Samarqand." }
     ];
 
     let fcIdx = 0;
@@ -634,247 +634,247 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (40 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
+    // --- 3. TEST SINOVI (40 TA TEST - Pravilnye otvety ravnomerno raspredelenyi po A, B, C, D) ---
     const testQuestions = [
       {
-        q: "1. G'arbiy Turk xoqonligida ijtimoiy, iqtisodiy va madaniy jihatdan nima ustun turgan edi?",
-        options: ["O'troq dehqonchilik, hunarmandchilik va savdo-sotiq", "Faqat ko'chmanchi chorvachilik", "Faqat kemaсозlik va baliqchilik", "Faqat o'rmonchilik"],
-        correct: 0,
+        q: "1. G'arbiy Turk xoqonligining Sharqiy xoqonlikdan farq qiluvchi asosiy xo'jalik-iqtisodiy xususiyati qaysi?",
+        options: ["Ko'chmanchi chorvachilik va yaylov xo'jaligining mutlaq yetakchiligi", "Aholi turmushida o'troq dehqonchilik, hunarmandchilik va savdo-sotiqning ustunligi", "Davlat iqtisodiyoti faqat dengiz portlari orqali amalga oshirilishi", "Shaharlarning umuman bo'lmasligi va faqat o'rmon xo'jaligi"],
+        correct: 1,
         exp: "G'arbiy xoqonlikda o'troq dehqonchilik, hunarmandchilik va savdo-sotiq ustun turgan."
       },
       {
-        q: "2. VII asrning birinchi choragida G'arbiy xoqonlikda kim hukmronlik qilgan?",
-        options: ["Bumin xoqon", "Istami yabg'u", "To'n yabg'u xoqon", "Tardu xoqon"],
-        correct: 2,
-        exp: "VII asrning birinchi choragida To'n yabg'u xoqon hukmronlik qilgan."
-      },
-      {
-        q: "3. To'n yabg'u xoqon hukmronlik qilgan yillar qaysi variantda to'g'ri ko'rsatilgan?",
-        options: ["555–576-yillar", "618–630-yillar", "563–567-yillar", "650–680-yillar"],
-        correct: 1,
-        exp: "To'n yabg'u xoqon 618–630-yillarda hukmronlik qilgan."
-      },
-      {
-        q: "4. To'n yabg'u xoqon viloyat hokimlarini markaziy ma'muriyat bilan bog'lash uchun nima qilgan?",
-        options: ["Ularni poytaxtga ko'chirgan", "Mahalliy hokimlargacha «yabg'u» unvonini bergan", "Ularning barcha mol-mulkini musodara qilgan", "Hokimliklarni tugatib yuborgan"],
-        correct: 1,
-        exp: "Mahalliy hokimlargacha «yabg'u» unvoni berilib, nazorat kuchaytirilgan."
-      },
-      {
-        q: "5. Xitoy manbalariga ko'ra turklarning doimiy yashash joylari bo'lmasa-da, ularda nima bor edi?",
-        options: ["Har biriga qat'iy ajratib berilgan yerlar", "Katta yer osti omborlari", "Shahar qal'alari", "Ko'chma o'tovlar shaharchasi"],
+        q: "2. VII asrning birinchi choragida G'arbiy Turk xoqonligida markaziy hokimiyatni mustahkamlash uchun islohotlar o'tkazgan hukmdor kim?",
+        options: ["To'n yabg'u xoqon", "Bumin xoqon", "Istami yabg'u", "Tardu xoqon"],
         correct: 0,
-        exp: "Xitoy manbalari turklarda har biriga ajratib berilgan yerlar borligini yozadi."
+        exp: "VII asrning birinchi choragida (618–630) To'n yabg'u xoqon hukmronlik qilgan."
       },
       {
-        q: "6. Xoqonlikda soliq va o'lponlarni o'z vaqtida yig'ib turish uchun kimlar tayinlangan?",
-        options: ["Qozilar", "Tudunlar (noiblar)", "Saroy posbonlari", "Mehmonlar"],
-        correct: 1,
-        exp: "Solig' va o'lpon yig'ish uchun tudunlar (noiblar) tayinlangan."
+        q: "3. To'n yabg'u xoqon tomonidan o'tkazilgan ma'muriy islohotning asosiy mazmuni nima edi?",
+        options: ["Barcha viloyat hokimlarini poytaxtga ko'chirib, o'rniga turk qo'mondonlarini qo'yish", "Viloyat hokimliklarini butunlay tugatib, erkin jamoalarga bo'lib yuborish", "Mahalliy hokimlargacha «yabg'u» unvonini berib, markaziy ma'muriyat nazoratini kuchaytirish", "Hokimlik huquqini faqat chet ellik savdogarlarga sotish"],
+        correct: 2,
+        exp: "Mahalliy hokimlargacha «yabg'u» unvoni berilib, markaziy nazorat kuchaytirilgan."
       },
       {
-        q: "7. G'arbiy Turk xoqonligining asosiy qarorgoh shaharlari qaysilar edi?",
-        options: ["Samarqand va Buxoro", "Suyab va Beshbaliq", "Toshkent va Xiva", "Marv va Balx"],
-        correct: 1,
+        q: "4. Xitoy manbalarida turklarning ko'chmanchi bo'lishiga qaramay, ularning xo'jaligida qanday muhim tartib bo'lgani yozilgan?",
+        options: ["Yerlar faqat davlat mulki bo'lib, har yili qayta taqsimlanishi", "Dehqonchilik bilan shug'ullanish qat'iyan taqiqlangani", "Hamma yerlar umumiy jamoat foydalanuvida bo'lib, egasi bo'lmagani", "Har bir qabila va urug'ga qat'iy ajratib berilgan yerlar mavjudligi"],
+        correct: 3,
+        exp: "Xitoy manbalari turklarda har biriga ajratib berilgan yerlar borligini tasdiqlaydi."
+      },
+      {
+        q: "5. Xoqonlikda soliq va o'lponlarni o'z vaqtida yig'ib turish hamda hududlarni boshqarish uchun kimlar tayinlangan?",
+        options: ["Tudunlar (xoqon noiblari)", "Qozilar va diniy arboblar", "Saroy posbonlari", "Sug'd savdogarlari"],
+        correct: 0,
+        exp: "Soliq va o'lpon yig'ish uchun tudunlar (noiblar) tayinlangan."
+      },
+      {
+        q: "6. G'arbiy Turk xoqonligining qarorgoh vazifasini bajargan asosiy shaharlari qaysi javobda to'g'ri ko'rsatilgan?",
+        options: ["Samarqand va Buxoro", "Toshkent va Xiva", "Suyab va Beshbaliq", "Marv va Balx"],
+        correct: 2,
         exp: "Suyab (Oq Bishim) va Beshbaliq (Turfon) qarorgoh vazifasini bajargan."
       },
       {
-        q: "8. Davlat boshqaruvida xoqonlikning barcha bo'g'inlarida lavozim egalari nimaga ega bo'lishi shart edi?",
-        options: ["Diniy unvonga", "Harbiy unvonga", "Ilmiy darajaga", "Shahzoda unvonga"],
-        correct: 1,
-        exp: "Nizomga ko'ra barcha lavozim egalari harbiy unvonga ega bo'lishi shart edi."
+        q: "7. Xoqonlikda davlat boshqaruvining barcha bo'g'inlarida amaldorlar uchun qanday qat'iy talab qo'yilgan edi?",
+        options: ["Diniy ma'lumotga ega bo'lishi shart edi", "Faqat zodagon suloladan chiqishi kerak edi", "Chet tillarini mukammal bilishi shart edi", "Harbiy unvonga ega bo'lishi talab etilgan"],
+        correct: 3,
+        exp: "Barcha bo'g'indagi amaldorlar harbiy unvonga ega bo'lishi shart edi."
       },
       {
-        q: "9. Sug'd va Farg'onada hukmronlik qilgan oliy hokim qanday atalgan?",
-        options: ["Malikshoh", "Ixrid", "Ixshid", "Afshin"],
-        correct: 2,
+        q: "8. Sug'd va Farg'onada hukmronlik qilgan mahalliy oliy hokimning unvoni qanday edi?",
+        options: ["Ixshid", "Malikshoh", "Ixrid", "Afshin"],
+        correct: 0,
         exp: "Sug'd va Farg'onada oliy hokim «ixshid» deb atalgan."
       },
       {
-        q: "10. Toxaristonda hukmronlik qilgan hokim qanday unvonga ega bo'lgan?",
-        options: ["Malikshoh (yoki Yabg'u)", "Xudot", "Tudun", "Xorazmshoh"],
-        correct: 0,
+        q: "9. Toxariston hududida mahalliy hokimiyatni boshqargan hukmdor unvoni qanday atalgan?",
+        options: ["Xudot", "Malikshoh", "Tudun", "Xorazmshoh"],
+        correct: 1,
         exp: "Toxaristonda hokim Malikshoh deb atalgan."
       },
       {
-        q: "11. Kesh va Buxoroda hokimlik qilgan unvonlar mos ravishda qaysilar?",
-        options: ["Afshin va Tudun", "Ixrid va Xudot", "Xorazmshoh va Malikshoh", "Ixshid va Xudot"],
-        correct: 1,
+        q: "10. Kesh va Buxoroda hokimlik qilgan unvonlar mos ravishda qaysilar?",
+        options: ["Afshin va Tudun", "Xorazmshoh va Malikshoh", "Ixrid va Xudot", "Ixshid va Xudot"],
+        correct: 2,
         exp: "Keshda — ixrid, Buxoroda — xudot edi."
       },
       {
-        q: "12. Ustrushana va Choch hokimlari qanday unvonlar bilan yuritilgan?",
+        q: "11. Ustrushana va Choch hokimlari qanday unvonlar bilan yuritilgan?",
         options: ["Afshin va Tudun", "Xudot va Ixrid", "Malikshoh va Ixshid", "Yabg'u va Shod"],
         correct: 0,
         exp: "Ustrushanada — afshin, Chochda — tudun edi."
       },
       {
-        q: "13. Markaziy hokimiyatga qaram bo'lgan bu mahalliy hokimlar o'z mustaqilligini saqlash uchun nima to'lagan?",
-        options: ["Oltin tanga", "Boj", "Hosilning yarmini", "Jon solig'ini"],
-        correct: 1,
-        exp: "Ular faqat boj to'lab turish bilan o'z mustaqilligini saqlagan."
+        q: "12. Markaziy hokimiyatga qaram bo'lgan bu mahalliy hokimlar o'z mustaqilligini (muxtoriyatini) saqlash uchun nima qilgan?",
+        options: ["Markazga doimiy ravishda oltin tangalar jo'natib turgan", "Xoqon uchun maxsus qo'shin yetkazib bergan", "O'z hududida turk askarlarini boqqan", "Faqat boj to'lab turishgan"],
+        correct: 3,
+        exp: "Ular faqat boj to'lab turish bilan o'z mustaqilligini saqlab qolgan."
       },
       {
-        q: "14. Turk xoqonligida yirik siyosiy birlashmalar va shaharlarda nima o'tkazib turilgan?",
-        options: ["Saylovlar", "Qurultoylar", "Diniy bayramlar", "Harbiy musobaqalar"],
-        correct: 1,
+        q: "13. Turk xoqonligida yirik siyosiy birlashmalar va shaharlarda nima o'tkazib turilgan?",
+        options: ["Qurultoylar", "Umumxalq saylovlari", "Diniy kengashlar", "Harbiy tribunal majlislari"],
+        correct: 0,
         exp: "Yirik shaharlarda qurultoylar o'tkazib turilgan."
       },
       {
-        q: "15. Farg'ona va Sug'd qanday siyosiy ittifoq tuzgan edilar?",
-        options: ["«Kirmagan»", "«Turk eli»", "«O'n o'q»", "«Elterish»"],
+        q: "14. G'arbiy Turk xoqonligi davrida Farg'ona vodiysining Sug'd siyosiy tuzilmalari bilan o'zaro munosabatlari qanday xarakterga ega bo'lgan?",
+        options: ["Farg'ona to'g'ridan-to'g'ri Sug'd tarkibiga qo'shib yuborilgan", "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat sifatida mavjud bo'lgan", "Farg'ona va Sug'd yagona imperiyaga birlashgan", "Farg'ona Sug'dga soliq to'lab turishga majbur bo'lgan"],
+        correct: 1,
+        exp: "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat bo'lgan."
+      },
+      {
+        q: "15. Xoqonlikda tashqi savdo aloqalarida asosiy vositachilikni kimlar bajargan?",
+        options: ["Xitoy elchilari", "Vizantiya savdogarlari", "Eron askarlari", "Sug'd savdogarlari"],
+        correct: 3,
+        exp: "Tashqi savdoda sug'd savdogarlari vositachilik qilgan."
+      },
+      {
+        q: "16. G'arbiy Turk xoqonligi davriga oid moddiy va ma'naviy madaniyatning yozma yodgorliklari qaysilar?",
+        options: ["Urxun-Yenisey yodgorlik bitiklari", "Qadimgi Misr iyerogliflari", "Yunon tilidagi bitiklar", "Lotin tilidagi qonunlar"],
         correct: 0,
-        exp: "Farg'ona va Sug'd «kirmagan» deb nomlangan siyosiy ittifoq tuzgan."
+        exp: "Urxun-Yenisey yodgorlik bitiklari muhim namunadir."
       },
       {
-        q: "16. Shahar aholisi asosan nima bilan shug'ullangan?",
-        options: ["Faqat baliqchilik", "Hunarmandchilik va savdo-sotiq", "Faqat chorvachilik", "Faqat tog' konchilik"],
-        correct: 1,
-        exp: "Shahar aholisi hunarmandchilik va savdo-sotiq bilan shug'ullangan."
-      },
-      {
-        q: "17. Xoqonlikda tashqi savdo aloqalarida asosiy vositachilikni kimlar bajargan?",
-        options: ["Xitoy elchilari", "Sug'd savdogarlari", "Vizantiya savdogarlari", "Eron askarlari"],
-        correct: 1,
-        exp: "Savdoda sug'd savdogarlari vositachilik qilgan."
-      },
-      {
-        q: "18. Moddiy va ma'naviy madaniyat namunalari sifatida qaysi yodgorliklar mashhur?",
-        options: ["Urxun-Yenisey yodgorlik bitiklari", "Qadimgi Misr papiruslari", "Yunon bitiklari", "Mesopotamiya toshlari"],
-        correct: 0,
-        exp: "Urxun-Yenisey yodgorlik bitiklari va yodnomalar muhim namunadir."
-      },
-      {
-        q: "19. Sug'd-turk ikki tilliligi rasmiy odat ekanligi qaysi asarda qayd etilgan?",
-        options: ["Abu Rayhon Beruniyning «Qadimgi xalqlardan qolgan yodgorliklar»", "Mahmud Qoshg'ariyning «Devonu lug'otit-turk»", "Mahmud Zamaxshariyning «Muqaddimat ul-adab»", "Alisher Navoiyning «Xamsa»"],
-        correct: 1,
+        q: "17. Sug'd-turk ikki tilliligining rasmiy odat ekanligi qaysi o'rta asr asarida tasdiqlangan?",
+        options: ["Abu Rayhon Beruniyning «Qadimgi xalqlardan qolgan yodgorliklar» asarida", "Mahmud Zamaxshariyning «Muqaddimat ul-adab» asarida", "Mahmud Qoshg'ariyning «Devonu lug'otit-turk» asarida", "Alisher Navoiyning «Xamsa» asarida"],
+        correct: 2,
         exp: "Bu holat Mahmud Qoshg'ariyning «Devonu lug'otit-turk» asarida qayd etilgan."
       },
       {
-        q: "20. Turk xoqonligi davrida keng nishonlangan qadimiy milliy bayram qaysi?",
-        options: ["Hosil bayrami", "Navro'z bayrami", "Qishki solstittsiya", "Zardushtiy bayrami"],
-        correct: 1,
+        q: "18. Qadimgi turklar va o'troq xalqlar tomonidan bahor faslida nishonlangan umumiy qadimiy bayram qaysi?",
+        options: ["Hosil bayrami", "Qishki solstitsiya", "Zardushtiy bayrami", "Navro'z bayrami"],
+        correct: 3,
         exp: "Navro'z bayrami o'sha davrlarda ham keng nishonlangan."
       },
       {
-        q: "21. Navro'z bayrami respublikamizda qaysi yilda rasman qayta tiklandi?",
-        options: ["1989-yilda", "1991-yilda", "1995-yilda", "2000-yilda"],
-        correct: 1,
+        q: "19. Navro'z bayrami respublikamizda qaysi yilda rasman qayta tiklandi?",
+        options: ["1989-yilda", "1995-yilda", "1991-yilda", "2000-yilda"],
+        correct: 2,
         exp: "Navro'z 1991-yilda respublikamizda rasman qayta tiklandi."
       },
       {
-        q: "22. Turk xoqonligi davrida dehqonlar yerlarni egallaganda kimlar asoratga tushgan?",
-        options: ["Kashovarzlar qaram kadivarlarga aylangan", "Faqat qullar", "Savdogarlar", "Hokimlar"],
+        q: "20. Turk xoqonligi davrida dehqonlar yerlarni egallash jarayoni kuchayganda erkin jamoa a'zolari kimlarga aylangan?",
+        options: ["Qaram kadivarlarga", "Mutlaq qullarga", "Erkin savdogarlarga", "Harbiy askarlarga"],
         correct: 0,
         exp: "Kashovarzlar yeridan ayrilib qaram kadivarlarga aylangan."
       },
       {
-        q: "23. Buxoroda qo'zg'olon ko'targan xoqon xonadoniga mansub shaxs kim edi?",
-        options: ["Abruy", "Qoracho'rin", "Sheri Kishvar", "To'n yabg'u"],
-        correct: 0,
-        exp: "Buxoroda Abruy qo'zg'olon ko'targan."
+        q: "21. Buxoroda mahalliy xalqqa qarshi isyon ko'tarib, xoqonlikda tartibsizlik keltirib chiqargan shaxs kim edi?",
+        options: ["Qoracho'rin", "Abruy", "Sheri Kishvar", "To'n yabg'u"],
+        correct: 1,
+        exp: "Buxoroda Abruy isyon ko'tarib tartibsizlik chiqargan."
       },
       {
-        q: "24. Abruyga qarshi kurashish uchun Buxoroga qo'shin yuborgan turk xoqoni kim?",
-        options: ["Bumin xoqon", "Qoracho'rin turk", "Istami yabg'u", "Tardu xoqon"],
-        correct: 1,
+        q: "22. Abruy isyonini bostirish uchun Turk xoqoni tomonidan Buxoroga yuborilgan qo'shin boshlig'i kim?",
+        options: ["Bumin xoqon", "Istami yabg'u", "Tardu xoqon", "Qoracho'rin turk"],
+        correct: 3,
         exp: "Qoracho'rin turk o'g'li bilan qo'shin yuborgan."
       },
       {
-        q: "25. Buxoroda shohriston qurib, yigirma yil podshoh bo'lgan turkzoda kim?",
+        q: "23. Abruy qatl etilgach, Buxoroda shohriston barpo etib, 20 yil hukmronlik qilgan turkzoda hukmdor kim?",
         options: ["Sheri Kishvar", "Biyog'u", "To'n yabg'u", "Katulf"],
         correct: 0,
         exp: "Sheri Kishvar Buxoroda shohriston qurib podshoh bo'lgan."
       },
       {
-        q: "26. Ajdodlarimiz o'z avlodlarini necha yoshidan boshlab bilim olishga va xat-savod o'rganishga jalb etgan?",
-        options: ["3 yoshidan", "5 yoshidan", "7 yoshidan", "10 yoshidan"],
-        correct: 1,
+        q: "24. Ajdodlarimiz o'z farzandlarini ilm-fan va xat-savodga o'rgatishni necha yoshidan boshlagan?",
+        options: ["3 yoshidan", "7 yoshidan", "5 yoshidan", "10 yoshidan"],
+        correct: 2,
         exp: "Bolalar 5 yoshidan boshlab bilim olishga jalb etilgan."
       },
       {
-        q: "27. Bolalar balog'at yoshiga yetgach nima uchun boshqa davlatlarga yuborilgan?",
-        options: ["Harbiy xizmat o'tash uchun", "Dunyo tanish va savdo-tiyorat ishlarini o'rganish uchun", "Faqat elchi bo'lish uchun", "Diniy ta'lim olish uchun"],
-        correct: 1,
-        exp: "Ularga dunyo tanish va savdo-tiyorat ishlarini o'rganish uchun imkon berilgan."
+        q: "25. O'smirlar balog'at yoshiga yetgach, ularning dunyoqarashini kengaytirish uchun qayerlarga yuborilgan?",
+        options: ["Harbiy yurishlarga", "Faqat poytaxt saroyiga", "Diniy markazlarga", "Boshqa mamlakatlarga (savdo-tiyorat va dunyo tanish uchun)"],
+        correct: 3,
+        exp: "Ularga dunyo tanish va savdo-tiyorat ishlarini o'rganish imkoniyati berilgan."
       },
       {
-        q: "28. Xoqonlikda jinoyatchilikka qarshi qonunlarda qanday jazo turlari bo'lgan?",
-        options: ["Faqat jarima", "Qatl etish, a'zolarini kesish, mol-mulk tarzida tovon to'lash", "Faqat surgun qilish", "Faqat kechirish"],
+        q: "26. Xoqonlik qonunchiligida og'ir jinoyatlar (qotillik, sotqinlik) uchun qanday jazo turlari belgilangan edi?",
+        options: ["Faqat jarima to'lash", "Qatl etish, a'zolarini kesish, mol-mulk tarzida tovon to'lash", "Faqat vaqtinchalik surgun qilish", "Faqat jamoat ishlariga majburlash"],
         correct: 1,
         exp: "Qatl etish, a'zolarini kesish va mol-mulk bilan tovon to'lash belgilangan."
       },
       {
-        q: "29. XX asr 60-yillarida Samarqandda yo'l qurilayotganda topilgan jahonga mashhur obida qaysi?",
-        options: ["Afrosiyob devoriy rasmlari", "Varaxsha saroyi", "Poykand qal'asi", "Tustepa obidasi"],
-        correct: 0,
+        q: "27. XX asrning 60-yillarida Samarqandda avtomobil yo'li qurilayotganda topilgan jahonga mashhur moddiy meros obidasi nima?",
+        options: ["Varaxsha saroyi", "Afrosiyob rangli devoriy rasmlari", "Poykand qal'asi", "Tustepa obidasi"],
+        correct: 1,
         exp: "Samarqandda Afrosiyob devoriy rasmlari topilgan."
       },
       {
-        q: "30. Afrosiyob devoriy rasmlarida qaysi davlatlardan kelgan elchilar tasvirlangan?",
-        options: ["Faqat Rim va Gretsiyadan", "Chag'oniyon, Toxariston, Sharqiy Turkiston, Choch, Chinu Mochin va Hindistondan", "Faqat Arabiston va Estandan", "Faqat Vizantiya va Misrdan"],
-        correct: 1,
+        q: "28. Afrosiyob devoriy rasmlarida qaysi davlatlardan tashrif buyurgan elchilarning qabul marosimi tasvirlangan?",
+        options: ["Chag'oniyon, Toxariston, Sharqiy Turkiston, Choch, Chinu Mochin va Hindistondan", "Faqat Rim va Gretsiyadan", "Faqat Arabiston va Misrdan", "Faqat Vizantiya va Mesopotamiyadan"],
+        correct: 0,
         exp: "U yerda bir nechta Osiyo davlatlari elchilari tasvirlangan."
       },
       {
-        q: "31. UNESCO tomonidan «Samarqand – madaniyatlar uchrashadigan makon» deb e'tirof etilgan shahar qaysi?",
-        options: ["Buxoro", "Samarqand", "Xiva", "Toshkent"],
-        correct: 1,
+        q: "29. YUNESKO tomonidan «Samarqand – madaniyatlar uchrashadigan makon» deb e'tirof etilgan shahar qaysi?",
+        options: ["Buxoro", "Xiva", "Samarqand", "Toshkent"],
+        correct: 2,
         exp: "Bu ta'rif aynan Samarqand shahriga berilgan."
       },
       {
-        q: "32. G'arbiy Turk xoqonligining poytaxt shaharlari qaysi javobda to'g'ri ko'rsatilgan?",
-        options: ["O'tukan va Yettisuv", "Suyab va Beshbaliq", "Kat va Tuproqqal'a", "Balx va Marv"],
-        correct: 1,
+        q: "30. G'arbiy Turk xoqonligining poytaxt va qarorgoh shaharlari qaysi javobda to'g'ri ko'rsatilgan?",
+        options: ["O'tukan va Yettisuv", "Kat va Tuproqqal'a", "Balx va Marv", "Suyab va Beshbaliq"],
+        correct: 3,
         exp: "Suyab va Beshbaliq G'arbiy xoqonlikning qarorgoh shaharlari edi."
       },
       {
-        q: "33. Xoqon o'z noiblari sifatida qaysi mansabdorlarni tayinlagan?",
-        options: ["Tudunlar", "Mobadlar", "Qozilar", "Sipohiylar"],
-        correct: 0,
+        q: "31. Xoqon o'z noiblari sifatida qaysi mansabdorlarni tayinlagan?",
+        options: ["Mobadlar", "Tudunlar", "Qozilar", "Sipohiylar"],
+        correct: 1,
         exp: "Noiblar tudunlar deb atalgan."
       },
       {
-        q: "34. G'arbiy Turk xoqonligida «o'nlik» tizimi nima uchun yaratilgan edi?",
-        options: ["Soliq yig'ishni qulaylashtirish uchun", "Qabila va elatlarni boshqarish hamda tartibni saqlash uchun", "Faqat savdoni rivojlantirish uchun", "Sug'orish tarmoqlarini qurish uchun"],
-        correct: 1,
-        exp: "Bu tizim qabila va elatlarni birlashtirish hamda boshqarish uchun qilingan."
+        q: "32. G'arbiy Turk xoqonligida «o'nlik» tizimi nima maqsadda yaratilgan edi?",
+        options: ["Soliq yig'ishni qulaylashtirish uchun", "Faqat savdoni rivojlantirish uchun", "Qabila va elatlarni boshqarish hamda harbiy-siyosiy tartibni saqlash uchun", "Sug'orish tarmoqlarini qurish uchun"],
+        correct: 2,
+        exp: "Bu tizim qabila va elatlarni boshqarish va tartibni saqlash uchun qilingan."
       },
       {
-        q: "35. Xoqonlikda «budun» yoki «qora budun» so'zi kimlarni anglatgan?",
-        options: ["Saroy amaldorlarini", "Ko'chmanchi chorvador aholini", "Shahar hunarmandlarini", "Harbiy lashkarboshilarni"],
-        correct: 1,
+        q: "33. Xoqonlikda «budun» yoki «qora budun» atamasi kimlarni anglatgan?",
+        options: ["Ko'chmanchi chorvador aholini", "Saroy amaldorlarini", "Shahar hunarmandlarini", "Harbiy lashkarboshilarni"],
+        correct: 0,
         exp: "Budun bu ko'chmanchi chorvador aholi edi."
       },
       {
-        q: "36. «Turk qonunnomasi» qayerdagi ibodatxonada saqlangan?",
+        q: "34. «Turk qonunnomasi» qayerdagi ibodatxonada saqlangan?",
         options: ["Buxoroda", "Samarqandda", "Suyabda", "O'tukanda"],
         correct: 1,
         exp: "Qonunnoma Samarqandda saqlangan."
       },
       {
-        q: "37. Farg'ona vodiysidagi Qo'rg'ontepa yaqinida topilgan buddizm yodgorligi qanday nomlanadi?",
-        options: ["Zahoki Maron", "Ajinatepa", "Varaxsha", "Zartepa"],
-        correct: 1,
+        q: "35. Farg'ona vodiysidagi Qo'rg'ontepa yaqinida topilgan buddizm yodgorligi qanday nomlanadi?",
+        options: ["Zahoki Maron", "Varaxsha", "Ajinatepa", "Zartepa"],
+        correct: 2,
         exp: "Bu yodgorlik Ajinatepa deb nomlanadi."
       },
       {
-        q: "38. Hozirgi Toshkent viloyati Yangiyo'l shahri hududidan topilgan qadimgi madaniyat qanday nomlanadi?",
-        options: ["Qovunchi madaniyati", "Andronovo madaniyati", "Zamonbobo madaniyati", "Tazabag'yab madaniyati"],
-        correct: 0,
+        q: "36. Hozirgi Toshkent viloyati Yangiyo'l shahri hududidan topilgan qadimgi madaniyat qanday nomlanadi?",
+        options: ["Andronovo madaniyati", "Qovunchi madaniyati", "Zamonbobo madaniyati", "Tazabag'yab madaniyati"],
+        correct: 1,
         exp: "Bu Qovunchi madaniyati deb ataladi."
       },
       {
-        q: "39. Xoqonlikda davlat boshqaruvida barcha bo'g'inlardagi amaldorlar qanday unvonga ega bo'lishi shart edi?",
-        options: ["Diniy unvonga", "Harbiy unvonga", "Siyosiy unvonga", "Faqat faxriy unvonga"],
-        correct: 1,
+        q: "37. Xoqonlikda davlat boshqaruvida barcha bo'g'inlardagi amaldorlar qanday unvonga ega bo'lishi shart edi?",
+        options: ["Diniy unvonga", "Siyosiy unvonga", "Harbiy unvonga", "Faqat faxriy unvonga"],
+        correct: 2,
         exp: "Amaldorlar harbiy unvonga ega bo'lishi shart edi."
       },
       {
-        q: "40. Abruy qo'zg'olonidan so'ng Buxoroda hokimiyatni qo'lga olgan turkzoda shoh kim edi?",
-        options: ["To'n yabg'u", "Sheri Kishvar", "Qoracho'rin", "Katulf"],
+        q: "38. Turon zaminida turkiy yozuv bilan bir qatorda rasmiy ishlarda qaysi yozuvlar keng ishlatilgan?",
+        options: ["Arab va fors yozuvlari", "Sug'd va Xorazm yozuvlari", "Yunon va lotin yozuvlari", "Xitoy iyerogliflari"],
         correct: 1,
-        exp: "Sheri Kishvar Buxoroda hokimiyatni egallagan."
+        exp: "Turk yozuvi bilan birga sug'd va Xorazm yozuvlari ham ishlatilgan."
+      },
+      {
+        q: "39. VII asrning birinchi yarmida G'arbiy Turk xoqonligi tashqi siyosatda qaysi davlatlar bilan faol aloqa qilgan?",
+        options: ["Faqat Hindiston va Tibet bilan", "Faqat Arab xalifaligi bilan", "Xitoy, Eron va Vizantiya bilan", "Faqat Rim va Kartagena bilan"],
+        correct: 2,
+        exp: "Xoqonlik Xitoy, Eron va Vizantiya bilan elchilik aloqalarini olib borgan."
+      },
+      {
+        q: "40. G'arbiy Turk xoqonligining tashkil topishi va boshqaruv tizimida asosiy tayanch bo'lgan qabila va urug'lar qaysi hududda jamlangan edi?",
+        options: ["Faqat Movarounnahr markazida", "Faqat Sharqiy Turkistonda", "Faqat Farg'ona vodiysida", "Yettisuv va unga tutash hududlarda"],
+        correct: 3,
+        exp: "Asosiy tayanch bo'lgan qabila va urug'lar Yettisuv va unga tutash hududlarda jamlangan edi."
       }
     ];
 

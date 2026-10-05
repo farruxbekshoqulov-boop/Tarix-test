@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>7-sinf O'zbekiston tarixi — 1-10-mavzular Umumlashmasi</title>
+  <title>7-sinf O'zbekiston tarixi — 1-11-mavzular umumlashmasi</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -241,7 +241,7 @@
     }
 
     .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
-    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
     
     .exp-box {
       background: #fef3c7;
@@ -313,7 +313,7 @@
   <div class="app-card">
 
     <div class="palace-header">
-      <h1>7-sinf O'zbekiston tarixi — 1-10-mavzular umumlashmasi</h1>
+      <h1>7-sinf O'zbekiston tarixi — 1-11-mavzular umumlashmasi</h1>
       <p>O'rta asrlar tarixi bo'yicha 40 ta sara savol va test</p>
     </div>
 
@@ -342,7 +342,7 @@
         <div style="font-size: 50px;">📜</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          1-10-mavzular bo'yicha atamalar va voqealarni muvaffaqiyatli mosladingiz. Endi Savol-Javob qismiga o'tamizmi?
+          1-11-mavzular bo'yicha atamalar va voqealarni muvaffaqiyatli mosladingiz. Endi Savol-Javob qismiga o'tamizmi?
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
@@ -355,7 +355,7 @@
     <div id="tab-cards" class="tab-content">
       <div id="fc-play-box">
         <div class="header-bar">
-          <span class="topic-badge">1-10-mavzular Trenajyor</span>
+          <span class="topic-badge">1-11-mavzular Trenajyor</span>
           <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
@@ -375,7 +375,7 @@
         <div style="font-size: 50px;">🏰</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">40 ta savol yakunlandi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          1-10-mavzular bo'yicha savol-javoblarni takrorlab chiqdingiz. Endi Test sinoviga o'tamizmi?
+          1-11-mavzular bo'yicha savol-javoblarni takrorlab chiqdingiz. Endi Test sinoviga o'tamizmi?
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
@@ -388,7 +388,7 @@
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
-          <span class="topic-badge">1-10-mavzular Test Sinovi</span>
+          <span class="topic-badge">1-11-mavzular Test Sinovi</span>
           <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
@@ -441,32 +441,32 @@
     // --- 1. MOSLASH ---
     const matchStages = [
       [
-        { id: 1, left: "O'rta asrlar davri", right: "V asrdan XVII asrning o'rtalarigacha bo'lgan davrni o'z ichiga olgan tarixiy bosqich" },
-        { id: 2, left: "Turk xoqonligi", right: "VI asr o'rtalarida Oltoyda tashkil topgan ulkan turkiy davlat" },
-        { id: 3, left: "Istami yabg'u", right: "Turk xoqonligining g'arbiy qismiga boshchilik qilgan hukmdor" },
-        { id: 4, left: "Bumin xoqon", right: "Turk xoqonligiga asos solgan birinchi xoqon" },
-        { id: 5, left: "Ipak yo'li", right: "Sharq va G'arbni bog'lovchi buyuk xalqaro savdo yo'li" }
+        { id: 1, left: "Ilk o'rta asrlar", right: "V asrdan boshlanib, Sharq va O'rta Osiyo tarixida muhim davrni tashkil etgan bosqich" },
+        { id: 2, left: "Tuproqqal'a va Kat", right: "IV–VII asrlarda Xorazmning qadimgi me'morchilik va madaniy markazlari" },
+        { id: 3, left: "Xioniylar va kidariylar", right: "IV–V asrlarda Turon hududiga kirib kelgan ko'chmanchi elatlar" },
+        { id: 4, left: "Eftaliylar davlati", right: "V–VI asrlarda Turon hududida hukmronlik qilgan qudratli qabila ittifoqi" },
+        { id: 5, left: "Poykand shahri", right: "Arab manbalarida «Madina at-tujjor» («Savdogarlar shahri») deb atalgan markaz" }
       ],
       [
-        { id: 6, left: "Qoraxoniylar davlati", right: "X asr oxirlarida Yettisuv va Qashqarda tashkil topgan turkiy sulola davlati" },
-        { id: 7, left: "G'aznaviylar davlati", right: "X asr oxirida Xurosonda va Afg'onistonda yuksalgan davlat" },
-        { id: 8, left: "Saljuqiylar imperiyasi", right: "XI asrda Yaqin va O'rta Sharqda ulkan hududni egallagan turkiy imperiya" },
-        { id: 9, left: "Somoniylar davlati", right: "IX–X asrlarda Movarounnahr va Xurosonda hukmronlik qilgan mahalliy forsiy sulola" },
-        { id: 10, left: "Ibrohim Bug'roxon", right: "Qoraxoniylar davlatida Islom dinini davlat dini deb e'lon qilgan hukmdor" }
+        { id: 6, left: "Turk xoqonligi", right: "VI asr o'rtalarida Oltoy va Janubiy Sibirda tashkil topgan ulkan turkiy davlat" },
+        { id: 7, left: "Bumin xoqon", right: "Turk xoqonligiga asos solgan va «Yabg'u xoqon» unvonini olgan hukmdor" },
+        { id: 8, left: "Istami yabg'u", right: "Turk xoqonligining g'arbiy qismiga boshchilik qilgan taniqli davlat arbobi" },
+        { id: 9, left: "Xusrav I Anushirvon", right: "Eftaliylarga qarshi turklar bilan harbiy ittifoq tuzgan sosoniylar shohi" },
+        { id: 10, left: "Ashina xonadoni", right: "Hokimiyat Tangri tomonidan in'om etilgan deb e'tiqod qilingan qadimgi turkiy sulola" }
       ],
       [
-        { id: 11, left: "Sulton Mahmud G'aznaviy", right: "G'aznaviylar davlatining eng mashhur hukmdori (998–1030)" },
-        { id: 12, left: "Tog'rul bek", right: "Saljuqiylar davlatining asoschisi va birinchi sultoni" },
-        { id: 13, left: "Ismoil Somoniy", right: "Somoniylar davlatini siyosiy jihatdan mustahkamlagan amir" },
-        { id: 14, left: "Qutlug' Bilga Qadrxon", right: "Qoraxoniylar davlatining asoschisi" },
-        { id: 15, left: "Arslon xon", right: "Qoraxoniylar davrida Buxoroda Minorai Kalonni qurdirgan hukmdor" }
+        { id: 11, left: "Shod", right: "O'n ming suvoriysiga ega bo'lgan tuman (armiya) boshlig'i" },
+        { id: 12, left: "Yabg'u", right: "O'n o'q budun yoki elining hokimi unvoni" },
+        { id: 13, left: "Budun", right: "Ko'chmanchi chorvador aholining umumiy nomi («qora budun»)" },
+        { id: 14, left: "Turk qonunnomasi", right: "Samarqanddagi ibodatxonada saqlangan qadimgi yozma huquqiy hujjat" },
+        { id: 15, left: "Ajinatepa", right: "Farg'ona vodiysi va Qo'rg'ontepa yaqinida topilgan buddizm yodgorligi" }
       ],
       [
-        { id: 16, left: "Yabg'u", right: "Turk xoqonligida ulus boshliqlari va g'arbiy qism hokimiga berilgan unvon" },
-        { id: 17, left: "Tadun", right: "Iustinian II saroyiga elchi bo'lib borgan sug'd elchisi" },
-        { id: 18, left: "Sust", right: "Soliq turlaridan biri yoki o'rta asrlarda mavjud bo'lgan to'lov" },
-        { id: 19, left: "Sohibxo'ja", right: "O'rta asrlarda harbiylar va mulkdorlarga berilgan unvonlardan biri" },
-        { id: 20, left: "Mahmud Qoshg'ariy", right: "XI asrda «Devonu lug'otit turk» asarini yozgan buyuk tilshunos olim" }
+        { id: 16, left: "To'n yabg'u xoqon", right: "G'arbiy Turk xoqonligida 618–630-yillarda boshqaruvni isloh qilgan hukmdor" },
+        { id: 17, left: "Tudunlar", right: "Xoqonning noiblari bo'lib, mustaqil hokimliklar ustidan nazoratni kuchaytirgan" },
+        { id: 18, left: "Suyab va Beshbaliq", right: "G'arbiy Turk xoqonligining asosiy qarorgoh shaharlari" },
+        { id: 19, left: "Ixshid", right: "Sug'd va Farg'onada hukmronlik qilgan oliy hokim unvoni" },
+        { id: 20, left: "Sheri Kishvar", right: "Buxoroda shohriston qurib, 20 yil podshoh bo'lgan turkzoda shoh" }
       ]
     ];
 
@@ -571,48 +571,48 @@
       }
     }
 
-    // --- 2. SAVOL-JAVOB (40 TA) ---
+    // --- 2. SAVOL-JAVOB (40 TA SAVOL) ---
     const flashcards = [
-      { q: "1. O'rta asrlar davri tarixda qaysi davrlarni o'z ichiga oladi?", a: "V asrdan XVII asrning o'rtalarigacha." },
-      { q: "2. Turk xoqonligi qachon va qayerda tashkil topgan?", a: "VI asr o'rtalarida Oltoyda." },
-      { q: "3. Turk xoqonligining asoschisi kim?", a: "Bumin xoqon." },
-      { q: "4. Xoqonlikning g'arbiy qismiga kim boshchilik qilgan?", a: "Istami yabg'u." },
-      { q: "5. Istami yabg'u Vizantiya imperatori Iustinian saroyiga kimni elchi qilib yuborgan?", a: "Tadun boshchiligidagi sug'd elchilarini." },
-      { q: "6. Buyuk Ipak yo'li orqali qaysi davlatlar o'rtasida elchilik va savdo aloqalari o'rnatilgan?", a: "Turk xoqonligi va Vizantiya." },
-      { q: "7. Qoraxoniylar davlati qachon va qayerda tashkil topgan?", a: "X asr oxirlarida Yettisuv va Qashqarda." },
-      { q: "8. Qoraxoniylar davlatining asoschisi kim?", a: "Qutlug' Bilga Qadrxon." },
-      { q: "9. Qoraxoniylar davrida Islom dinini rasman davlat dini deb e'lon qilgan hukmdor kim?", a: "Ibrohim Bug'roxon." },
-      { q: "10. G'aznaviylar davlati qachon va qayerda tashkil topgan?", a: "X asr oxirida Xurosonda va Afg'onistonda." },
-      { q: "11. G'aznaviylar davlatining eng mashhur hukmdori kim?", a: "Sulton Mahmud G'aznaviy (998–1030)." },
-      { q: "12. Saljuqiylar imperiyasi qachon tashkil topgan?", a: "XI asrda." },
-      { q: "13. Saljuqiylar davlatining asoschisi va birinchi sultoni kim?", a: "Tog'rul bek." },
-      { q: "14. Somoniylar davlati qaysi yillarda hukmronlik qilgan?", a: "IX–X asrlarda." },
-      { q: "15. Somoniylar davlatini siyosiy jihatdan mustahkamlagan amir kim?", a: "Ismoil Somoniy." },
-      { q: "16. Mahmud Qoshg'ariy qaysi asri va qanday asari bilan mashhur?", a: "XI asr, «Devonu lug'otit turk» asari bilan." },
-      { q: "17. Qoraxoniylar davrida Buxoroda Minorai Kalonni qurdirgan hukmdor kim?", a: "Arslon xon." },
-      { q: "18. O'rta asrlarda Movarounnahr va Xorazmda shaharlar hayoti qanday rivojlangan?", a: "Savdo-sotiq, hunarmandchilik va madaniyat markazlari sifatida." },
-      { q: "19. Turk xoqonligida ulus boshliqlari qanday atalgan?", a: "Yabg'u." },
-      { q: "20. O'rta asrlarda yer egaligi va soliq tizimida qanday to'lovlar mavjud bo'lgan?", a: "Sust va boshqa yer soliqlari." },
-      { q: "21. Ismoil Somoniy hukmronligi davrida poytaxt qaysi shahar bo'lgan?", a: "Buxoro." },
-      { q: "22. Sulton Mahmud G'aznaviy Hindistonga necha marta yurish qilgan?", a: "17 marta." },
-      { q: "23. Saljuqiylar Dandanqon jangida kimlarni mag'lub etgan?", a: "G'aznaviylarni (1040-yilda)." },
-      { q: "24. Qoraxoniylar davlati keyinchalik nechta qismga bo'lingan?", a: "Ikki qismga (Sharqiy va G'arbiy qoraxoniylar)." },
-      { q: "25. Somoniylar davlati qaysi yilda barham topgan?", a: "999-yilda." },
-      { q: "26. Qoraxoniylar poytaxti dastlab qaysi shahar bo'lgan?", a: "Bolasog'un va Qashqar." },
-      { q: "27. G'aznaviylar poytaxti qaysi shahar edi?", a: "G'azna shahri." },
-      { q: "28. Saljuqiylar dastlab qayerdan chiqqan turkiy qabila bo'lgan?", a: "O'g'uz-turkman qabilalaridan." },
-      { q: "29. Turk xoqonligi parchalangach nechta qismga bo'lingan?", a: "G'arbiy va Sharqiy xoqonlikka." },
-      { q: "30. Istami yabg'u qaysi yo'nalishda faol tashqi siyosat olib borgan?", a: "G'arbiy yo'nalishda (Vizantiya va Eron bilan)." },
-      { q: "31. O'rta asrlarda Movarounnahrda pul muomalasi qanday bo'lgan?", a: "Kumush va mis tangalar zarb qilingan." },
-      { q: "32. Ismoil Somoniy kim ustidan g'alaba qozonib davlatni birlashtirgan?", a: "Safforiylar ustidan." },
-      { q: "33. Sulton Mahmud G'aznaviy saroyida qanday olimlar yashab ijod qilgan?", a: "Firdusiy, Beruniy va boshqalar." },
-      { q: "34. Qoraxoniylar davlatida ilk bor turkiy tilda qanday asarlar yozila boshlangan?", a: "«Qutadg'u bilig» va boshqalar." },
-      { q: "35. Yusuf Xos Hojib qaysi asarni yozgan?", a: "«Qutadg'u bilig» («Baxt keltiruvchi bilim»)." },
-      { q: "36. Mahmud Qoshg'ariyning «Devonu lug'otit turk» asari nima haqida?", a: "Turkiy tillarning qiyosiy lug'ati va xaritasi haqida." },
-      { q: "37. O'rta asrlarda karvonsaroylar nima uchun qurilgan?", a: "Savdogarlar va sayohatchilar to'xtab o'tishi uchun." },
-      { q: "38. Somoniylar davrida ilm-fan homiysi bo'lgan hukmdorlar qayerda to'plangan?", a: "Buxoro saroyida (kutubxonalari bilan mashhur)." },
-      { q: "39. O'rta asrlarda hunarmandchilikning qaysi turlari rivojlangan?", a: "Kulolchilik, to'qimachilik, temirchilik va shishasozlik." },
-      { q: "40. Turk xoqonligi davrida xalqaro savdoda asosiy to'lov vositasi nima bo'lgan?", a: "Ipak matolar va tangalar." }
+      { q: "1. Ajdodlarimizning ma'naviy qadriyatlari nimaning asosiy qismini tashkil etadi?", a: "Jahon sivilizatsiyasi asoslaridan birini." },
+      { q: "2. IV–VII asrlarda mamlakatimiz xalqlarining asosiy xo'jalik va turmush tarzi qanday bo'lgan?", a: "O'troq dehqonchilik va ko'chmanchi chorvachilik." },
+      { q: "3. IV–VII asrlarda Xorazmda qaysi yirik shaharlar va madaniy markazlar mavjud bo'lgan?", a: "Tuproqqal'a va Kat shaharlari." },
+      { q: "4. IV–V asrlarda Turon hududiga bostirib kirgan ko'chmanchi elatlar qaysilar?", a: "Xioniylar va kidariylar." },
+      { q: "5. Eftaliylar Turon hududida qaysi asrlarda hukmronlik qilganlar?", a: "V–VI asrlarda." },
+      { q: "6. Eftaliylar qabilalar ittifoqiga qaysi sulolaga mansub qabilalar asos solgan?", a: "Eftalon sulolasi." },
+      { q: "7. Firdavsiyning «Shohnoma» asarida eftaliylar podshosi kim deb yuritiladi?", a: "Katulf." },
+      { q: "8. Eftaliylar davlatining dastlabki poytaxti qayerlar bo'lgan?", a: "Buxoro yaqinidagi Poykent va Varaxsha shaharlari." },
+      { q: "9. 484-yilda eftaliylarga qarshi urushda halok bo'lgan sosoniylar shohi kim?", a: "Peroz." },
+      { q: "10. Poykand shahri arab manbalarida qanday nom bilan shuhrat qozongan?", a: "«Madina at-tujjor» («Savdogarlar shahri»)." },
+      { q: "11. Eftaliylar alifbosi qaysi yozuv asosida shakllangan edi va nechta harfdan iborat bo'lgan?", a: "Baqtriya yozuvi asosida (25 harfdan iborat)." },
+      { q: "12. Vizantiyalik tarixchi Prokopiy Kesariyskiy eftaliylar haqida nima deb yozgan?", a: "Aholiga g'amxo'rlik ko'rsatishi va adolat mezoniga amal qilishini yozgan." },
+      { q: "13. Turk xoqonligi qachon tashkil topgan?", a: "VI asr o'rtalarida (Oltoy va Janubiy Sibirda)." },
+      { q: "14. Turk xoqonligiga asos solgan shaxs kim?", a: "Bumin xoqon («Yabg'u xoqon» unvoni berilgan)." },
+      { q: "15. Turk xoqonligining g'arbiy qismiga kim boshchilik qilgan?", a: "Istami yabg'u." },
+      { q: "16. Eftaliylarga qarshi sosoniylar shohi bilan turklar o'rtasida qachon ittifoq tuzilgan?", a: "563–567-yillarda (Xusrav I Anushirvon davrida)." },
+      { q: "17. Turk xoqonligi VI asrning 80-yillari oxirida nechta qismga bo'lindi?", a: "Ikkiga: Sharqiy turk xoqonligi va G'arbiy turk xoqonligiga." },
+      { q: "18. Sharqiy turk xoqonligining poytaxti qayer bo'lgan?", a: "O'tukan." },
+      { q: "19. G'arbiy turk xoqonligining poytaxti qayer bo'lgan?", a: "Yettisuv." },
+      { q: "20. Xoqon hokimiyati kimning xonadoniga in'om etilgan deb e'tiqod qilingan?", a: "Tangri tomonidan Ashina xonadoniga." },
+      { q: "21. «Turk qonunnomasi» qayerda amalda bo'lib, qayerda saqlangan?", a: "Samarqandda, ibodatxonada saqlangan." },
+      { q: "22. Urxun-Yenisey yodgorlik bitiklarida Tangri qanday sifatlar bilan ulug'langan?", a: "Yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi, hukm qiluvchi." },
+      { q: "23. Turkiy xalqlarda qadimda nima ilohiylashtirilgan edi?", a: "Bo'ri." },
+      { q: "24. O'n ming suvoriysiga ega bo'lgan tuman boshlig'i kim deb atalgan?", a: "«Shod»." },
+      { q: "25. O'n o'q budun yoki elining hokimi qanday unvon bilan atalgan?", a: "«Yabg'u»." },
+      { q: "26. Farg'ona vodiysi Qo'rg'ontepa yaqinidagi buddizm yodgorligi qanday nomlanadi?", a: "Ajinatepa (12 metrli budda haykali topilgan)." },
+      { q: "27. Hozirgi Toshkent viloyati Yangiyo'l shahri hududidan topilgan qadimgi madaniyat nima?", a: "Qovunchi madaniyati." },
+      { q: "28. G'arbiy Turk xoqonligi o'zining yuksak taraqqiyot va qudrat cho'qqisiga qachon erishdi?", a: "VII asrning birinchi choragida." },
+      { q: "29. VII asrning birinchi choragida G'arbiy Turk xoqonligida islohotlar o'tkazgan hukmdor kim?", a: "To'n yabg'u xoqon (618–630-yillar)." },
+      { q: "30. Xoqonlikda soliq va o'lponlarni yig'ish hamda nazorat qilish uchun xoqon noiblari kimlar edi?", a: "Tudunlar." },
+      { q: "31. G'arbiy Turk xoqonligining asosiy qarorgoh shaharlari qaysilar edi?", a: "Suyab (Oq Bishim) va Beshbaliq." },
+      { q: "32. Sug'd va Farg'onada hukmronlik qilgan mahalliy oliy hokim unvoni qanday edi?", a: "Ixshid." },
+      { q: "33. Toxariston, Xorazm va Keshda hukmronlik qilgan hokim unvonlari mos ravishda qaysilar?", a: "Malikshoh, Xorazmshoh va Ixrid." },
+      { q: "34. Buxoro va Ustrushanada hukmronlik qilgan hokim unvonlari nima edi?", a: "Xudot va Afshin." },
+      { q: "35. G'arbiy Turk xoqonligi davrida Farg'ona vodiysining Sug'd siyosiy tuzilmalari bilan o'zaro munosabatlari qanday edi?", a: "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat bo'lgan." },
+      { q: "36. Buxoroda mahalliy xalqqa qarshi isyon ko'tarib, xoqonlikda tartibsizlik keltirib chiqargan shaxs kim?", a: "Abruy." },
+      { q: "37. Abruy isyonini bostirish uchun Turk xoqoni tomonidan Buxoroga yuborilgan qo'shin boshlig'i kim?", a: "Qoracho'rin turk." },
+      { q: "38. Abruy qatl etilgach, Buxoroda shohriston qurib va yigirma yil podshoh bo'lgan turkzoda shoh kim edi?", a: "Sheri Kishvar." },
+      { q: "39. XX asrning 60-yillarida Samarqandda avtomobil yo'li qurilayotganda topilgan jahonga mashhur devoriy rasmlar qayerdan topilgan?", a: "Afrosiyob shahar xarobasidan." },
+      { q: "40. Xalqaro tashkilot tomonidan rasman «madaniyatlar uchrashadigan makon» degan yuksak ta'rif berilgan qadimgi Markaziy Osiyo shahri qaysi?", a: "Samarqand shahri." }
     ];
 
     let fcIdx = 0;
@@ -668,247 +668,247 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI ---
+    // --- 3. TEST SINOVI (40 TA TEST) ---
     const testQuestions = [
       {
-        q: "1. Qachon Turk xoqonligi Oltoyda tashkil topgan?",
-        options: ["V asr o'rtalarida", "VI asr o'rtalarida", "VII asr o'rtalarida", "VIII asrda"],
+        q: "1. Ajdodlarimizning ma'naviy qadriyatlari nimaning asosiy qismini tashkil etadi?",
+        options: ["Faqat mahalliy qabilalar urf-odatlarini", "Jahon sivilizatsiyasi asoslaridan birini", "Faqat qadimgi rimliklar madaniyatini", "Faqat ko'chmanchilar turmush tarzini"],
         correct: 1,
+        exp: "Ajdodlarimizning ma'naviy qadriyatlari jahon sivilizatsiyasi asoslaridan biridir."
+      },
+      {
+        q: "2. IV–VII asrlarda mamlakatimiz xalqlarining asosiy turmush tarzi qanday bo'lgan?",
+        options: ["Faqat dengizchilik va baliqchilik", "Faqat o'rmonda yashash va ovchilik", "O'troq dehqonchilik va ko'chmanchi chorvachilik", "Faqat tog'-kon sanoati"],
+        correct: 2,
+        exp: "IV–VII asrlarda xalqimiz o'troq dehqonchilik va ko'chmanchi chorvachilik bilan shug'ullangan."
+      },
+      {
+        q: "3. IV–VII asrlarda Xorazmda qaysi yirik shaharlar va madaniy markazlar mavjud bo'lgan?",
+        options: ["Tuproqqal'a va Kat shaharlari", "Suyab va Beshbaliq", "Poykand va Varaxsha", "O'tukan va Yettisuv"],
+        correct: 0,
+        exp: "Xorazmda Tuproqqal'a va Kat shaharlari muhim markazlar bo'lgan."
+      },
+      {
+        q: "4. IV–V asrlarda Turon hududiga bostirib kirgan ko'chmanchi elatlar qaysilar?",
+        options: ["Arablar va mo'g'ullar", "Xioniylar va kidariylar", "Kushonlar va eftaliylar", "Turklar va sug'dlar"],
+        correct: 1,
+        exp: "IV–V asrlarda Turon hududiga xioniylar va kidariylar kirib kelgan."
+      },
+      {
+        q: "5. Eftaliylar Turon hududida qaysi asrlarda hukmronlik qilganlar?",
+        options: ["V–VI asrlarda", "I–II asrlarda", "VIII–IX asrlarda", "X–XI asrlarda"],
+        correct: 0,
+        exp: "Eftaliylar V–VI asrlarda Turon hududida hukmronlik qilgan."
+      },
+      {
+        q: "6. Eftaliylar qabilalar ittifoqiga qaysi sulolaga mansub qabilalar asos solgan?",
+        options: ["Afrig'iy sulolasi", "Somoniy sulolasi", "Eftalon sulolasi", "Qoraxoniy sulolasi"],
+        correct: 2,
+        exp: "Ittifoqga Eftalon sulolasiga mansub qabilalar asos solgan."
+      },
+      {
+        q: "7. Firdavsiyning «Shohnoma» asarida eftaliylar podshosi kim deb yuritiladi?",
+        options: ["Vaxshunvar", "Peroz", "Katulf", "Kidar"],
+        correct: 2,
+        exp: "Shohnomada eftaliylar podshosi Katulf deb atalgan."
+      },
+      {
+        q: "8. 484-yilda eftaliylarga qarshi urushda halok bo'lgan sosoniylar shohi kim?",
+        options: ["Peroz", "Doro I", "Kir II", "Xusrav I"],
+        correct: 0,
+        exp: "Sosoniylar shohi Peroz 484-yilda eftaliylarga qarshi urushda halok bo'lgan."
+      },
+      {
+        q: "9. Poykand shahri arab manbalarida qanday nom bilan shuhrat qozongan?",
+        options: ["«Darul imlom»", "«Madina at-tujjor» («Savdogarlar shahri»)", "«Qadimiy shahar»", "«Nurli voha»"],
+        correct: 1,
+        exp: "Poykand arab manbalarida «Madina at-tujjor» deb atalgan."
+      },
+      {
+        q: "10. Eftaliylar alifbosi qaysi yozuv asosida shakllangan edi va nechta harfdan iborat bo'lgan?",
+        options: ["Sug'd yozuvi, 20 harf", "Uyg'ur yozuvi, 30 harf", "Baqtriya yozuvi, 25 harf", "Lotin yozuvi, 26 harf"],
+        correct: 2,
+        exp: "Eftaliylar alifbosi Baqtriya yozuvi asosida shakllangan va 25 harfdan iborat bo'lgan."
+      },
+      {
+        q: "11. Turk xoqonligi qachon tashkil topgan?",
+        options: ["VI asr o'rtalarida", "IV asr o'rtalarida", "VIII asr o'rtalarida", "V asr o'rtalarida"],
+        correct: 0,
         exp: "Turk xoqonligi VI asr o'rtalarida tashkil topgan."
       },
       {
-        q: "2. Qachon Qoraxoniylar davlati Yettisuv va Qashqarda tashkil topgan?",
-        options: ["IX asr boshida", "VIII asr oxirida", "XI asr boshida", "X asr oxirida"],
-        correct: 3,
-        exp: "Qoraxoniylar davlati X asr oxirida tashkil topgan."
-      },
-      {
-        q: "3. Qachon G'aznaviylar davlati Xurosonda yuksalgan?",
-        options: ["X asr oxirida", "IX asr boshida", "XI asrda", "XII asrda"],
-        correct: 0,
-        exp: "G'aznaviylar davlati X asr oxirida tashkil topgan."
-      },
-      {
-        q: "4. Qachon Saljuqiylar imperiyasi Yaqin va O'rta Sharqda tashkil topgan?",
-        options: ["IX asrda", "X asrda", "XI asrda", "XII asrda"],
-        correct: 2,
-        exp: "Saljuqiylar imperiyasi XI asrda tashkil topgan."
-      },
-      {
-        q: "5. Qachon Somoniylar davlati Movarounnahr va Xurosonda hukmronlik qilgan?",
-        options: ["V–VI asrlarda", "IX–X asrlarda", "XI–XII asrlarda", "XIII–XIV asrlarda"],
+        q: "12. Turk xoqonligiga asos solgan shaxs kim?",
+        options: ["Istami yabg'u", "Bumin xoqon", "Mochun", "Bilga xoqon"],
         correct: 1,
-        exp: "Somoniylar IX–X asrlarda hukmronlik qilgan."
+        exp: "Xoqonlikka Bumin xoqon asos solgan."
       },
       {
-        q: "6. Qachon Mahmud Qoshg'ariy o'zining «Devonu lug'otit turk» asarini yozgan?",
-        options: ["IX asrda", "X asrda", "XII asrda", "XI asrda"],
-        correct: 3,
-        exp: "Mahmud Qoshg'ariy XI asrda yashab ijod qilgan."
-      },
-      {
-        q: "7. Qachon Ismoil Somoniy Safforiylar ustidan g'alaba qozonib davlatni birlashtirgan?",
-        options: ["IX asr oxiri / X asr boshlarida", "XI asrda", "XII asrda", "VI asrda"],
+        q: "13. Bumin xoqonga qanday unvon berilgan?",
+        options: ["«Yabg'u xoqon»", "«Elterish xoqon»", "«Qutlug' xoqon»", "«Bilga xoqon»"],
         correct: 0,
-        exp: "Bu voqea IX asr oxiri va X asr boshlarida sodir bo'lgan."
+        exp: "Bumin xoqonga «Yabg'u xoqon» unvoni berilgan."
       },
       {
-        q: "8. Qachon Dandanqon jangi bo'lib o'tgan?",
-        options: ["999-yilda", "1017-yilda", "1040-yilda", "1097-yilda"],
-        correct: 2,
-        exp: "Dandanqon jangi 1040-yilda bo'lgan."
-      },
-      {
-        q: "9. Qachon Somoniylar davlati barham topgan?",
-        options: ["813-yilda", "999-yilda", "1040-yilda", "1231-yilda"],
+        q: "14. Turk xoqonligi qayerda tashkil topgan?",
+        options: ["Sirdaryo bo'ylarida", "Oltoy va Janubiy Sibirda", "Yettisuv vohasida", "Sharqiy Turkistonda"],
         correct: 1,
-        exp: "Somoniylar davlati 999-yilda barham topgan."
+        exp: "Xoqonlik VI asr o'rtalarida Oltoy va Janubiy Sibirda tashkil topgan."
       },
       {
-        q: "10. Qachon Sulton Mahmud G'aznaviy hukmronlik qilgan?",
-        options: ["813–833-yillarda", "873–950-yillarda", "980–1037-yillarda", "998–1030-yillarda"],
-        correct: 3,
-        exp: "Sulton Mahmud 998–1030-yillarda hukmronlik qilgan."
-      },
-      {
-        q: "11. Qachon Istami yabg'u Vizantiya imperatori Iustinian saroyiga elchi yuborgan?",
-        options: ["VI asrda Turk xoqonligi davrida", "X asrda", "XI asrda", "XII asrda"],
-        correct: 0,
-        exp: "Bu VI asrda Turk xoqonligi davrida sodir bo'lgan."
-      },
-      {
-        q: "12. Qachon Buxoroda Minorai Kalon qurdirilgan?",
-        options: ["Somoniylar davrida", "G'aznaviylar davrida", "Qoraxoniylar davrida", "Saljuqiylar davrida"],
-        correct: 2,
-        exp: "Minorai Kalon qoraxoniylar davrida qurilgan."
-      },
-      {
-        q: "13. Qachon Yusuf Xos Hojib «Qutadg'u bilig» asarini yozgan?",
-        options: ["IX asrda", "XI asrda", "XIII asrda", "XIV asrda"],
+        q: "15. Oltoy xoqonligining g'arbiy qismiga kim boshchilik qilgan?",
+        options: ["Bumin xoqon", "Istami yabg'u", "Kultegin", "Tonyuquq"],
         correct: 1,
-        exp: "Yusuf Xos Hojib XI asrda yozgan."
+        exp: "G'arbiy qismiga Istami yabg'u boshchilik qilgan."
       },
       {
-        q: "14. Qachon Ibrohim Bug'roxon Qoraxoniylar davrida Islom dinini davlat dini deb e'lon qilgan?",
-        options: ["VI asrda", "VIII asrda", "IX asrda", "X asrda"],
-        correct: 3,
-        exp: "Bu X asrda sodir bo'lgan."
-      },
-      {
-        q: "15. Qachon Turk xoqonligi parchalangach G'arbiy va Sharqiy xoqonliklarga bo'lingan?",
-        options: ["VI asr oxiri / VII asr boshlarida", "X asrda", "XI asrda", "XII asrda"],
-        correct: 0,
-        exp: "Bu VI asr oxiri va VII asr boshlarida yuz bergan."
-      },
-      {
-        q: "16. Qachon Tog'rul bek saljuqiylarning birinchi sultoni bo'lgan?",
-        options: ["IX asrda", "X asrda", "XI asrda", "XII asrda"],
-        correct: 2,
-        exp: "Tog'rul bek XI asrda sulton bo'lgan."
-      },
-      {
-        q: "17. Qachon Movarounnahrda kumush va mis tangalar keng miqyosda zarb qilingan?",
-        options: ["Faqat antik davrda", "O'rta asrlarda Somoniylar va Qoraxoniylar davrida", "Faqat sovet davrida", "Mustaqillikda"],
+        q: "16. Eftaliylarga qarshi sosoniylar shohi bilan turklar o'rtasida qachon ittifoq tuzilgan?",
+        options: ["531–579-yillarda", "563–567-yillarda", "580–585-yillarda", "540–550-yillarda"],
         correct: 1,
-        exp: "Bu o'rta asrlarda keng amalga oshirilgan."
+        exp: "563–567-yillarda sosoniylar va turklar o'rtasida harbiy ittifoq tuzilgan."
       },
       {
-        q: "18. Qachon Buyuk Ipak yo'li xalqaro savdo va elchilik aloqalarida eng yuqori cho'qqiga chiqqan?",
-        options: ["Faqat paleolitda", "Faqat temir asrida", "Faqat XIX asrda", "O'rta asrlarda Turk xoqonligi va keyingi davrlarda"],
-        correct: 3,
-        exp: "Bu o'rta asrlarda Turk xoqonligi davrida rivojlangan."
-      },
-      {
-        q: "19. Qachon Buxoro shahar sifatida Somoniylar davrida qanday maqomga ega bo'lgan?",
-        options: ["Poytaxt va ilm-fan, madaniyat markazi", "Faqat kichik qishloq", "Faqat harbiy qal'a", "Faqat cho'l hududi"],
-        correct: 0,
-        exp: "Buxoro poytaxt bo'lgan."
-      },
-      {
-        q: "20. Qachon O'rta asrlarda karvonsaroylar savdogarlar uchun qurila boshlagan?",
-        options: ["Qadimgi Rimda", "Faqat Hindistonda", "Buyuk Ipak yo'li bo'ylab o'rta asrlarda", "Faqat zamonaviy davrda"],
+        q: "17. Turk xoqonligi VI asrning 80-yillari oxirida nechta qismga bo'lindi?",
+        options: ["Uchta qismga", "To'rtta qismga", "Ikkiga: Sharqiy turk xoqonligi va G'arbiy turk xoqonligiga", "Bo'linmagan"],
         correct: 2,
-        exp: "Karvonsaroylar Ipak yo'li bo'ylab o'rta asrlarda qurilgan."
+        exp: "Xoqonlik Sharqiy va G'arbiy turk xoqonligiga bo'lindi."
       },
       {
-        q: "21. Qachon Bumin xoqon Turk xoqonligiga asos solgan?",
-        options: ["V asrda", "VI asrda", "VII asrda", "VIII asrda"],
+        q: "18. Sharqiy turk xoqonligining poytaxti qayer bo'lgan?",
+        options: ["Yettisuv", "O'tukan", "Bolasog'un", "Suyab"],
         correct: 1,
-        exp: "Bumin xoqon VI asrda asos solgan."
+        exp: "Sharqiy turk xoqonligining poytaxti O'tukan edi."
       },
       {
-        q: "22. Qachon Sulton Mahmud G'aznaviy Hindistonga 17 marta yurish qilgan?",
-        options: ["973–980-yillarda", "999–1010-yillarda", "1040–1050-yillarda", "998–1030-yillardagi hukmronligi davrida"],
-        correct: 3,
-        exp: "U o'z hukmronligi davrida yurishlar qilgan."
-      },
-      {
-        q: "23. Qachon Somoniylar davrida Buxoro saroyida buyuk olimlar to'plangan?",
-        options: ["IX–X asrlarda", "XI–XII asrlarda", "XIII–XIV asrlarda", "XV–XVI asrlarda"],
-        correct: 0,
-        exp: "Bu IX–X asrlarda sodir bo'lgan."
-      },
-      {
-        q: "24. Qachon O'rta asrlarda hunarmandchilik turlari (kulolchilik, to'qimachilik) ravnaq topgan?",
-        options: ["Faqat ibtidoiy tuzumda", "Faqat antik davrda", "Movarounnahr va Xorazm shaharlari rivojlangan o'rta asrlarda", "Faqat XX asrda"],
-        correct: 2,
-        exp: "Bu o'rta asrlarda shahar hayotida ravnaq topgan."
-      },
-      {
-        q: "25. Qachon Istami yabg'u Turk xoqonligining g'arbiy qismiga boshchilik qilgan?",
-        options: ["V asr oxirida", "VI asr o'rtalaridan boshlab", "VII asrda", "VIII asrda"],
+        q: "19. G'arbiy turk xoqonligining poytaxti qayer bo'lgan?",
+        options: ["O'tukan", "Yettisuv", "Qashqar", "Turpan"],
         correct: 1,
-        exp: "Istami yabg'u VI asr o'rtalaridan boshlab boshqargan."
+        exp: "G'arbiy turk xoqonligining poytaxti Yettisuv edi."
       },
       {
-        q: "26. Qachon Qoraxoniylar davlati keyinchalik ikkiga (Sharqiy va G'arbiy) bo'lingan?",
-        options: ["X asrda", "XI asr boshida", "XII asr oxirida", "XI asrning ikkinchi yarmida"],
-        correct: 3,
-        exp: "Bu XI asrning ikkinchi yarmida yuz bergan."
-      },
-      {
-        q: "27. Qachon Ismoil Somoniy hukmronlik qilgan?",
-        options: ["892–907-yillarda", "998–1030-yillarda", "1030–1041-yillarda", "1097–1231-yillarda"],
-        correct: 0,
-        exp: "Ismoil Somoniy 892–907-yillarda hukmronlik qilgan."
-      },
-      {
-        q: "28. Qachon G'aznaviylar davrida poytaxt G'azna shahri bo'lgan?",
-        options: ["VI asrda", "IX asrda", "X–XI asrlarda", "XIV asrda"],
-        correct: 2,
-        exp: "Bu G'aznaviylar davrida (X–XI asrlarda) bo'lgan."
-      },
-      {
-        q: "29. Qachon Turk xoqonligi va Vizantiya o'rtasida elchilik munosabatlari o'rnatilgan?",
-        options: ["V asrda", "VI asrda", "VIII asrda", "X asrda"],
+        q: "20. Xoqon hokimiyati kimning xonadoniga in'om etilgan deb e'tiqod qilingan?",
+        options: ["Tuqsoba xonadoniga", "Ashina xonadoniga", "Qarluq xonadoniga", "Ashtarkhoniy xonadoniga"],
         correct: 1,
-        exp: "Bu VI asrda Turk xoqonligi davrida o'rnatilgan."
+        exp: "Hokimiyat Tangri tomonidan Ashina xonadoniga in'om etilgan deb ishonilgan."
       },
       {
-        q: "30. Qachon O'rta asrlarda teleradio yoki internet bo'lmagan paytda ma'lumotlar qanday tarqatilgan?",
-        options: ["Faqat telegraf orqali", "Faqat telefon orqali", "Faqat pochtasiz", "Karvonlar va elchilar orqali yozma va og'zaki ravishda"],
-        correct: 3,
-        exp: "Ma'lumotlar karvonlar va elchilar orqali tarqatilgan."
-      },
-      {
-        q: "31. Qachon O'rta asrlarda Movarounnahrda sug'orma dehqonchilik yanada rivojlangan?",
-        options: ["IX–XII asrlarda iqtisodiy yuksalish davrida", "V asrda", "XIII asrda", "XVI asrda"],
-        correct: 0,
-        exp: "Bu IX–XII asrlarda yuz bergan."
-      },
-      {
-        q: "32. Qachon Saljuqiylar Mesopotamiya va Yaqin Sharqni egallagan?",
-        options: ["VI asrda", "IX asrda", "XI asrda", "XIV asrda"],
-        correct: 2,
-        exp: "Saljuqiylar bu hududlarni XI asrda egallagan."
-      },
-      {
-        q: "33. Qachon O'rta asrlarda ko'chmanchi turkiy qabilalar o'troqlasha boshlagan?",
-        options: ["Qadimgi paleolitda", "Movarounnahr va Xorazmga o'rnashgan o'rta asrlarda", "Faqat XIX asrda", "Faqat XX asrda"],
+        q: "21. «Turk qonunnomasi» qayerda amalda bo'lib, qayerda saqlangan?",
+        options: ["Buxoroda, saroyda", "Samarqandda, ibodatxonada", "O'tukanda, bosh qarorgohda", "Yettisuvda, hokimlikda"],
         correct: 1,
-        exp: "O'troqlashuv o'rta asrlarda sodir bo'lgan."
+        exp: "«Turk qonunnomasi» Samarqandda amalda bo'lib, ibodatxonada saqlangan."
       },
       {
-        q: "34. Qachon O'rta asrlarda shahar hokimlari va amirlar saroylari qayerda joylashgan?",
-        options: ["Faqat cho'lda", "Faqat tog'da", "Faqat daryo bo'yida", "Shaharning markaziy qismi — arkda"],
-        correct: 3,
-        exp: "Saroylar arkda joylashgan."
-      },
-      {
-        q: "35. Qachon O'rta asrlarda shahar aholisining asosiy qismini kimlar tashkil etgan?",
-        options: ["Hunarmandlar va savdogarlar", "Faqat jangchilar", "Faqat chet elliklar", "Faqat sayohatchilar"],
-        correct: 0,
-        exp: "Asosiy qismini hunarmandlar va savdogarlar tashkil etgan."
-      },
-      {
-        q: "36. Qachon O'rta asrlarda shahar atrofi qanday atalgan?",
-        options: ["Ark", "Shahriston", "Rabot (Rirob)", "Qal'a"],
-        correct: 2,
-        exp: "Shahar atrofi rabot deb atalgan."
-      },
-      {
-        q: "37. Qachon O'rta asrlarda shaharning ichki qismi, savdo va ma'muriy joylashgan qismi nima deb atalgan?",
-        options: ["Rabot", "Shahriston", "Qishloq", "Dasht"],
+        q: "22. Urxun-Yenisey yodgorlik bitiklarida Tangri qanday sifatlar bilan ulug'langan?",
+        options: ["G'azabkor va jazolovchi sifatida", "Yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi, hukm qiluvchi", "Tabiat ilohi sifatida", "Jangchi iloh sifatida"],
         correct: 1,
-        exp: "Bu qism shahriston deb atalgan."
+        exp: "Tangri yagona, azaliy, abadiy, hayot beruvchi, yaratuvchi sifatida ulug'langan."
       },
       {
-        q: "38. Qachon O'rta asrlarda davlat boshqaruvida devonlar (vazirliklar) qanday vazifani bajargan?",
-        options: ["Faqat harbiy yurish", "Faqat savdo", "Faqat bog'dorchilik", "Moliya, soliq va davlat ishlarini yuritish"],
-        correct: 3,
-        exp: "Devonlar moliya va davlat ishlarini yuritgan."
-      },
-      {
-        q: "39. Qachon O'rta asrlarda turkiy tillarning mavqei va hurmati oshib borgan?",
-        options: ["Turk xoqonligi va keyingi turkiy sulolalar davrida", "Faqat antik davrda", "Faqat Rimda", "Faqat Gretsiyada"],
-        correct: 0,
-        exp: "Bu turkiy sulolalar davrida oshgan."
-      },
-      {
-        q: "40. Qachon 7-sinf O'rta asrlar O'zbekiston tarixi darsligi o'quvchilarga o'rgatila boshlangan?",
-        options: ["O'rta asrlarning o'zida", "Qadimgi davrda", "Zamonamizdagi ta'lim tizimida", "Faqat XIX asrda"],
+        q: "23. Turkiy xalqlarda qadimda nima ilohiylashtirilgan edi?",
+        options: ["Burgut", "Ot", "Bo'ri", "Arslon"],
         correct: 2,
-        exp: "Bu zamonaviy ta'lim tizimida o'qitiladi."
+        exp: "Turkiylarda bo'ri ilohiylashtirilgan bo'lib, ko'p nishonlarda uning tasviri bo'lgan."
+      },
+      {
+        q: "24. O'n ming suvoriysiga ega bo'lgan tuman boshlig'i kim deb atalgan?",
+        options: ["«Yabg'u»", "«Shod»", "«Elterish»", "«Tarkan»"],
+        correct: 1,
+        exp: "Tuman boshlig'i «shod» deb atalgan."
+      },
+      {
+        q: "25. O'n o'q budun yoki elining hokimi qanday unvon bilan atalgan?",
+        options: ["«Xoqon»", "«Shod»", "«Yabg'u»", "«Beg»"],
+        correct: 2,
+        exp: "O'n o'q budun hokimi «yabg'u» unvoni bilan atalgan."
+      },
+      {
+        q: "26. Farg'ona vodiysi Qo'rg'ontepa yaqinidagi buddizm yodgorligi qanday nomlanadi?",
+        options: ["Tuproqqal'a", "Ajinatepa", "Zartepa", "Vardona"],
+        correct: 1,
+        exp: "Qo'rg'ontepa yaqinidagi buddizm yodgorligi Ajinatepa deb ataladi."
+      },
+      {
+        q: "27. Hozirgi Toshkent viloyati Yangiyo'l shahri hududidan topilgan qadimgi madaniyat qanday nomlanadi?",
+        options: ["Qovunchi madaniyati", "Andronovo madaniyati", "Zamonbobo madaniyati", "Tazabag'yab madaniyati"],
+        correct: 0,
+        exp: "Bu Qovunchi madaniyati deb ataladi."
+      },
+      {
+        q: "28. G'arbiy Turk xoqonligining Sharqiy xoqonlikdan farq qiluvchi asosiy xo'jalik-iqtisodiy xususiyati qaysi?",
+        options: ["Ko'chmanchi chorvachilik va yaylov xo'jaligining mutlaq yetakchiligi", "Aholi turmushida o'troq dehqonchilik, hunarmandchilik va savdo-sotiqning ustunligi", "Davlat iqtisodiyoti faqat dengiz portlari orqali amalga oshirilishi", "Shaharlarning umuman bo'lmasligi va faqat o'rmon xo'jaligi"],
+        correct: 1,
+        exp: "G'arbiy xoqonlikda o'troq dehqonchilik, hunarmandchilik va savdo-sotiq ustun turgan."
+      },
+      {
+        q: "29. G'arbiy Turk xoqonligida markaziy hokimiyatni mustahkamlash uchun islohotlar o'tkazgan hukmdor kim?",
+        options: ["To'n yabg'u xoqon", "Bumin xoqon", "Istami yabg'u", "Tardu xoqon"],
+        correct: 0,
+        exp: "VII asrning birinchi choragida (618–630) To'n yabg'u xoqon hukmronlik qilgan."
+      },
+      {
+        q: "30. To'n yabg'u xoqon tomonidan o'tkazilgan ma'muriy islohotning asosiy mazmuni nima edi?",
+        options: ["Barcha viloyat hokimlarini poytaxtga ko'chirib, o'rniga turk qo'mondonlarini qo'yish", "Viloyat hokimliklarini butunlay tugatib, erkin jamoalarga bo'lib yuborish", "Mahalliy hokimlargacha «yabg'u» unvonini berib, markaziy ma'muriyat nazoratini kuchaytirish", "Hokimlik huquqini faqat chet ellik savdogarlarga sotish"],
+        correct: 2,
+        exp: "Mahalliy hokimlargacha «yabg'u» unvoni berilib, markaziy nazorat kuchaytirilgan."
+      },
+      {
+        q: "31. Xitoy manbalarida turklarning ko'chmanchi bo'lishiga qaramay, ularning xo'jaligida qanday muhim tartib bo'lgani yozilgan?",
+        options: ["Yerlar faqat davlat mulki bo'lib, har yili qayta taqsimlanishi", "Dehqonchilik bilan shug'ullanish qat'iyan taqiqlangani", "Hamma yerlar umumiy jamoat foydalanuvida bo'lib, egasi bo'lmagani", "Har bir qabila va urug'ga qat'iy ajratib berilgan yerlar mavjudligi"],
+        correct: 3,
+        exp: "Xitoy manbalari turklarda har biriga ajratib berilgan yerlar borligini tasdiqlaydi."
+      },
+      {
+        q: "32. Xoqonlikda soliq va o'lponlarni o'z vaqtida yig'ib turish hamda hududlarni boshqarish uchun kimlar tayinlangan?",
+        options: ["Tudunlar (xoqon noiblari)", "Qozilar va diniy arboblar", "Saroy posbonlari", "Sug'd savdogarlari"],
+        correct: 0,
+        exp: "Soliq va o'lpon yig'ish uchun tudunlar (noiblar) tayinlangan."
+      },
+      {
+        q: "33. G'arbiy Turk xoqonligining qarorgoh vazifasini bajargan asosiy shaharlari qaysi javobda to'g'ri ko'rsatilgan?",
+        options: ["Samarqand va Buxoro", "Toshkent va Xiva", "Suyab va Beshbaliq", "Marv va Balx"],
+        correct: 2,
+        exp: "Suyab (Oq Bishim) va Beshbaliq (Turfon) qarorgoh vazifasini bajargan."
+      },
+      {
+        q: "34. Sug'd va Farg'onada hukmronlik qilgan mahalliy oliy hokimning unvoni qanday edi?",
+        options: ["Ixshid", "Malikshoh", "Ixrid", "Afshin"],
+        correct: 0,
+        exp: "Sug'd va Farg'onada oliy hokim «ixshid» deb atalgan."
+      },
+      {
+        q: "35. G'arbiy Turk xoqonligi davrida Farg'ona vodiysining Sug'd siyosiy tuzilmalari bilan o'zaro munosabatlari qanday xarakterga ega bo'lgan?",
+        options: ["Farg'ona to'g'ridan-to'g'ri Sug'd tarkibiga qo'shib yuborilgan", "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat sifatida mavjud bo'lgan", "Farg'ona va Sug'd yagona imperiyaga birlashgan", "Farg'ona Sug'dga soliq to'lab turishga majbur bo'lgan"],
+        correct: 1,
+        exp: "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat bo'lgan."
+      },
+      {
+        q: "36. Buxoroda mahalliy xalqqa qarshi isyon ko'tarib, xoqonlikda tartibsizlik keltirib chiqargan shaxs kim edi?",
+        options: ["Qoracho'rin", "Abruy", "Sheri Kishvar", "To'n yabg'u"],
+        correct: 1,
+        exp: "Buxoroda Abruy isyon ko'tarib tartibsizlik chiqargan."
+      },
+      {
+        q: "37. Abruy isyonini bostirish uchun Turk xoqoni tomonidan Buxoroga yuborilgan qo'shin boshlig'i kim?",
+        options: ["Bumin xoqon", "Istami yabg'u", "Tardu xoqon", "Qoracho'rin turk"],
+        correct: 3,
+        exp: "Qoracho'rin turk o'g'li bilan qo'shin yuborgan."
+      },
+      {
+        q: "38. Abruy qatl etilgach, Buxoroda shohriston qurib va 20 yil podshoh bo'lgan turkzoda shoh kim edi?",
+        options: ["Sheri Kishvar", "Biyog'u", "To'n yabg'u", "Katulf"],
+        correct: 0,
+        exp: "Sheri Kishvar Buxoroda shohriston qurib podshoh bo'lgan."
+      },
+      {
+        q: "39. XX asrning 60-yillarida Samarqandda avtomobil yo'li qurilayotganda topilgan jahonga mashhur moddiy meros obidasi nima?",
+        options: ["Varaxsha saroyi", "Afrosiyob rangli devoriy rasmlari", "Poykand qal'asi", "Tustepa obidasi"],
+        correct: 1,
+        exp: "Samarqandda Afrosiyob devoriy rasmlari topilgan."
+      },
+      {
+        q: "40. Xalqaro tashkilot tomonidan rasman «madaniyatlar uchrashadigan makon» degan yuksak ta'rif berilgan qadimgi Markaziy Osiyo shahri qaysi?",
+        options: ["Buxoro", "Xiva", "Samarqand", "Toshkent"],
+        correct: 2,
+        exp: "Bu ta'rif YUNESKO tomonidan aynan Samarqand shahriga berilgan."
       }
     ];
 
@@ -989,7 +989,7 @@
       if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
       
       if (fb) {
-        if(score >= 35) fb.innerText = "Mukammal natija! 1-10-mavzularni a'lo darajada o'zlashtiribsiz 🌟";
+        if(score >= 35) fb.innerText = "Mukammal natija! 1-11-mavzularni a'lo darajada o'zlashtiribsiz 🌟";
         else if(score >= 25) fb.innerText = "Ajoyib natija! Asosiy sanalar va tushunchalarni yaxshi bilasiz 👍";
         else fb.innerText = "Yaxshi, lekin mavzularni yana bir bor takrorlab chiqish tavsiya etiladi 📚";
       }

@@ -63,7 +63,7 @@
     }
 
     .palace-header h1 {
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -89,7 +89,7 @@
       padding: 11px 4px;
       border: none;
       background: transparent;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 800;
       color: #78350f;
       border-radius: 9px;
@@ -153,6 +153,7 @@
     }
 
     .match-column {
+      direction: ltr;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -214,15 +215,15 @@
       box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.45; color: #291104; }
     .fc-a {
-      font-size: 16px; font-weight: 700; color: #065f46;
+      font-size: 15.5px; font-weight: 700; color: #065f46;
       background: #ecfdf5; border: 1.5px solid #6ee7b7;
       border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
     }
 
     /* TEST */
-    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
     
     .opt-btn {
@@ -230,7 +231,7 @@
       border: 1.5px solid #d97706;
       border-radius: 12px;
       padding: 13px 15px;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 600;
       color: #291104;
       cursor: pointer;
@@ -241,7 +242,7 @@
     }
 
     .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
-    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
     
     .exp-box {
       background: #fef3c7;
@@ -342,7 +343,7 @@
         <div style="font-size: 50px;">📜</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Madaniy hayotga oid barcha atamalarni muvaffaqiyatli mosladingiz. Endi 38 talik Savol-Javob qismiga o'tamizmi?
+          Madaniy hayotga oid atamalarni muvaffaqiyatli mosladingiz. Endi 38 talik Savol-Javob qismiga o'tamizmi?
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
@@ -375,7 +376,7 @@
         <div style="font-size: 50px;">🏰</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">38 ta savol tugadi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Madaniy hayot mavzusining barcha jihatlarini to'la o'rganib chiqdingiz. Endi 38 talik Test sinoviga o'tamizmi?
+          Madaniy hayot mavzusining barcha jihatlarini to'la takrorlab chiqdingiz. Endi 38 talik Test sinoviga o'tamizmi?
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
@@ -384,7 +385,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) -->
+    <!-- 3. TEST SINOVI (38 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -433,17 +434,17 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 38 taga moslashtirilgan) ---
+    // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
       [
         { id: 1, left: "Jonbosqal'a va Tuproqqal'a", right: "Xorazmda qo'sh devorlar va aylanma yo'llarga ega bo'lgan zardushtiy ibodatxonalari" },
-        { id: 2, left: "V asr", right: "Samarqand va Buxoroda xristianlik diniiy muassasalari tashkil etilgan davr" },
-        { id: 3, left: "Masihiynig ta'limoti", right: "Kamtarlik, kuchli sevgi va sofdil aql bilan yashashni targ'ib qilgan ta'limot" },
+        { id: 2, left: "V asr", right: "Samarqand va Buxoroda xristianlik diniy muassasalari tashkil etilgan davr" },
+        { id: 3, left: "Masihiylik ta'limoti", right: "Kamtarlik, kuchli sevgi va sofdil aql bilan yashashni targ'ib qilgan ta'limot" },
         { id: 4, left: "Nestoriyan jamoalari", right: "Sug'dda faoliyat yuritgan, hujjatlari sug'd tilida yozilgan xristian oqimi" },
         { id: 5, left: "To'nyuquq bitiktoshi", right: "VIII asrga oid, Janubiy Mo'g'ulistondan topilgan turkiy runiy yodgorlik" }
       ],
       [
-        { id: 6, left: "Turkiy runiy (ko'k-turk) xati", right: "38–40 ta harfdan iborat, tosh va yog'ochlarga o'yib yozishga qulay yozuv" },
+        { id: 6, left: "Turkiy runiy xat", right: "38–40 ta harfdan iborat, tosh va yog'ochlarga o'yib yozishga qulay yozuv" },
         { id: 7, left: "Bolaliktepa va Panjikent", right: "Surxon va Zarafshon vodiylarida devoriy suratlar, haykallar topilgan joylar" },
         { id: 8, left: "Mug' tog'i", right: "Sug'd yozuvi saqlanib qolgan Panjikent yaqinidagi mashhur hudud" },
         { id: 9, left: "Turfan shahri", right: "Sharqiy Turkistonda sug'd yozuvi saqlanib qolgan tarixiy maskan" },
@@ -451,16 +452,16 @@
       ],
       [
         { id: 11, left: "Kaftan va yopinchiq", right: "Bezagida kushonlar tunikasimon ko'ylagi ta'siri sezilgan kiyim turlari" },
-        { id: 12, left: "Toxariston kiyinishi", right: "Faqat erkak va ayol xizmatidagilar belbog' taqib, aslzoda ayollar belbog' bog'lamagan hudud" },
-        { id: 13, left: "Vixaralar", right: "Buddaviy o'quv maskanlari bo'lib, daxarma (diniy qonun-qoidalar) o'rgatilgan joylar" },
+        { id: 12, left: "Toxariston kiyinishi", right: "Erkak va ayol xizmatidagilar belbog' taqib, aslzoda ayollar belbog' bog'lamagan hudud" },
+        { id: 13, left: "Viharalar", right: "Buddaviy o'quv maskanlari bo'lib, daxarma o'rgatilgan joylar" },
         { id: 14, left: "Ossuriya quvg'inlari", right: "Erongacha kelib, Samarqand va Buxoroga ko'chib o'tgan yahudiy jamoalari" },
         { id: 15, left: "5 yosh to'lishi", right: "Ajdodlarimiz o'z avlodlarini dastlab xat-savod va hisob-kitobga o'rgata boshlagan yosh" }
       ],
       [
         { id: 16, left: "Zardushtiylik ibodatxonalari", right: "O'rtasida aylanma yo'li bor va xonalarida teriga yozilgan hujjatlar topilgan inshoot" },
         { id: 17, left: "Haykaltaroshlik", right: "Rivojlanishida ayniqsa buddaviylik dini kuchli ta'sir ko'rsatgan san'at turi" },
-        { id: 18, left: "Tog'li va tog'oldi hududlar", right: "Jun, ipak va ip matolardan foydalanish yuqori darajada rivojlangan joylar" },
-        { id: 19, left: "Zandachi (2017)", right: "Mallarang bo'z mato turi qayta tiklangan va o'rganilgan davr" },
+        { id: 18, left: "Tog'li va tog'oldi hududlar", right: "Jun matolardan foydalanish yuqori darajada rivojlangan joylar" },
+        { id: 19, left: "Otga minib yurish", right: "Kalta kaftan va ko'ylaklar, keng va baland qo'nji etiklar qulay bo'lgan harakat" },
         { id: 20, left: "Sug'diy yozuvli tangalar", right: "Turkiy hokimlar davlat ishlarini olib borishda foydalangan yozuvli pullar" }
       ]
     ];
@@ -560,7 +561,7 @@
       { q: "2. Qadimgi ta'lim tarixidan so'zlovchi asosiy manbalar nimalar?", a: "Tosh bitiklar, teri, sopol, yog'och va qog'ozlarga tushirilgan ma'lumotlar." },
       { q: "3. Xorazmdagi Jonbosqal'a va Tuproqqal'adan topilgan zardushtiy ibodatxonalari qanday tuzilishga ega edi?", a: "O'rtasida aylanma yo'li bor, qo'sh devorlar bilan o'ralgan to'g'ri burchakli bino." },
       { q: "4. Xorazm ibodatxonalari xonalaridan nimalar topilgan?", a: "Teriga va yog'ochga yozilgan turli mazmundagi hujjatlar hamda haykalchalar." },
-      { q: "5. Xorazmda o'g'il bolalarga nimalar o'rgatilgan?", a: "O'qish, yozish, hisob-kitob hamda geografiya, zoologiya, botanika, astronomiya, tibbiyot." },
+      { q: "5. Xorazmda o'g'il bolalarga o'qish, yozish va hisob-kitobdan tashqari yana qanday fanlar o'rgatilgan?", a: "Geografiya, zoologiya, botanika, astronomiya, muhandislik, tibbiyot va me'morchilik[cite: 13]." },
       { q: "6. Turon hududida yashagan xalqlar qaysi dinlarga e'tiqod qilgan?", a: "Tangrilichilik, zardushtiylik, buddaviylik, xristianlik." },
       { q: "7. Buddaviy o'quv maskanlari (viharalar)da asosiy fan sifatida nima o'rgatilgan?", a: "Daxarma (diniy qonun-qoidalar va xudojo'ylik haqida ta'lim)." },
       { q: "8. Samarqand va Buxoroda xristianlik diniy muassasalari qachon tashkil etilgan?", a: "V asrda." },
@@ -574,7 +575,7 @@
       { q: "16. Haykaltaroshlik rivojiga qaysi din kuchli ta'sir ko'rsatgan?", a: "Buddaviylik." },
       { q: "17. Turon gazmol markazlarida qanday mashhur ipak mato ishlab chiqarilgan?", a: "«Zandanachi» (ko'k rangli ipak mato)." },
       { q: "18. Kiyimlarning bezagida qaysi davr tunikasimon ko'ylagi ta'siri sezilgan?", a: "Kushonlar." },
-      { q: "19. Toxaristonda kiyinish madaniyatida kimlar belbog' taqib yurgan?", a: "Faqat erkak va ayol xizmatidagilar (aslzoda ayollar belbog' bog'lamagan)." },
+      { q: "19. Toxaristonda kiyinish madaniyatida kimlar belbog' taqib yurgan?", a: "Erkak va ayol xizmatidagilar (aslzoda ayollar belbog' bog'lamagan)." },
       { q: "20. Sug'd yozuvi saqlanib qolgan Panjikent yaqinidagi mashhur hudud qanday ataladi?", a: "Mug' tog'i." },
       { q: "21. Sug'd yozuvi topilgan yana bir Sharqiy Turkistondagi tarixiy shahar qaysi?", a: "Turfan shahri." },
       { q: "22. Xorazmda o'g'il bolalarga ta'lim berishda yana qaysi fanlar o'rgatilgan?", a: "Muhandislik va me'morchilik." },
@@ -584,14 +585,14 @@
       { q: "26. Ajdodlarimiz o'z avlodlarini dastlab nimalarni o'rganishga jalb etgan?", a: "Xat-savod va hisob-kitobni." },
       { q: "27. Bolalar balog'at yoshiga yetgach nima qilgan?", a: "Dunyo tanish va savdo-tiyoratni o'rganish uchun boshqa davlatlarga yuborilgan." },
       { q: "28. Xoqonlikda jinoyatchilikka qarshi qonunlarda qanday jazo turlari bo'lgan?", a: "Qatl etish, a'zolarini kesish, mol-mulk tarzida tovon to'lash." },
-      { q: "29. Sug'diy til va yozuvdan turkiy hokimlar nima maqsadda foydalangan?", a: "Davlat ishlarini olib borishda." },
+      { q: "29. Tog'li va tog'oldi hududlarda qanday matolardan foydalanish yuqori darajada rivojlangan edi?", a: "Jun matolardan." },
       { q: "30. Naqshlarda qanday shakllar va ranglar ishlatilgan?", a: "Hayoliy va geometrik shakllar, qizil, sariq, yashil, qora ranglar." },
       { q: "31. Erkaklarning kiyimi otga minib yurishga qanday moslashgan edi?", a: "Kalta kaftan va ko'ylaklar, keng va baland qo'nji etiklardan iborat edi." },
       { q: "32. Ayollarning kiyimlari qanday ko'rinishda bo'lgan?", a: "Ko'ylaklar, kaftanlar, bir tomonlama qaytarmali yopinchiqlar, shleyli uzun ko'ylaklar." },
       { q: "33. Taqinchoqlar shaxsning qanday holatini ko'rsatgan?", a: "Ijtimoiy holatini." },
       { q: "34. Sug'd yozuvi saqlanib qolgan asosiy hududlar qaysilar?", a: "Panjikent yaqinidagi Mug' g'arbi, Sharqiy Turkistondagi Turfan va Samarqanddagi Afrosiyob." },
-      { q: "35. IX–X asrlarda yashab o'tgan arab sayyohlari va mualliflari qayd etishicha, zandanachi matosi qayerda to'qilgan?", a: "Buxoro yaqinidagi Zandanachi qishlog'ida." },
-      { q: "36. V–VII asrlarda Turonda qaysi soha yuksak darajada rivojlangan edi?", a: "To'qimachilik." },
+      { q: "35. Otga minib yurishga qulay qilib tikilgan erkaklar kiyimi nimalardan iborat edi?", a: "Kalta kaftan va ko'ylaklar, keng va baland qo'nji etiklardan iborat edi." },
+      { q: "36. V–VII asrlarda Turonda qaysi soha yuksak darajada rivojlangan?", a: "To'qimachilik." },
       { q: "37. Zardushtiylik ibodatxonalari markazida nima joylashgan edi?", a: "Aylanma yo'l." },
       { q: "38. Qadimgi turklarning yozuvi fanda qanday nomlanadi?", a: "Turkiy runiy (ko'k-turk) xati." }
     ];
@@ -632,259 +633,279 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
-    const testQuestions = [
+    // --- 3. TEST SINOVI (38 TA TEST) ---
+    const rawTestQuestions = [
       {
         q: "1. Ta'lim tizimining rivojlanishi qaysi muhim omil ta'sirida yanada jadallashgan?",
-        options: ["Yozuvning paydo bo'lishi bilan", "Faqat pulning kiritilishi bilan", "Faqat shaharlarning ko'payishi bilan", "Faqat janglarning to'xtashi bilan"],
-        correct: 0,
+        options: ["Yozuvning paydo bo'lishi bilan", "Pulning muomalaga kiritilishi bilan", "Shaharlarning haddan tashqari ko'payishi bilan", "Jang harakatlarining to'xtashi bilan"],
+        correctVal: "Yozuvning paydo bo'lishi bilan",
         exp: "Yozuvning paydo bo'lishi ta'lim tizimini yanada jadallashtirgan."
       },
       {
         q: "2. Xorazmdagi Jonbosqal'a va Tuproqqal'adan topilgan zardushtiy ibodatxonalari qanday tuzilishga ega edi?",
-        options: ["Faqat bitta xonali", "O'rtasida aylanma yo'li bor, qo'sh devorlar bilan o'ralgan", "Faqat yer osti tunellari", "Faqat ochiq maydon"],
-        correct: 1,
+        options: ["Bitta kichik xonali", "O'rtasida aylanma yo'li bor, qo'sh devorlar bilan o'ralgan", "Yer osti maxsus tunellaridan iborat", "Ochiq osmon ostidagi maydon"],
+        correctVal: "O'rtasida aylanma yo'li bor, qo'sh devorlar bilan o'ralgan",
         exp: "Ular o'rtasida aylanma yo'li bor, qo'sh devorli bino bo'lgan."
       },
       {
         q: "3. Xorazmda o'g'il bolalarga o'qish va yozishdan tashqari yana qaysi fanlar o'rgatilgan?",
-        options: ["Faqat musiqa", "Geografiya, zoologiya, botanika, astronomiya, tibbiyot", "Faqat harbiy taktikalar", "Faqat chet tillari"],
-        correct: 1,
-        exp: "Ularga aniq va tabiiy fanlardan ham bilim berilgan."
+        options: ["Musiqa va raqs san'ati", "Geografiya, zoologiya, botanika, astronomiya, muhandislik, tibbiyot va me'morchilik", "Harbiy taktikalar va qurilish", "Chet tillari va falsafa"],
+        correctVal: "Geografiya, zoologiya, botanika, astronomiya, muhandislik, tibbiyot va me'morchilik",
+        exp: "Ularga aniq va tabiiy fanlardan ham bilim berilgan[cite: 13]."
       },
       {
         q: "4. Turon hududida yashagan xalqlar qaysi dinlarga e'tiqod qilganlar?",
-        options: ["Faqat islomga", "Tangrilichilik, zardushtiylik, buddaviylik, xristianlik", "Faqat buddizmga", "Faqat xristianlikka"],
-        correct: 1,
+        options: ["Islom va zardushtiylik", "Tangrilichilik, zardushtiylik, buddaviylik, xristianlik", "Buddizm va hinduizm", "Xristianlik va iudaizm"],
+        correctVal: "Tangrilichilik, zardushtiylik, buddaviylik, xristianlik",
         exp: "Xalqlar tangrilichilik, zardushtiylik, buddaviylik va xristianlikka e'tiqod qilgan."
       },
       {
         q: "5. Buddaviy o'quv maskanlari (viharalar)da asosiy fan sifatida nima o'rgatilgan?",
-        options: ["Daxarma (diniy qonun-qoidalar va xudojo'ylik)", "Faqat matematika", "Faqat astronomiya", "Faqat savdo sirlari"],
-        correct: 0,
+        options: ["Daxarma (diniy qonun-qoidalar va xudojo'ylik)", "Amaliy matematika", "Nazariy astronomiya", "Xalqaro savdo sirlari"],
+        correctVal: "Daxarma (diniy qonun-qoidalar va xudojo'ylik)",
         exp: "Viharalarda daxarma o'rgatilgan."
       },
       {
         q: "6. Samarqand va Buxoroda xristianlik diniy muassasalari qachon tashkil etilgan edi?",
         options: ["III asrda", "V asrda", "VIII asrda", "X asrda"],
-        correct: 1,
+        correctVal: "V asrda",
         exp: "Samarqand va Buxoroda xristianlik muassasalari V asrda tashkil etilgan."
       },
       {
         q: "7. Sug'dda qaysi xristian oqimi jamoalari faoliyat yuritgan?",
-        options: ["Katolik", "Nestoriyan jamoalari", "Protestant", "Pravoslav"],
-        correct: 1,
+        options: ["Katolik cherkovi", "Nestoriyan jamoalari", "Protestant oqimi", "Pravoslav cherkovi"],
+        correctVal: "Nestoriyan jamoalari",
         exp: "Sug'dda Nestoriyan jamoalari faoliyat yuritgan."
       },
       {
         q: "8. Nestoriyan jamoalarining hujjatlari qaysi tilda yozilgan edi?",
         options: ["Sug'd tilida", "Arab tilida", "Yunon tilida", "Lotin tilida"],
-        correct: 0,
+        correctVal: "Sug'd tilida",
         exp: "Ularning hujjatlari sug'd tilida yozilgan."
       },
       {
         q: "9. To'nyuquq bitiktoshi qaysi asrga oid va qayerdan topilgan?",
         options: ["V asr, Oltoy", "VIII asr, Janubiy Mo'g'uliston", "X asr, Yettisuv", "VI asr, Farg'ona"],
-        correct: 1,
+        correctVal: "VIII asr, Janubiy Mo'g'uliston",
         exp: "To'nyuquq bitiktoshi VIII asrga oid bo'lib, Janubiy Mo'g'ulistondan topilgan."
       },
       {
         q: "10. Turklarning o'ziga xos runiy xati nechta harfdan iborat bo'lgan?",
         options: ["20–25 ta", "38–40 ta", "50–60 ta", "15–18 ta"],
-        correct: 1,
+        correctVal: "38–40 ta",
         exp: "Runiy xat 38–40 ta harfdan iborat bo'lgan."
       },
       {
         q: "11. Runiy xat yordamida yozish nimalarga o'yib yozishga juda qulay edi?",
-        options: ["Tosh va yog'ochlarga", "Faqat qog'ozga", "Faqat matoga", "Faqat teriga"],
-        correct: 0,
+        options: ["Tosh va yog'ochlarga", "Qog'oz varaqlariga", "Ipak matolarga", "Hayvon terisiga"],
+        correctVal: "Tosh va yog'ochlarga",
         exp: "U tosh va yog'ochlarga o'yib yozishga qulay bo'lgan."
       },
       {
         q: "12. Surxon vohasidagi Bolaliktepa va Zarafshon vohasidagi Panjikentdan nimalar topilgan?",
-        options: ["Faqat qurol-yarog'lar", "Devoriy suratlar, haykallar va ganchkor naqshlar", "Faqat sopol parchalari", "Faqat tangalar xazinasi"],
-        correct: 1,
+        options: ["Qurol-yarog'lar xazinasi", "Devoriy suratlar, haykallar va ganchkor naqshlar", "Sopol parchalari va idishlar", "Qadimgi tangalar kolleksiyasi"],
+        correctVal: "Devoriy suratlar, haykallar va ganchkor naqshlar",
         exp: "U yerdan devoriy suratlar, haykallar va ganchkor naqshlar topilgan."
       },
       {
         q: "13. Haykaltaroshlik rivojiga qaysi din juda kuchli ta'sir ko'rsatgan?",
         options: ["Zardushtiylik", "Buddaviylik", "Islom", "Tangrilichilik"],
-        correct: 1,
+        correctVal: "Buddaviylik",
         exp: "Haykaltaroshlik rivojiga buddaviylik kuchli ta'sir ko'rsatgan."
       },
       {
         q: "14. Turon gazmol markazlarida ishlab chiqarilgan va mashhur bo'lgan ko'k rangli ipak mato qanday atalgan?",
         options: ["Zandanachi", "Atlas", "Adras", "Buxoroyi sharif"],
-        correct: 0,
+        correctVal: "Zandanachi",
         exp: "Bu mato Zandanachi deb atalgan."
       },
       {
         q: "15. Kiyimlarning bezagida qaysi davr tunikasimon ko'ylagi ta'siri sezilgan?",
         options: ["Achameniylar", "Kushonlar", "Qang'", "Sarmatlar"],
-        correct: 1,
+        correctVal: "Kushonlar",
         exp: "Kiyim bezagida kushonlar tunikasimon ko'ylagi ta'siri sezilgan."
       },
       {
         q: "16. Toxaristonda kiyinish madaniyatida kimlar belbog' taqib yurgan?",
-        options: ["Barcha fuqarolar", "Faqat erkak va ayol xizmatidagilar (aslzoda ayollar belbog' bog'lamagan)", "Faqat harbiylar", "Faqat podshohlar"],
-        correct: 1,
+        options: ["Barcha fuqarolar", "Erkak va ayol xizmatidagilar (aslzoda ayollar belbog' bog'lamagan)", "Harbiy qo'shinlar", "Podshoh va uning yaqinlari"],
+        correctVal: "Erkak va ayol xizmatidagilar (aslzoda ayollar belbog' bog'lamagan)",
         exp: "Faqat xizmatidagilar belbog' taqqan, aslzoda ayollar bog'lamagan."
       },
       {
         q: "17. Sug'd yozuvi saqlanib qolgan Panjikent yaqinidagi mashhur hudud qanday ataladi?",
         options: ["Mug' tog'i", "Chilpiq", "Ajinatepa", "Zartepa"],
-        correct: 0,
+        correctVal: "Mug' tog'i",
         exp: "Sug'd yozuvi saqlangan joy Mug' tog'idir."
       },
       {
         q: "18. Sug'd yozuvi topilgan yana bir Sharqiy Turkistondagi tarixiy shahar qaysi?",
         options: ["Turfan shahri", "Bolasog'un", "Qashqar", "Xotan"],
-        correct: 0,
+        correctVal: "Turfan shahri",
         exp: "Sharqiy Turkistondagi Turfan shahrida ham topilgan."
       },
       {
         q: "19. Yozuv materiallari va kitoblar savdo yo'llarida nima deb hisoblangan?",
-        options: ["Oddiy narsa", "Eng qimmatbaho tovar", "Faqat bezak", "Taqiqlangan buyum"],
-        correct: 1,
+        options: ["Oddiy yozuv vositasi", "Eng qimmatbaho tovar", "Maxsus bezak buyumi", "Taqiqlangan eksport"],
+        correctVal: "Eng qimmatbaho tovar",
         exp: "Ular eng qimmatbaho tovar hisoblangan."
       },
       {
         q: "20. Xristian dini ta'limotida bolalar tarbiyasida qaysi tamoyillarga amal qilingan?",
-        options: ["Faqat jismoniy kuchga", "Kamtarlik, kuchli sevgi va Xudodan qo'rqishga", "Faqat jang qilishga", "Faqat boylik orttirishga"],
-        correct: 1,
+        options: ["Jismoniy kuch va epchillikka", "Kamtarlik, kuchli sevgi va Xudodan qo'rqishga", "Harbiy intizom va itoatga", "Boylik va mol-mulkka"],
+        correctVal: "Kamtarlik, kuchli sevgi va Xudodan qo'rqishga",
         exp: "Kamtarlik, sevgi va Xudodan qo'rqishga o'rgatilgan."
       },
       {
         q: "21. Ajdodlarimiz o'z avlodlarini dastlab nimalarni o'rganishga jalb etgan?",
-        options: ["Xat-savod va hisob-kitobni", "Faqat hunarni", "Faqat she'riyatni", "Faqat musiqa chalishni"],
-        correct: 0,
+        options: ["Xat-savod va hisob-kitobni", "Hunarmandchilik sirlarini", "She'riyat va san'atni", "Musiqa chalishni"],
+        correctVal: "Xat-savod va hisob-kitobni",
         exp: "Bolalarga dastlab xat-savod va hisob-kitob o'rgatilgan."
       },
       {
         q: "22. Bolalar balog'at yoshiga yetgach nima uchun boshqa davlatlarga yuborilgan?",
-        options: ["Urush qilish uchun", "Dunyo tanish va savdo-tiyorat ishlarini o'rganish uchun", "Qul sifatida", "Yashirin elchi bo'lib"],
-        correct: 1,
+        options: ["Harbiy xizmatni o'tash uchun", "Dunyo tanish va savdo-tiyorat ishlarini o'rganish uchun", "Siyosiy boshpana izlab", "Chet elda o'qishni davom ettirish uchun"],
+        correctVal: "Dunyo tanish va savdo-tiyorat ishlarini o'rganish uchun",
         exp: "Ular dunyo tanish va savdo-tiyoratni o'rganish uchun yuborilgan."
       },
       {
         q: "23. Sug'diy til va yozuvdan turkiy hokimlar nima maqsadda foydalangan?",
-        options: ["Faqat xat yozishda", "Davlat ishlarini olib borishda", "Faqat she'r yozishda", "Faqat shaxsiy maktubda"],
-        correct: 1,
+        options: ["Shaxsiy maktublar yozishda", "Davlat ishlarini olib borishda", "Diniy marosimlarda", "She'riyat va dostonlarda"],
+        correctVal: "Davlat ishlarini olib borishda",
         exp: "Turkiy hokimlar davlat ishlarini olib borishda sug'diy tildan foydalangan."
       },
       {
         q: "24. Naqshlarda qanday shakllar va ranglar keng ishlatilgan?",
-        options: ["Faqat oq va qora", "Hayoliy va geometrik shakllar, qizil, sariq, yashil, qora ranglar", "Faqat moviy rang", "Faqat jigarrang"],
-        correct: 1,
+        options: ["Oq va qora rangli belgilar", "Hayoliy va geometrik shakllar, qizil, sariq, yashil, qora ranglar", "Moviy va binafsha ranglar", "Jigarrang va kulrang tuslar"],
+        correctVal: "Hayoliy va geometrik shakllar, qizil, sariq, yashil, qora ranglar",
         exp: "Hayoliy va geometrik shakllar, rang-barang bo'yoqlar ishlatilgan."
       },
       {
         q: "25. Erkaklarning kiyimi otga minib yurishga qanday moslashgan edi?",
-        options: ["Uzun etaklar bilan", "Kalta kaftan va ko'ylaklar, keng va baland qo'nji etiklar bilan", "Faqat yengil matoda", "Faqat charm qoplamada"],
-        correct: 1,
+        options: ["Uzun va keng etaklar bilan", "Kalta kaftan va ko'ylaklar, keng va baland qo'nji etiklar bilan", "Yengil ipak matolar bilan", "Charm qoplamali zirhlar bilan"],
+        correctVal: "Kalta kaftan va ko'ylaklar, keng va baland qo'nji etiklar bilan",
         exp: "Kalta kaftan, ko'ylaklar va baland qo'nji etiklar qulay bo'lgan."
       },
       {
         q: "26. Ayollarning kiyimlari qanday ko'rinishda bo'lgan?",
-        options: ["Faqat oddiy ro'mol", "Ko'ylaklar, kaftanlar, yopinchiqlar va shleyli uzun ko'ylaklar", "Faqat qisqa yubkalar", "Faqat harbiy zirhlar"],
-        correct: 1,
+        options: ["Oddiy uzun ro'mollar", "Ko'ylaklar, kaftanlar, yopinchiqlar va shleyli uzun ko'ylaklar", "Qisqa yubka va ko'ylaklar", "Harbiy uslubdagi kiyimlar"],
+        correctVal: "Ko'ylaklar, kaftanlar, yopinchiqlar va shleyli uzun ko'ylaklar",
         exp: "Kaftanlar, yopinchiqlar va shleyli uzun ko'ylaklar kiyishgan."
       },
       {
         q: "27. Taqinchoqlar insonning qanday holatini ko'rsatib turgan?",
-        options: ["Yoshini", "Ijtimoiy holatini", "Millatini", "Qaysi kasbdaligini"],
-        correct: 1,
+        options: ["Yosh guruhini", "Ijtimoiy holatini", "Tug'ilgan joyini", "Kasb-hunarini"],
+        correctVal: "Ijtimoiy holatini",
         exp: "Taqinchoqlar shaxsning ijtimoiy holatini ko'rsatgan."
       },
       {
         q: "28. Sug'd yozuvi saqlanib qolgan asosiy hududlar qaysi javobda to'g'ri ko'rsatilgan?",
-        options: ["Faqat Toshkent va Samarqand", "Panjikent yaqinidagi Mug' g'arbi, Turfan va Afrosiyob", "Faqat Xiva va Buxoro", "Faqat Farg'ona va Andijon"],
-        correct: 1,
+        options: ["Toshkent va Samarqand vohalari", "Panjikent yaqinidagi Mug' g'arbi, Turfan va Afrosiyob", "Xiva va Buxoro markazlari", "Farg'ona va Andijon qasrlari"],
+        correctVal: "Panjikent yaqinidagi Mug' g'arbi, Turfan va Afrosiyob",
         exp: "Mug' g'arbi, Turfan va Afrosiyobda saqlanib qolgan."
       },
       {
-        q: "29. Zandanachi matosi qayerda to'qilgan va o'rganilgan?",
-        options: ["Samarqand shahrida", "Buxoro yaqinidagi Zandanachi qishlog'ida", "Xorazmda", "Chosh tumanida"],
-        correct: 1,
-        exp: "Mato Zandanachi qishlog'ida ishlab chiqarilgan."
+        q: "29. Tog'li va tog'oldi hududlarda qanday matolardan foydalanish yuqori darajada rivojlangan edi?",
+        options: ["Ipak matolardan", "Jun matolardan", "Paxtali matolardan", "Sintetik matolardan"],
+        correctVal: "Jun matolardan",
+        exp: "Tog'li va tog'oldi hududlarda jun matolardan foydalanish rivojlangan."
       },
       {
-        q: "30. V–VII asrlarda Turonda qaysi soha eng yuksak darajada rivojlangan?",
-        options: ["To'qimachilik", "Kemaсозlik", "Zargarlik", "Kulolchilik"],
-        correct: 0,
+        q: "30. V–VII asrlarda Turonda qaysi soha eng yuksak darajada rivojlangan edi?",
+        options: ["To'qimachilik", "Kemasozlik", "Zargarlik", "Kulolchilik"],
+        correctVal: "To'qimachilik",
         exp: "To'qimachilik yuqori darajada rivojlangan edi."
       },
       {
         q: "31. Zardushtiylik ibodatxonalari markazida nima mavjud bo'lgan?",
         options: ["Katta hovuz", "Aylanma yo'l", "Oltin taxt", "Diniy maktab"],
-        correct: 1,
+        correctVal: "Aylanma yo'l",
         exp: "Ibodatxonalarda aylanma yo'l bo'lgan."
       },
       {
         q: "32. Qadimgi turklarning yozuvi qanday nomlanadi?",
         options: ["Turkiy runiy (ko'k-turk) xati", "Sug'd yozuvi", "Uyg'ur yozuvi", "Baqtriya yozuvi"],
-        correct: 0,
+        correctVal: "Turkiy runiy (ko'k-turk) xati",
         exp: "Bu turkiy runiy (ko'k-turk) xati deb ataladi."
       },
       {
         q: "33. Xristian jamoalari ibodatxonalarida nimalar tashkil etilgan?",
         options: ["Savdo rastalari", "Maktablar", "Harbiy qarorgohlar", "Teatrlar"],
-        correct: 1,
-        exp: "Ibodoatxonalar qoshida maktablar tashkil etilgan."
+        correctVal: "Maktablar",
+        exp: "Ibodatxonalar qoshida maktablar tashkil etilgan."
       },
       {
         q: "34. Xorazmda o'g'il bolalarga qanday fanlardan bilim berilgan?",
-        options: ["Faqat din asoslaridan", "Geografiya, zoologiya, botanika, astronomiya, muhandislik va tibbiyot", "Faqat she'riyatdan", "Faqat xorijiy tillardan"],
-        correct: 1,
-        exp: "Ularga keng ko'lamli tabiiy va amaliy fanlar o'rgatilgan."
+        options: ["Adabiyot va she'riyat", "Chet tillari va falsafa", "Diniy qoidalar va shariat", "Geografiya, zoologiya, botanika, astronomiya, muhandislik, tibbiyot va me'morchilik"],
+        correctVal: "Geografiya, zoologiya, botanika, astronomiya, muhandislik, tibbiyot va me'morchilik",
+        exp: "Ularga keng ko'lamli tabiiy va amaliy fanlar o'rgatilgan[cite: 13]."
       },
       {
         q: "35. Usmon Turonning asari qanday nomlanadi?",
-        options: ["«Turkiy xalqlar mafkurasi»", "«Turk xoqonligi tarixi»", "«Oriy xalqlar»", "«Turon davlati»"],
-        correct: 0,
-        exp: "Asar «Turkiy xalqlar mafkurasi» deb ataladi."
+        options: ["«Turkiy xalqlar tarixi»", "«Turkiy xalqlar mafkurasi»", "«Turk xoqonligi davri»", "«Oriy xalqlar merosi»"],
+        correctVal: "«Turkiy xalqlar mafkurasi»",
+        exp: "Kitob «Turkiy xalqlar mafkurasi» deb nomlanadi."
       },
       {
         q: "36. Xoqonlikda jinoyatchilikka qarshi qonunlarda eng og'ir jazo qaysi edi?",
-        options: ["Jarima to'lash", "Qatl etish", "Surgun qilish", "Mol-mulkni tortib olish"],
-        correct: 1,
+        options: ["Pul jarimasini to'lash", "Qatl etish", "Mamlakatdan surgun qilish", "Mol-mulkni tortib olish"],
+        correctVal: "Qatl etish",
         exp: "Eng og'ir jazo qatl etish bo'lgan."
       },
       {
-        q: "37. Turon hududida qaysi dinlarning ibodatxonalarida maktablar bo'lgan?",
-        options: ["Faqat islom", "Zardushtiylik, buddaviylik va xristianlik", "Faqat buddizm", "Faqat zardushtiylik"],
-        correct: 1,
+        q: "37. Turon hududida qaysi dinlarning ibodatxonalarida maktablar faoliyat yuritgan?",
+        options: ["Isloh qilingan dinlar", "Zardushtiylik, buddaviylik va xristianlik", "Buddizm va hinduizm", "Zardushtiylik va shomonlik"],
+        correctVal: "Zardushtiylik, buddaviylik va xristianlik",
         exp: "Zardushtiylik, buddaviylik va xristianlik ibodatxonalarida maktablar bo'lgan."
       },
       {
         q: "38. Sug'diy til va yozuv qaysi hududlarda xalqaro savdo tili vazifasini bajargan?",
-        options: ["Faqat Sug'dda", "Yettisuv, Farg'ona, Sharqiy Turkiston va Xitoyda", "Faqat Eronda", "Faqat Vizantiyada"],
-        correct: 1,
+        options: ["Faqat Movarounnahda", "Yettisuv, Farg'ona, Sharqiy Turkiston va Xitoyda", "Faqat Sosoniylar Eronida", "Faqat Vizantiya imperiyasida"],
+        correctVal: "Yettisuv, Farg'ona, Sharqiy Turkiston va Xitoyda",
         exp: "Sug'd tili Yettisuv, Farg'ona, Sharqiy Turkiston va Xitoyda keng qo'llanilgan."
       }
     ];
+
+    // Variantlarni har safar tasodifiy tartibda aralashtiruvchi yordamchi funksiya
+    const testQuestions = rawTestQuestions.map(item => {
+      let opts = [...item.options];
+      opts.sort(() => Math.random() - 0.5);
+      let correctIdx = opts.indexOf(item.correctVal);
+      return {
+        q: item.q,
+        options: opts,
+        correct: correctIdx,
+        exp: item.exp
+      };
+    });
 
     let tIdx = 0, score = 0;
 
     function loadTestQuestion() {
       const q = testQuestions[tIdx];
-      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
-      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
-      document.getElementById('q-title').innerText = q.q;
-
+      const counter = document.getElementById('q-counter');
+      const prog = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
       const optBox = document.getElementById('q-options');
-      optBox.innerHTML = '';
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
 
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.innerText = opt;
-        btn.onclick = () => selectOpt(idx);
-        optBox.appendChild(btn);
-      });
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (prog) prog.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
 
-      document.getElementById('q-explanation').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
+      if (optBox) {
+        optBox.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.innerText = opt;
+          btn.onclick = () => selectOpt(idx);
+          optBox.appendChild(btn);
+        });
+      }
+
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
     }
 
     function selectOpt(selectedIdx) {
@@ -902,10 +923,13 @@
       }
 
       const exp = document.getElementById('q-explanation');
-      exp.innerText = "💡 Izoh: " + q.exp;
-      exp.style.display = 'block';
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
       
-      document.getElementById('sticky-bar').style.display = 'flex';
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
     }
 
     function nextTestQuestion() {
@@ -919,21 +943,31 @@
     }
 
     function showQuizResult() {
-      document.getElementById('quiz-body').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
-      document.getElementById('quiz-result').style.display = 'flex';
-      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const scoreEl = document.getElementById('q-score');
       const fb = document.getElementById('q-feedback');
-      if(score >= 34) fb.innerText = "Mukammal natija! VI–VII asrlarda madaniy hayot mavzusini to'laqonli o'zlashtiribsiz 🌟";
-      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
-      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 34) fb.innerText = "Mukammal natija! VI–VII asrlarda madaniy hayot mavzusini to'laqonli o'zlashtiribsiz 🌟";
+        else if(score >= 26) fb.innerText = "Ajoyib natija! Asosiy atamalar va tushunchalarni yaxshi bilasiz 👍";
+        else fb.innerText = "Yaxshi, lekin mavzularni yana bir bor takrorlab chiqish tavsiya etiladi 📚";
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartTest() {
       tIdx = 0; score = 0;
-      document.getElementById('quiz-body').style.display = 'block';
-      document.getElementById('quiz-result').style.display = 'none';
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
       loadTestQuestion();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

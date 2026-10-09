@@ -63,7 +63,7 @@
     }
 
     .palace-header h1 {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -89,7 +89,7 @@
       padding: 11px 4px;
       border: none;
       background: transparent;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 800;
       color: #78350f;
       border-radius: 9px;
@@ -153,6 +153,7 @@
     }
 
     .match-column {
+      direction: ltr;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -214,15 +215,15 @@
       box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.45; color: #291104; }
     .fc-a {
-      font-size: 16px; font-weight: 700; color: #065f46;
+      font-size: 15.5px; font-weight: 700; color: #065f46;
       background: #ecfdf5; border: 1.5px solid #6ee7b7;
       border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
     }
 
     /* TEST */
-    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
     
     .opt-btn {
@@ -230,7 +231,7 @@
       border: 1.5px solid #d97706;
       border-radius: 12px;
       padding: 13px 15px;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 600;
       color: #291104;
       cursor: pointer;
@@ -241,7 +242,7 @@
     }
 
     .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
-    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
     
     .exp-box {
       background: #fef3c7;
@@ -319,8 +320,8 @@
 
     <div class="tab-nav">
       <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
-      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (38)</button>
-      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (38)</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (35)</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (35)</button>
     </div>
 
     <!-- 1. MOSLASH BO'LIMI -->
@@ -342,7 +343,7 @@
         <div style="font-size: 50px;">📜</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Harbiy san'atga oid barcha atamalarni muvaffaqiyatli mosladingiz. Endi 38 talik Savol-Javob qismiga o'tamizmi?
+          Harbiy san'atga oid atamalarni muvaffaqiyatli mosladingiz. Endi Savol-Javob qismiga o'tamizmi?
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
@@ -351,12 +352,12 @@
       </div>
     </div>
 
-    <!-- 2. SAVOL-JAVOB (38 TA SAVOL) -->
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
     <div id="tab-cards" class="tab-content">
       <div id="fc-play-box">
         <div class="header-bar">
           <span class="topic-badge">14-15-mavzular Trenajyor</span>
-          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
 
@@ -373,9 +374,9 @@
 
       <div id="fc-finish-box" class="finish-state">
         <div style="font-size: 50px;">🏰</div>
-        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">38 ta savol tugadi!</h2>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">35 ta savol tugadi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Turon xalqlarining harbiy san'ati mavzusini to'la o'rganib chiqdingiz. Endi 38 talik Test sinoviga o'tamizmi?
+          Harbiy san'at mavzusining barcha jihatlarini to'la takrorlab chiqdingiz. Endi Test sinoviga o'tamizmi?
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
@@ -384,12 +385,12 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (38 TA TEST) -->
+    <!-- 3. TEST SINOVI (35 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
           <span class="topic-badge">14-15-mavzular Test Sinovi</span>
-          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 38</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
 
@@ -400,7 +401,7 @@
 
       <div id="quiz-result" class="finish-state">
         <div style="font-size: 50px;">🌟</div>
-        <div class="finish-badge" id="q-score">0/38</div>
+        <div class="finish-badge" id="q-score">0/35</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
         <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
@@ -433,35 +434,28 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 38 taga moslashtirilgan) ---
+    // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
       [
         { id: 1, left: "«Turon» atamasi", right: "Dastlab «Avesto»da tilga olingan, turlar oriy xalqlarning tarmog'i hisoblangan" },
         { id: 2, left: "Jayhun orqasi", right: "Movarounnahr ahlining etiqodicha sharqqa qarab cho'zilgan yerlar — Turon" },
-        { id: 3, left: "G'arbga cho'zilgan yerlar", right: "Eron mamlakati" },
-        { id: 4, left: "Afrosiyob va Kaykovus", right: "Turon va Eron mamlakatlarini o'zaro taqsim qilgan afsonaviy hukmdorlar" },
-        { id: 5, left: "Johiz", right: "Turkiy xalqlarning xislatlari haqida «Manoqib al-atrok» asarini yozgan arab adibi" }
+        { id: 3, left: "Afrosiyob va Kaykabod", right: "Turon va Eron mamlakatlarini o'zaro taqsim qilgan afsonaviy hukmdorlar" },
+        { id: 4, left: "Johiz", right: "Turkiy xalqlarning xislatlari haqida «Manoqib al-atrok» asarini yozgan arab adibi" },
+        { id: 5, left: "Usmon Turon", right: "«Turkiy xalqlar mafkurasi» kitobida turkiylarning jangovar fazilatlarini yozgan olim" }
       ],
       [
-        { id: 6, left: "Usmon Turon", right: "«Turkiy xalqlar mafkurasi» kitobida turkiylarning o'ziga xos fazilatlarini yozgan olim" },
-        { id: 7, left: "Uzangiy va tizgin", right: "Turkiylar kashf etgan, ot ustida mustahkam o'tirishni ta'minlovchi asbob-anjomlar" },
-        { id: 8, left: "Dovuldek va qush kabi", right: "Jangda juda tez harakatlanib, kutilmaganda yo'qoladigan turk qo'shini tavsifi" },
-        { id: 9, left: "Gurzi, kamon va shamshir", right: "Eftaliylar jangda asosan foydalangan asosiy qurol-aslahalari" },
-        { id: 10, left: "Sagaris", right: "O'ziga xos jangovar bolta turi" }
+        { id: 6, left: "Uzangiy va tizgin", right: "Turkiylar kashf etgan, ot ustida mustahkam o'tirishni ta'minlovchi asbob-anjomlar" },
+        { id: 7, left: "Dovuldek va qush kabi", right: "Jangda juda tez harakatlanib, kutilmaganda yo'qoladigan turk qo'shini tavsifi" },
+        { id: 8, left: "Gurzi, kamon va shamshir", right: "Eftaliylar jangda asosan foydalangan asosiy qurol-aslahalari" },
+        { id: 9, left: "Qilich, dudama va palash", right: "Turk xoqonligi davrida chopuvchi qurolning yangi turlari" },
+        { id: 10, left: "O'nlik, yuzlik, minglik", right: "Turk xoqonligi armiyasining o'ziga xos harbiy bo'linmalari" }
       ],
       [
-        { id: 11, left: "Qilich, dudama va palash", right: "Turk xoqonligi davrida chopuvchi qurolning yangi turlari (og'ir qilichlar)" },
-        { id: 12, left: "O'nlik, yuzlik, minglik", right: "Turk xoqonligi armiyasining o'ziga xos harbiy bo'linmalari" },
-        { id: 13, left: "O'n minglik — tuman", right: "Harbiy tarkibdagi yirik tuman birligi" },
-        { id: 14, left: "Tug'i (nishoni)", right: "Har bir tumanning uzun nayzasiga o'rnatilgan bo'ri yoki boshqa hayvon tasviri tushirilgan nishon" },
-        { id: 15, left: "Aylana usuli va soxta chekinish", right: "Turk jangchilari keng qo'llagan mashhur harbiy taktik usullar" }
-      ],
-      [
-        { id: 16, left: "Xitoylik sayyoh", right: "«Samarqand hokimining qabilasidan bo'lgan ko'pchilik jangchilar jasur va g'ayratli» deb yozgan muallif" },
-        { id: 17, left: "Ikkiqlama o'tkir tig'li qilichlar", right: "Jangchilarning ustunligi hisoblangan o'tkir qurol turi" },
-        { id: 18, left: "Qo'riqlov minorasi", right: "Qo'rg'onga kirish joyining ro'parasida xabar berish uchun qad ko'targan inshoot" },
-        { id: 19, left: "Xorazm, Sug'd va Toxariston", right: "Yirik dehqonlardan uy-qo'rg'onlari, burjli mudofaa devorlari topilgan hududlar" },
-        { id: 20, left: "Xandaq", right: "Shahar atrofi suv bilan to'ldirilib, ko'tarma ko'prik orqali o'tiladigan mudofaa inshooti" }
+        { id: 11, left: "Tuman (o'n minglik)", right: "Harbiy tarkibdagi yirik tuman birligi va uning maxsus tug'i bo'lgan" },
+        { id: 12, left: "Tilla suvi yuritilgan bo'ri boshi", right: "Har bir tumaning uzun nayzasiga o'rnatilgan nurning ramzi" },
+        { id: 13, left: "Aylana usuli va soxta chekinish", right: "Turk jangchilari keng qo'llagan mashhur harbiy taktik usullar" },
+        { id: 14, left: "Qo'riqlov minorasi", right: "Qo'rg'onga kirish joyining ro'parasida xabar berish uchun qad ko'targan inshoot" },
+        { id: 15, left: "Xandaq va ko'tarma ko'prik", right: "Shahar atrofi suv bilan to'ldirilib himoyalanadigan mudofaa inshooti" }
       ]
     ];
 
@@ -554,15 +548,15 @@
       }
     }
 
-    // --- 2. SAVOL-JAVOB (38 TA SAVOL) ---
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
     const flashcards = [
-      { q: "1. «Turon» atamasi dastlab qaysi qadimiy manbada tilga olingan?", a: "«Avesto»da." },
+      { q: "1. «Turon» atamasi dastlab qaysi qadimgi manbada tilga olingan?", a: "«Avesto»da." },
       { q: "2. Tarixchilar fikricha, turlar (turklar) kimlarning tarmog'i hisoblangan?", a: "Oriy xalqlarning tarmog'i." },
       { q: "3. VI asrda O'rta Osiyo hududi Turk xoqonligiga o'tgach, «Turon» nomi kimlarga nisbatan berila boshlandi?", a: "Turklarga." },
       { q: "4. «Turon» yoki «Turkiston» deganda qaysi hududlar tushuniladi?", a: "Amudaryo va Sirdaryodan shimolda, sharqdagi Buyuk Xitoy devorigacha bo'lgan turkiylar mamlakatlari." },
       { q: "5. Movarounnahr ahlining etiqodicha, Jayhun orqasidan sharqqa qarab cho'zilgan yerlar nima deb atalgan?", a: "Turon." },
       { q: "6. Movarounnahr ahlining etiqodicha, g'arbga cho'zilgan yerlar nima deb atalgan?", a: "Eron." },
-      { q: "7. Turon va Eron mamlakatlarini o'zaro taqsim qilgan afsonaviy hukmdorlar kimlar?", a: "Afrosiyob va Kaykovus." },
+      { q: "7. Turon va Eron mamlakatlarini o'zaro taqsim qilgan afsonaviy hukmdorlar kimlar?", a: "Afrosiyob va Kaykabod." },
       { q: "8. Arab adibi Johiz turkiy xalqlarning xislatlari haqida qanday asar yozgan?", a: "«Manoqib al-atrok»." },
       { q: "9. Johizning yozishicha, sosoniy-forslar barcha xalqlardan qaysi sohada ustun bo'lgan?", a: "Davlatni boshqarish sohasida." },
       { q: "10. Johizning yozishicha, xitoyliklar qaysi sohada ustun bo'lgan?", a: "Hunarmandchilikda." },
@@ -590,10 +584,7 @@
       { q: "32. Sug'diyona, Toxariston, Farg'ona, Xorazm va Choch kabi mustaqil hokimliklar nimaga ega edi?", a: "O'z harbiy qo'shiniga." },
       { q: "33. Qasrlarni himoya qilishda himoyachilar dushmanga qarshi nima ishlatgan?", a: "Tosh uloqtirish, qaynoq suv quyish, nayza va yoy o'qlaridan foydalangan." },
       { q: "34. Usmon Turonning turkiy xalqlar haqidagi kitobi qanday nomlanadi?", a: "«Turkiy xalqlar mafkurasi»." },
-      { q: "35. Eftallarda qizlar qanday mashqlarga jalb qilingan?", a: "Otda yugurish, kamondan o'q otish va jismoniy mashqlarga." },
-      { q: "36. Turon harbiy san'atida ot ustida mustahkam o'tirib jang qilishga nima imkon bergan?", a: "Uzangining kashf etilishi." },
-      { q: "37. Har bir tumanning tug'ida nurning ramzi sifatida nima bo'lgan?", a: "Tilla suvi yuritilgan bo'ri boshi." },
-      { q: "38. Jangchilarning ustunligi nimada bo'lgan?", a: "Ikkiqlama o'tkir tig'li qilichlar va mustahkam zirhlarda." }
+      { q: "35. Eftallarda qizlar qanday mashqlarga jalb qilingan?", a: "Otda yugurish, kamondan o'q otish va jismoniy mashqlarga." }
     ];
 
     let fcIdx = 0;
@@ -632,259 +623,261 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
-    const testQuestions = [
+    // --- 3. TEST SINOVI (35 TA TEST - «Faqat» so'zisiz va muvozanatli variantlar) ---
+    const rawTestQuestions = [
       {
         q: "1. «Turon» atamasi ilk bor qaysi qadimgi manbada tilga olingan?",
         options: ["«Avesto»da", "Behistun bitiklarida", "«Shohnoma»da", "Orxun bitiklarida"],
-        correct: 0,
+        correctVal: "«Avesto»da",
         exp: "«Turon» atamasi dastlab «Avesto»da tilga olingan."
       },
       {
         q: "2. Tarixchilar fikricha, turlar (turklar) kimlarning tarmog'i hisoblangan?",
         options: ["Sarmatlarning", "Oriy xalqlarning tarmog'i", "Xitoyliklarning", "Sosoniylarning"],
-        correct: 1,
+        correctVal: "Oriy xalqlarning tarmog'i",
         exp: "Turlar oriy xalqlarning tarmog'i hisoblangan."
       },
       {
         q: "3. VI asrda O'rta Osiyo hududi Turk xoqonligiga o'tgach, «Turon» nomi kimlarga nisbatan berila boshlandi?",
-        options: ["Faqat eroniylarga", "Turklarga", "Faqat hindlarga", "Faqat xitoylarga"],
-        correct: 1,
+        options: ["Eroniylarga", "Turklarga", "Hindlarga", "Xitoylarga"],
+        correctVal: "Turklarga",
         exp: "Bu atama turklarga nisbatan berila boshlandi."
       },
       {
         q: "4. «Turon» yoki «Turkiston» deganda qaysi hududlar tushuniladi?",
-        options: ["Faqat Yevropa davlatlari", "Amudaryo va Sirdaryodan shimolda, sharqdagi Buyuk Xitoy devorigacha bo'lgan hududlar", "Faqat Arabiston yarimoroli", "Faqat Shimoliy Afrika"],
-        correct: 1,
+        options: ["Yevropa mamlakatlari va hududlari", "Amudaryo va Sirdaryodan shimolda, sharqdagi Buyuk Xitoy devorigacha bo'lgan hududlar", "Arabiston yarimoroli va uning atrofi", "Shimoliy Afrika va O'rta yer dengizi"],
+        correctVal: "Amudaryo va Sirdaryodan shimolda, sharqdagi Buyuk Xitoy devorigacha bo'lgan hududlar",
         exp: "Amudaryo va Sirdaryodan shimolda, sharqdagi Buyuk Xitoy devorigacha bo'lgan hududlar."
       },
       {
         q: "5. Movarounnahr ahlining etiqodicha, Jayhun orqasidan sharqqa qarab cho'zilgan yerlar nima deb atalgan?",
         options: ["Turon", "Eron", "Xuroson", "Toxariston"],
-        correct: 0,
+        correctVal: "Turon",
         exp: "Sharqqa qarab cho'zilgan yerlar Turon deb atalgan."
       },
       {
         q: "6. Movarounnahr ahlining etiqodicha, g'arbga cho'zilgan yerlar nima deb atalgan?",
         options: ["Turon", "Eron", "Xitoy", "Hindiston"],
-        correct: 1,
+        correctVal: "Eron",
         exp: "G'arbga cho'zilgan yerlar Eron deb atalgan."
       },
       {
         q: "7. Turon va Eron mamlakatlarini o'zaro taqsim qilgan afsonaviy hukmdorlar kimlar edi?",
-        options: ["Bumin va Istami", "Afrosiyob va Kaykovus", "To'n yabg'u va Xusrav", "Kax va Dara"],
-        correct: 1,
-        exp: "Afrosiyob va Kaykovus mamlakatlarni o'zaro taqsim qilgan."
+        options: ["Bumin va Istami", "Afrosiyob va Kaykabod", "To'n yabg'u va Xusrav", "Kax va Dara"],
+        correctVal: "Afrosiyob va Kaykabod",
+        exp: "Afrosiyob va Kaykabod mamlakatlarni o'zaro taqsim qilgan."
       },
       {
         q: "8. Arab adibi Johiz turkiy xalqlarning xislatlari haqida qanday asar yozgan?",
-        options: ["«Tarix»", "«Manoqib al-atrok»", "«Geografiya»", "«Shohnoma»"],
-        correct: 1,
+        options: ["«Tarixnoma»", "«Manoqib al-atrok»", "«Geografik risolalar»", "«Shohnoma»"],
+        correctVal: "«Manoqib al-atrok»",
         exp: "Johiz «Manoqib al-atrok» asarini yozgan."
       },
       {
         q: "9. Johizning yozishicha, sosoniy-forslar barcha xalqlardan qaysi sohada ustun bo'lgan?",
-        options: ["Davlatni boshqarish sohasida", "Ilm-fanda", "Hunarmandchilikda", "Harbiy ishda"],
-        correct: 0,
+        options: ["Davlatni boshqarish sohasida", "Ilm-fan va falsafada", "Hunarmandchilik yo'nalishida", "Harbiy san'at sohasida"],
+        correctVal: "Davlatni boshqarish sohasida",
         exp: "Sosoniy-forslar davlatni boshqarishda ustun bo'lgan."
       },
       {
         q: "10. Johizning yozishicha, xitoyliklar qaysi sohada ustun bo'lgan?",
-        options: ["Harbiy ishda", "Hunarmandchilikda", "Davlat boshqarishda", "Ilm-fanda"],
-        correct: 1,
+        options: ["Harbiy yurishlarda", "Hunarmandchilikda", "Davlat boshqaruvida", "Ilm-fan sohasida"],
+        correctVal: "Hunarmandchilikda",
         exp: "Xitoyliklar hunarmandchilikda ustun bo'lgan."
       },
       {
         q: "11. Johizning yozishicha, yunonlar qaysi sohada ustun bo'lgan?",
-        options: ["Harbiy ishda", "Hunarmandchilikda", "Ilm-fanda", "Dehqonchilikda"],
-        correct: 2,
+        options: ["Harbiy san'atda", "Hunarmandchilikda", "Ilm-fanda", "Dehqonchilikda"],
+        correctVal: "Ilm-fanda",
         exp: "Yunonlar ilm-fanda ustun bo'lgan."
       },
       {
         q: "12. Johizning yozishicha, turklar qaysi sohada ustun bo'lgan?",
-        options: ["Harbiy ishda", "Savdo-sotiqda", "Arxitekturada", "Musiqada"],
-        correct: 0,
+        options: ["Harbiy ishda", "Savdo-sotiqda", "Arxitekturada", "Musiqa san'atida"],
+        correctVal: "Harbiy ishda",
         exp: "Turklar harbiy ishda ustun bo'lgan."
       },
       {
         q: "13. Turkiylik olim Usmon Turon «Turkiy xalqlar mafkurasi» kitobida nimalarni yozgan?",
-        options: ["Ularning faqat dinini", "Turkiylarning otda jang qilish vositasi sifatidagi o'rni va jangovar fazilatlarini", "Faqat me'morchiligini", "Faqat dehqonchiligini"],
-        correct: 1,
+        options: ["Turkiy qabilalarning diniy e'tiqodlarini", "Turkiylarning otda jang qilish vositasi sifatidagi o'rni va jangovar fazilatlarini", "Qadimgi shaharlar me'morchiligini", "Sug'd dehqonchilik madaniyatini"],
+        correctVal: "Turkiylarning otda jang qilish vositasi sifatidagi o'rni va jangovar fazilatlarini",
         exp: "U turkiylarning harbiy fazilatlari va otda jang qilish mahoratini yozgan."
       },
       {
         q: "14. Turkiylar qanday harbiy asboblarni kashf etganlar?",
-        options: ["Egar-jabduq, uzangiy va tizginni", "Faqat qalqon va dubulg'ani", "Faqat o'q-yoyni", "Faqat temir aravalarni"],
-        correct: 0,
+        options: ["Egar-jabduq, uzangiy va tizginni", "Qalqon va temir dubulg'alarni", "Og'ir o'q-yoylarni", "Temir jangovar aravachalarni"],
+        correctVal: "Egar-jabduq, uzangiy va tizginni",
         exp: "Turkiylar egar-jabduq, uzangiy va tizginni kashf etgan."
       },
       {
         q: "15. Chinliklar turklardan nimalarni o'rganib olganlar?",
-        options: ["Otga minish va uzun qilichdan foydalanishni", "Faqat ipak qurtini boqishni", "Faqat qog'oz yasashni", "Faqat kema yasashni"],
-        correct: 0,
+        options: ["Otga minish va uzun qilichdan foydalanishni", "Ipak qurtini boqish va ip yigirishni", "Qog'oz yasash va yozishni", "Kema yasash va suzishni"],
+        correctVal: "Otga minish va uzun qilichdan foydalanishni",
         exp: "Chinliklar otga minish va uzun qilichdan foydalanishni o'rgangan."
       },
       {
         q: "16. Turkiylar o'z umrlarini qayerda o'tkazganlar?",
-        options: ["Faqat qasrlarda", "Ot ustida (ovqatlanish, mashvarat va jang qilish bilan)", "Faqat sahrolarda", "Faqat daryo bo'ylarida"],
-        correct: 1,
+        options: ["Mustahkam qasrlarda", "Ot ustida (ovqatlanish, mashvarat va jang qilish bilan)", "Keng sahrolarda", "Daryo bo'yidagi qishloqlarda"],
+        correctVal: "Ot ustida (ovqatlanish, mashvarat va jang qilish bilan)",
         exp: "Turkiylar umrlarini ot ustida o'tkazishgan."
       },
       {
         q: "17. Eftaliylar jangda asosan qaysi qurollardan foydalangan?",
-        options: ["Faqat toshdan", "Gurzilar, kamon va shamshirlardan", "Faqat olovli qurollardan", "Faqat arqonlardan"],
-        correct: 1,
+        options: ["Tosh va yog'och qurollardan", "Gurzilar, kamon va shamshirlardan", "Olovli snaryadlardan", "Cho'p va arqonlardan"],
+        correctVal: "Gurzilar, kamon va shamshirlardan",
         exp: "Eftaliylar asosan gurzilar, kamon va shamshirlardan foydalangan."
       },
       {
         q: "18. Turon xalqlari harbiy san'atini yuksaltirish uchun ta'limni qayerda tashkil etgan?",
-        options: ["Faqat saroylarda", "Har bir ibodatxona qoshida", "Faqat chet ellarda", "Faqat uyda"],
-        correct: 1,
+        options: ["Hukmdor saroylarida", "Har bir ibodatxona qoshida", "Chet el mamlakatlarida", "Maxsus harbiy lagerlarda"],
+        correctVal: "Har bir ibodatxona qoshida",
         exp: "Ta'lim har bir ibodatxona qoshida tashkil etilgan."
       },
       {
         q: "19. Dargohlarda yigitlarga nimalar o'rgatilgan?",
-        options: ["Faqat kitob o'qish", "Otda erkin yurish, qilichbozlik, kamondan o'q otish, gurzi ishlatish va kurash", "Faqat savdo sirlari", "Faqat dehqonchilik"],
-        correct: 1,
+        options: ["Diniy kitoblar mutolaasini", "Otda erkin yurish, qilichbozlik, kamondan o'q otish, gurzi ishlatish va kurash", "Savdo-sotiq qoidalarini", "Dehqonchilik sirlarini"],
+        correctVal: "Otda erkin yurish, qilichbozlik, kamondan o'q otish, gurzi ishlatish va kurash",
         exp: "Yigitlarga otda yurish, qilichbozlik, kamondan o'q otish va kurash o'rgatilgan."
       },
       {
         q: "20. Turk xoqonligi davrida qizlar ham qanday ko'nikmalarga ega bo'lgan?",
-        options: ["Kamonbozlik va chavandozlik", "Faqat kulolchilik", "Faqat to'qimachilik", "Faqat oshpazlik"],
-        correct: 0,
+        options: ["Kamonbozlik va chavandozlik", "Kulolchilik va naqqoshlik", "To'qimachilik va gilamdo'zlik", "Oshpazlik va uy-ro'zg'or"],
+        correctVal: "Kamonbozlik va chavandozlik",
         exp: "Qizlar ham kamonbozlik va chavandozlik ko'nikmalariga ega bo'lgan."
       },
       {
         q: "21. Xoqonlik armiyasi qanday bo'linmalardan tashkil topgan?",
-        options: ["Faqat piyoda askarlardan", "O'nlik, yuzlik, minglik, o'n minglik — tumanlardan", "Faqat yollanma jangchilardan", "Faqat dengiz flotidan"],
-        correct: 1,
+        options: ["Piyoda askarlar guruhidan", "O'nlik, yuzlik, minglik, o'n minglik — tumanlardan", "Yollanma jangchilar tabaqasidan", "Dengiz floti ekipajidan"],
+        correctVal: "O'nlik, yuzlik, minglik, o'n minglik — tumanlardan",
         exp: "Armiya o'nlik, yuzlik, minglik va tumanlardan iborat bo'lgan."
       },
       {
         q: "22. Har bir tuman (o'n minglik) o'zining nimasiga ega bo'lgan?",
-        options: ["Maxsus chodiriga", "Tug'iga (nishoniga)", "Oltin xazinasiga", "Siyosiy bayrog'iga"],
-        correct: 1,
+        options: ["Maxsus chodirlariga", "Tug'iga (nishoniga)", "Oltin xazinalariga", "Siyosiy bayroqlariga"],
+        correctVal: "Tug'iga (nishoniga)",
         exp: "Har bir tuman o'zining tug'iga (nishoniga) ega bo'lgan."
       },
       {
         q: "23. Tug'da qanday tasvirlar bo'lgan?",
-        options: ["Faqat yulduz", "Uzun nayzaga o'rnatilgan bo'ri yoki boshqa hayvonning tilla suvi yuritilgan boshi", "Faqat gul rasmi", "Faqat daryo tasviri"],
-        correct: 1,
+        options: ["Yulduzli naqshlar", "Uzun nayzaga o'rnatilgan bo'ri yoki boshqa hayvonning tilla suvi yuritilgan boshi", "Gul va barg tasvirlari", "Daryo to'lqinlari"],
+        correctVal: "Uzun nayzaga o'rnatilgan bo'ri yoki boshqa hayvonning tilla suvi yuritilgan boshi",
         exp: "Tug'da bo'ri yoki hayvonning tilla suvi yuritilgan boshi bo'lgan."
       },
       {
         q: "24. Turk jangchilari qanday taktik usullardan keng foydalangan?",
-        options: ["Faqat to'g'ridan-to'g'ri hujum", "Aylana usuli va soxta chekinish", "Faqat mudofaa", "Faqat tunda hujum qilish"],
-        correct: 1,
+        options: ["To'g'ridan-to'g'ri ommaviy hujumdan", "Aylana usuli va soxta chekinishdan", "Qat'iy mudofaa chizig'idan", "Tungi kutilmagan bosqindan"],
+        correctVal: "Aylana usuli va soxta chekinishdan",
         exp: "Aylana usuli va soxta chekinish kabi taktikalar qo'llanilgan."
       },
       {
         q: "25. Shaharlarda harbiy qurol-aslahalar tayyorlash uchun nima faoliyat yuritgan?",
-        options: ["Maxsus bozorlar", "Ixtisoslashgan qurol-yarog' ustaxonalari", "Xorijiy dokanlar", "Saroy zargarliklari"],
-        correct: 1,
+        options: ["Maxsus savdo bozorlari", "Ixtisoslashgan qurol-yarog' ustaxonalari", "Xorijiy do'konlar", "Saroy zargarlik uylari"],
+        correctVal: "Ixtisoslashgan qurol-yarog' ustaxonalari",
         exp: "Ixtisoslashgan qurol-yarog' ustaxonalari faoliyat yuritgan."
       },
       {
         q: "26. Jangchilarning himoya vositalari qanday bo'lgan?",
-        options: ["Faqat mato kiyim", "Zirhli yelkapo'sh, uzun sovutlar va temir dubulg'alar", "Faqat yog'och qalqon", "Faqat charm qoplamalar"],
-        correct: 1,
+        options: ["Oddiy mato kiyimlar", "Zirhli yelkapo'sh, uzun sovutlar va temir dubulg'alar", "Yog'och qalqonlar", "Charm qoplamali kiyimlar"],
+        correctVal: "Zirhli yelkapo'sh, uzun sovutlar va temir dubulg'alar",
         exp: "Zirhli yelkapo'sh, uzun sovutlar va temir dubulg'alar ishlatilgan."
       },
       {
         q: "27. Yirik dehqonlarning uy-qo'rg'onlarida nimalar bo'lgan?",
-        options: ["Faqat bog'lar", "Burjli mudofaa devorlari va kamondan o'q otishga mo'ljallangan shinaklar", "Faqat omborxonalar", "Faqat ibodatxonalar"],
-        correct: 1,
+        options: ["Keng bog'lar va hovuzlar", "Burjli mudofaa devorlari va kamondan o'q otishga mo'ljallangan shinaklar", "Katta omborxonalar", "Diniy ibodatxonalar"],
+        correctVal: "Burjli mudofaa devorlari va kamondan o'q otishga mo'ljallangan shinaklar",
         exp: "Burjli mudofaa devorlari va kamondan o'q otishga mo'ljallangan shinaklar bo'lgan."
       },
       {
         q: "28. Qurg'onga kirish joyining ro'parasida nima qad ko'targan?",
-        options: ["Katta darvoza", "Qo'riqlov minorasi", "Bozor rastasi", "Suv havzasi"],
-        correct: 1,
+        options: ["Katta yog'och darvoza", "Xabar beruvchi qo'riqlov minorasi", "Bozor rastalari", "Suv minorasi"],
+        correctVal: "Xabar beruvchi qo'riqlov minorasi",
         exp: "Qo'riqlov minorasi qad ko'targan."
       },
       {
         q: "29. Shahar atroflari nima bilan o'ralgan edi?",
-        options: ["Yuqori tosh devorlar bilan", "Suv to'ldirilgan xandaqlar va ko'tarma ko'priklar bilan", "Qalin o'rmonlar bilan", "Tik qoyalar bilan"],
-        correct: 1,
+        options: ["Baland tosh devorlar bilan", "Suv to'ldirilgan xandaqlar va ko'tarma ko'priklar bilan", "Qalin o'rmonlar bilan", "Tik qoyali toshlar bilan"],
+        correctVal: "Suv to'ldirilgan xandaqlar va ko'tarma ko'priklar bilan",
         exp: "Suv to'ldirilgan xandaqlar va ko'tarma ko'priklar bilan o'ralgan edi."
       },
       {
         q: "30. Xitoylik sayyoh Sug'd jangchilari haqida nima degan?",
-        options: ["«Ular jang qilishni yoqtirmaydi»", "«Samarqand hokimining qabilasidan bo'lgan ko'pchilik jangchilar jasur va g'ayratli bo'lib, o'limni nazar-pisand qilmagan»", "«Ular juda qo'rqoq edi»", "«Ular faqat savdo qilgan»"],
-        correct: 1,
+        options: ["Ular jang qilishni yoqtirmasligini yozgan", "«Samarqand hokimining qabilasidan bo'lgan ko'pchilik jangchilar jasur va g'ayratli bo'lib, o'limni nazar-pisand qilmagan»", "Ular qo'rqoq va intizomsiz bo'lganini yozgan", "Ular faqat savdo bilan shug'ullanganini yozgan"],
+        correctVal: "«Samarqand hokimining qabilasidan bo'lgan ko'pchilik jangchilar jasur va g'ayratli bo'lib, o'limni nazar-pisand qilmagan»",
         exp: "Sayyoh ular jasur va o'limni nazar-pisand qilmaganini yozgan."
       },
       {
         q: "31. Xoqonlik davrida chopuvchi qurolning yangi turlari qaysilar edi?",
-        options: ["Faqat nayza", "Qilich, dudama, palash", "Faqat o'q-yoy", "Faqat gurzi"],
-        correct: 1,
+        options: ["Oddiy nayzalar", "Qilich, dudama, palash", "O'q-yoylar", "Gurzilar"],
+        correctVal: "Qilich, dudama, palash",
         exp: "Qilich, dudama, palash yangi chopuvchi qurollar edi."
       },
       {
         q: "32. Sug'diyona, Toxariston, Farg'ona, Xorazm va Choch kabi mustaqil hokimliklar nimaga ega edi?",
-        options: ["Faqat xorijiy qo'shinlarga", "O'z harbiy qo'shiniga", "Faqat yollanma qullarga", "Faqat politsiyaga"],
-        correct: 1,
+        options: ["Xorijiy yollanma qo'shinlarga", "O'z harbiy qo'shiniga", "Markaziy imperiya armiyasiga", "Mahalliy politsiya kuchlariga"],
+        correctVal: "O'z harbiy qo'shiniga",
         exp: "Ularning har biri o'z harbiy qo'shiniga ega edi."
       },
       {
         q: "33. Qasrlarni himoya qilishda himoyachilar dushmanga qarshi nima ishlatgan?",
-        options: ["Faqat toshbo'ron qilgan", "Tosh uloqtirish, qaynoq suv quyish, nayza va yoy o'qlaridan foydalangan", "Faqat taslim bo'lgan", "Faqat qochib ketgan"],
-        correct: 1,
+        options: ["Toshbo'ron qilishgan", "Tosh uloqtirish, qaynoq suv quyish, nayza va yoy o'qlaridan foydalangan", "Darhol taslim bo'lishgan", "Qal'ani tashlab qochishgan"],
+        correctVal: "Tosh uloqtirish, qaynoq suv quyish, nayza va yoy o'qlaridan foydalangan",
         exp: "Tosh uloqtirish, qaynoq suv quyish va o'q otish ishlari qilingan."
       },
       {
         q: "34. Usmon Turonning turkiy xalqlar haqidagi kitobi qanday nomlanadi?",
-        options: ["«Turkiy xalqlar tarixi»", "«Turkiy xalqlar mafkurasi»", "«Turk xoqonligi»", "«Oriy xalqlar»"],
-        correct: 1,
+        options: ["«Turkiy xalqlar tarixi»", "«Turkiy xalqlar mafkurasi»", "«Turk xoqonligi davri»", "«Oriy xalqlar merosi»"],
+        correctVal: "«Turkiy xalqlar mafkurasi»",
         exp: "Kitob «Turkiy xalqlar mafkurasi» deb nomlanadi."
       },
       {
         q: "35. Eftallarda qizlar qanday mashqlarga jalb qilingan?",
-        options: ["Faqat kashtachilikka", "Otda yugurish, kamondan o'q otish va jismoniy mashqlarga", "Faqat musiqa chalishga", "Faqat raqsga"],
-        correct: 1,
+        options: ["Kashtachilik va tikuvchilikka", "Otda yugurish, kamondan o'q otish va jismoniy mashqlarga", "Musiqa va raqs san'atiga", "Uy xo'jaligi yumushlariga"],
+        correctVal: "Otda yugurish, kamondan o'q otish va jismoniy mashqlarga",
         exp: "Qizlar ham otda yugurish va kamondan o'q otishga jalb qilingan."
-      },
-      {
-        q: "36. Turon harbiy san'atida ot ustida mustahkam o'tirib jang qilishga nima imkon bergan?",
-        options: ["Maxas", "Uzangining kashf etilishi", "Egar qoplamasi", "Uzun qamchi"],
-        correct: 1,
-        exp: "Uzangining kashf etilishi qulaylik bergan."
-      },
-      {
-        q: "37. Har bir tumanning tug'ida nurning ramzi sifatida nima bo'lgan?",
-        options: ["Oltin yulduz", "Tilla suvi yuritilgan bo'ri boshi", "Kumush oy", "Oq kabutar"],
-        correct: 1,
-        exp: "Tilla suvi yuritilgan bo'ri boshi bo'lgan."
-      },
-      {
-        q: "38. Jangchilarning ustunligi nimada bo'lgan?",
-        options: ["Faqat sonining ko'pligida", "Ikkiqlama o'tkir tig'li qilichlar va mustahkam zirhlarda", "Faqat daryo bo'yida turishida", "Faqat otlarning zotida"],
-        correct: 1,
-        exp: "Ikkiqlama o'tkir tig'li qilichlar va zirhlarda bo'lgan."
       }
     ];
+
+    // Variantlarni har safar tasodifiy tartibda aralashtiruvchi yordamchi funksiya
+    const testQuestions = rawTestQuestions.map(item => {
+      let opts = [...item.options];
+      opts.sort(() => Math.random() - 0.5);
+      let correctIdx = opts.indexOf(item.correctVal);
+      return {
+        q: item.q,
+        options: opts,
+        correct: correctIdx,
+        exp: item.exp
+      };
+    });
 
     let tIdx = 0, score = 0;
 
     function loadTestQuestion() {
       const q = testQuestions[tIdx];
-      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
-      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
-      document.getElementById('q-title').innerText = q.q;
-
+      const counter = document.getElementById('q-counter');
+      const prog = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
       const optBox = document.getElementById('q-options');
-      optBox.innerHTML = '';
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
 
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.innerText = opt;
-        btn.onclick = () => selectOpt(idx);
-        optBox.appendChild(btn);
-      });
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (prog) prog.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
 
-      document.getElementById('q-explanation').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
+      if (optBox) {
+        optBox.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.innerText = opt;
+          btn.onclick = () => selectOpt(idx);
+          optBox.appendChild(btn);
+        });
+      }
+
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
     }
 
     function selectOpt(selectedIdx) {
@@ -902,10 +895,13 @@
       }
 
       const exp = document.getElementById('q-explanation');
-      exp.innerText = "💡 Izoh: " + q.exp;
-      exp.style.display = 'block';
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
       
-      document.getElementById('sticky-bar').style.display = 'flex';
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
     }
 
     function nextTestQuestion() {
@@ -919,21 +915,31 @@
     }
 
     function showQuizResult() {
-      document.getElementById('quiz-body').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
-      document.getElementById('quiz-result').style.display = 'flex';
-      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const scoreEl = document.getElementById('q-score');
       const fb = document.getElementById('q-feedback');
-      if(score >= 34) fb.innerText = "Mukammal natija! Turon xalqlarining harbiy san'ati mavzusini to'laqonli o'zlashtiribsiz 🌟";
-      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
-      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 32) fb.innerText = "Mukammal natija! Turon xalqlarining harbiy san'ati mavzusini to'laqonli o'zlashtiribsiz 🌟";
+        else if(score >= 24) fb.innerText = "Ajoyib natija! Asosiy atamalar va tushunchalarni yaxshi bilasiz 👍";
+        else fb.innerText = "Yaxshi, lekin mavzularni yana bir bor takrorlab chiqish tavsiya etiladi 📚";
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartTest() {
       tIdx = 0; score = 0;
-      document.getElementById('quiz-body').style.display = 'block';
-      document.getElementById('quiz-result').style.display = 'none';
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
       loadTestQuestion();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

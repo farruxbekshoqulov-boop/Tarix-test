@@ -153,6 +153,7 @@
     }
 
     .match-column {
+      direction: ltr;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -214,15 +215,15 @@
       box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.45; color: #291104; }
     .fc-a {
-      font-size: 16px; font-weight: 700; color: #065f46;
+      font-size: 15.5px; font-weight: 700; color: #065f46;
       background: #ecfdf5; border: 1.5px solid #6ee7b7;
       border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
     }
 
     /* TEST */
-    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
     
     .opt-btn {
@@ -230,7 +231,7 @@
       border: 1.5px solid #d97706;
       border-radius: 12px;
       padding: 13px 15px;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 600;
       color: #291104;
       cursor: pointer;
@@ -241,7 +242,7 @@
     }
 
     .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
-    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
     
     .exp-box {
       background: #fef3c7;
@@ -384,7 +385,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) -->
+    <!-- 3. TEST SINOVI (38 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -433,35 +434,35 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 38 taga moslashtirilgan) ---
+    // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
       [
         { id: 1, left: "Sosoniylar Eroni", right: "Eftaliylar, vizantiyaliklar va turklar bilan tinimsiz to'qnashuvlar tufayli tinkasi qurigan davlat" },
-        { id: 2, left: "Arab xalifaligi", right: "Sosoniylar Eronini zabt etgach, Movarounnahr tomon yo'l ochgan qudratli xalqlik" },
+        { id: 2, left: "Arab xalifaligi", right: "Sosoniylar Eronini zabt etgach, Movarounnahr tomon yo'l ochgan kuch" },
         { id: 3, left: "Movarounnahr", right: "Amudaryoning narigi tomoni — arablar bosqiniga uchragan o'lka" },
         { id: 4, left: "Xuroson", right: "Arablar Marv shahrida o'rnashgach boshqaruv markaziga aylantirgan viloyat" },
-        { id: 5, left: "Marv shahri", right: "Turon (Xuroson) shaharlari orasida birinchi bo'lib arab istilochilari tomonidan egallangan shahar" }
+        { id: 5, left: "Marv shahri", right: "Turon shaharlari orasida birinchi bo'lib arab istilochilari tomonidan egallangan shahar" }
       ],
       [
         { id: 6, left: "654-yil", right: "Movarounnahrga ilk bor Maymurg'dan boshlangan arablar hujumi yili" },
         { id: 7, left: "667-yil", right: "Chag'oniyondan boshlab Movarounnahrga yana hujum boshlangan yil" },
         { id: 8, left: "Ubaydulloh ibn Ziyod", right: "673-yilda Amudaryodan kechib o'tib Buxoroga bostirib kirgan arab qo'mondoni" },
-        { id: 9, left: "Qutayba ibn Muslim", right: "705–715-yillar davomida Chag'oniyon, Buxoroni, Xorazm va Samarqandni bo'ysundirgan xalqlik noibi" },
-        { id: 10, left: "709-yil", right: "Buxoro arablari tomonidan to'la bo'ysundirilgan yil" }
+        { id: 9, left: "Qutayba ibn Muslim", right: "705–715-yillar davomida Chag'oniyon, Buxoroni, Xorazm va Samarqandni bo'ysundirgan lashkarboshi" },
+        { id: 10, left: "709-yil", right: "Buxoro arablar tomonidan to'la bo'ysundirilgan yil" }
       ],
       [
         { id: 11, left: "710-yil", right: "Naxshab va Kesh bo'ysundirilgan yil" },
-        { id: 12, left: "711-yil", right: "Xorazm arablari tomonidan egallangan yil" },
+        { id: 12, left: "711-yil", right: "Xorazm arablar tomonidan egallangan yil" },
         { id: 13, left: "712-yil", right: "Samarqand egallangan va G'urak mag'lub etilgan yil" },
         { id: 14, left: "713-yil", right: "Choch va Farg'ona bosib olingan yil" },
-        { id: 15, left: "Khotun (Buxoro podshohi xotini)", right: "Ubaydulloh ibn Ziyod qo'shiniga qarshi 7 kunlik muhlat so'rab turk lashkarlaridan yordam kutgan Buxoro malikasi" }
+        { id: 15, left: "Tag'shoda", right: "Buxoro podshohi, otasi kichik yoshda bo'lgani sababli xotini (Khotun) boshqargan vaqtda yashagan shahzoda" }
       ],
       [
         { id: 16, left: "Divashtich", right: "Panjikent hokimi, arablarga qarshi kurash olib borgan sug'd sarkardasi" },
         { id: 17, left: "G'urak", right: "Samarqand ixshidi, arablarga qarshi qattiq qarshilik ko'rsatgan hukmdor" },
         { id: 18, left: "Suloxon", right: "Turkash xoqonligi hukmdori, turonliklarga arablarga qarshi kurashda yordam bergan xoqon" },
         { id: 19, left: "720-yil", right: "Sug'd ixshidi G'urak va Panjikent hokimi Divashtich boshchiligida arablarga qarshi umumiy harakat boshlangan yil" },
-        { id: 20, left: "Yuz yil davomida", right: "Arab istilochilari Movarounnahrni osonlikcha egallay olmay, juda katta qiyinchilik bilan bosib olgan davri" }
+        { id: 20, left: "Shomning Boxila joyi", right: "Muarrix Narshaxiy ma'lumotiga ko'ra Qutayba ibn Muslim tug'ilgan hudud" }
       ]
     ];
 
@@ -563,7 +564,7 @@
       { q: "5. Movarounnahrga ilk arablar hujumi qaysi yili va qayerdan boshlandi?", a: "654-yilda Maymurg'dan." },
       { q: "6. 667-yilda arablar Movarounnahrga qayerdan hujumni davom ettirdilar?", a: "Chag'oniyondan." },
       { q: "7. 673-yilda Amudaryodan kechib o'tib Buxoroga bostirib kirgan arab qo'mondoni kim?", a: "Ubaydulloh ibn Ziyod." },
-      { q: "8. Ubaydulloh ibn Ziyod Buxoroga hujum qilganda Buxoro malikasi (xotini) kimdan yordam so'ragan?", a: "Turk lashkarlaridan." },
+      { q: "8. Ubaydulloh ibn Ziyod Buxoroga hujum qilganda Buxoro malikasi kimdan yordam so'ragan?", a: "Turk lashkarlaridan." },
       { q: "9. 705–715-yillar davomida Movarounnahrni bosib olgan taniqli arab lashkarboshisi kim?", a: "Qutayba ibn Muslim." },
       { q: "10. Qutayba ibn Muslim Buxoroni qaysi yilda egallagan?", a: "709-yilda." },
       { q: "11. Naxshab va Kesh shaharlari arablar tomonidan qaysi yili bo'ysundirildi?", a: "710-yilda." },
@@ -571,29 +572,29 @@
       { q: "13. Samarqand arablar tomonidan qaysi yili bosib olindi va G'urak mag'lub etildi?", a: "712-yilda." },
       { q: "14. Choch va Farg'ona qaysi yili arablarga bo'ysundirildi?", a: "713-yilda." },
       { q: "15. Arab istilochilari Movarounnahrni qancha vaqt davomida qiyinchilik bilan egallaganlar?", a: "Deyarli yuz yil davomida." },
-      { q: "16. Arab istilosi davrida Turon mintaqasidagi siyosiy ahvol qanday edi?", a: "Parokanda va tarqoq edi (15 tadan ortiq mustaqil hokimliklar mavjud edi)." },
+      { q: "16. Arab istilosi davrida Turon mintaqasidagi siyosiy ahvol qanday edi?", a: "Parokanda va tarqoq edi." },
       { q: "17. Tan imperiyasining G'arbiy Turk xoqonligiga hujumlari kimlarni ikki frontda kurashishga majbur qildi?", a: "G'arbiy turklarni." },
-      { q: "18. Qutayba ibn Muslimning siyosiy va harbiy tadbirkorligida kimlar yordam berdi?", a: "Mahalliy hokimlar va aslzodalarning o'zaro adovatlari." },
+      { q: "18. Qutayba ibn Muslimning siyosiy va harbiy tadbirkorligida kimlar qo'l keldi?", a: "Mahalliy hokimlar va aslzodalarning o'zaro adovatlari." },
       { q: "19. 720-yilda arablarga qarshi umumiy ozodlik harakatiga kimlar boshchilik qildi?", a: "Sug'd ixshidi G'urak va Panjikent hokimi Divashtich." },
-      { q: "20. Sug'dgliklarga yordam berish uchun qayerdan turk lashkarlari yetib kelgan edi?", a: "Yettisuvdan." },
+      { q: "20. Sug'dliklarga yordam berish uchun qayerdan turk lashkarlari yetib kelgan edi?", a: "Yettisuvdan." },
       { q: "21. Movarounnahr aholisini tinchlantirish uchun Xuroson noibi Ashros qanday vaqtinchalik tadbir qo'llagan?", a: "Islomni qabul qilganlardan xiroj va jiz'ya soliqlarini olmaslikka qaror qilgan." },
       { q: "22. Arab lashkarboshilari bilan mulkdor dehqonlar o'rtasida qanday aloqalar o'rnatildi?", a: "Qon-qarindoshlik (quda-andachilik) aloqalari." },
-      { q: "23. Arab istilolari davrida Turonning yetakchi kuchlari bo'lgan Sharqiy va G'arbiy turk xoqonliklarining ahvoli qanday edi?", a: "VI asr oxiri — VII boshlaridagidek barqaror emas edi." },
+      { q: "23. Arab istilolari davrida Turonning yetakchi kuchlari bo'lgan turk xoqonliklarining ahvoli qanday edi?", a: "VI asr oxiri — VII boshlaridagidek barqaror emas edi." },
       { q: "24. Xitoyning Tang imperiyasi turkiy davlatlarga nisbatan qanday siyosat yuritgan?", a: "Ularni butunlay yo'q qilish va parchalash siyosatini." },
-      { q: "25. Arablar uchun islomlashtirish siyosatining asosiy sabablaridan biri nima edi?", a: "G'arazli maqsadlar va ulkan o'ljalar hamda mahalliy xalqni bo'ysundirish." },
+      { q: "25. Arab xalifaligining istilo jarayonida qo'lga kiritgan o'ljalari va asirlari xalifalikka nima bergan?", a: "Xazinasini to'ldirgan va harbiy yo'qotishlarni qoplagan[cite: 25]." },
       { q: "26. Buyuk ipak yo'lining asosiy yo'nalishi qayerdan o'tgan?", a: "Xitoydan Sug'd, Eron orqali O'rta dengiz sohillariga." },
       { q: "27. Arab istilosi turk-sug'd munosabatlarini yana qanday sinovdan o'tkazdi?", a: "Mayda mulklar o'rtasidagi nifoq va ishonchsizlikni kuchaytirdi." },
-      { q: "28. Qutayba ibn Muslim Xurosonga noib etib qachon yuborilgan?", a: "704-yilda (Abdurahmon ibn Marvon tomonidan)." },
+      { q: "28. Qutayba ibn Muslim Xurosonda noib etib qachon yuborilgan?", a: "704-yilda." },
       { q: "29. IX asr muarrixi Muhammad Narshaxiyning yozishicha, Qutayba ibn Muslim qayerda tug'ilgan?", a: "Shomning Boxila degan joyida." },
       { q: "30. Qutayba ibn Muslim Xurosonda davlat ishlari bilan birga yana nimalarni amalga oshirgan?", a: "Mahalliy aholini islomga da'vat qilish, masjid va madrasalar barpo etish." },
       { q: "31. Arablar Turon zaminiga o'z madaniyati, urf-odatlari bilan birga yana nimani olib keldilar?", a: "Diniy qarashlarini." },
-      { q: "32. Arab xalifaligi ma'muriyati xristianlikdan tashqari barcha dinlarni (zardushtiylik, shomonlik) nima deb e'lon qildi?", a: "«Soxta dinlar» deb." },
+      { q: "32. Arab xalifaligi ma'muriyati xristianlikdan tashqari barcha dinlarni nima deb e'lon qildi?", a: "«Soxta dinlar» deb." },
       { q: "33. Movarounnahrda mavjud bo'lgan zardushtiy va boshqa ibodatxonalar nima qilindi?", a: "Buzib tashlandi." },
       { q: "34. Islomni qabul qilgan mahalliy aholi vakillari dastlabki yillarda nimalardan ozod etildi?", a: "Xiroj va jiz'ya soliqlaridan." },
       { q: "35. Islomni qabul qilmaganlar qanday soliq to'lashga majbur bo'lgan?", a: "Jon solig'i — jiz'ya." },
       { q: "36. Islomni qabul qilgan aholining ko'pchiligi qanday holatda yashagan?", a: "Nomigagina musulmon bo'lib, uzoq vaqtgacha pinhona o'z dini va e'tiqodida qolavergan." },
       { q: "37. Turonliklarga arablarga qarshi kurashda yordam bergan Turkash xoqonligi hukmdori kim edi?", a: "Suloxon." },
-      { q: "38. Qutayba ibn Muslim vafot etgan yoki o'ldirilgan davr qaysi yillarga to'g'ri keladi?", a: "715-yilga." }
+      { q: "38. Qutayba ibn Muslim vafot etgan yoki o'ldirilgan yil qaysi?", a: "715-yil." }
     ];
 
     let fcIdx = 0;
@@ -632,259 +633,279 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
-    const testQuestions = [
+    // --- 3. TEST SINOVI (38 TA TEST) ---
+    const rawTestQuestions = [
       {
         q: "1. VII–VIII asr boshlarida Sosoniylar Eronining tinkasini nima quritgan edi?",
-        options: ["Eftaliylar, vizantiyaliklar va turklar bilan tinimsiz to'qnashuvlar", "Faqat ichki isyonlar", "Faqat qurg'oqchilik", "Faqat savdoning tushib ketishi"],
-        correct: 0,
+        options: ["Eftaliylar, vizantiyaliklar va turklar bilan tinimsiz to'qnashuvlar", "Ichki o'zaro isyonlar va nizolar", "Qurg'oqchilik va ocharchilik yillari", "Xalqaro savdoning tushib ketishi"],
+        correctVal: "Eftaliylar, vizantiyaliklar va turklar bilan tinimsiz to'qnashuvlar",
         exp: "Tinkasini qo'shnilar bilan tinimsiz to'qnashuvlar quritgan edi."
       },
       {
         q: "2. Sosoniylar saltanati qulagach, arab xalifaligi qo'shinlari qayerga yo'l ochdi?",
-        options: ["Hindistonga", "Movarounnahr tomon", "Kichik Osiyoga", "Xitoyga"],
-        correct: 1,
+        options: ["Hindiston yerlariga", "Movarounnahr tomon", "Kichik Osiyo hududiga", "Xitoy chegaralariga"],
+        correctVal: "Movarounnahr tomon",
         exp: "Movarounnahr tomon yo'l ochildi."
       },
       {
         q: "3. Arab qo'shinlari Xurosonda o'rnashgach, viloyatni boshqarish uchun qayerda qarorgoh qurdilar?",
-        options: ["Buxoroda", "Samarqandda", "Marv shahrida", "Balxda"],
-        correct: 2,
+        options: ["Buxoro shahrida", "Samarqand shahrida", "Marv shahrida", "Balx shahrida"],
+        correctVal: "Marv shahrida",
         exp: "Qarorgoh Marv shahrida edi."
       },
       {
         q: "4. Turon shaharlari orasida birinchi bo'lib arab istilochilari tomonidan egallangan shahar qaysi?",
-        options: ["Buxoro", "Samarqand", "Marv shahri", "Poykand"],
-        correct: 2,
+        options: ["Buxoro shahri", "Samarqand shahri", "Marv shahri", "Poykand shahri"],
+        correctVal: "Marv shahri",
         exp: "Marv shahri birinchi bo'lib egallangan."
       },
       {
         q: "5. Movarounnahrga ilk arablar hujumi qaysi yili va qayerdan boshlandi?",
         options: ["654-yilda Maymurg'dan", "700-yilda Buxorodan", "610-yilda Samarqanddan", "680-yilda Xorazmdan"],
-        correct: 0,
+        correctVal: "654-yilda Maymurg'dan",
         exp: "Ilk hujum 654-yilda Maymurg'dan boshlangan."
       },
       {
         q: "6. 667-yilda arablar Movarounnahrga qayerdan hujumni davom ettirdilar?",
-        options: ["Chag'oniyondan", "Farg'onadan", "Chochdan", "Jetisuvdan"],
-        correct: 0,
+        options: ["Chag'oniyondan", "Farg'ona vodiysidan", "Choch viloyatidan", "Yettisuvdan"],
+        correctVal: "Chag'oniyondan",
         exp: "Hujum Chag'oniyondan davom ettirilgan."
       },
       {
         q: "7. 673-yilda Amudaryodan kechib o'tib Buxoroga bostirib kirgan arab qo'mondoni kim edi?",
-        options: ["Qutayba ibn Muslim", "Ubaydulloh ibn Ziyod", "Ziyod ibn Abih", "Abdurahmon"],
-        correct: 1,
+        options: ["Qutayba ibn Muslim", "Ubaydulloh ibn Ziyod", "Ziyod ibn Abih", "Abdurahmon ibn Marvon"],
+        correctVal: "Ubaydulloh ibn Ziyod",
         exp: "Ubaydulloh ibn Ziyod Buxoroga bostirib kirgan."
       },
       {
         q: "8. Ubaydulloh ibn Ziyod Buxoroga hujum qilganda Buxoro malikasi kimdan yordam so'ragan?",
         options: ["Xitoy imperatoridan", "Turk lashkarlaridan", "Vizantiya imperatoridan", "Eron shohidan"],
-        correct: 1,
+        correctVal: "Turk lashkarlaridan",
         exp: "Buxoro malikasi turk lashkarlaridan yordam so'ragan."
       },
       {
         q: "9. 705–715-yillar davomida Movarounnahrni bosib olgan taniqli arab lashkarboshisi kim?",
         options: ["Qutayba ibn Muslim", "Abu Bakr", "Ubaydulloh", "Toriq ibn Ziyod"],
-        correct: 0,
+        correctVal: "Qutayba ibn Muslim",
         exp: "Bu ishni Qutayba ibn Muslim amalga oshirgan."
       },
       {
         q: "10. Qutayba ibn Muslim Buxoroni qaysi yilda egallagan?",
         options: ["705-yilda", "709-yilda", "712-yilda", "715-yilda"],
-        correct: 1,
+        correctVal: "709-yilda",
         exp: "Buxoro 709-yilda egallangan."
       },
       {
         q: "11. Naxshab va Kesh shaharlari arablar tomonidan qaysi yili bo'ysundirildi?",
         options: ["705-yilda", "710-yilda", "712-yilda", "713-yilda"],
-        correct: 1,
+        correctVal: "710-yilda",
         exp: "Naxshab va Kesh 710-yilda bo'ysundirilgan."
       },
       {
         q: "12. Xorazm arablar tomonidan qaysi yili egallandi?",
         options: ["709-yilda", "711-yilda", "712-yilda", "714-yilda"],
-        correct: 1,
+        correctVal: "711-yilda",
         exp: "Xorazm 711-yilda egallangan."
       },
       {
         q: "13. Samarqand arablar tomonidan qaysi yili bosib olindi va G'urak mag'lub etildi?",
         options: ["709-yilda", "711-yilda", "712-yilda", "713-yilda"],
-        correct: 2,
+        correctVal: "712-yilda",
         exp: "Samarqand 712-yilda egallangan."
       },
       {
         q: "14. Choch va Farg'ona qaysi yili arablarga bo'ysundirildi?",
         options: ["710-yilda", "712-yilda", "713-yilda", "715-yilda"],
-        correct: 2,
+        correctVal: "713-yilda",
         exp: "Choch va Farg'ona 713-yilda bo'ysundirildi."
       },
       {
         q: "15. Arab istilochilari Movarounnahrni qancha vaqt davomida qiyinchilik bilan egallaganlar?",
-        options: ["O'n yil davomida", "Deyarli yuz yil davomida", "Ellik yil davomida", "Ikki yilda"],
-        correct: 1,
+        options: ["O'n yil davomida", "Deyarli yuz yil davomida", "Ellik yil davomida", "Ikki yil davomida"],
+        correctVal: "Deyarli yuz yil davomida",
         exp: "Deyarli yuz yil davomida kurashlar olib borilgan."
       },
       {
         q: "16. Arab istilosi davrida Turon mintaqasidagi siyosiy ahvol qanday edi?",
-        options: ["Kuchli markazlashgan davlat mavjud edi", "Parokanda va tarqoq edi (15 tadan ortiq mustaqil hokimliklar bor edi)", "Faqat bitta imperiya bor edi", "Barcha hududlar bo'sh edi"],
-        correct: 1,
+        options: ["Kuchli markazlashgan davlat mavjud edi", "Parokanda va tarqoq edi", "Markazlashgan imperiya ostida edi", "Barcha hududlar bo'sh edi"],
+        correctVal: "Parokanda va tarqoq edi",
         exp: "Mintaqa parokanda va tarqoq edi."
       },
       {
         q: "17. Tan imperiyasining G'arbiy Turk xoqonligiga hujumlari kimlarni ikki frontda kurashishga majbur qildi?",
-        options: ["G'arbiy turklarni", "Faqat arablarni", "Faqat sug'dlarni", "Faqat xorazmliklarni"],
-        correct: 0,
+        options: ["G'arbiy turklarni", "Arab qo'shinlarini", "Sug'd dehqonlarini", "Xorazm zodagonlarini"],
+        correctVal: "G'arbiy turklarni",
         exp: "G'arbiy turklar ikki frontda kurashishga majbur bo'lgan."
       },
       {
         q: "18. Qutayba ibn Muslimning siyosiy va harbiy tadbirkorligida kimlar qo'l keldi?",
-        options: ["Faqat xorijiy qo'shinlar", "Mahalliy hokimlar va aslzodalarning o'zaro adovatlari", "Faqat iqtisodiy boyliklar", "Faqat tabiat sharoitlari"],
-        correct: 1,
+        options: ["Xorijiy yollanma qo'shinlar", "Mahalliy hokimlar va aslzodalarning o'zaro adovatlari", "Iqtisodiy boyliklar va xazinalar", "Qulay tabiiy iqlim sharoitlari"],
+        correctVal: "Mahalliy hokimlar va aslzodalarning o'zaro adovatlari",
         exp: "Mahalliy mulkdorlarning o'zaro nifoqi qo'l kelgan."
       },
       {
         q: "19. 720-yilda arablarga qarshi umumiy ozodlik harakatiga kimlar boshchilik qildi?",
-        options: ["Bumin va Istami", "Sug'd ixshidi G'urak va Panjikent hokimi Divashtich", "Abruy va Sheri Kishvar", "To'n yabg'u va Suloxon"],
-        correct: 1,
+        options: ["Bumin va Istami xoqonlar", "Sug'd ixshidi G'urak va Panjikent hokimi Divashtich", "Abruy va Sheri Kishvar", "To'n yabg'u va Suloxon"],
+        correctVal: "Sug'd ixshidi G'urak va Panjikent hokimi Divashtich",
         exp: "G'urak va Divashtich boshchilik qilgan."
       },
       {
         q: "20. Sug'dliklarga yordam berish uchun qayerdan turk lashkarlari yetib kelgan edi?",
         options: ["Yettisuvdan", "Xitoydan", "Kichik Osiyodan", "Hindistondan"],
-        correct: 0,
+        correctVal: "Yettisuvdan",
         exp: "Yettisuvdan turk lashkarlari yetib kelgan edi."
       },
       {
         q: "21. Movarounnahr aholisini tinchlantirish uchun Xuroson noibi Ashros qanday vaqtinchalik tadbir qo'llagan?",
-        options: ["Barcha soliqlarni bekor qilgan", "Islomni qabul qilganlardan xiroj va jiz'ya soliqlarini olmaslikka qaror qilgan", "Shaharlarni buzib tashlagan", "Aholini boshqa joyga ko'chirgan"],
-        correct: 1,
+        options: ["Barcha soliqlarni butunlay bekor qilgan", "Islomni qabul qilganlardan xiroj va jiz'ya soliqlarini olmaslikka qaror qilgan", "Shaharlarning devorlarini buzib tashlagan", "Aholini boshqa viloyatlarga ko'chirgan"],
+        correctVal: "Islomni qabul qilganlardan xiroj va jiz'ya soliqlarini olmaslikka qaror qilgan",
         exp: "Xiroj va jiz'yani vaqtincha olmaslikka qaror qilgan."
       },
       {
         q: "22. Arab lashkarboshilari bilan mulkdor dehqonlar o'rtasida qanday aloqalar o'rnatildi?",
-        options: ["Dushmanlik", "Qon-qarindoshlik (quda-andachilik) aloqalari", "Faqat savdo aloqalari", "Tijorat shartnomalari"],
-        correct: 1,
+        options: ["Dushmanlik va nafrat", "Qon-qarindoshlik (quda-andachilik) aloqalari", "Faqat savdo-sotiq shartnomalari", "Siyosiy taslimchilik bitimlari"],
+        correctVal: "Qon-qarindoshlik (quda-andachilik) aloqalari",
         exp: "Qon-qarindoshlik aloqalari o'rnatilgan."
       },
       {
         q: "23. Arab istilolari davrida Turonning yetakchi kuchlari bo'lgan turk xoqonliklarining ahvoli qanday edi?",
-        options: ["Juda mustahkam edi", "VI asr oxiri — VII boshlaridagidek barqaror emas edi", "Mutlaq tinch edi", "Dunyoni boshqargan"],
-        correct: 1,
+        options: ["Juda mustahkam va uyushgan edi", "VI asr oxiri — VII boshlaridagidek barqaror emas edi", "Mutlaq tinch va osoyishta edi", "Dunyoda yetakchilik qilardi"],
+        correctVal: "VI asr oxiri — VII boshlaridagidek barqaror emas edi",
         exp: "Ularning ahvoli barqaror emas edi."
       },
       {
         q: "24. Xitoyning Tang imperiyasi turkiy davlatlarga nisbatan qanday siyosat yuritgan?",
-        options: ["Ularni qo'llab-quvvatlagan", "Ularni butunlay yo'q qilish va parchalash siyosatini", "Betaraf qolgan", "Tijorat olib borgan"],
-        correct: 1,
+        options: ["Ularni doimiy qo'llab-quvvatlagan", "Ularni butunlay yo'q qilish va parchalash siyosatini", "Betaraf diplomatik munosabatda bo'lgan", "O'zaro foydali ittifoq tuzgan"],
+        correctVal: "Ularni butunlay yo'q qilish va parchalash siyosatini",
         exp: "Turk davlatlarini yo'q qilish va parchalash siyosatini yuritgan."
       },
       {
-        q: "25. Arablar uchun islomlashtirish siyosatining asosiy sabablaridan biri nima edi?",
-        options: ["Faqat ilmiy maqsadlar", "G'arazli maqsadlar va ulkan o'ljalar hamda mahalliy xalqni bo'ysundirish", "Faqat tinchlik o'rnatish", "Faqat tibbiyotni tarqatish"],
-        correct: 1,
-        exp: "G'arazli maqsadlar va ulkan o'ljalar asosiy sabab bo'lgan."
+        q: "25. Arab xalifaligining istilo jarayonida qo'lga kiritgan o'ljalari va asirlari xalifalikka nima bergan?",
+        options: ["Xazinasini to'ldirgan va harbiy yo'qotishlarni qoplagan", "Faqatgina siyosiy obro' keltirgan", "Faqat shartnomalar tuzishga yordam bergan", "Yangi savdo yo'llarini ochgan"],
+        correctVal: "Xazinasini to'ldirgan va harbiy yo'qotishlarni qoplagan",
+        exp: "O'ljalar xazinani to'ldirib, harbiy yo'qotishlarni qoplagan[cite: 25]."
       },
       {
         q: "26. Buyuk ipak yo'lining asosiy yo'nalishi qayerdan o'tgan?",
-        options: ["Xitoydan Sug'd, Eron orqali O'rta dengiz sohillariga", "Faqat dasht bo'ylab", "Faqat Hindistondan Yevropaga", "Faqat Rossiya orqali"],
-        correct: 0,
+        options: ["Xitoydan Sug'd, Eron orqali O'rta dengiz sohillariga", "Faqat dasht hududlari bo'ylab", "Faqat Hindistondan Yevropaga", "Faqat Shimoliy dengiz orqali"],
+        correctVal: "Xitoydan Sug'd, Eron orqali O'rta dengiz sohillariga",
         exp: "Xitoydan Sug'd, Eron orqali O'rta dengiz sohillariga o'tgan."
       },
       {
         q: "27. Arab istilosi turk-sug'd munosabatlarini yana qanday sinovdan o'tkazdi?",
-        options: ["Mustahkamladi", "Mayda mulklar o'rtasidagi nifoq va ishonchsizlikni kuchaytirdi", "Birlashtirdi", "Tinchitdi"],
-        correct: 1,
+        options: ["Ularni tubdan mustahkamladi", "Mayda mulklar o'rtasidagi nifoq va ishonchsizlikni kuchaytirdi", "Ularni yagona davlatga birlashtirdi", "O'zaro savdoni rivojlantirdi"],
+        correctVal: "Mayda mulklar o'rtasidagi nifoq va ishonchsizlikni kuchaytirdi",
         exp: "Munosabatlarni sinovdan o'tkazib, ishonchsizlikni kuchaytirdi."
       },
       {
         q: "28. Qutayba ibn Muslim Xurosonda noib etib qachon yuborilgan?",
         options: ["654-yilda", "704-yilda", "712-yilda", "720-yilda"],
-        correct: 1,
+        correctVal: "704-yilda",
         exp: "704-yilda Xurosonga noib etib yuborilgan."
       },
       {
         q: "29. IX asr muarrixi Muhammad Narshaxiyning yozishicha, Qutayba ibn Muslim qayerda tug'ilgan?",
-        options: ["Marv shahrida", "Shomning Boxila degan joyida", "Bag'dodda", "Damashqda"],
-        correct: 1,
+        options: ["Marv shahrida", "Shomning Boxila degan joyida", "Bag'dod shahrida", "Damashq shahrida"],
+        correctVal: "Shomning Boxila degan joyida",
         exp: "Shomning Boxila degan joyida tug'ilgan."
       },
       {
         q: "30. Qutayba ibn Muslim Xurosonda davlat ishlari bilan birga yana nimalarni amalga oshirgan?",
-        options: ["Faqat harbiy qal'alar qurgan", "Mahalliy aholini islomga da'vat qilish, masjid va madrasalar barpo etish", "Faqat savdo yo'llarini yopgan", "Faqat soliqni kamaytirgan"],
-        correct: 1,
+        options: ["Faqat harbiy qal'alar va istehkomlar qurgan", "Mahalliy aholini islomga da'vat qilish, masjid va madrasalar barpo etish", "Faqat savdo yo'llarini to'liq yopib qo'ygan", "Faqat soliq miqdorini ikki barobar oshirgan"],
+        correctVal: "Mahalliy aholini islomga da'vat qilish, masjid va madrasalar barpo etish",
         exp: "Masjid va madrasalar barpo etish ham yuklatilgan edi."
       },
       {
         q: "31. Arablar Turon zaminiga o'z madaniyati, urf-odatlari bilan birga yana nimani olib keldilar?",
-        options: ["Faqat yangi o'simliklar", "Diniy qarashlarini", "Faqat me'morchilik uslubini", "Faqat taqinchoqlarni"],
-        correct: 1,
+        options: ["Faqat yangi o'simlik turlarini", "Diniy qarashlarini", "Faqat me'morchilik uslublarini", "Faqat qimmatbaho taqinchoqlarni"],
+        correctVal: "Diniy qarashlarini",
         exp: "O'zlarining diniy qarashlarini ham olib keldilar."
       },
       {
         q: "32. Arab xalifaligi ma'muriyati xristianlikdan tashqari barcha dinlarni nima deb e'lon qildi?",
-        options: ["Qonuniy dinlar", "«Soxta dinlar»", "Muqaddas dinlar", "Asosiy dinlar"],
-        correct: 1,
+        options: ["Qonuniy himoyalangan dinlar", "«Soxta dinlar»", "Muqaddas osmoniy dinlar", "Asosiy e'tiqodiy oqimlar"],
+        correctVal: "«Soxta dinlar»",
         exp: "Boshqa dinlarni «soxta dinlar» deb e'lon qilgan."
       },
       {
         q: "33. Movarounnahrda mavjud bo'lgan zardushtiy va boshqa ibodatxonalar nima qilindi?",
-        options: ["Kengaytirildi", "Buzib tashlandi", "Saqlab qolindi", "Muzeyga aylantirildi"],
-        correct: 1,
+        options: ["Tubdan kengaytirildi", "Buzib tashlandi", "Saqlab qolindi va ta'mirlandi", "Muzey majmuasiga aylantirildi"],
+        correctVal: "Buzib tashlandi",
         exp: "Mavjud ibodatxonalar buzib tashlandi."
       },
       {
         q: "34. Islomni qabul qilgan mahalliy aholi vakillari dastlabki yillarda nimalardan ozod etildi?",
-        options: ["Barcha turdagi ishlardan", "Xiroj va jiz'ya soliqlaridan", "Harbiy xizmatdan", "Sayohat qilishdan"],
-        correct: 1,
+        options: ["Barcha turdagi jismoniy ishlardan", "Xiroj va jiz'ya soliqlaridan", "Harbiy xizmatni o'tash majburiyatidan", "Sayohat qilish cheklovlaridan"],
+        correctVal: "Xiroj va jiz'ya soliqlaridan",
         exp: "Dastlab xiroj va jiz'yadan ozod etilgan."
       },
       {
         q: "35. Islomni qabul qilmaganlar qanday soliq to'lashga majbur bo'lgan?",
-        options: ["Xiroj", "Jon solig'i — jiz'ya", "O'shur", "Zakot"],
-        correct: 1,
+        options: ["Xiroj solig'i", "Jon solig'i — jiz'ya", "O'shur solig'i", "Zakot majburiyati"],
+        correctVal: "Jon solig'i — jiz'ya",
         exp: "Ular jon solig'i — jiz'ya to'lagan."
       },
       {
         q: "36. Islomni qabul qilgan aholining ko'pchiligi qanday holatda yashagan?",
-        options: ["Chin dildan amal qilgan", "Nomigagina musulmon bo'lib, uzoq vaqtgacha pinhona o'z dini va e'tiqodida qolavergan", "Dindan voz kechgan", "Boshqa yurtga ketgan"],
-        correct: 1,
+        options: ["Chin dildan islomga amal qilgan", "Nomigagina musulmon bo'lib, uzoq vaqtgacha pinhona o'z dini va e'tiqodida qolavergan", "Dindan butunlay voz kechgan", "Boshqa mamlakatlarga ko'chib ketgan"],
+        correctVal: "Nomigagina musulmon bo'lib, uzoq vaqtgacha pinhona o'z dini va e'tiqodida qolavergan",
         exp: "Nomigagina musulmon bo'lib, pinhona o'z e'tiqodida qolgan."
       },
       {
         q: "37. Turonliklarga arablarga qarshi kurashda yordam bergan Turkash xoqonligi hukmdori kim edi?",
-        options: ["Suloxon", "To'n yabg'u", "Tardu", "Bilga xoqon"],
-        correct: 0,
+        options: ["Suloxon", "To'n yabg'u", "Tardu xoqon", "Bilga xoqon"],
+        correctVal: "Suloxon",
         exp: "Turkash xoqonligi hukmdori Suloxon yordam bergan."
       },
       {
         q: "38. Qutayba ibn Muslim vafot etgan yoki o'ldirilgan yil qaysi?",
         options: ["705-yil", "715-yil", "720-yil", "732-yil"],
-        correct: 1,
+        correctVal: "715-yil",
         exp: "Qutayba ibn Muslim 715-yilda vafot etgan."
       }
     ];
+
+    // Variantlarni har safar tasodifiy tartibda aralashtiruvchi yordamchi funksiya
+    const testQuestions = rawTestQuestions.map(item => {
+      let opts = [...item.options];
+      opts.sort(() => Math.random() - 0.5);
+      let correctIdx = opts.indexOf(item.correctVal);
+      return {
+        q: item.q,
+        options: opts,
+        correct: correctIdx,
+        exp: item.exp
+      };
+    });
 
     let tIdx = 0, score = 0;
 
     function loadTestQuestion() {
       const q = testQuestions[tIdx];
-      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
-      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
-      document.getElementById('q-title').innerText = q.q;
-
+      const counter = document.getElementById('q-counter');
+      const prog = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
       const optBox = document.getElementById('q-options');
-      optBox.innerHTML = '';
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
 
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.innerText = opt;
-        btn.onclick = () => selectOpt(idx);
-        optBox.appendChild(btn);
-      });
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (prog) prog.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
 
-      document.getElementById('q-explanation').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
+      if (optBox) {
+        optBox.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.innerText = opt;
+          btn.onclick = () => selectOpt(idx);
+          optBox.appendChild(btn);
+        });
+      }
+
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
     }
 
     function selectOpt(selectedIdx) {
@@ -902,10 +923,13 @@
       }
 
       const exp = document.getElementById('q-explanation');
-      exp.innerText = "💡 Izoh: " + q.exp;
-      exp.style.display = 'block';
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
       
-      document.getElementById('sticky-bar').style.display = 'flex';
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
     }
 
     function nextTestQuestion() {
@@ -919,21 +943,31 @@
     }
 
     function showQuizResult() {
-      document.getElementById('quiz-body').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
-      document.getElementById('quiz-result').style.display = 'flex';
-      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const scoreEl = document.getElementById('q-score');
       const fb = document.getElementById('q-feedback');
-      if(score >= 34) fb.innerText = "Mukammal natija! VII–VIII asr boshlarida Turonda siyosiy vaziyat mavzusini to'laqonli o'zlashtiribsiz 🌟";
-      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
-      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 34) fb.innerText = "Mukammal natija! VII–VIII asr boshlarida Turonda siyosiy vaziyat mavzusini to'laqonli o'zlashtiribsiz 🌟";
+        else if(score >= 26) fb.innerText = "Ajoyib natija! Asosiy atamalar va tushunchalarni yaxshi bilasiz 👍";
+        else fb.innerText = "Yaxshi, lekin mavzularni yana bir bor takrorlab chiqish tavsiya etiladi 📚";
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartTest() {
       tIdx = 0; score = 0;
-      document.getElementById('quiz-body').style.display = 'block';
-      document.getElementById('quiz-result').style.display = 'none';
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
       loadTestQuestion();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

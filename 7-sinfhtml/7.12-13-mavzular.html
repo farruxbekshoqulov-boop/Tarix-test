@@ -153,6 +153,7 @@
     }
 
     .match-column {
+      direction: ltr;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -384,7 +385,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) -->
+    <!-- 3. TEST SINOVI (38 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -433,7 +434,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: 1-ustun atamalar, 2-ustun izohlar) ---
+    // --- 1. MOSLASH (4 BOSQICH) ---
     const matchStages = [
       [
         { id: 1, left: "15 tadan ortiq", right: "V–VII asrlarda Turk xoqonligi hududida tashkil topgan mustaqil hokimliklar soni" },
@@ -443,7 +444,7 @@
         { id: 5, left: "Shishasozlik va qurolsozlik", right: "Toxariston aholisi yuksak darajada rivojlantirgan hunarmandchilik turlari" }
       ],
       [
-        { id: 6, left: "Sug'd ixshidleri", right: "V–VII asrlarda Zarafshon vodiysida yashab, katta siyosiy nufuzga ega bo'lgan voha hukmdorlari" },
+        { id: 6, left: "Sug'd ixshidlari", right: "V–VII asrlarda Zarafshon vodiysida yashab, katta siyosiy nufuzga ega bo'lgan voha hukmdorlari" },
         { id: 7, left: "Kesh", right: "Qashqadaryo vohasida joylashgan, ixrid boshqargan yirik viloyat" },
         { id: 8, left: "Oqsoqollar Kengashi", right: "Sug'dda ixshidlik hokimiyatini cheklab qo'ygan, savdogar va shahar amaldorlaridan iborat oliy organ" },
         { id: 9, left: "Farg'ona", right: "Yerlari juda hosildor, paxta va sholi ekilgan, «samoviy otlar»i bilan mashhur vodiy" },
@@ -458,10 +459,10 @@
       ],
       [
         { id: 16, left: "Eltabar", right: "To'n yabg'u qaram o'lkalarga yuborgan el (davlat) boshqaruvchilari" },
-        { id: 17, left: "Lashkarak, Tunkat, To'qqat", right: "Choch hududida qazib chiqarilgan metallar (temir, mis, feruza)" },
+        { id: 17, left: "Lashkarak, Tunkat, To'qqat", right: "Choch hududida qazib chiqarilgan metallar (kumush, temir, feruza)" },
         { id: 18, left: "Zangtepa", right: "Choch hududidagi qadimgi mustahkam qal'a" },
-        { id: 19, left: "Qo'handiz, shahriston, rabod", right: "O'rta asrlarda shaharlar tarkib topgan uchta asosiy qism" },
-        { id: 20, left: "Ibn Xavqal va Istaxriy", right: "Binikat (Toshkent) shahrining ikkita darvozasi bo'lganini qayd etgan arab mualliflari" }
+        { id: 19, left: "Ko'handiz, shahriston, rabod", right: "O'rta asrlarda shaharlar tarkib topgan uchta asosiy qism" },
+        { id: 20, left: "Ibn Xavqal va Istaxriy", right: "Binikat (Toshkent) shahrining 22 ta darvozasi bo'lganini qayd etgan arab mualliflari" }
       ]
     ];
 
@@ -565,26 +566,26 @@
       { q: "7. Toxariston aholisining asosiy qismi nima bilan shug'ullangan?", a: "O'troq dehqonchilik, hunarmandchilik (qurolsozlik, shishasozlik, to'qimachilik) va savdo-sotiq." },
       { q: "8. V–VII asrlarda Sug'd ixshidlari kimlar edi?", a: "Zarafshon vodiysida yashab, katta siyosiy nufuzga ega bo'lgan voha hukmdorlari." },
       { q: "9. Sug'dda davlatni podsho orqali emas, kimlar boshqargan?", a: "Yirik dehqon va shahar amaldorlaridan iborat Oqsoqollar Kengashi." },
-      { q: "10. Oqsoqollar Kengashi podsho — ixshidlik hokimiyatini nima qilgan?", a: "Cheklab qo'ygan (ixshidlar kengash oldida hisob bergan)." },
+      { q: "10. V–VII asrlarda Sug'd vohasida Oqsoqollar Kengashining ixshidlik (podshohlik) hokimiyati bilan o'zaro munosabatlari qanday xarakterga ega bo'lgan?", a: "Oqsoqollar Kengashi ixshidlik hokimiyatini cheklab qo'ygan va ixshidlar kengash oldida hisob bergan." },
       { q: "11. To'n yabg'u xoqonning (618–630) ma'muriy islohotlari nimani o'zgartirmadi?", a: "An'anaviy mahalliy boshqaruv tamoyillarini deyarli o'zgartirmadi." },
       { q: "12. Tudun va tarxonlar o'z vazifasi doirasida nimalarni bajargan?", a: "Iqtisodiy ahvolni kuzatish, soliqlar yig'ish, harbiy masalalarni hal etish va xoqonlik bilan bog'liqlikni ta'minlash." },
       { q: "13. Farg'ona hokimlari qanday atalgan?", a: "Ixshid." },
       { q: "14. Farg'onaning qaysi shaharlari hunarmandchilik markazlari bo'lgan?", a: "Koson, Axsikat (Xushkat) va Quva (Qubo)." },
       { q: "15. Farg'onada ko'chmanchilar qayerlarda yilqichilik bilan shug'ullangan?", a: "Qurama va Qoramozor tog'lari yonbag'irlarida." },
-      { q: "16. Farg'onaning qaysi otlari jahonga mashhur bo'lgan?", a: "«Samoviy otlar» (paytiriq tulporlar)." },
+      { q: "16. Qadimgi davrlarda o'zining noyob zoti bilan butun dunyoga mashhur bo'lgan Farg'ona tulporlari manbalarda qanday atalgan?", a: "«Samoviy otlar»." },
       { q: "17. Choch (Toshkent vohasi) qaysi daryolar havzasida joylashgan?", a: "Chirchiq va Ohangaron havzalarida." },
-      { q: "18. Chochda tirlik ko'rsatgan turkiylar voha ijtimoiy hayotida qanday o'rin tutgan?", a: "Yetakchi kuchga aylangan." },
+      { q: "18. VI–VIII asrlarda Choch vohasi ijtimoiy-siyosiy va etnik hayotida turkiylar qanday o'rin tutgan?", a: "Turkiylar voha aholisi etnik tarkibida yetakchi kuchga va salmoqli o'ringa ega bo'lgan." },
       { q: "19. Chochda VII–VIII asrlarga oid qanday tangalar zarb etilgan?", a: "Sug'diy yozuv va tildagi turk-sug'd namunasidagi tangalar." },
       { q: "20. G'arbiy Turk xoqoni Chochga hokim etib kimni tayinlagan?", a: "Teğin Tyanchjini." },
       { q: "21. Teğin Tyanchji kim bilan diplomatik aloqa o'rnatgan?", a: "Xitoy bilan." },
       { q: "22. G'arbiy Turk hukmdori To'n yabg'u o'z qarorgohini qayerga ko'chirgan?", a: "Mingbuloq mavzesiga." },
       { q: "23. To'n yabg'u qaram o'lkalarga o'z vakillari sifatida kimlarni yuborgan?", a: "Eltabarlarni (el boshqaruvchilari)." },
       { q: "24. Choch hududida qazib chiqarilgan metallar qaysilar?", a: "Lashkarak kumushlari, Tunkat va To'qqat metallari hamda moviy feruzalar." },
-      { q: "25. O'rta asrlarda shaharlar qanday uchta qismdan iborat bo'lgan?", a: "Qo'handiz (qal'a), shahriston va rabod." },
+      { q: "25. O'rta asrlarda shaharlar qanday uchta qismdan iborat bo'lgan?", a: "Ko'handiz (qal'a), shahriston va rabod." },
       { q: "26. Shahar devorlari bo'ylab oqadigan suv inshooti qanday atalgan?", a: "Anhor va xandaq." },
-      { q: "27. X asrda yashagan arab mualliflari Ibn Xavqal va Istaxriy qayd etishicha, Binikat (Toshkent)ning nechta darvozasi bo'lgan?", a: "Ikkita darvozasi." },
+      { q: "27. X asrda yashagan arab mualliflari Ibn Xavqal va Istaxriy ma'lumotiga ko'ra, Binikat (Toshkent) shahrining nechta darvozasi bo'lgan?", a: "22 ta darvozasi." },
       { q: "28. Choch hududida joylashgan qadimgi mustahkam qal'a qanday nomlanadi?", a: "Zangtepa qal'asi." },
-      { q: "29. Sug'd va Farg'ona siyosiy ittifoqi qanday nomlangan?", a: "«Kirmagan»." },
+      { q: "29. Farg'ona vodiysining Sug'd siyosiy tuzilmalari bilan o'zaro munosabatlari qanday bo'lgan?", a: "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat bo'lgan." },
       { q: "30. Zarafshon vodiylarida joylashgan Kesh viloyatini kim boshqargan?", a: "Ixrid." },
       { q: "31. Buxoroda hukmronlik qilgan hokim unvoni nima edi?", a: "Xudot." },
       { q: "32. Ustrushanada hukmronlik qilgan hokim unvoni nima edi?", a: "Afshin." },
@@ -632,259 +633,279 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
-    const testQuestions = [
+    // --- 3. TEST SINOVI (38 TA TEST - Variantlar tartibi aralashtirilgan va teng taqsimlangan) ---
+    const rawTestQuestions = [
       {
         q: "1. V–VII asrlarda Turk xoqonligi hududida nechta mustaqil hokimliklar tashkil topdi?",
         options: ["15 tadan ortiq", "Faqat 5 ta", "10 tadan kam", "30 tadan ortiq"],
-        correct: 0,
+        correctVal: "15 tadan ortiq",
         exp: "V–VII asrlarda 15 tadan ortiq mustaqil hokimliklar tashkil topgan."
       },
       {
         q: "2. Turk xoqonligining mahalliy sulolalar boshqaruvini saqlab qolishdan asosiy maqsadi nima edi?",
         options: ["Faqat soliqni kamaytirish", "O'troq o'lkalarda siyosiy barqarorlikni ta'minlash va iqtisodiy taraqqiyotni to'xtatmaslik", "Faqat yangi qonunlar kiritish", "Hududni butunlay bo'lib yuborish"],
-        correct: 1,
+        correctVal: "O'troq o'lkalarda siyosiy barqarorlikni ta'minlash va iqtisodiy taraqqiyotni to'xtatmaslik",
         exp: "Maqsad o'troq o'lkalarda barqarorlikni ta'minlash va iqtisodiyotni to'xtatmaslik bo'lgan."
       },
       {
         q: "3. Toxaristonda nechta tog' va tog'oldi viloyatlaridan iborat mustaqil hokimliklar bo'lgan?",
         options: ["12 ta", "27 ta", "35 ta", "40 ta"],
-        correct: 1,
+        correctVal: "27 ta",
         exp: "Toxaristonda 27 ta tog' va tog'oldi viloyatlaridan iborat mustaqil hokimliklar bo'lgan."
       },
       {
         q: "4. Toxaristonning poytaxti qaysi shahar edi?",
         options: ["Samarqand", "Buxoro", "Balx shahri", "Termiz"],
-        correct: 2,
+        correctVal: "Balx shahri",
         exp: "Toxaristonning poytaxti Balx shahri edi."
       },
       {
         q: "5. Toxariston hududi sharqda qaysi hudud bilan chegaralangan?",
         options: ["Pomir bilan", "Hindukush bilan", "Hisor tog'lari bilan", "Murg'ob bilan"],
-        correct: 0,
+        correctVal: "Pomir bilan",
         exp: "Sharqda Pomir bilan chegaralangan edi."
       },
       {
         q: "6. V–VII asrlarda Zarafshon vodiysida yashab, katta siyosiy nufuzga ega bo'lgan voha hukmdorlari kimlar edi?",
         options: ["Choch tudunlari", "Sug'd ixshidlari", "Toxariston maliklari", "Xorazmshohlar"],
-        correct: 1,
+        correctVal: "Sug'd ixshidlari",
         exp: "Zarafshon vodiysida Sug'd ixshidlari hukmronlik qilgan."
       },
       {
         q: "7. Sug'dda davlatni podsho orqali emas, kimlar boshqargan?",
         options: ["Faqat ruhoniylar", "Oqsoqollar Kengashi", "Harbiy sarkardalar", "Xorijiy elchilar"],
-        correct: 1,
+        correctVal: "Oqsoqollar Kengashi",
         exp: "Sug'dda Oqsoqollar Kengashi muhim rol o'ynagan."
       },
       {
-        q: "8. Oqsoqollar Kengashi podsho — ixshidlik hokimiyatini nima qilgan?",
-        options: ["Butunlay yo'q qilgan", "Cheklab qo'ygan", "Mustaqil qilgan", "Kengaytirgan"],
-        correct: 1,
-        exp: "Oqsoqollar Kengashi ixshidlik hokimiyatini cheklab qo'ygan."
+        q: "8. V–VII asrlarda Sug'd vohasida Oqsoqollar Kengashining ixshidlik (podshohlik) hokimiyati bilan o'zaro munosabatlari qanday xarakterga ega bo'lgan?",
+        options: ["Butunlay yo'q qilgan", "Oqsoqollar Kengashi ixshidlik hokimiyatini cheklab qo'ygan va ixshidlar kengash oldida hisob bergan", "Mustaqil qilgan", "Kengaytirgan"],
+        correctVal: "Oqsoqollar Kengashi ixshidlik hokimiyatini cheklab qo'ygan va ixshidlar kengash oldida hisob bergan",
+        exp: "Oqsoqollar Kengashi ixshidlik hokimiyatini cheklab qo'ygan va ixshidlar kengash oldida hisob berib turgan."
       },
       {
         q: "9. To'n yabg'u xoqonning (618–630) ma'muriy islohotlari nimani o'zgartirmadi?",
         options: ["Soliq tizimini", "An'anaviy mahalliy boshqaruv tamoyillarini deyarli o'zgartirmadi", "Harbiy safarbarlikni", "Tashqi savdo yo'llarini"],
-        correct: 1,
+        correctVal: "An'anaviy mahalliy boshqaruv tamoyillarini deyarli o'zgartirmadi",
         exp: "Ma'muriy islohotlar an'anaviy mahalliy boshqaruv tamoyillarini deyarli o'zgartirmadi."
       },
       {
         q: "10. Farg'ona hokimlari qanday atalgan?",
         options: ["Ixshid", "Xudot", "Afshin", "Ixrid"],
-        correct: 0,
+        correctVal: "Ixshid",
         exp: "Farg'ona hokimlari ixshid deb atalgan."
       },
       {
         q: "11. Farg'onaning qaysi shaharlari hunarmandchilik markazlari bo'lgan?",
         options: ["Buxoro va Samarqand", "Koson, Axsikat va Quva", "Poykand va Varaxsha", "Panjikent va Naxshab"],
-        correct: 1,
+        correctVal: "Koson, Axsikat va Quva",
         exp: "Koson, Axsikat (Xushkat) va Quva (Qubo) yirik markazlar edi."
       },
       {
         q: "12. Farg'onada ko'chmanchilar qayerlarda yilqichilik bilan shug'ullangan?",
         options: ["Qurama va Qoramozor tog'lari yonbag'irlarida", "Amudaryo bo'ylarida", "Qoraqum sahrosida", "Faqat vodiylarda"],
-        correct: 0,
+        correctVal: "Qurama va Qoramozor tog'lari yonbag'irlarida",
         exp: "Qurama va Qoramozor tog'lari yonbag'irlarida yilqichilik qilingan."
       },
       {
-        q: "13. Farg'onaning qaysi otlari jahonga mashhur bo'lgan?",
+        q: "13. Qadimgi davrlarda o'zining noyob zoti bilan butun dunyoga mashhur bo'lgan Farg'ona tulporlari manbalarda qanday atalgan?",
         options: ["«Tulporlar»", "«Samoviy otlar»", "«Arg'umoqlar»", "«Tojdor otlar»"],
-        correct: 1,
-        exp: "Farg'onaning «samoviy otlar»i dong'i jahonga ketgan."
+        correctVal: "«Samoviy otlar»",
+        exp: "Farg'ona tulporlari manbalarda «samoviy otlar» deb atalgan."
       },
       {
         q: "14. Choch (Toshkent vohasi) qaysi daryolar havzasida joylashgan?",
         options: ["Sirdaryo va Noryin", "Chirchiq va Ohangaron havzalarida", "Zarafshon va Qashqadaryo", "Murg'ob va Xerirud"],
-        correct: 1,
+        correctVal: "Chirchiq va Ohangaron havzalarida",
         exp: "Choch Chirchiq va Ohangaron havzalarida joylashgan."
       },
       {
         q: "15. Chochda VII–VIII asrlarga oid qanday tangalar zarb etilgan?",
         options: ["Faqat arabcha tangalar", "Sug'diy yozuv va tildagi turk-sug'd namunasidagi tangalar", "Faqat xitoycha tangalar", "Faqat sosoniy tangalari"],
-        correct: 1,
+        correctVal: "Sug'diy yozuv va tildagi turk-sug'd namunasidagi tangalar",
         exp: "Sug'diy yozuv va tildagi turk-sug'd namunasidagi tangalar zarb etilgan."
       },
       {
         q: "16. G'arbiy Turk xoqoni Chochga hokim etib kimni tayinlagan?",
         options: ["Teğin Tyanchjini", "To'n yabg'uni", "Istami yabg'uni", "Bumin xoqonni"],
-        correct: 0,
+        correctVal: "Teğin Tyanchjini",
         exp: "G'arbiy Turk xoqoni Chochga Teğin Tyanchjini tayinlagan."
       },
       {
         q: "17. Teğin Tyanchji kim bilan diplomatik aloqa o'rnatgan edi?",
         options: ["Eron bilan", "Xitoy bilan", "Vizantiya bilan", "Hindiston bilan"],
-        correct: 1,
+        correctVal: "Xitoy bilan",
         exp: "Teğin Tyanchji Xitoy bilan diplomatik aloqa o'rnatgan."
       },
       {
-        q: "18. G'arbiy Turk hukmdori To'n yabg'u o'z qarorgohini qayerga ko'chirgan edi?",
-        options: ["Samarqandga", "Mingbuloq mavzesiga", "Suyabga", "Buxoroga"],
-        correct: 1,
-        exp: "To'n yabg'u qarorgohini Choch yaqinidagi Mingbuloq mavzesiga ko'chirgan."
+        q: "18. VI–VIII asrlarda Choch vohasi ijtimoiy-siyosiy va etnik hayotida turkiylar qanday o'rin tutgan?",
+        options: ["Hokimiyatdan chetlashtirilgan", "Faqat savdo bilan shug'ullangan", "Voha aholisi etnik tarkibida yetakchi kuchga aylangan", "Faqat harbiy yurishda qatnashgan"],
+        correctVal: "Voha aholisi etnik tarkibida yetakchi kuchga aylangan",
+        exp: "Turkiylar voha aholisi etnik tarkibida yetakchi kuchga aylangan."
       },
       {
         q: "19. To'n yabg'u qaram o'lkalarga o'z vakillari sifatida kimlarni yuborgan?",
         options: ["Tudunlarni", "Eltabarlarni", "Qozilarni", "Sipohiylarni"],
-        correct: 1,
+        correctVal: "Eltabarlarni",
         exp: "Qaram o'lkalarga el boshqaruvchilari — eltabarlarni yuborgan."
       },
       {
         q: "20. Choch hududida qazib chiqarilgan metallar qaysilar?",
         options: ["Faqat oltin va kumush", "Lashkarak kumushlari, Tunkat va To'qqat metallari hamda moviy feruzalar", "Faqat mis va qo'rg'oshin", "Faqat temir va qalay"],
-        correct: 1,
+        correctVal: "Lashkarak kumushlari, Tunkat va To'qqat metallari hamda moviy feruzalar",
         exp: "Lashkarak kumushlari, Tunkat va To'qqat metallari, moviy feruzalar edi."
       },
       {
         q: "21. O'rta asrlarda shaharlar qanday uchta qismdan iborat bo'lgan?",
-        options: ["Qo'handiz, shahriston va rabod", "Faqat qal'a va bozor", "Arg, saroy va qishloq", "Markaz, chekka va qo'rg'on"],
-        correct: 0,
-        exp: "Shaharlar qo'handiz, shahriston va raboddan iborat bo'lgan."
+        options: ["Ko'handiz, shahriston va rabod", "Faqat qal'a va bozor", "Arg, saroy va qishloq", "Markaz, chekka va qo'rg'on"],
+        correctVal: "Ko'handiz, shahriston va rabod",
+        exp: "Shaharlar ko'handiz, shahriston va raboddan iborat bo'lgan."
       },
       {
         q: "22. Shahar devorlari bo'ylab oqadigan suv inshooti qanday atalgan?",
         options: ["Kanal va ariq", "Anhor va xandaq", "Sardoba va hovuz", "Sharshara"],
-        correct: 1,
+        correctVal: "Anhor va xandaq",
         exp: "Shaharlar atrofida anhor va xandaq bo'lgan."
       },
       {
-        q: "23. X asrda yashagan arab mualliflari Ibn Xavqal va Istaxriy qayd etishicha, Binikat (Toshkent)ning nechta darvozasi bo'lgan?",
-        options: ["Bitta darvozasi", "Ikkita darvozasi", "To'rtta darvozasi", "Oltita darvozasi"],
-        correct: 1,
-        exp: "Binikatning ikkita darvozasi bo'lgan."
+        q: "23. X asrda yashagan arab mualliflari Ibn Xavqal va Istaxriy ma'lumotiga ko'ra, Binikat (Toshkent) shahrining nechta darvozasi bo'lgan?",
+        options: ["12 ta darvoza", "22 ta darvoza", "32 ta darvoza", "8 ta darvoza"],
+        correctVal: "22 ta darvoza",
+        exp: "Binikatning 22 ta darvozasi bo'lgan."
       },
       {
         q: "24. Choch hududida joylashgan qadimgi mustahkam qal'a qanday nomlanadi?",
         options: ["Zangtepa qal'asi", "Fir qal'asi", "Zahoki Maron", "Shahri Vayron"],
-        correct: 0,
+        correctVal: "Zangtepa qal'asi",
         exp: "Chochdagi qadimgi qal'a Zangtepa qal'asidir."
       },
       {
-        q: "25. Sug'd va Farg'ona siyosiy ittifoqi qanday nomlangan?",
-        options: ["«Turk eli»", "«Kirmagan»", "«O'n o'q»", "«Elterish»"],
-        correct: 1,
-        exp: "Bu siyosiy ittifoq «kirmagan» deb nomlangan."
+        q: "25. Farg'ona vodiysining Sug'd siyosiy tuzilmalari bilan o'zaro munosabatlari qanday bo'lgan?",
+        options: ["Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat bo'lgan", "Farg'ona to'g'ridan-to'g'ri Sug'dga bo'ysungan", "Farg'ona va Sug'd yagona davlatga birlashgan", "Farg'ona Sug'dga soliq to'lagan"],
+        correctVal: "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat bo'lgan",
+        exp: "Farg'ona Sug'd siyosiy ittifoqiga kirmagan va alohida mustaqil davlat bo'lgan."
       },
       {
         q: "26. Zarafshon vodiylarida joylashgan Kesh viloyatini kim boshqargan?",
         options: ["Ixshid", "Ixrid", "Xudot", "Afshin"],
-        correct: 1,
+        correctVal: "Ixrid",
         exp: "Keshni ixrid boshqargan."
       },
       {
         q: "27. Buxoroda hukmronlik qilgan hokim unvoni nima edi?",
         options: ["Xudot", "Afshin", "Tudun", "Malikshoh"],
-        correct: 0,
+        correctVal: "Xudot",
         exp: "Buxoroda hokim unvoni xudot edi."
       },
       {
         q: "28. Ustrushanada hukmronlik qilgan hokim unvoni nima edi?",
         options: ["Afshin", "Ixrid", "Xudot", "Tudun"],
-        correct: 0,
+        correctVal: "Afshin",
         exp: "Ustrushanada afshin edi."
       },
       {
         q: "29. Chochda hukmronlik qilgan hokim unvoni nima edi?",
         options: ["Tudun", "Ixshid", "Malikshoh", "Xorazmshoh"],
-        correct: 0,
+        correctVal: "Tudun",
         exp: "Chochda tudun edi."
       },
       {
         q: "30. Sug'dda chorvachilikning qaysi turi juda mashhur bo'lgan?",
         options: ["Qorako'l qo'ychiligi", "Tulporlari bilan mashhur otchilik", "Tuyachilik", "Yilqichilik va tuyachilik"],
-        correct: 1,
+        correctVal: "Tulporlari bilan mashhur otchilik",
         exp: "Sug'dda tulporlari bilan mashhur otchilik mashhur bo'lgan."
       },
       {
-        q: "31. Toxaristonning poytaxti bo'lgan Balx shahri qayerda joylashgan?",
-        options: ["Hozirgi Janubiy O'zbekiston va Janubiy Tojikiston, Shimoliy Afg'onistonda", "Faqat Farg'ona vodiysida", "Zarafshon quyi oqimida", "Sirdaryo bo'yida"],
-        correct: 0,
-        exp: "Toxariston Janubiy O'zbekiston, Tojikiston va Afg'oniston hududlarini o'z ichiga olgan."
+        q: "31. Toxaristonning poytaxti bo'lgan Balx shahri joylashgan tarixiy viloyat (Toxariston) qaysi hududlarni o'z ichiga olgan?",
+        options: ["Hozirgi Janubiy O'zbekiston va Janubiy Tojikiston, Shimoliy Afg'onistonni", "Faqat Farg'ona vodiysini", "Zarafshon quyi oqimini", "Sirdaryo bo'ylarini"],
+        correctVal: "Hozirgi Janubiy O'zbekiston va Janubiy Tojikiston, Shimoliy Afg'onistonni",
+        exp: "Toxariston Janubiy O'zbekiston, Tojikiston va Shimoliy Afg'oniston hududlarini o'z ichiga olgan."
       },
       {
         q: "32. Tudun va tarxonlar o'z vazifasi doirasida nimalarni bajargan?",
         options: ["Faqat harbiy yurishlarni", "Iqtisodiy ahvolni kuzatish, soliqlar yig'ish va harbiy masalalarni hal etish", "Faqat sud ishlarini", "Faqat diplomatik elchilikni"],
-        correct: 1,
+        correctVal: "Iqtisodiy ahvolni kuzatish, soliqlar yig'ish va harbiy masalalarni hal etish",
         exp: "Ular iqtisodiy ahvolni kuzatish, soliq yig'ish va harbiy masalalarni hal qilgan."
       },
       {
         q: "33. Farg'onada dehqonchilikdan tashqari yana qanday xo'jalik tarmog'i rivojlangan edi?",
-        options: ["Baliqchilik", "Chorvachilik va yilqichilik", "Kemaсозlik", "O'rmonchilik"],
-        correct: 1,
+        options: ["Baliqchilik", "Chorvachilik va yilqichilik", "Kemasozlik", "O'rmonchilik"],
+        correctVal: "Chorvachilik va yilqichilik",
         exp: "Farg'onada chorvachilik va tog' etaklarida yilqichilik rivojlangan."
       },
       {
         q: "34. Choch hududida savdo aloqalarining rivojlanishiga nima yordam bergan?",
         options: ["Buyuk ipak yo'lining o'tishi va metallarga boyligi", "Faqat dengiz portlari", "Faqat dasht karvonlari", "Faqat paxta ekish"],
-        correct: 0,
+        correctVal: "Buyuk ipak yo'lining o'tishi va metallarga boyligi",
         exp: "Buyuk ipak yo'li va boy metallar savdoni rivojlantirgan."
       },
       {
         q: "35. Sug'd ixshidlari qaysi vodiyda hukmronlik qilgan?",
         options: ["Farg'ona vodiysida", "Zarafshon vodiylarida", "Surxondaryo vodiysida", "Chirchiq vodiysida"],
-        correct: 1,
+        correctVal: "Zarafshon vodiylarida",
         exp: "Sug'd ixshidlari Zarafshon vodiylarida hukmronlik qilgan."
       },
       {
         q: "36. G'arbiy Turk xoqonligida mahalliy hokimlar o'z mustaqilligini qaysi yo'l bilan saqlab qolgan?",
         options: ["Xoqonlikka qarshi urush qilib", "Faqat boj to'lab turish orqali", "Xoqonlikka bo'ysunmasdan", "Chet elga qochib"],
-        correct: 1,
+        correctVal: "Faqat boj to'lab turish orqali",
         exp: "Ular faqat boj to'lab turish orqali mustaqilligini qisman saqlagan."
       },
       {
         q: "37. Qaysi hokimlik hududida 27 ta tog' va tog'oldi viloyatlari bo'lgan?",
         options: ["Toxariston", "Sug'd", "Choch", "Farg'ona"],
-        correct: 0,
+        correctVal: "Toxariston",
         exp: "Toxaristonda 27 ta tog' va tog'oldi viloyatlari bo'lgan."
       },
       {
         q: "38. Chochda hokimlik qilgan Teğin Tyanchji kim tomonidan tayinlangan edi?",
         options: ["Xitoy imperatori", "G'arbiy Turk xoqoni", "Sug'd ixshidi", "Xorazmshoh"],
-        correct: 1,
+        correctVal: "G'arbiy Turk xoqoni",
         exp: "Uni G'arbiy Turk xoqoni tayinlagan edi."
       }
     ];
+
+    // Variantlarni har safar tasodifiy tartibda aralashtiruvchi yordamchi funksiya
+    const testQuestions = rawTestQuestions.map(item => {
+      let opts = [...item.options];
+      opts.sort(() => Math.random() - 0.5);
+      let correctIdx = opts.indexOf(item.correctVal);
+      return {
+        q: item.q,
+        options: opts,
+        correct: correctIdx,
+        exp: item.exp
+      };
+    });
 
     let tIdx = 0, score = 0;
 
     function loadTestQuestion() {
       const q = testQuestions[tIdx];
-      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
-      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
-      document.getElementById('q-title').innerText = q.q;
-
+      const counter = document.getElementById('q-counter');
+      const prog = document.getElementById('q-progress');
+      const title = document.getElementById('q-title');
       const optBox = document.getElementById('q-options');
-      optBox.innerHTML = '';
+      const exp = document.getElementById('q-explanation');
+      const stickyBar = document.getElementById('sticky-bar');
 
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.innerText = opt;
-        btn.onclick = () => selectOpt(idx);
-        optBox.appendChild(btn);
-      });
+      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      if (prog) prog.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      if (title) title.innerText = q.q;
 
-      document.getElementById('q-explanation').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
+      if (optBox) {
+        optBox.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.innerText = opt;
+          btn.onclick = () => selectOpt(idx);
+          optBox.appendChild(btn);
+        });
+      }
+
+      if (exp) exp.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
     }
 
     function selectOpt(selectedIdx) {
@@ -902,10 +923,13 @@
       }
 
       const exp = document.getElementById('q-explanation');
-      exp.innerText = "💡 Izoh: " + q.exp;
-      exp.style.display = 'block';
+      if (exp) {
+        exp.innerText = "💡 Izoh: " + q.exp;
+        exp.style.display = 'block';
+      }
       
-      document.getElementById('sticky-bar').style.display = 'flex';
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'flex';
     }
 
     function nextTestQuestion() {
@@ -919,21 +943,31 @@
     }
 
     function showQuizResult() {
-      document.getElementById('quiz-body').style.display = 'none';
-      document.getElementById('sticky-bar').style.display = 'none';
-      document.getElementById('quiz-result').style.display = 'flex';
-      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
+      const quizBody = document.getElementById('quiz-body');
+      const stickyBar = document.getElementById('sticky-bar');
+      const quizResult = document.getElementById('quiz-result');
+      const scoreEl = document.getElementById('q-score');
       const fb = document.getElementById('q-feedback');
-      if(score >= 34) fb.innerText = "Mukammal natija! Mahalliy hokimliklar mavzusini to'laqonli o'zlashtiribsiz 🌟";
-      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
-      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+
+      if (quizBody) quizBody.style.display = 'none';
+      if (stickyBar) stickyBar.style.display = 'none';
+      if (quizResult) quizResult.style.display = 'flex';
+      if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
+      
+      if (fb) {
+        if(score >= 34) fb.innerText = "Mukammal natija! Mahalliy hokimliklar mavzusini to'laqonli o'zlashtiribsiz 🌟";
+        else if(score >= 26) fb.innerText = "Ajoyib natija! Asosiy sanalar va tushunchalarni yaxshi bilasiz 👍";
+        else fb.innerText = "Yaxshi, lekin mavzularni yana bir bor takrorlab chiqish tavsiya etiladi 📚";
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartTest() {
       tIdx = 0; score = 0;
-      document.getElementById('quiz-body').style.display = 'block';
-      document.getElementById('quiz-result').style.display = 'none';
+      const quizBody = document.getElementById('quiz-body');
+      const quizResult = document.getElementById('quiz-result');
+      if (quizBody) quizBody.style.display = 'block';
+      if (quizResult) quizResult.style.display = 'none';
       loadTestQuestion();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

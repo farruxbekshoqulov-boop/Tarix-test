@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>7-sinf O'zbekiston tarixi — 11-20-mavzular Umumlashmasi</title>
+  <title>12-21-mavzular. Umumiy takrorlash</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -63,7 +63,7 @@
     }
 
     .palace-header h1 {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -86,10 +86,10 @@
 
     .tab-btn {
       flex: 1;
-      padding: 10px 4px;
+      padding: 11px 4px;
       border: none;
       background: transparent;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 800;
       color: #78350f;
       border-radius: 9px;
@@ -153,6 +153,7 @@
     }
 
     .match-column {
+      direction: ltr;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -214,15 +215,15 @@
       box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.45; color: #291104; }
     .fc-a {
-      font-size: 16px; font-weight: 700; color: #065f46;
+      font-size: 15.5px; font-weight: 700; color: #065f46;
       background: #ecfdf5; border: 1.5px solid #6ee7b7;
       border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
     }
 
     /* TEST */
-    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
     
     .opt-btn {
@@ -230,7 +231,7 @@
       border: 1.5px solid #d97706;
       border-radius: 12px;
       padding: 13px 15px;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 600;
       color: #291104;
       cursor: pointer;
@@ -241,7 +242,7 @@
     }
 
     .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
-    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
     
     .exp-box {
       background: #fef3c7;
@@ -313,13 +314,13 @@
   <div class="app-card">
 
     <div class="palace-header">
-      <h1>7-sinf O'zbekiston tarixi — 11-20-mavzular umumlashmasi</h1>
-      <p>O'rta asrlar iqtisodiy-ijtimoiy va madaniy hayoti bo'yicha 40 ta savol</p>
+      <h1>12-21-mavzular. Umumiy takrorlash</h1>
+      <p>7-sinf O'zbekiston tarixi (39–72-betlar)</p>
     </div>
 
     <div class="tab-nav">
       <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
-      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (40)</button>
       <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (40)</button>
     </div>
 
@@ -342,7 +343,7 @@
         <div style="font-size: 50px;">📜</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          11-20-mavzular bo'yicha atamalar va voqealarni muvaffaqiyatli mosladingiz. Endi Savol-Javob qismiga o'tamizmi?
+          12-21-mavzularga oid atamalarni muvaffaqiyatli mosladingiz. Endi Savol-Javob qismiga o'tamizmi?
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
@@ -355,7 +356,7 @@
     <div id="tab-cards" class="tab-content">
       <div id="fc-play-box">
         <div class="header-bar">
-          <span class="topic-badge">11-20-mavzular Trenajyor</span>
+          <span class="topic-badge">12-21-mavzular Trenajyor</span>
           <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
@@ -373,9 +374,9 @@
 
       <div id="fc-finish-box" class="finish-state">
         <div style="font-size: 50px;">🏰</div>
-        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">40 ta savol yakunlandi!</h2>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">40 ta savol tugadi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          11-20-mavzular bo'yicha savol-javoblarni takrorlab chiqdingiz. Endi Test sinoviga o'tamizmi?
+          Savol-javoblarni ko'rib chiqdingiz. Endi bilimingizni testda tekshiring.
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
@@ -384,11 +385,11 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (40 TA TEST - A, B, C, D o'rtasida mutlaqo betartib va har biriga aniq 10 tadan teng taqsimlangan) -->
+    <!-- 3. TEST SINOVI (40 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
-          <span class="topic-badge">11-20-mavzular Test Sinovi</span>
+          <span class="topic-badge">12-21-mavzular Test Sinovi</span>
           <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 40</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
@@ -401,10 +402,11 @@
       <div id="quiz-result" class="finish-state">
         <div style="font-size: 50px;">🌟</div>
         <div class="finish-badge" id="q-score">0/40</div>
-        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Umumlashma sinov tugadi!</h2>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
         <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
+          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
         </div>
       </div>
     </div>
@@ -416,96 +418,105 @@
   </div>
 
   <script>
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.ready();
-      window.Telegram.WebApp.expand();
-    }
+    let activeTab = 'match';
+    let answered = false;
+    let quizFinished = false;
 
     function switchTab(tab) {
+      activeTab = tab;
       ['match', 'cards', 'quiz'].forEach(t => {
-        const btn = document.getElementById(`tab-btn-${t}`);
-        const content = document.getElementById(`tab-${t}`);
-        if (btn) btn.classList.remove('active');
-        if (content) content.classList.remove('content-active', 'active');
+        document.getElementById(`tab-btn-${t}`).classList.remove('active');
+        document.getElementById(`tab-${t}`).classList.remove('active');
       });
-      const activeBtn = document.getElementById(`tab-btn-${tab}`);
-      const activeContent = document.getElementById(`tab-${tab}`);
-      if (activeBtn) activeBtn.classList.add('active');
-      if (activeContent) activeContent.classList.add('active');
-      
-      const stickyBar = document.getElementById('sticky-bar');
-      if (stickyBar) stickyBar.style.display = 'none';
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+      document.getElementById(`tab-${tab}`).classList.add('active');
+
+      if (tab === 'quiz' && !quizFinished && answered) {
+        document.getElementById('sticky-bar').style.display = 'flex';
+      } else {
+        document.getElementById('sticky-bar').style.display = 'none';
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (11-20 MAVZULAR: 20 ta juftlik) ---
+    // Fisher-Yates shuffle algorithm
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // --- 1. MOSLASH (4 BOSQICH: 20 ta juftlik, 12-21-mavzular asosida) ---
     const matchStages = [
       [
-        { id: 1, left: "Iqtisodiy yuksalish", right: "IX–XII asrlarda Movarounnahr va Xorazmda shaharsozlik va qishloq xo'jaligining rivojlanishi" },
-        { id: 2, left: "Sug'orma dehqonchilik", right: "Zarafshon, Qashqadaryo, Surxondaryo vodiylarida kanal va arqlar orqali amalga oshirilgan dehqonchilik" },
-        { id: 3, left: "Kand (kent)", right: "Sug'd tilida «shahar» ma'nosini anglatuvchi qadimgi atama" },
-        { id: 4, left: "Rizq", right: "O'rta asrlarda dehqonlar yetishtirgan hosil va oziq-ovqat mahsulotlari" },
-        { id: 5, left: "Hunarmandchilik", right: "Kulolchilik, to'qimachilik, metallsozlik va shishasozlik kabi sohalarning rivojlanishi" }
+        { id: 1, left: "Ixshid", right: "Sug'd va Farg'onada oliy hukmdorga berilgan unvon" },
+        { id: 2, left: "Tudun", right: "Chochda soliq yig'imlari noziri va xoqon noibi" },
+        { id: 3, left: "Zul yaminayn", right: "Tohir ibn Husaynga berilgan «Ikki qo'lda kurashuvchi» unvoni" },
+        { id: 4, left: "Sagaris", right: "Turk xoqonligi davrida chopuvchi qurolning yangi turi" },
+        { id: 5, left: "As-Saffor", right: "Misgar ma'nosini bildiruvchi, Ya'qub ibn Laysga berilgan laqab" }
       ],
       [
-        { id: 6, left: "Ipak matolar", right: "Movarounnahr va Farg'onada tayyorlanib, Xitoy va Yevropaga chiqarilgan qimmatbaho mahsulot" },
-        { id: 7, left: "Papirus o'rniga qog'oz", right: "Samarqandda ishlab chiqarilib, butun musulmon olamiga tarqalgan yozuv vositasi" },
-        { id: 8, left: "Xorazm gilamlari", right: "Xorazm hunarmandlari tomonidan to'qilib, chet ellarga sotilgan mashhur buyumlar" },
-        { id: 9, left: "Ichki va tashqi savdo", right: "Ipak yo'li bo'ylab karvonsaroylar orqali amalga oshirilgan savdo munosabatlari" },
-        { id: 10, left: "Dirham va dinor", right: "O'rta asrlarda Movarounnahrda muomalada bo'lgan kumush va oltin tangalar" }
+        { id: 6, left: "Zartepa", right: "Termiz atrofida IV-V asrlarda yirik shaharga aylangan manzilgoh (17 gektar)" },
+        { id: 7, left: "Poykand", right: "Arab manbalarida «Madina at-tujjor» — «Savdogarlar shahri» deb atalgan shahar" },
+        { id: 8, left: "Mingbuloq", right: "G'arbiy Turk hukmdori To'n yabg'u o'z qarorgohini ko'chirgan mavze" },
+        { id: 9, left: "Som qal'asi", right: "Kesh vohasida Muqanna o'zining qarorgohiga aylantirgan so'nggi istehkom" },
+        { id: 10, left: "Yangikent", right: "Sirdaryo quyi oqimida joylashgan O'g'uz davlatining poytaxti" }
       ],
       [
-        { id: 11, left: "Madrasa", right: "IX–X asrlardan boshlab Movarounnahr shaharlarida qurila boshlagan oliy o'quv yurti" },
-        { id: 12, left: "Maktab", right: "Bolalarga boshlang'ich ta'lim (savod, Qur'on o'qish) beriladigan dargoh" },
-        { id: 13, left: "Vaqf", right: "Madrasalar, masjidlar va shifoxonalarni saqlash uchun ajratilgan mulk va yerlar" },
-        { id: 14, left: "Ulamo", right: "Diniy va dunyoviy ilmlarni chuqur egallagan olimlar qatlami" },
-        { id: 15, left: "Faqih", right: "Islom huquqshunosligi (fiqh) bo'yicha mutaxassis bo'lgan olim" }
+        { id: 11, left: "Johiz", right: "«Manoqib al-atrok» asarida turklar harbiy ishda ustun ekanini yozgan arab adibi" },
+        { id: 12, left: "Prokopiy Kesariyskiy", right: "Eftaliylar podshosining adolati haqida yozgan vizantiyalik tarixchi" },
+        { id: 13, left: "Abu Bakr Narshaxiy", right: "«Buxoro tarixi» asarining muallifi" },
+        { id: 14, left: "To'nyuquq", right: "«Men xoqon To'nyuquq Chinda dunyoga keldim» deb yozilgan bitiktosh egasi" },
+        { id: 15, left: "Ziyod ibn Solih", right: "751-yil Talas jangida arab qo'shiniga qo'mondonlik qilgan sarkarda" }
       ],
       [
-        { id: 16, left: "Xorazm Ma'mun akademiyasi", right: "1004-yilda Gurganchda Xorazmshoh Ma'mun tashabbusi bilan ochilgan fan markazi" },
-        { id: 17, left: "Bayt ul-hikma", right: "IX asrda Bag'dodda xalifa Ma'mun tomonidan tashkil etilgan «Donishmandlar uyi»" },
-        { id: 18, left: "Usturlob", right: "Osmon jismlari va yulduzlar harakatini kuzatish uchun ishlatilgan o'rta asr asbobi" },
-        { id: 19, left: "Rasadxona", right: "Astronomik kuzatishlar olib borish uchun maxsus jihozlangan ilmiy binolar" },
-        { id: 20, left: "Zij", right: "Astronomik jadvallar va yulduzlar holati qayd etilgan qo'llanmalar kitobi" }
+        { id: 16, left: "Samarqand sulton qog'ozi", right: "O'zining yupqaligi, silliqligi va yumshoqligi bilan mashhur bo'lgan oq rangli qog'oz navi" },
+        { id: 17, left: "Nimkanop", right: "Ipak qoldiqlari va po'stloq tolalari aralashtirib tayyorlanadigan dolchin rangli qog'oz turi" },
+        { id: 18, left: "Zandanachi", right: "Buxoroning Zandana qishlog'ida to'qilgan mallarang bo'z mato" },
+        { id: 19, left: "«Oq kiyimlilar»", right: "VIII asr oxirida Muqanna boshchiligida Movarounnahrda ko'tarilgan xalq harakati" },
+        { id: 20, left: "Talas jangi", right: "751-yilda Tan imperiyasining O'rta Osiyoni egallashiga chek qo'ygan tarixiy jang" }
       ]
     ];
 
     let currentMatchStage = 0;
     let selectedMatchBtn = null;
     let matchesRemaining = 5;
+    let matchTimeoutId = null;
+    let isMatchLocked = false;
 
     function initMatch() {
+      if (matchTimeoutId) clearTimeout(matchTimeoutId);
       currentMatchStage = 0;
-      matchesRemaining = 5;
+      selectedMatchBtn = null;
+      isMatchLocked = false;
+      document.getElementById('match-play-box').style.display = 'block';
+      document.getElementById('match-finish-box').style.display = 'none';
       loadMatchStage();
     }
 
     function loadMatchStage() {
+      if (matchTimeoutId) clearTimeout(matchTimeoutId);
+      selectedMatchBtn = null;
+      isMatchLocked = false;
       const pool = matchStages[currentMatchStage];
       matchesRemaining = pool.length;
       
-      const badge = document.getElementById('match-stage-badge');
-      const counter = document.getElementById('match-counter');
-      const prog = document.getElementById('match-progress');
-      const playBox = document.getElementById('match-play-box');
-      const finishBox = document.getElementById('match-finish-box');
-
-      if (badge) badge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
-      if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
-      if (prog) prog.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
-      if (playBox) playBox.style.display = 'block';
-      if (finishBox) finishBox.style.display = 'none';
+      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
       
       let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
       let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
 
-      leftCards.sort(() => 0.5 - Math.random());
-      rightCards.sort(() => 0.5 - Math.random());
+      shuffleArray(leftCards);
+      shuffleArray(rightCards);
 
       const colLeft = document.getElementById('match-col-left');
       const colRight = document.getElementById('match-col-right');
-      if (colLeft) colLeft.innerHTML = '';
-      if (colRight) colRight.innerHTML = '';
+      colLeft.innerHTML = '';
+      colRight.innerHTML = '';
 
       leftCards.forEach(c => {
         const btn = document.createElement('button');
@@ -513,7 +524,7 @@
         btn.innerText = c.text;
         btn.dataset.id = c.id;
         btn.onclick = () => onMatchClick(btn);
-        if (colLeft) colLeft.appendChild(btn);
+        colLeft.appendChild(btn);
       });
 
       rightCards.forEach(c => {
@@ -522,472 +533,439 @@
         btn.innerText = c.text;
         btn.dataset.id = c.id;
         btn.onclick = () => onMatchClick(btn);
-        if (colRight) colRight.appendChild(btn);
+        colRight.appendChild(btn);
       });
     }
 
     function onMatchClick(btn) {
-      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+      if (isMatchLocked || btn.classList.contains('matched') || btn.classList.contains('wrong')) return;
+
+      const parentCol = btn.parentElement.id;
 
       if (!selectedMatchBtn) {
         selectedMatchBtn = btn;
         btn.classList.add('selected');
       } else {
-        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
-          btn.classList.add('matched');
-          selectedMatchBtn.classList.add('matched');
+        if (selectedMatchBtn.parentElement.id === parentCol) {
           selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = btn;
+          btn.classList.add('selected');
+          return;
+        }
+
+        const firstBtn = selectedMatchBtn;
+        const secondBtn = btn;
+
+        if (firstBtn.dataset.id === secondBtn.dataset.id) {
+          firstBtn.classList.remove('selected');
+          firstBtn.classList.add('matched');
+          secondBtn.classList.add('matched');
           selectedMatchBtn = null;
           matchesRemaining--;
-          
-          const counter = document.getElementById('match-counter');
-          if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
 
           if (matchesRemaining === 0) {
             currentMatchStage++;
-            setTimeout(() => {
+            matchTimeoutId = setTimeout(() => {
               if (currentMatchStage < matchStages.length) {
                 loadMatchStage();
               } else {
-                const prog = document.getElementById('match-progress');
-                const playBox = document.getElementById('match-play-box');
-                const finishBox = document.getElementById('match-finish-box');
-                if (prog) prog.style.width = '100%';
-                if (playBox) playBox.style.display = 'none';
-                if (finishBox) finishBox.style.display = 'flex';
+                document.getElementById('match-progress').style.width = '100%';
+                document.getElementById('match-play-box').style.display = 'none';
+                document.getElementById('match-finish-box').style.display = 'flex';
               }
             }, 500);
           }
         } else {
-          btn.classList.add('wrong');
-          selectedMatchBtn.classList.add('wrong');
+          isMatchLocked = true;
+          firstBtn.classList.remove('selected');
+          firstBtn.classList.add('wrong');
+          secondBtn.classList.add('wrong');
           
-          setTimeout(() => {
-            btn.classList.remove('wrong', 'selected');
-            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+          matchTimeoutId = setTimeout(() => {
+            firstBtn.classList.remove('wrong');
+            secondBtn.classList.remove('wrong');
             selectedMatchBtn = null;
+            isMatchLocked = false;
           }, 400);
         }
       }
     }
 
-    // --- 2. SAVOL-JAVOB (40 TA SAVOL - 11-20 MAVZULAR) ---
+    // --- 2. SAVOL-JAVOB (40 TA SAVOL - 12-21-mavzular asosida) ---
     const flashcards = [
-      { q: "1. IX–XII asrlarda Movarounnahr va Xorazmda qaysi soha eng yuqori darajada rivojlangan?", a: "Shaharsozlik, sug'orma dehqonchilik va hunarmandchilik." },
-      { q: "2. Zarafshon, Qashqadaryo va Surxondaryo vohalarida qanday dehqonchilik turi keng tarqalgan edi?", a: "Sug'orma dehqonchilik." },
-      { q: "3. Sug'd tilida «shahar» ma'nosini anglatuvchi qadimgi so'z nima?", a: "Kand (kent)." },
-      { q: "4. O'rta asrlarda dehqonlar yetishtirgan hosil va oziq-ovqat mahsulotlari nima deb atalgan?", a: "Rizq." },
-      { q: "5. Movarounnahr va Xorazm hunarmandlari qaysi mahsulotlari bilan butun Sharqda mashhur bo'lgan?", a: "Ipak va paxta matolari, qog'oz, idish-tovoqlar hamda gilamlar bilan." },
-      { q: "6. Qaysi shahrimizda qog'oz ishlab chiqarish yo'lga qo'yilib, butun musulmon olamiga tarqalgan?", a: "Samarqandda." },
-      { q: "7. O'rta asrlarda Movarounnahrda pul muomalasida qanday tangalar ishlatilgan?", a: "Kumush (dirham) va oltin (dinor) tangalar." },
-      { q: "8. Ipak yo'li bo'ylab savdogarlar uchun nimalar qurilgan?", a: "Karvonsaroylar va rabotlar." },
-      { q: "9. IX–X asrlardan boshlab Movarounnahr shaharlarida qanday oliy o'quv yurtlari qurila boshlagan?", a: "Madrasalar." },
-      { q: "10. Bolalarga boshlang'ich savodxonlik va Qur'on o'qish o'rgatiladigan dargoh qanday atalgan?", a: "Maktab." },
-      { q: "11. Madrasalar va masjidlarni moddiy jihatdan qo'llab-quvvatlash uchun ajratilgan mulk qanday atalgan?", a: "Vaqf yerlari va mulklari." },
-      { q: "12. Diniy va dunyoviy ilmlarni chuqur egallagan olimlar qatlami qanday nomlangan?", a: "Ulamo." },
-      { q: "13. Islom huquqshunosligi bo'yicha mutaxassis bo'lgan olim kim?", a: "Faqih." },
-      { q: "14. Xorazm Ma'mun akademiyasi qachon va qayerda tashkil etilgan?", a: "1004-yilda Gurganchda." },
-      { q: "15. Xorazm Ma'mun akademiyasiga kim rahbarlik qilgan?", a: "Abu Rayhon Beruniy." },
-      { q: "16. IX asrda Bag'dodda xalifa Ma'mun tomonidan tashkil etilgan mashhur ilm maskani nima deb atalgan?", a: "Bayt ul-hikma («Donishmandlar uyi»)." },
-      { q: "17. Osmon jismlari va yulduzlar harakatini kuzatish uchun ishlatilgan o'rta asr astronomik asbobi nima?", a: "Usturlob." },
-      { q: "18. Astronomik kuzatishlar olib borish uchun maxsus jihozlangan ilmiy binolar qanday atalgan?", a: "Rasadxona." },
-      { q: "19. Astronomik jadvallar va yulduzlar holati qayd etilgan qo'llanmalar kitobi nima deb nomlangan?", a: "Zij." },
-      { q: "20. O'rta asrlarda qishloq xo'jaligida suv ta'minotini yaxshilash uchun nimalar qazilgan?", a: "Karnallar, ariqlar va korizlar." },
-      { q: "21. IX–XII asrlarda shaharlar qanday qismlarga bo'lingan?", a: "Ark, shahriston va rabot." },
-      { q: "22. Shaharning markaziy qismi, hokim saroyi va mahkama joylashgan qism nima deb atalgan?", a: "Ark." },
-      { q: "23. Hunarmandlar va savdogarlar yashaydigan shaharning asosiy qismi qaysi edi?", a: "Shahriston." },
-      { q: "24. Shahar atrofi, bozorlar va karvonsaroylar joylashgan hudud qanday atalgan?", a: "Rabot." },
-      { q: "25. Movarounnahrda o'rta asrlarda qaysi hunarmandchilik turi eng ko'p rivojlangan edi?", a: "Kulolchilik va to'qimachilik." },
-      { q: "26. Samarqand qog'ozi qanday xususiyati bilan mashhur bo'lgan?", a: "Mustahkamligi va silliqligi bilan." },
-      { q: "27. O'rta asrlarda tashqi savdoda asosan qaysi davlatlar bilan aloqalar olib borilgan?", a: "Xitoy, Hindiston, Yaqin Sharq va Yevropa mamlakatlari bilan." },
-      { q: "28. Madrasalarda tahsil oluvchi talabalar kimlar deb atalgan?", a: "Talaba yoki so'fiylar (ilm toliblari)." },
-      { q: "29. Madrasalarda ta'minot uchun ajratilgan mablag'lar kimlar tomonidan boshqarilgan?", a: "Mutavallilar tomonidan." },
-      { q: "30. IX–X asrlarda Movarounnahrda ilm-fan taraqqiyotiga eng katta ta'sir ko'rsatgan sulola qaysi?", a: "Somoniylar sulolasi." },
-      { q: "31. Buxoro saroyi kutubxonasi haqida o'z asarida yuqori baho bergan buyuk alloma kim?", a: "Abu Ali ibn Sino." },
-      { q: "32. O'rta asrlarda tabobat sohasida bemorlarni davolashda qaysi usullar qo'llanilgan?", a: "Parhez, dorivor o'simliklar va tibbiy tadbirlar." },
-      { q: "33. Xorazm Ma'mun akademiyasida qaysi fanlar bo'yicha yirik tadqiqotlar olib borilgan?", a: "Astronomiya, matematika, fizika, tibbiyot va falsafa." },
-      { q: "34. Beruniy Ma'mun akademiyasida nimalarni amalga oshirgan?", a: "Yer sharining o'lchamlarini hisoblagan va yulduzlar jadvalini tuzgan." },
-      { q: "35. Ibn Sino o'zining qaysi asarida barcha fanlarni qamrab olganini ko'rsatgan?", a: "«Kitob us-shifo» va «Tib qonunlari»." },
-      { q: "36. O'rta asrlarda Movarounnahr va Xorazmda me'morchilik san'ati nima bilan bezatilgan?", a: "Pishiq g'isht, o'yma naqshlar va ganchkorlik bilan." },
-      { q: "37. IX–XII asrlarda savdo-sotiqning rivojlanishiga nima asosiy sabab bo'lgan?", a: "Ipak yo'lining xavfsizligi va iqtisodiy barqarorlik." },
-      { q: "38. O'rta asrlarda shahar va qishloqlar o'rtasida qanday munosabatlar mavjud bo'lgan?", a: "O'zaro iqtisodiy va madaniy bog'liqlik." },
-      { q: "39. IX–XII asrlarda ilm-fan rivojiga qo'shgan hissasi uchun bu davr tarixda qanday nomlanadi?", a: "Sharq Uyg'onish davri (Renessans)." },
-      { q: "40. O'rta asr ulamolari va faqihlari jamiyatda qanday nufuzga ega bo'lgan?", a: "Juda yuksak obro'-e'tiborga ega bo'lgan." }
+      { q: "1. V-VII asrlarda Turk xoqonligi tasarrufida nechta mustaqil hokimliklar tashkil topgan edi?", a: "15 dan ortiq mustaqil hokimliklar." },
+      { q: "2. Sug'd va Farg'onada oliy hukmdor qanday unvon bilan yuritilgan?", a: "Ixshid." },
+      { q: "3. Chochda soliq yig'imlari nozirlari kimlar deb atalgan?", a: "Tudunlar." },
+      { q: "4. Arab adibi Johizning «Manoqib al-atrok» asarida turklar qaysi sohada ustun deb yozilgan?", a: "Harbiy ishda." },
+      { q: "5. Turkiylar tomonidan jangovar otlarda foydalanishda kashf etilgan muhim anjom qaysi?", a: "Egar-jabduq, uzangi va tizgin." },
+      { q: "6. Vizantiyalik tarixchi Prokopiy Kesariyskiy eftaliylar podshosining qaysi fazilatini alohida ta'kidlagan?", a: "Aholiga g'amxo'rlik ko'rsatishi va adolat mezonlariga amal qilishi." },
+      { q: "7. Qaysi shaharning qadimiy xarobasi «Madina at-tujjor» — «Savdogarlar shahri» deb atalgan?", a: "Poykand." },
+      { q: "8. G'arbiy Turk hukmdori To'n yabg'u o'z qarorgohini qayerga ko'chirgan edi?", a: "Choch yaqinidagi Mingbuloq mavzesiga." },
+      { q: "9. VIII asr boshlarida Movarounnahrni to'liq bosib olishni amalga oshirgan xalifalik noibi kim edi?", a: "Qutayba ibn Muslim." },
+      { q: "10. 720-yilda arablarga qarshi kurash boshlagan Sug'd ixshidi va Panjikent hokimi kimlar edi?", a: "Sug'd ixshidi G'urak va Panjikent hokimi Divashtich." },
+      { q: "11. VIII asrning 40-yillarida xalifalikda umaviylarga qarshi harakatni boshlagan kufalik shaxs kim?", a: "Abu Muslim." },
+      { q: "12. 750-yilda taxtga o'tirib, abbosiylar sulolasiga asos solgan xalifa kim edi?", a: "Abul Abbos Saffoh." },
+      { q: "13. 751-yilda Talas daryosi bo'yida xalifalik qo'shiniga kim qo'mondonlik qilgan?", a: "Ziyod ibn Solih." },
+      { q: "14. Talas jangida xitoyliklar ortiga zarba berib g'alabaga hissa qo'shgan qabila qaysi?", a: "Qarluqlar." },
+      { q: "15. Talas jangidan keyin Samarqandda qaysi soha rivojlandi?", a: "Qog'oz ishlab chiqarish sanoati." },
+      { q: "16. VIII asr oxirlarida Movarounnahrda «Oq kiyimlilar» qo'zg'oloniga kim rahbarlik qilgan?", a: "Muqanna (Hoshim ibn Hakim)." },
+      { q: "17. Muqanna o'z qarorgohini Kesh vohasidagi qaysi qal'aga ko'chirgan edi?", a: "Som qal'asiga." },
+      { q: "18. 806-yilda Samarqandda xalifalikka qarshi ko'tarilgan qo'zg'olon rahbari kim edi?", a: "Rofe ibn Lays." },
+      { q: "19. Rofe ibn Lays qo'zg'olonini bostirishda Ma'munga kimlar yordam bergan?", a: "Somonxudotning nabiralari (Nuh, Ahmad, Yahyo)." },
+      { q: "20. Samarqandda ishlab chiqarilgan oq rangli yuqori navli qog'oz qanday nomlangan?", a: "«Samarqand sulton qog'ozi»." },
+      { q: "21. Toxaristonda nechta tog' va tog'oldi viloyatlaridan iborat mustaqil hokimliklar bo'lgan?", a: "27 ta." },
+      { q: "22. Toxaristonning poytaxti qaysi shahar edi?", a: "Balx shahri." },
+      { q: "23. Farg'ona vodiysida o'troq aholi bilan bir qatorda tog' yonbag'irlarida qanday chorvachilik turi qadimdan rivojlangan?", a: "Yilqichilik (tulpor otlar)." },
+      { q: "24. Choch hududida G'arbiy Turk xoqonligi davrida qaysi shahzoda hukmronlik qilgan?", a: "Tegin Tyanchji." },
+      { q: "25. O'rta asr shaharlari nechta asosiy qismdan iborat bo'lgan?", a: "Uch qismdan: ko'handiz, shahriston, rabod." },
+      { q: "26. Turon xalqlari harbiy san'atida otliq askarlarga ot ustida mustahkam o'tirish imkonini bergan muhim kashfiyot nima?", a: "Uzangi." },
+      { q: "27. Eftaliylar alifbosi qaysi yozuv asosida shakllangan va necha harfdan iborat bo'lgan?", a: "Baqtriya yozuvi asosida, 25 harfdan." },
+      { q: "28. Xorazmdagi Jonbosqal'a va Tuproqqal'adan topilgan yozuvlar nimalarga bitilgan edi?", a: "Teriga va yog'ochga." },
+      { q: "29. To'nyuquq bitiktoshi qaysi asrga tegishli?", a: "VIII asr." },
+      { q: "30. Turklarning turkiy run (ko'k-turk) xati necha ta harfdan iborat bo'lgan?", a: "38–40 ta harfdan." },
+      { q: "31. Arablar bosib olgan Xuroson viloyatining markazi dastlab qaysi shahar edi?", a: "Marv shahri." },
+      { q: "32. Arablar Amudaryoning o'ng sohiliga bosqinchilik yurishlarini qachon boshlaganlar?", a: "654-yildan." },
+      { q: "33. Qutayba ibn Muslim Movarounnahrni qaysi yillar davomida to'g'ridan-to'g'ri bo'ysundirgan?", a: "705–715-yillar." },
+      { q: "34. Xuroson noibi Ashros islom dinini qabul qilganlardan qaysi soliqlarni olmaslikka qaror qilgan?", a: "Xiroj va jiz'ya soliqlarini." },
+      { q: "35. Abu Muslim Xurosonning Marv shahrini qaysi yili egallagan?", a: "747-yili." },
+      { q: "36. Muqanna o'z tarafdorlariga qanday ijtimoiy tenglik ta'limotini targ'ib etgan?", a: "Mazdakiylik ta'limotini." },
+      { q: "37. Buxoroning Zandana qishlog'ida to'qilgan mallarang bo'z mato qanday atalgan?", a: "«Zandanachi»." },
+      { q: "38. Samarqandning Vador qishlog'ida tayyorlangan mato qanday nomlangan?", a: "«Vadoriy»." },
+      { q: "39. Xorazm va Termizda nimalar yasalib, Amudaryo bo'ylab yuk tashigan?", a: "Qayiqlar." },
+      { q: "40. Ipak qoldiqlari va po'stloq tolalari aralashtirib tayyorlanadigan qog'oz turi nima deb atalgan?", a: "«Nimkanop»." }
     ];
 
     let fcIdx = 0;
     function loadFlashcard() {
       const card = flashcards[fcIdx];
-      const counter = document.getElementById('fc-counter');
-      const prog = document.getElementById('fc-progress');
-      const qEl = document.getElementById('fc-question');
-      const aEl = document.getElementById('fc-answer');
-      const toggleBtn = document.getElementById('fc-toggle-btn');
-      const nextBtn = document.getElementById('fc-next-btn');
-
-      if (counter) counter.innerText = `${fcIdx + 1} / ${flashcards.length}`;
-      if (prog) prog.style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
-      if (qEl) qEl.innerText = card.q;
-      if (aEl) {
-        aEl.innerText = card.a;
-        aEl.style.display = 'none';
-      }
-      if (toggleBtn) toggleBtn.style.display = 'block';
-      if (nextBtn) nextBtn.style.display = 'none';
+      document.getElementById('fc-counter').innerText = `${fcIdx + 1} / ${flashcards.length}`;
+      document.getElementById('fc-progress').style.width = `${((fcIdx + 1) / flashcards.length) * 100}%`;
+      document.getElementById('fc-question').innerText = card.q;
+      document.getElementById('fc-answer').innerText = card.a;
+      document.getElementById('fc-answer').style.display = 'none';
+      document.getElementById('fc-toggle-btn').style.display = 'block';
+      document.getElementById('fc-next-btn').style.display = 'none';
     }
 
     function toggleAnswer() {
-      const aEl = document.getElementById('fc-answer');
-      const toggleBtn = document.getElementById('fc-toggle-btn');
-      const nextBtn = document.getElementById('fc-next-btn');
-      if (aEl) aEl.style.display = 'block';
-      if (toggleBtn) toggleBtn.style.display = 'none';
-      if (nextBtn) nextBtn.style.display = 'block';
+      document.getElementById('fc-answer').style.display = 'block';
+      document.getElementById('fc-toggle-btn').style.display = 'none';
+      document.getElementById('fc-next-btn').style.display = 'block';
     }
 
     function nextFlashcard() {
       fcIdx++;
-      if (fcIdx < flashcards.length) {
-        loadFlashcard();
-      } else {
-        const playBox = document.getElementById('fc-play-box');
-        const finishBox = document.getElementById('fc-finish-box');
-        if (playBox) playBox.style.display = 'none';
-        if (finishBox) finishBox.style.display = 'flex';
+      if (fcIdx < flashcards.length) loadFlashcard();
+      else {
+        document.getElementById('fc-play-box').style.display = 'none';
+        document.getElementById('fc-finish-box').style.display = 'flex';
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartCards() {
       fcIdx = 0;
-      const playBox = document.getElementById('fc-play-box');
-      const finishBox = document.getElementById('fc-finish-box');
-      if (playBox) playBox.style.display = 'block';
-      if (finishBox) finishBox.style.display = 'none';
+      document.getElementById('fc-play-box').style.display = 'block';
+      document.getElementById('fc-finish-box').style.display = 'none';
       loadFlashcard();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (40 TA TEST - Mutlaqo tartibsiz, har bir harfga aniq 10 tadan teng taqsimlangan) ---
-    const testQuestions = [
-      // 1. Correct: B (1)
+    // --- 3. TEST SINOVI (40 TA TEST - 12-21-mavzular asosida, To'g'ri javoblar A, B, C, D bo'ylab aralashtirilgan va tartibi buzilgan) ---
+    const rawTestQuestions = [
       {
-        q: "1. Qachon Movarounnahr va Xorazmda shaharsozlik va iqtisodiy yuksalish jadal tus olgan?",
-        options: ["V–VI asrlarda", "IX–XII asrlarda", "XIV–XV asrlarda", "XVI–XVII asrlarda"],
-        correct: 1,
-        exp: "Bu jarayon IX–XII asrlarda yuz bergan."
+        q: "1. V-VII asrlarda Turk xoqonligi tasarrufida nechta mustaqil hokimliklar tashkil topgan edi?",
+        options: ["15 dan ortiq mustaqil hokimliklar", "5 ta yirik viloyat", "30 dan ziyod xonlik", "Faqat bitta yirik davlat"],
+        correctText: "15 dan ortiq mustaqil hokimliklar",
+        exp: "V-VII asrlarda Turk xoqonligi bir qancha hokimliklarga bo'linib, 15 dan ortiq mustaqil hokimliklar tashkil topgan."
       },
-      // 2. Correct: D (3)
       {
-        q: "2. Qachon Gurganchda Xorazm Ma'mun akademiyasi tashkil etilgan?",
-        options: ["813-yilda", "937-yilda", "999-yilda", "1004-yilda"],
-        correct: 3,
-        exp: "Ma'mun akademiyasi 1004-yilda tashkil etilgan."
+        q: "2. Sug'd va Farg'onada oliy hukmdor qanday unvon bilan yuritilgan?",
+        options: ["Xoqon", "Ixshid", "Yabg'u", "Xorazmshoh"],
+        correctText: "Ixshid",
+        exp: "Sug'd va Farg'onada oliy hukmdor «ixshid» deb atalgan."
       },
-      // 3. Correct: A (0)
       {
-        q: "3. Qachon Samarqandda qog'oz ishlab chiqarish yo'lga qo'yilib, butun musulmon olamiga tarqalgan?",
-        options: ["O'rta asrlarda Somoniylar va undan keyingi davrlarda", "Qadimgi Rimda", "Faqat sovet davrida", "Mustaqillikda"],
-        correct: 0,
-        exp: "Samarqandda qog'oz ishlab chiqarish o'rta asrlarda yo'lga qo'yilgan."
+        q: "3. Chochda soliq yig'imlari nozirlari qanday nomlangan?",
+        options: ["Dehqon", "Kashovarz", "Tudun", "Kadivar"],
+        correctText: "Tudun",
+        exp: "Choch ma'muriy boshqaruvida soliq yig'ish bo'yicha nozirlar tudunlar deb yuritilgan."
       },
-      // 4. Correct: C (2)
       {
-        q: "4. Qachon Bag'dodda xalifa Ma'mun tomonidan «Bayt ul-hikma» («Donishmandlar uyi») tashkil etilgan?",
-        options: ["VI asrda", "VIII asrda", "IX asrda", "XI asrda"],
-        correct: 2,
-        exp: "«Bayt ul-hikma» IX asrda tashkil etilgan."
+        q: "4. Arab adibi Johizning «Manoqib al-atrok» asarida turk xalqlari qaysi sohada barchadan ustun ekanligi yozilgan?",
+        options: ["Hunarmandchilikda", "Ilm-fanda", "Davlatni boshqarishda", "Harbiy ishda"],
+        correctText: "Harbiy ishda",
+        exp: "Johiz o'z asarida turklar harbiy ishda ustun ekanini ta'kidlagan."
       },
-      // 5. Correct: B (1)
       {
-        q: "5. Qachon Movarounnahrda madrasalar oliy o'quv yurti sifatida qurila boshlagan?",
-        options: ["V asrda", "IX–X asrlardan boshlab", "XIII asrda", "XVI asrda"],
-        correct: 1,
-        exp: "Madrasalar IX–X asrlardan boshlab qurila boshlagan."
+        q: "5. Vizantiyalik tarixchi Prokopiy Kesariyskiy eftaliylar podshosining qaysi fazilatini yuqori baholagan?",
+        options: ["Aholiga g'amxo'rlik ko'rsatishi va adolat mezonlariga amal qilishini", "Faqat boylik to'plashga intilishini", "Tashqi savdoni cheklaganini", "Shaharlarni buzib tashlaganini"],
+        correctText: "Aholiga g'amxo'rlik ko'rsatishi va adolat mezonlariga amal qilishini",
+        exp: "Prokopiy Kesariyskiy eftaliylar podshosi aholiga g'amxo'rlik ko'rsatib, adolatga amal qilishini yozgan."
       },
-      // 6. Correct: D (3)
       {
-        q: "6. Qachon o'rta asrlarda shaharning ichki qismi, hokim saroyi va mahkama joylashgan qism «ark» deb atalgan?",
-        options: ["Faqat qadimgi Misrda", "Faqat Xitoyda", "Faqat Yevropada", "Movarounnahr va Xorazm shaharlarining o'rta asrlardagi tuzilishida"],
-        correct: 3,
-        exp: "Bu o'rta asr shaharlarining tuzilishiga xos."
+        q: "6. Qaysi shahar arab manbalarida «Madina at-tujjor» — «Savdogarlar shahri» deb ta'riflangan?",
+        options: ["Panjikent", "Poykand", "Balx", "Samarqand"],
+        correctText: "Poykand",
+        exp: "Poykand arab manbalarida «Madina at-tujjor» — «Savdogarlar shahri» deb ta'riflangan."
       },
-      // 7. Correct: A (0)
       {
-        q: "7. Qachon o'rta asrlarda hunarmandlar va savdogarlar yashaydigan shaharning asosiy qismi «shahriston» deb atalgan?",
-        options: ["O'rta asr shaharlarida", "Qadimgi Rimda", "Faqat zamonaviy shaharlarda", "Faqat qishloqlarda"],
-        correct: 0,
-        exp: "Bu o'rta asr shaharlarida shunday atalgan."
+        q: "7. G'arbiy Turk hukmdori To'n yabg'u o'z qarorgohini qaysi mavzega ko'chirgan edi?",
+        options: ["Suyabga", "O'tukanga", "Choch yaqinidagi Mingbuloq mavzesiga", "Yangikentga"],
+        correctText: "Choch yaqinidagi Mingbuloq mavzesiga",
+        exp: "G'arbiy Turk hukmdori To'n yabg'u o'z qarorgohini Choch yaqinidagi Mingbuloq mavzesiga ko'chirgan."
       },
-      // 8. Correct: C (2)
       {
-        q: "8. Qachon o'rta asrlarda shahar atrofi, bozorlar va karvonsaroylar joylashgan hudud «rabot» deb atalgan?",
-        options: ["V asrda", "VII asrda", "O'rta asrlarda shahar kengaygan davrda", "XVI asrda"],
-        correct: 2,
-        exp: "Bu o'rta asrlarda shahar kengaygan davrda yuzaga kelgan."
+        q: "8. VIII asr boshlarida Movarounnahrni to'liq bosib olishga erishgan xalifalik noibi kim edi?",
+        options: ["Ubaydulloh ibn Ziyod", "Ziyod ibn Solih", "Abu Muslim", "Qutayba ibn Muslim"],
+        correctText: "Qutayba ibn Muslim",
+        exp: "Xuroson noibi Qutayba ibn Muslim 705–715-yillarda Movarounnahrni to'liq bosib olgan."
       },
-      // 9. Correct: B (1)
       {
-        q: "9. Qachon Movarounnahrda kumush (dirham) va oltin (dinor) tangalar muomalada bo'lgan?",
-        options: ["Faqat antik davrda", "O'rta asrlarda savdo-sotiq rivojlangan davrda", "Faqat sovet davrida", "Mustaqillikda"],
-        correct: 1,
-        exp: "Bu o'rta asrlarda savdo-sotiq rivojlangan davrda bo'lgan."
+        q: "9. 720-yilda arablarga qarshi kurash boshlagan Sug'd ixshidi va Panjikent hokimi kimlar edi?",
+        options: ["Sug'd ixshidi G'urak va Panjikent hokimi Divashtich", "Tohir ibn Husayn va Rofe ibn Lays", "Ya'qub va Amr Layslar", "Bumin va Istami"],
+        correctText: "Sug'd ixshidi G'urak va Panjikent hokimi Divashtich",
+        exp: "720-yilda Sug'd ixshidi G'urak va Panjikent hokimi Divashtich arablarga qarshi chiqqan."
       },
-      // 10. Correct: D (3)
       {
-        q: "10. Qachon madrasalar, masjidlar va shifoxonalarni saqlash uchun «vaqf» yerlari ajratilgan?",
-        options: ["Qadimgi Rimda", "Faqat Hindistonda", "Faqat Vizantiyada", "O'rta asrlarda islom dini madaniyati yuksalgan davrda"],
-        correct: 3,
-        exp: "Bu o'rta asrlarda islom madaniyati yuksalgan davrda joriy etilgan."
+        q: "10. VIII asrning 40-yillarida xalifalikda umaviylarga qarshi harakatni boshlagan kufalik shaxs kim edi?",
+        options: ["Abul Abbos Saffoh", "Abu Muslim", "Muqanna", "Marvon II"],
+        correctText: "Abu Muslim",
+        exp: "Xurosonga kelib umaviylarga qarshi harakatni boshlagan kufalik shaxs Abu Muslim edi."
       },
-      // 11. Correct: A (0)
       {
-        q: "11. Qachon o'rta asrlarda Zarafshon, Qashqadaryo va Surxondaryo vodiylarida sug'orma dehqonchilik keng rivojlangan?",
-        options: ["IX–XII asrlarda iqtisodiy yuksalish davrida", "V asrda", "XIII asrda", "XVI asrda"],
-        correct: 0,
-        exp: "Bu IX–XII asrlarda iqtisodiy yuksalish davrida rivojlangan."
+        q: "11. 750-yilda taxtga o'tirib, abbosiylar sulolasiga asos solgan xalifa kim edi?",
+        options: ["Horun ar-Rashid", "Ma'mun", "Abul Abbos Saffoh", "Mutasim"],
+        correctText: "Abul Abbos Saffoh",
+        exp: "Damashq olingach, Abul Abbos Saffoh taxtga o'tirib abbosiylar sulolasiga asos solgan."
       },
-      // 12. Correct: C (2)
       {
-        q: "12. Qachon o'rta asrlarda ulamolar va faqihlar jamiyatda yuksak obro'-e'tiborga ega bo'lgan?",
-        options: ["Faqat ibtidoiy tuzumda", "Faqat antik davrda", "O'rta asrlarda ilm-fan va din rivojlangan davrda", "Faqat XX asrda"],
-        correct: 2,
-        exp: "Ular o'rta asrlarda yuksak obro'ga ega bo'lishgan."
+        q: "12. 751-yilda Talas daryosi bo'yida xalifalik qo'shiniga kim qo'mondonlik qilgan?",
+        options: ["Qutayba ibn Muslim", "Tohir ibn Husayn", "Abu Muslim", "Ziyod ibn Solih"],
+        correctText: "Ziyod ibn Solih",
+        exp: "Talas jangida xalifalik qo'shiniga Ziyod ibn Solih qo'mondonlik qilgan."
       },
-      // 13. Correct: B (1)
       {
-        q: "13. Qachon o'rta asrlarda karvonsaroylar savdogarlar uchun qurila boshlagan?",
-        options: ["Qadimgi Misrda", "Ipak yo'li bo'ylab o'rta asrlarda", "Faqat Rimda", "Faqat zamonaviy davrda"],
-        correct: 1,
-        exp: "Karvonsaroylar Ipak yo'li bo'ylab o'rta asrlarda qurilgan."
+        q: "13. Talas jangida xitoyliklar ortiga zarba berib, g'alabaga katta hissa qo'shgan turkiy qabila qaysi?",
+        options: ["Qarluqlar", "O'g'uzlar", "Qipchoqlar", "Tohiriylar"],
+        correctText: "Qarluqlar",
+        exp: "Talas jangida qarluqlar xitoyliklar ortiga zarba berib g'alabani ta'minlagan."
       },
-      // 14. Correct: D (3)
       {
-        q: "14. Qachon o'rta asrlarda osmon jismlari va yulduzlar harakatini kuzatish uchun usturlob asbobidan foydalanilgan?",
-        options: ["V asrda", "VII asrda", "X asrda", "O'rta asrlarda astronomiya fani rivojlanganda"],
-        correct: 3,
-        exp: "Bu o'rta asrlarda astronomiya fani rivojlanganda keng qo'llanilgan."
+        q: "14. VIII asr oxirlarida Movarounnahrda «Oq kiyimlilar» qo'zg'oloniga kim rahbarlik qilgan?",
+        options: ["Rofe ibn Lays", "Muqanna (Hoshim ibn Hakim)", "Abu Muslim", "Divashtich"],
+        correctText: "Muqanna (Hoshim ibn Hakim)",
+        exp: "«Oq kiyimlilar» harakatining rahbari Muqanna (Hoshim ibn Hakim) bo'lgan."
       },
-      // 15. Correct: A (0)
       {
-        q: "15. Qachon Somoniylar davrida Buxoro saroyida buyuk olimlar va kutubxonalar to'plangan?",
-        options: ["IX–X asrlarda", "XI–XII asrlarda", "XIII–XIV asrlarda", "XV–XVI asrlarda"],
-        correct: 0,
-        exp: "Bu IX–X asrlarda sodir bo'lgan."
+        q: "15. Muqanna Kesh vohasidagi qaysi qal'ani o'zining so'nggi qarorgohiga aylantirgan edi?",
+        options: ["Tuproqqal'a", "Poykand", "Som qal'asi", "Fir qal'asi"],
+        correctText: "Som qal'asi",
+        exp: "Muqanna Kesh vohasidagi Som qal'asini o'z qarorgohiga aylantirgan."
       },
-      // 16. Correct: C (2)
       {
-        q: "16. Qachon o'rta asrlarda hunarmandchilik turlari (kulolchilik, to'qimachilik) ravnaq topgan?",
-        options: ["Faqat ibtidoiy tuzumda", "Faqat antik davrda", "Movarounnahr va Xorazm shaharlari rivojlangan o'rta asrlarda", "Faqat XX asrda"],
-        correct: 2,
-        exp: "Bu o'rta asrlarda shahar hayotida ravnaq topgan."
+        q: "16. 806-yilda Samarqandda xalifalikka qarshi ko'tarilgan qo'zg'olon rahbari kim edi?",
+        options: ["Muqanna", "G'urak", "Divashtich", "Rofe ibn Lays"],
+        correctText: "Rofe ibn Lays",
+        exp: "806-yilda Rofe ibn Lays boshchiligida xalifalikka qarshi qo'zg'olon ko'tarilgan."
       },
-      // 17. Correct: B (1)
       {
-        q: "17. Qachon Abu Rayhon Beruniy Xorazm Ma'mun akademiyasiga rahbarlik qilgan?",
-        options: ["813-yilda", "1004-yilda akademiya tashkil etilgach", "1048-yilda", "1997-yilda"],
-        correct: 1,
-        exp: "U 1004-yilda akademiya tashkil etilgach rahbarlik qilgan."
+        q: "17. O'rta asrlarda Samarqandda ishlab chiqarilgan oq rangli yuqori navli qog'oz qanday nomlangan?",
+        options: ["«Samarqand sulton qog'ozi»", "«Nimkanop»", "«Vadoriy»", "«Zandanachi»"],
+        correctText: "«Samarqand sulton qog'ozi»",
+        exp: "Oq rangli yuqori navli qog'oz «Samarqand sulton qog'ozi» deb atalgan."
       },
-      // 18. Correct: D (3)
       {
-        q: "18. Qachon o'rta asrlarda qishloq xo'jaligida suv ta'minotini yaxshilash uchun korizlar va kanallar qazilgan?",
-        options: ["Faqat qadimgi Rimda", "Faqat Gretsiyada", "Faqat Xitoyda", "Movarounnahr va Xorazmda o'rta asrlarda"],
-        correct: 3,
-        exp: "Bu Movarounnahr va Xorazmda o'rta asrlarda amalga oshirilgan."
+        q: "18. Ipak qoldiqlari va po'stloq tolalari aralashtirib tayyorlanadigan dolchin rangli qog'oz turi qanday atalgan?",
+        options: ["«Miri Ibrohimiy»", "«Nimkanop»", "«Samarqand shoyi qog'ozi»", "«Iloq qog'ozi»"],
+        correctText: "«Nimkanop»",
+        exp: "Dolchin rangli qog'oz turi «Nimkanop» deb yuritilgan."
       },
-      // 19. Correct: A (0)
       {
-        q: "19. Qachon o'rta asrlarda maktablarda bolalarga boshlang'ich savodxonlik o'rgatilgan?",
-        options: ["O'rta asrlarda ta'lim tizimi rivojlangan davrda", "Faqat qadimgi Misrda", "Faqat XIX asrda", "Mustaqillikda"],
-        correct: 0,
-        exp: "Boshlang'ich ta'lim o'rta asrlarda maktablarda berilgan."
+        q: "19. Muqanna qo'zg'olondan oldin qanday hunar bilan shug'ullangani uchun manbalarda tilga olingan?",
+        options: ["Zargarlik", "Temirchilik", "Kudungarlik (matolarni bo'yash)", "Kulolchilik"],
+        correctText: "Kudungarlik (matolarni bo'yash)",
+        exp: "Muqanna ilgari kudungarlik (matolarni bo'yash) qilar edi."
       },
-      // 20. Correct: C (2)
       {
-        q: "20. Qachon o'rta asrlarda Xitoy, Hindiston va Yaqin Sharq bilan tashqi savdo olib borilgan?",
-        options: ["V asrda", "VII asrda", "Ipak yo'li faol ishlagan o'rta asrlarda", "XIX asrda"],
-        correct: 2,
-        exp: "Bu Ipak yo'li faol ishlagan o'rta asrlarda amalga oshirilgan."
+        q: "20. Muqanna targ'ib etgan ta'limot qaysi qadimgi ijtimoiy-falsafiy g'oyaga asoslangan edi?",
+        options: ["Zardushtiylik", "Buddaviylik", "Nestorianlik", "Mazdakiylik"],
+        correctText: "Mazdakiylik",
+        exp: "U Mazdak g'oyalariga asoslangan ijtimoiy tenglik va erkin hayotga da'vat etuvchi ta'limotni targ'ib etgan."
       },
-      // 21. Correct: B (1)
       {
-        q: "21. Qachon o'rta asrlarda shahar hokimlari va amirlarning saroylari arkda joylashgan?",
-        options: ["Qadimgi Rimda", "Movarounnahr shaharlarining o'rta asr davrida", "Faqat Yevropada", "Faqat Amerikada"],
-        correct: 1,
-        exp: "Bu o'rta asr Movarounnahr shaharlariga xos."
+        q: "21. Toxaristonda jami nechta tog' va tog'oldi viloyatlaridan iborat mustaqil hokimliklar bo'lgan?",
+        options: ["27 ta", "15 ta", "10 ta", "40 ta"],
+        correctText: "27 ta",
+        exp: "Toxaristonda 27 ta tog' va tog'oldi viloyatlaridan iborat mustaqil hokimliklar bo'lgan."
       },
-      // 22. Correct: D (3)
       {
-        q: "22. Qachon o'rta asrlarda shahar aholisining asosiy qismini hunarmandlar va savdogarlar tashkil etgan?",
-        options: ["Faqat jangchilar davrida", "Faqat cho'lda", "Faqat qishloqda", "Movarounnahr shaharlarida o'rta asrlarda"],
-        correct: 3,
-        exp: "Shaharlarda asosiy qismni hunarmandlar va savdogarlar tashkil etgan."
+        q: "22. Toxaristonning poytaxti qaysi shahar edi?",
+        options: ["Samarqand", "Balx shahri", "Buxoro", "Marv"],
+        correctText: "Balx shahri",
+        exp: "Toxaristonning poytaxti Balx shahri edi."
       },
-      // 23. Correct: A (0)
       {
-        q: "23. Qachon o'rta asrlarda shahar atrofi «rabot» deb atalgan?",
-        options: ["Shahar hududi kengayib, tashqi qismi shakllanganda", "Faqat qadimgi davrda", "Vafotidan keyin", "Faqat zamonaviy davrda"],
-        correct: 0,
-        exp: "Shahar hududi kengayib tashqi qismi shakllanganda shunday atalgan."
+        q: "23. Farg'ona vodiysida o'troq aholi bilan bir qatorda tog' yonbag'irlarida qanday chorvachilik turi qadimdan rivojlangan?",
+        options: ["Baliqchilik", "Kemaсоzlik", "Yilqichilik (tulpor otlar)", "Dengiz savdosi"],
+        correctText: "Yilqichilik (tulpor otlar)",
+        exp: "Farg'ona vodiysida qadimdan yilqichilik bilan shug'ullanilib, tulpor otlar ko'paytirilgan."
       },
-      // 24. Correct: C (2)
       {
-        q: "24. Qachon o'rta asrlarda shaharning ichki qismi «shahriston» deb atalgan?",
-        options: ["V asrda", "VII asrda", "O'rta asrlarda savdo va ma'muriy markaz joylashgan qismida", "XIX asrda"],
-        correct: 2,
-        exp: "Bu savdo va ma'muriy markaz joylashgan qism edi."
+        q: "24. Choch hududida G'arbiy Turk xoqonligi davrida qaysi shahzoda hukmronlik qilgan?",
+        options: ["To'n yabg'u", "Istami yabg'u", "Bumin xoqon", "Tegin Tyanchji"],
+        correctText: "Tegin Tyanchji",
+        exp: "Xoqon Chochga hokim etib Tegin Tyanchjini tayinlagan."
       },
-      // 25. Correct: B (1)
       {
-        q: "25. Qachon o'rta asrlarda davlat boshqaruvida devonlar moliya va soliq ishlarini yuritgan?",
-        options: ["Qadimgi Rimda", "O'rta asrlardagi markazlashgan davlatlarda", "Faqat sovet davrida", "Mustaqillikda"],
-        correct: 1,
-        exp: "Devonlar o'rta asrlardagi davlatlarda faoliyat yuritgan."
+        q: "25. O'rta asr shaharlari nechta asosiy qismdan iborat bo'lgan?",
+        options: ["Uch qismdan: ko'handiz, shahriston, rabod", "Ikki qismdan: ark va bozordan", "Faqat bitta devorli qismdan", "To'rt qismdan"],
+        correctText: "Uch qismdan: ko'handiz, shahriston, rabod",
+        exp: "O'rta asrlarda shaharlar «ko'handiz», «shahriston», «rabod» deb yuritiluvchi uch qismdan iborat bo'lgan."
       },
-      // 26. Correct: D (3)
       {
-        q: "26. Qachon o'rta asrlarda turkiy tillarning mavqei va hurmati oshib borgan?",
-        options: ["V asrda", "VII asrda", "X asrda", "Turkiy sulolalar hukmronlik qilgan o'rta asrlarda"],
-        correct: 3,
-        exp: "Bu turkiy sulolalar davrida oshib borgan."
+        q: "26. Turon xalqlari harbiy san'atida otliq askarlarga ot ustida mustahkam o'tirish imkonini bergan muhim kashfiyot nima?",
+        options: ["Qilich", "Uzangi", "Dubulg'a", "Sovut"],
+        correctText: "Uzangi",
+        exp: "Turkiy suvoriylar tomonidan uzangining kashf etilishi otliq askarlarga ot ustida mustahkam o'tirish imkonini bergan."
       },
-      // 27. Correct: A (0)
       {
-        q: "27. Qachon Xorazm Ma'mun akademiyasida tabiiy va aniq fanlar bo'yicha tadqiqotlar olib borilgan?",
-        options: ["1004-yilda akademiya ochilgandan keyingi davrda", "Qadimgi davrda", "Vafotidan keyin", "Faqat Yevropada"],
-        correct: 0,
-        exp: "Bu akademiya faoliyati davrida bajarilgan."
+        q: "27. Eftaliylar alifbosi qaysi yozuv asosida shakllangan va necha harfdan iborat bo'lgan?",
+        options: ["Sug'd yozuvi, 30 harf", "Urxun-yenisey yozuvi, 40 harf", "Baqtriya yozuvi asosida, 25 harfdan", "Arab yozuvi, 28 harf"],
+        correctText: "Baqtriya yozuvi asosida, 25 harfdan",
+        exp: "Eftaliylar alifbosi Baqtriya yozuvi asosida shakllangan bo'lib, 25 harfdan iborat bo'lgan."
       },
-      // 28. Correct: C (2)
       {
-        q: "28. Qachon o'rta asrlarda Samarkandda qog'oz ishlab chiqarish yo'lga qo'yilgan?",
-        options: ["V asrda", "VII asrda", "O'rta asrlarda Sharqda ilk bor", "XIX asrda"],
-        correct: 2,
-        exp: "Bu o'rta asrlarda Sharqda ilk bor yo'lga qo'yilgan."
+        q: "28. Xorazmdagi Jonbosqal'a va Tuproqqal'adan topilgan yozuvlar nimalarga bitilgan edi?",
+        options: ["Tosh va metallga", "Qog'ozga", "Faqat sopol idishlarga", "Teriga va yog'ochga"],
+        correctText: "Teriga va yog'ochga",
+        exp: "Xorazmdagi Jonbosqal'a va Tuproqqal'adan teriga va yog'ochga yozilgan hujjatlar topilgan."
       },
-      // 29. Correct: B (1)
       {
-        q: "29. Qachon o'rta asrlarda madrasalarda talabalarga nafaqa va joy berilgan?",
-        options: ["Qadimgi Bobilda", "O'rta asrlarda vaqf mablag'lari hisobidan", "Faqat XIX asrda", "Faqat XX asrda"],
-        correct: 1,
-        exp: "Bu o'rta asrlarda vaqf mablag'lari hisobidan ta'minlangan."
+        q: "29. To'nyuquq bitiktoshi qaysi asrga tegishli?",
+        options: ["VIII asr", "VI asr", "X asr", "XII asr"],
+        correctText: "VIII asr",
+        exp: "To'nyuquq bitiktoshi VIII asrga tegishli."
       },
-      // 30. Correct: D (3)
       {
-        q: "30. Qachon o'rta asrlarda ulamolar va faqihlar jamiyatda yuksak mavqega ega bo'lgan?",
-        options: ["Faqat antik davrda", "Faqat sovet davrida", "Mustaqillikda", "O'rta asrlarda Islom dini va ilm-fan yuksak cho'qqiga chiqqanda"],
-        correct: 3,
-        exp: "Bu o'rta asrlarda Islom dini va ilm-fan yuksak cho'qqiga chiqqanda sodir bo'lgan."
+        q: "30. Turklarning turkiy run (ko'k-turk) xati necha ta harfdan iborat bo'lgan?",
+        options: ["10-15 ta", "38–40 ta", "50-60 ta", "20-25 ta"],
+        correctText: "38–40 ta",
+        exp: "Turklarning turkiy run xati biri ikkinchisiga tutashib ketadigan 38-40 ta harfdan iborat edi."
       },
-      // 31. Correct: A (0)
       {
-        q: "31. Qachon o'rta asrlarda qishloq xo'jaligida dehqonlar yetishtirgan mahsulot «rizq» deb atalgan?",
-        options: ["O'rta asrlarda xalq tilida va manbalarda", "Qadimgi Rimda", "Faqat Yevropada", "Faqat zamonaviy darslikda"],
-        correct: 0,
-        exp: "Bu o'rta asrlarda xalq tilida qo'llanilgan."
+        q: "31. Arablar bosib olgan Xuroson viloyatining markazi dastlab qaysi shahar edi?",
+        options: ["Bag'dod", "Damashq", "Marv shahri", "Nishopur"],
+        correctText: "Marv shahri",
+        exp: "Xuroson viloyatining markazi Marv shahri edi."
       },
-      // 32. Correct: C (2)
       {
-        q: "32. Qachon o'rta asrlarda sug'd tilida «shahar» ma'nosini anglatuvchi «kand» so'zi ishlatilgan?",
-        options: ["V asrda", "VII asrda", "Qadimgi va o'rta asrlarda Movarounnahrda", "XIX asrda"],
-        correct: 2,
-        exp: "Bu qadimgi va o'rta asrlarda keng ishlatilgan."
+        q: "32. Arablar Amudaryoning o'ng sohiliga bosqinchilik yurishlarini qachon boshlaganlar?",
+        options: ["632-yilda", "711-yilda", "60-yillarda", "654-yildan"],
+        correctText: "654-yildan",
+        exp: "Arablar 654-yildagina Amudaryo o'ng sohiliga bosqinchilik yurishlarini boshladilar."
       },
-      // 33. Correct: B (1)
       {
-        q: "33. Qachon o'rta asrlarda Movarounnahr shaharlarida hunarmandlar mahalla va ko'chalarga uyushgan?",
-        options: ["Faqat paleolitda", "O'rta asrlarda kasbiy faoliyatni uyushtirish maqsadida", "Faqat XIX asrda", "Faqat XX asrda"],
-        correct: 1,
-        exp: "Bu o'rta asrlarda kasbiy faoliyatni uyushtirish uchun qilingan."
+        q: "33. Qutayba ibn Muslim Movarounnahrni qaysi yillar davomida to'g'ridan-to'g'ri bo'ysundirgan?",
+        options: ["705–715-yillar", "650–660-yillar", "780–790-yillar", "821–873-yillar"],
+        correctText: "705–715-yillar",
+        exp: "Xuroson noibi Qutayba ibn Muslim 705-715-yillar davomida viloyatlarni bosib olgan."
       },
-      // 34. Correct: D (3)
       {
-        q: "34. Qachon o'rta asrlarda shahar va qishloqlar o'rtasida mahsulot ayirboshlash kuchaygan?",
-        options: ["Faqat cho'lda", "Faqat tog'da", "Faqat dengizda", "Iqtisodiy yuksalish ro'y bergan o'rta asrlarda"],
-        correct: 3,
-        exp: "Bu iqtisodiy yuksalish ro'y bergan o'rta asrlarda kuchaygan."
+        q: "34. Xuroson noibi Ashros islom dinini qabul qilganlardan qaysi soliqlarni olmaslikka qaror qilgan?",
+        options: ["Faqat boj solig'ini", "Xiroj va jiz'ya soliqlarini", "Faqat yer solig'ini", "Mol-mulk solig'ini"],
+        correctText: "Xiroj va jiz'ya soliqlarini",
+        exp: "Ashros islomni qabul qilganlardan xiroj va jiz'ya soliqlarini olmaslikka qaror qilgan."
       },
-      // 35. Correct: A (0)
       {
-        q: "35. Qachon o'rta asrlarda ilm-fan rivojida tarjima harakati va yunon asarlarini o'rganish avj olgan?",
-        options: ["IX–X asrlarda Sharq Uyg'onish davrida", "V asrda", "XIII asrda", "XVI asrda"],
-        correct: 0,
-        exp: "Bu IX–X asrlarda Sharq Uyg'onish davrida yuz bergan."
+        q: "35. Abu Muslim Xurosonning Marv shahrini qaysi yili egallagan?",
+        options: ["712-yili", "751-yili", "747-yili", "783-yili"],
+        correctText: "747-yili",
+        exp: "Tez orada Abu Muslim Xurosonning markazi Marv shahrini egallaydi - 747-yili."
       },
-      // 36. Correct: C (2)
       {
-        q: "36. Qachon o'rta asrlarda Xorazm va Movarounnahrda me'morchilik san'ati yuksak darajaga ko'tarilgan?",
-        options: ["V asrda", "VII asrda", "IX–XII asrlarda shaharsozlik rivojlanganda", "XIX asrda"],
-        correct: 2,
-        exp: "Bu IX–XII asrlarda shaharsozlik rivojlanganda yuz bergan."
+        q: "36. Muqanna o'z tarafdorlariga qanday ijtimoiy tenglik ta'limotini targ'ib etgan?",
+        options: ["Zardushtiylik", "Manixeylik", "Budda dini", "Mazdakiylik"],
+        correctText: "Mazdakiylik",
+        exp: "U Mazdak g'oyalariga asoslangan ijtimoiy tenglik va erkin hayotga da'vat etuvchi ta'limotni targ'ib etgan."
       },
-      // 37. Correct: B (1)
       {
-        q: "37. Qachon o'rta asrlarda ilm-fan homiylari bo'lgan hukmdorlar saroyida ilmiy munozaralar o'tkazilgan?",
-        options: ["Qadimgi Rimda", "Somoniylar va Xorazmshohlar saroyida", "Faqat Yevropada", "Faqat Amerikada"],
-        correct: 1,
-        exp: "Bu Somoniylar va Xorazmshohlar saroyida o'tkazilgan."
+        q: "37. Buxoroning Zandana qishlog'ida to'qilgan mallarang bo'z mato qanday atalgan?",
+        options: ["«Zandanachi»", "«Vadoriy»", "«Nimkanop»", "«Kimxob»"],
+        correctText: "«Zandanachi»",
+        exp: "Buxoroning Zandana qishlog'ida to'qilgan mallarang bo'z «zandanachi» deb nomlangan."
       },
-      // 38. Correct: D (3)
       {
-        q: "38. Qachon o'rta asrlarda savdo yo'llari xavfsizligini ta'minlash uchun maxsus qo'riqchilar turgan?",
-        options: ["Faqat dengizda", "Faqat osmonda", "Faqat uyda", "Buyuk Ipak yo'li bo'ylab o'rta asrlarda"],
-        correct: 3,
-        exp: "Bu Buyuk Ipak yo'li bo'ylab o'rta asrlarda ta'minlangan."
+        q: "38. Samarqandning Vador qishlog'ida tayyorlangan mato qanday nomlangan?",
+        options: ["«Zandanachi»", "«Vadoriy»", "«Movut»", "«Ipak»"],
+        correctText: "«Vadoriy»",
+        exp: "Samarqandning Vador qishlog'ida tayyorlangan mato «vadoriy» deb yuritilgan."
       },
-      // 39. Correct: A (0)
       {
-        q: "39. Qachon o'rta asrlarda Movarounnahr va Xorazmda shahar madaniyati yuksak darajada gullab-yashnagan?",
-        options: ["IX–XII asrlarda", "V–VI asrlarda", "XIII–XIV asrlarda", "XV–XVI asrlarda"],
-        correct: 0,
-        exp: "Bu IX–XII asrlarda gullab-yashnagan."
+        q: "39. Xorazm va Termizda nimalar yasalib, Amudaryo bo'ylab yuk tashigan?",
+        options: ["Piyoda aravalar", "Tuyalar karvoni", "Qayiqlar", "Sallar"],
+        correctText: "Qayiqlar",
+        exp: "Xorazm va Termizda yasalgan qayiqlar Amudaryo bo'ylab savdogarlarning yukini tashigan."
       },
-      // 40. Correct: C (2)
       {
-        q: "40. Qachon 7-sinf O'zbekiston tarixi darsligining 11-20-mavzulari o'quvchilarga o'rgatila boshlangan?",
-        options: ["O'rta asrlarning o'zida", "Qadimgi davrda", "Zamonaviy ta'lim tizimida", "Faqat XIX asrda"],
-        correct: 2,
-        exp: "Bu zamonaviy ta'lim tizimida o'qitiladi."
+        q: "40. Ipak qoldiqlari va po'stloq tolalari aralashtirib tayyorlanadigan qog'oz turi nima deb atalgan?",
+        options: ["«Samarqand sulton qog'ozi»", "«Miri Ibrohimiy»", "«Samarqand shoyi qog'ozi»", "«Nimkanop»"],
+        correctText: "«Nimkanop»",
+        exp: "«Nimkanop» turi ipak qoldiqlari hamda po'stloq tolalari bilan qorishtirib tayyorlangani uchun dolchin rangda bo'lgan."
       }
     ];
+
+    // Har bir test uchun variantlarni va to'g'ri javobni avtomatik aralashtirish
+    const testQuestions = rawTestQuestions.map((item) => {
+      let opts = [...item.options];
+      // Fisher-Yates orqali variantlarni aralashtiramiz
+      for (let i = opts.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [opts[i], opts[j]] = [opts[j], opts[i]];
+      }
+      const newCorrectIdx = opts.indexOf(item.correctText);
+      return {
+        q: item.q,
+        options: opts,
+        correct: newCorrectIdx,
+        exp: item.exp
+      };
+    });
 
     let tIdx = 0, score = 0;
 
     function loadTestQuestion() {
       const q = testQuestions[tIdx];
-      const counter = document.getElementById('q-counter');
-      const prog = document.getElementById('q-progress');
-      const title = document.getElementById('q-title');
+      document.getElementById('q-counter').innerText = `${tIdx + 1} / ${testQuestions.length}`;
+      document.getElementById('q-progress').style.width = `${((tIdx) / testQuestions.length) * 100}%`;
+      document.getElementById('q-title').innerText = q.q;
+
       const optBox = document.getElementById('q-options');
-      const exp = document.getElementById('q-explanation');
-      const stickyBar = document.getElementById('sticky-bar');
+      optBox.innerHTML = '';
 
-      if (counter) counter.innerText = `${tIdx + 1} / ${testQuestions.length}`;
-      if (prog) prog.style.width = `${((tIdx) / testQuestions.length) * 100}%`;
-      if (title) title.innerText = q.q;
+      const optLetters = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = `${optLetters[idx]}) ${opt}`;
+        btn.onclick = () => selectOpt(idx);
+        optBox.appendChild(btn);
+      });
 
-      if (optBox) {
-        optBox.innerHTML = '';
-        q.options.forEach((opt, idx) => {
-          const btn = document.createElement('button');
-          btn.className = 'opt-btn';
-          btn.innerText = opt;
-          btn.onclick = () => selectOpt(idx);
-          optBox.appendChild(btn);
-        });
-      }
-
-      if (exp) exp.style.display = 'none';
-      if (stickyBar) stickyBar.style.display = 'none';
+      document.getElementById('q-explanation').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      answered = false;
     }
 
     function selectOpt(selectedIdx) {
+      if (answered) return;
+      answered = true;
       const q = testQuestions[tIdx];
       const buttons = document.querySelectorAll('.opt-btn');
 
       buttons.forEach((btn, idx) => {
-        btn.onclick = null;
+        btn.disabled = true;
         if(idx === q.correct) btn.classList.add('correct');
         else if(idx === selectedIdx) btn.classList.add('incorrect');
       });
@@ -997,16 +975,16 @@
       }
 
       const exp = document.getElementById('q-explanation');
-      if (exp) {
-        exp.innerText = "💡 Izoh: " + q.exp;
-        exp.style.display = 'block';
-      }
+      exp.innerText = "💡 Izoh: " + q.exp;
+      exp.style.display = 'block';
       
-      const stickyBar = document.getElementById('sticky-bar');
-      if (stickyBar) stickyBar.style.display = 'flex';
+      if (activeTab === 'quiz') {
+        document.getElementById('sticky-bar').style.display = 'flex';
+      }
     }
 
     function nextTestQuestion() {
+      if (!answered) return;
       tIdx++;
       if (tIdx < testQuestions.length) {
         loadTestQuestion();
@@ -1017,41 +995,29 @@
     }
 
     function showQuizResult() {
-      const quizBody = document.getElementById('quiz-body');
-      const stickyBar = document.getElementById('sticky-bar');
-      const quizResult = document.getElementById('quiz-result');
-      const scoreEl = document.getElementById('q-score');
+      quizFinished = true;
+      document.getElementById('quiz-body').style.display = 'none';
+      document.getElementById('sticky-bar').style.display = 'none';
+      document.getElementById('quiz-result').style.display = 'flex';
+      document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
       const fb = document.getElementById('q-feedback');
-
-      if (quizBody) quizBody.style.display = 'none';
-      if (stickyBar) stickyBar.style.display = 'none';
-      if (quizResult) quizResult.style.display = 'flex';
-      if (scoreEl) scoreEl.innerText = `${score}/${testQuestions.length}`;
-      
-      if (fb) {
-        if(score >= 35) fb.innerText = "Mukammal natija! 11-20-mavzularni a'lo darajada o'zlashtiribsiz 🌟";
-        else if(score >= 25) fb.innerText = "Ajoyib natija! Asosiy tushunchalarni yaxshi bilasiz 👍";
-        else fb.innerText = "Yaxshi, lekin mavzularni yana bir bor takrorlab chiqish tavsiya etiladi 📚";
-      }
+      if(score >= 36) fb.innerText = "Mukammal natija! 12-21-mavzularni to'laqonli o'zlashtiribsiz 🌟";
+      else if(score >= 28) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function restartTest() {
-      tIdx = 0; score = 0;
-      const quizBody = document.getElementById('quiz-body');
-      const quizResult = document.getElementById('quiz-result');
-      if (quizBody) quizBody.style.display = 'block';
-      if (quizResult) quizResult.style.display = 'none';
+      tIdx = 0; score = 0; quizFinished = false; answered = false;
+      document.getElementById('quiz-body').style.display = 'block';
+      document.getElementById('quiz-result').style.display = 'none';
       loadTestQuestion();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Initialize application on load
-    window.onload = function() {
-      initMatch();
-      loadFlashcard();
-      loadTestQuestion();
-    };
+    initMatch();
+    loadFlashcard();
+    loadTestQuestion();
   </script>
 </body>
 </html>

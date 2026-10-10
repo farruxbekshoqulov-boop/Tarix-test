@@ -4,7 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>22-23-mavzular. Qarluqlar, o'g'uzlar, tohiriylar</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    try {
+      if (window.Telegram && window.Telegram.WebApp) {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+      }
+    } catch (e) {
+      console.error("Telegram WebApp initialization error:", e);
+    }
+  </script>
   <style>
     :root {
       --primary: #b45309;
@@ -241,7 +250,7 @@
     }
 
     .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
-    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
     
     .exp-box {
       background: #fef3c7;
@@ -375,7 +384,7 @@
         <div style="font-size: 50px;">🏰</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">38 ta savol tugadi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Mavzuning barcha jihatlarini to'la o'rganib chiqdingiz. Endi 38 talik Test sinoviga o'tamizmi?
+          Savol-javoblarni ko'rib chiqdingiz. Endi bilimingizni testda tekshiring.
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
@@ -417,27 +426,41 @@
   </div>
 
   <script>
-    if (window.Telegram && window.Telegram.WebApp) {
-      Telegram.WebApp.ready();
-      Telegram.WebApp.expand();
-    }
+    let activeTab = 'match';
+    let answered = false;
+    let quizFinished = false;
 
     function switchTab(tab) {
+      activeTab = tab;
       ['match', 'cards', 'quiz'].forEach(t => {
         document.getElementById(`tab-btn-${t}`).classList.remove('active');
         document.getElementById(`tab-${t}`).classList.remove('active');
       });
       document.getElementById(`tab-btn-${tab}`).classList.add('active');
       document.getElementById(`tab-${tab}`).classList.add('active');
-      document.getElementById('sticky-bar').style.display = 'none';
+
+      if (tab === 'quiz' && !quizFinished && answered) {
+        document.getElementById('sticky-bar').style.display = 'flex';
+      } else {
+        document.getElementById('sticky-bar').style.display = 'none';
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Fisher-Yates shuffle algorithm
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
     }
 
     // --- 1. MOSLASH (4 BOSQICH: har birida 5 tadan, jami 20 ta) ---
     const matchStages = [
       [
-        { id: 1, left: "Qarluqlar", right: "Qadimda Oltoyning g'arbida, so'ngra Irtish daryosi o'rtasida yashagan turkiy qabila" },
-        { id: 2, left: "Suyab shahri", right: "VIII asr o'rtalarida Yettisuv o'lkasida tashkil topgan Qarluq davlatining poytaxti" },
+        { id: 1, left: "Qarluqlar", right: "Qadimda Oltoyning g'arbida, so'ngra Irtish daryosining o'rta oqimida yashagan turkiy qabila" },
+        { id: 2, left: "Suyob shahri", right: "VIII asr o'rtalarida Yettisuv o'lkasida tashkil topgan Qarluq davlatining poytaxti" },
         { id: 3, left: "Yabg'u (yabgu)", right: "Qarluqlar davlati hukmdoriga berilgan unvon" },
         { id: 4, left: "O'g'uzlar", right: "G'arbiy Turk xoqonligi tanazzulidan keyin yirik etnik uyushma hosil qilgan turkiy elat (guz)" },
         { id: 5, left: "Yangikent shahri", right: "Sirdaryo quyi oqimida joylashgan O'g'uz davlatining poytaxti" }
@@ -446,20 +469,20 @@
         { id: 6, left: "Tohiriylar", right: "Xurosonda hukmronlik qilgan, 821-yilda Tohir ibn Husayn asos solgan sulola" },
         { id: 7, left: "Tohir ibn Husayn", right: "811-yilda xalifa Aminning sarkardasini yengib, «Zul yaminayn» unvonini olgan sarkarda" },
         { id: 8, left: "821-yil", right: "Tohir ibn Husayn Xuroson va Movarounnahr noibi etib tayinlangan yil" },
-        { id: 9, left: "822-yil", right: "Tohiriylar davrida xalifa nomi xutbadan chiqarilgan yil" },
+        { id: 9, left: "«Zul yaminayn»", right: "Tohir ibn Husayn 811-yilda xalifa Aminning sarkardasini yenggach olgan unvon" },
         { id: 10, left: "Safforiylar", right: "873-yilda Tohiriylar hukmronligiga barham berib hokimiyatni egallagan sulola" }
       ],
       [
-        { id: 11, left: "Ya'qub ibn Lays", right: "Safforiylar sulolasining asoschisi (Saffor — misgar ma'nosida)" },
-        { id: 12, left: "Harun ar-Rashid", right: "786–809-yillarda hukmronlik qilgan va vafotidan so'ng taxt talashish boshlangan xalifa" },
-        { id: 13, left: "Ma'mun va Amin", right: "Harun ar-Rashidning o'g'illari bo'lib, taxt uchun o'zaro kurash olib borganlar" },
-        { id: 14, left: "Harsama A'yayn", right: "Rofe ibn Laysga qarshi yuborilgan va keyinchalik Ma'munga qo'shilgan sarkarda" },
-        { id: 15, left: "Nuh ibn Asad", right: "Samarqand viloyati boshqarig'i topshirilgan asad ibn Somonxudotning nabirasi" }
+        { id: 11, left: "Ya'qub ibn Lays", right: "Safforiylar sulolasining asoschisi (sulola nomi uning ismidan olingan)" },
+        { id: 12, left: "Horun ar-Rashid", right: "786–809-yillarda hukmronlik qilgan va vafotidan so'ng taxt talashish boshlangan xalifa" },
+        { id: 13, left: "Ma'mun va Amin", right: "Horun ar-Rashidning o'g'illari bo'lib, taxt uchun o'zaro kurash olib borganlar" },
+        { id: 14, left: "Harsama A'yayn", right: "Rofe ibn Laysga qarshi yuborilgan sarkarda" },
+        { id: 15, left: "Nuh ibn Asad", right: "Samarqand boshqaruvi topshirilgan, Asad ibn Somonxudotning o'g'li" }
       ],
       [
-        { id: 16, left: "G'oziylar", right: "Xalifalik zulmiga qarshi kurashgan xalq qo'zg'olonchilari" },
+        { id: 16, left: "G'oziylar", right: "Xalifalik zulmidan bezor bo'lib, xalq qo'zg'olonchilariga qo'shilgan qatlam" },
         { id: 17, left: "Chigil qabilasi", right: "Qarluqlar tarkibiga kirgan va Elsuvi daryosi vodiysigacha yaylovlari bo'lgan qabila" },
-        { id: 18, left: "Jun va junli mahsulotlar", right: "Qarluqlar o'troq aholiga chetga asosan sotgan narsalar (gilam, sholcha, namat)" },
+        { id: 18, left: "Jun va junli mahsulotlar", right: "Qarluqlar chetga asosan olib chiqqan mahsulotlar (gilam, sholcha, namat)" },
         { id: 19, left: "X asr boshi", right: "O'g'uzlar davlatiga asos solingan davr (IX asr oxiri va X asr boshi)" },
         { id: 20, left: "813-yil", right: "Tohir ibn Husayn va uning qo'shini Bag'dodni egallab, Ma'munni taxtga o'tirgizgan yil" }
       ]
@@ -468,15 +491,23 @@
     let currentMatchStage = 0;
     let selectedMatchBtn = null;
     let matchesRemaining = 5;
+    let matchTimeoutId = null;
+    let isMatchLocked = false;
 
     function initMatch() {
+      if (matchTimeoutId) clearTimeout(matchTimeoutId);
       currentMatchStage = 0;
+      selectedMatchBtn = null;
+      isMatchLocked = false;
       document.getElementById('match-play-box').style.display = 'block';
       document.getElementById('match-finish-box').style.display = 'none';
       loadMatchStage();
     }
 
     function loadMatchStage() {
+      if (matchTimeoutId) clearTimeout(matchTimeoutId);
+      selectedMatchBtn = null;
+      isMatchLocked = false;
       const pool = matchStages[currentMatchStage];
       matchesRemaining = pool.length;
       
@@ -487,8 +518,8 @@
       let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
       let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
 
-      leftCards.sort(() => 0.5 - Math.random());
-      rightCards.sort(() => 0.5 - Math.random());
+      shuffleArray(leftCards);
+      shuffleArray(rightCards);
 
       const colLeft = document.getElementById('match-col-left');
       const colRight = document.getElementById('match-col-right');
@@ -515,23 +546,35 @@
     }
 
     function onMatchClick(btn) {
-      if (btn.classList.contains('matched') || btn === selectedMatchBtn) return;
+      if (isMatchLocked || btn.classList.contains('matched') || btn.classList.contains('wrong')) return;
+
+      const parentCol = btn.parentElement.id;
 
       if (!selectedMatchBtn) {
         selectedMatchBtn = btn;
         btn.classList.add('selected');
       } else {
-        if (selectedMatchBtn.dataset.id === btn.dataset.id) {
-          btn.classList.add('matched');
-          selectedMatchBtn.classList.add('matched');
+        if (selectedMatchBtn.parentElement.id === parentCol) {
           selectedMatchBtn.classList.remove('selected');
+          selectedMatchBtn = btn;
+          btn.classList.add('selected');
+          return;
+        }
+
+        const firstBtn = selectedMatchBtn;
+        const secondBtn = btn;
+
+        if (firstBtn.dataset.id === secondBtn.dataset.id) {
+          firstBtn.classList.remove('selected');
+          firstBtn.classList.add('matched');
+          secondBtn.classList.add('matched');
           selectedMatchBtn = null;
           matchesRemaining--;
           document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
 
           if (matchesRemaining === 0) {
             currentMatchStage++;
-            setTimeout(() => {
+            matchTimeoutId = setTimeout(() => {
               if (currentMatchStage < matchStages.length) {
                 loadMatchStage();
               } else {
@@ -542,13 +585,16 @@
             }, 500);
           }
         } else {
-          btn.classList.add('wrong');
-          selectedMatchBtn.classList.add('wrong');
+          isMatchLocked = true;
+          firstBtn.classList.remove('selected');
+          firstBtn.classList.add('wrong');
+          secondBtn.classList.add('wrong');
           
-          setTimeout(() => {
-            btn.classList.remove('wrong', 'selected');
-            if (selectedMatchBtn) selectedMatchBtn.classList.remove('wrong', 'selected');
+          matchTimeoutId = setTimeout(() => {
+            firstBtn.classList.remove('wrong');
+            secondBtn.classList.remove('wrong');
             selectedMatchBtn = null;
+            isMatchLocked = false;
           }, 400);
         }
       }
@@ -564,29 +610,29 @@
       { q: "6. Qarluqlar davlati hukmdori qanday unvon bilan yuritilgan?", a: "«Yabg'u» yoki «jabg'u»." },
       { q: "7. X asr o'rtalariga kelib qarluqlarning qaysi qismi musulmon bo'lgan?", a: "Kattagina qismi." },
       { q: "8. Qarluqlar davlati sharqdan qayergacha cho'zilgan?", a: "Elsuvi daryosi vodiysigacha (chigil qabilasi yaylovlarigacha)." },
-      { q: "9. Qarluqlar o'troq aholiga chetdan qanday mahsulotlar olib chiqib sotgan?", a: "Jun va junli mahsulotlar: gilam, sholcha, namat." },
+      { q: "9. Qarluqlar chetga asosan qanday mahsulotlar olib chiqqan?", a: "Jun va junli mahsulotlar: gilam, sholcha, namat." },
       { q: "10. X asrda qarluqlar Movarounnahrning qaysi hududlarini egallagan?", a: "Shimoliy hududlarini (Shosh atrofi, Farg'ona va Zarafshon vodiylariga kelib o'rnashgan)." },
       { q: "11. O'g'uzlar qaysi davlat tanazzulidan keyin yirik etnik uyushma hosil qilgan?", a: "G'arbiy Turk xoqonligining." },
       { q: "12. Arab-fors manbalarida o'g'uzlar yana qanday nomlangan?", a: "«Guz»." },
-      { q: "13. O'g'uzlarning qaysi qismi Sirdaryo havzasi va Orol dengizi bo'yida muqim o'rnashgan?", a: "Kattagina qismi." },
+      { q: "13. Turk xoqonligi yemirilgach, o'g'uzlarning kattagina qismi qayerda muqim o'rnashib olgan edi?", a: "Sirdaryo havzasi hamda Orol dengizi bo'yida." },
       { q: "14. O'g'uzlar davlatiga qachon asos solingan?", a: "IX asr oxiri va X asr boshida." },
       { q: "15. O'g'uz davlatining poytaxti qaysi shahar bo'lgan?", a: "Sirdaryo quyi oqimidagi Yangikent shahri." },
       { q: "16. O'g'uzlar qachondan boshlab islom dinini qabul qila boshlaganlar?", a: "X asrdan boshlab." },
-      { q: "17. X asrning birinchi choragida o'g'uzlar davlati shimoldan kimlarning qaqshatqich zarbasiga uchradi?", a: "Qipchoqlar." },
+      { q: "17. X asrning birinchi choragida o'g'uzlar davlati shimoli-sharqdan kimlarning qaqshatqich zarbasiga uchradi?", a: "Qipchoqlar." },
       { q: "18. Qipchoqlar zarbasidan bo'lingan o'g'uzlarning bir qismi qayerga borib o'rnashdi?", a: "Shimoliy Kavkaz dashtlariga." },
       { q: "19. O'g'uzlarning ikkinchi qismi qayerga kirib keldi?", a: "Movarounnahrga." },
       { q: "20. Xurosonda hukmronlik qilgan Tohiriylar davlatiga kim asos solgan?", a: "Tohir ibn Husayn (821-yilda)." },
       { q: "21. Tohiriylar davlati rasman kimga qaram bo'lgan?", a: "Abbosiylar xalifaligiga." },
       { q: "22. Tohir ibn Husayn 811-yilda xalifa Aminning sarkardasini yenggach qanday faxriy unvon olgan?", a: "«Zul yaminayn» («Ikki qo'lda kurashuvchi»)." },
       { q: "23. Tohir ibn Husayn Bag'dodni egallab, xalifa Ma'munni taxtga o'tirgach qayerga noib etib tayinlangan?", a: "Xuroson va Movarounnahrga (821-yil)." },
-      { q: "24. Tohiriylar davrida xalifa nomi xutbadan qachon chiqarib yuborilgan?", a: "822-yilda." },
+      { q: "24. Tohir ibn Husayn 811-yilda qaysi sarkardani yenggani uchun «Zul yaminayn» unvonini olgan?", a: "Xalifa Aminning sarkardasi Ali Moxonni." },
       { q: "25. Harun ar-Rashid vafotidan so'ng uning qaysi o'g'illari o'rtasida taxt uchun kurash ketdi?", a: "Ma'mun va Amin." },
-      { q: "26. Ma'munga qarshi kurashda Hirot viloyatining zodagonlaridan kim yordam bergan?", a: "Tohir ibn Husayn." },
-      { q: "27. Ma'mun Xuroson noibi bo'lgach, Somonxudotning nabiralariga qanday vazifalar bergan?", a: "Nuhga Samarqand, Ahmadga Farg'ona, Yahyoga Shosh va Ustrushana, Ilyosga Hirot berilgan." },
+      { q: "26. Amin bilan taxt uchun kurashda Ma'munga Hirot viloyati zodagonlaridan kim yordam bergan?", a: "Tohir ibn Husayn." },
+      { q: "27. Ma'mun xalifalikka o'tirgach, Somonxudotning nabiralariga qanday vazifalar bergan?", a: "Nuhga Samarqand, Ahmadga Farg'ona, Yahyoga Shosh va Ustrushana, Ilyosga Hirot berilgan." },
       { q: "28. Tohiriylar orqali Movarounnahr xirojining katta qismi qayerga yuborib turilgan?", a: "Xalifa xazinasiga." },
-      { q: "29. Xalifalik zulmidan bezor bo'lgan xalq qo'zg'olonchilari o'zlarini qanday ataganlar?", a: "«G'oziylar»." },
-      { q: "30. Qo'zg'olonga rahbarlik qilgan sof misgar hunarmand aka-uka kimlar edi?", a: "Ya'qub va Amr Layslar (Safforiylar)." },
-      { q: "31. Safforiylar sulolasining asoschisi Ya'qub ibn Lays xalifalikda qanday nom bilan mashhur bo'lgan?", a: "«As-Saffor» (misgar)." },
+      { q: "29. Xalifalik zulmidan bezor bo'lgan xalq qo'zg'olonchilariga yana kimlar qo'shilgan edi?", a: "G'oziylar." },
+      { q: "30. Qo'zg'olonga rahbarlik qilgan misgar hunarmand aka-uka kimlar edi?", a: "Ya'qub va Amr Layslar (Safforiylar)." },
+      { q: "31. Safforiylar sulolasining asoschisi Ya'qub ibn Lays sulola nomi qaysi shaxsdan olingan?", a: "Ya'qub ibn Lays as-Saffor (sulola nomi uning ismidan olingan)." },
       { q: "32. Safforiylar Xuroson poytaxti Nishopurni qaysi yili egallagan?", a: "873-yilda." },
       { q: "33. Safforiylarning yirik hukmdorlari kimlar bo'lgan?", a: "Ya'qub ibn Lays (873–879) va Amr ibn Lays (879–900)." },
       { q: "34. IX–X asrlarda Turon hududida aholining etnik shakllanishida qaysi qabilalarning ta'siri kuchli bo'lgan?", a: "Qarluq va o'g'uzlarning." },
@@ -632,234 +678,234 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar o'rni to'liq va tartibsiz aralashtirilgan) ---
+    // --- 3. TEST SINOVI (38 TA TEST - A, B, C, D variantlari aralashtirilgan va tartibi buzilgan) ---
     const testQuestions = [
       {
         q: "1. Movarounnahr va Xurosonda tinimsiz qo'zg'olonlar va ziddiyatlar xalifalik boshqaruviga qanday ta'sir ko'rsatdi?",
-        options: ["Hokimiyatni zaiflashtirdi va mustaqil davlatlarning paydo bo'lishiga olib keldi", "Xalifalikni yanada kuchaytirdi", "Hech qanday ta'sir ko'rsatmadi", "Faqat savdoni rivojlantirdi"],
-        correct: 0,
+        options: ["Xalifalikni yanada kuchaytirdi", "Faqat savdoni rivojlantirdi", "Hokimiyatni zaiflashtirdi va mustaqil davlatlarning paydo bo'lishiga olib keldi", "Hech qanday ta'sir ko'rsatmadi"],
+        correct: 2, // C
         exp: "Ziddiyatlar xalifalik hokimiyatini zaiflashtirib, mustaqil davlatlar kelishiga sabab bo'ldi."
       },
       {
         q: "2. Qarluqlar qadimda qayerda yashagan turkiy qabilalar edi?",
-        options: ["Sirdaryo bo'ylarida", "Oltoyning g'arbida, so'ngra Irtish daryosining o'rta oqimida", "Farg'ona vodiysida", "Sharqiy Turkistonda"],
-        correct: 1,
-        exp: "Ular Oltoyning g'arbida, Irtish daryosi o'rta oqimida yashagan."
+        options: ["Oltoyning g'arbida, so'ngra Irtish daryosining o'rta oqimida", "Farg'ona vodiysida", "Sirdaryo bo'ylarida", "Sharqiy Turkistonda"],
+        correct: 0, // A
+        exp: "Ular Oltoyning g'arbida, Irtish daryosining o'rta oqimida yashagan."
       },
       {
         q: "3. VIII asr o'rtalarida Yettisuv o'lkasida qanday davlat tashkil topdi?",
         options: ["O'g'uzlar davlati", "Qarluqlar davlati", "Tohiriylar davlati", "Safforiylar davlati"],
-        correct: 1,
+        correct: 1, // B
         exp: "VIII asr o'rtalarida Yettisuvda Qarluqlar davlati tashkil topdi."
       },
       {
         q: "4. Qarluqlar davlatining poytaxti qaysi shahar edi?",
-        options: ["Yangikent", "Suyab shahri", "Balx", "Marv"],
-        correct: 1,
+        options: ["Yangikent", "Balx", "Suyab shahri", "Marv"],
+        correct: 2, // C
         exp: "Qarluqlar davlatining poytaxti Suyab shahri edi."
       },
       {
         q: "5. Qarluqlar davlati hukmdori qanday unvon bilan yuritilgan?",
-        options: ["Xoqon", "«Yabg'u» yoki «jabg'u»", "Sulton", "Ixshid"],
-        correct: 1,
+        options: ["Sulton", "Ixshid", "Xoqon", "«Yabg'u» yoki «jabg'u»"],
+        correct: 3, // D
         exp: "Qarluqlar davlati hukmdori «yabg'u» deb yuritilgan."
       },
       {
         q: "6. O'g'uzlar qaysi davlat tanazzulidan keyin yirik etnik uyushma hosil qildi?",
-        options: ["Turk xoqonligi", "G'arbiy Turk xoqonligining tanazzulidan keyin", "Qang' davlati", "Kushon podshohligi"],
-        correct: 1,
+        options: ["G'arbiy Turk xoqonligining tanazzulidan keyin", "Turk xoqonligi", "Qang' davlati", "Kushon podshohligi"],
+        correct: 0, // A
         exp: "G'arbiy Turk xoqonligi tanazzulidan keyin uyushma hosil qilgan."
       },
       {
         q: "7. Arab-fors manbalarida o'g'uzlar yana qanday nom bilan atalgan?",
         options: ["«Turkman»", "«Guz»", "«Qarluq»", "«Sarmat»"],
-        correct: 1,
+        correct: 1, // B
         exp: "Arab-fors manbalarida ular «guz» deb atalgan."
       },
       {
         q: "8. O'g'uz davlatining poytaxti qaysi shahar bo'lgan?",
-        options: ["Suyab", "Yangikent shahri", "Nishopur", "Buxoro"],
-        correct: 1,
+        options: ["Nishopur", "Buxoro", "Yangikent shahri", "Suyab"],
+        correct: 2, // C
         exp: "O'g'uz davlatining poytaxti Yangikent shahri edi."
       },
       {
-        q: "9. X asrning birinchi choragida o'g'uzlar davlati shimoldan kimlarning qaqshatqich zarbasiga uchradi?",
-        options: ["Qipchoqlar", "Mo'g'ullar", "Sosoniylar", "Xitoyliklar"],
-        correct: 0,
-        exp: "O'g'uzlar shimoldan qipchoqlar zarbasiga uchragan."
+        q: "9. X asrning birinchi choragida o'g'uzlar davlati shimoli-sharqdan kimlarning qaqshatqich zarbasiga uchradi?",
+        options: ["Xitoyliklar", "Sosoniylar", "Mo'g'ullar", "Qipchoqlar"],
+        correct: 3, // D
+        exp: "O'g'uzlar shimoli-sharqdan qipchoqlar zarbasiga uchragan."
       },
       {
         q: "10. Xurosonda hukmronlik qilgan Tohiriylar davlatiga kim asos solgan?",
-        options: ["Ya'qub ibn Lays", "Tohir ibn Husayn (821-yilda)", "Abu Muslim", "Amr ibn Lays"],
-        correct: 1,
+        options: ["Tohir ibn Husayn (821-yilda)", "Abu Muslim", "Amr ibn Lays", "Ya'qub ibn Lays"],
+        correct: 0, // A
         exp: "Tohiriylar davlatiga Tohir ibn Husayn asos solgan."
       },
       {
         q: "11. Tohir ibn Husayn 811-yilda xalifa Aminning sarkardasini yenggach qanday faxriy unvon olgan?",
         options: ["«Soxibqiron»", "«Zul yaminayn» («Ikki qo'lda kurashuvchi»)", "«Amir ul-mo'minin»", "«Malik ush-shuaro»"],
-        correct: 1,
+        correct: 1, // B
         exp: "Unga «Zul yaminayn» unvoni berilgan."
       },
       {
-        q: "12. Tohiriylar davrida xalifa nomi xutbadan qachon chiqarib yuborilgan?",
-        options: ["821-yilda", "822-yilda", "873-yilda", "813-yilda"],
-        correct: 1,
-        exp: "822-yilda xalifa nomi xutbadan chiqarilgan."
+        q: "12. Tohir ibn Husayn qaysi shaharning hokimi bo'lgan va 811-yilda xalifa Amin sarkardasini mag'lub etgan?",
+        options: ["Marv", "Nishopur", "Bo'shang", "Balx"],
+        correct: 2, // C
+        exp: "Tohir ibn Husayn Hirot yaqinidagi Bo'shang shahri hokimi bo'lgan."
       },
       {
         q: "13. Harun ar-Rashid vafotidan so'ng uning qaysi o'g'illari o'rtasida taxt uchun kurash ketdi?",
-        options: ["Abbos va Marvon", "Ma'mun va Amin", "Qutayba va Ziyod", "Ya'qub va Amr"],
-        correct: 1,
+        options: ["Qutayba va Ziyod", "Abbos va Marvon", "Ya'qub va Amr", "Ma'mun va Amin"],
+        correct: 3, // D
         exp: "Ma'mun va Amin o'rtasida kurash ketgan."
       },
       {
-        q: "14. Ma'mun Xuroson noibi bo'lgach, Somonxudotning nabiralariga qanday vazifalar bergan?",
-        options: ["Nuhga Samarqand, Ahmadga Farg'ona, Yahyoga Shosh va Ustrushana berilgan", "Barcha hududlar bitta kishiga berilgan", "Faqat Xorazm berilgan", "Hech qanday yer berilmagan"],
-        correct: 0,
-        exp: "Nuhga Samarqand, Ahmadga Farg'ona, Yahyoga Shosh va Ustrushana berilgan."
+        q: "14. Amin bilan taxt uchun kurashda Ma'munga Hirot viloyati zodagonlaridan kim yordam bergan?",
+        options: ["Tohir ibn Husayn", "Somonxudot", "Rofe ibn Lays", "Nuh ibn Asad"],
+        correct: 0, // A
+        exp: "Ma'munga Tohir ibn Husayn yordam bergan."
       },
       {
         q: "15. Tohiriylar orqali Movarounnahr xirojining katta qismi qayerga yuborib turilgan?",
-        options: ["Xalifa xazinasiga", "Faqat kambag'allarga", "Xitoy imperiyasiga", "Mahalliy obodonchilikka"],
-        correct: 0,
+        options: ["Faqat kambag'allarga", "Xalifa xazinasiga", "Xitoy imperiyasiga", "Mahalliy obodonchilikka"],
+        correct: 1, // B
         exp: "Xiroj xalifa xazinasiga yuborib turilgan."
       },
       {
-        q: "16. Xalifalik zulmidan bezor bo'lgan xalq qo'zg'olonchilari o'zlarini qanday ataganlar?",
-        options: ["«G'oziylar»", "«Safforiylar»", "«Tohiriylar»", "«Muqanniylar»"],
-        correct: 0,
-        exp: "Qo'zg'olonchilar o'zlarini «g'oziylar» deb atagan."
+        q: "16. Xalifalik zulmidan bezor bo'lgan xalq qo'zg'olonchilariga yana kimlar qo'shilgan edi?",
+        options: ["Tohiriylar", "Muqanniylar", "G'oziylar", "Safforiylar"],
+        correct: 2, // C
+        exp: "Qo'zg'olonchilarga g'oziylar ham qo'shilgan."
       },
       {
-        q: "17. Qo'zg'olonga rahbarlik qilgan sof misgar hunarmand aka-uka kimlar edi?",
-        options: ["Ya'qub va Amr Layslar (Safforiylar)", "Nuh va Ahmad", "Ma'mun va Amin", "Bumin va Istami"],
-        correct: 0,
+        q: "17. Qo'zg'olonga rahbarlik qilgan misgar hunarmand aka-uka kimlar edi?",
+        options: ["Nuh va Ahmad", "Ma'mun va Amin", "Bumin va Istami", "Ya'qub va Amr Layslar (Safforiylar)"],
+        correct: 3, // D
         exp: "Aka-uka Ya'qub va Amr Layslar edi."
       },
       {
-        q: "18. Safforiylar sulolasining asoschisi Ya'qub ibn Lays xalifalikda qanday nom bilan mashhur bo'lgan?",
-        options: ["«As-Saffor» (misgar)", "«At-Turkiy»", "«Al-Bag'dodiy»", "«Al-Xurosoniy»"],
-        correct: 0,
-        exp: "U «As-Saffor» (misgar) deb atalgan."
+        q: "18. Safforiylar sulolasining asoschisi Ya'qub ibn Lays sulola nomi qaysi shaxsdan olingan?",
+        options: ["Ya'qub ibn Lays as-Saffor (sulola nomi uning ismidan olingan)", "Al-Bag'dodiy", "At-Turkiy", "Al-Xurosoniy"],
+        correct: 0, // A
+        exp: "Safforiylar nomi Ya'qub ibn Lays as-Saffor nomidan olingan."
       },
       {
         q: "19. Safforiylar Xuroson poytaxti Nishopurni qaysi yili egallagan?",
-        options: ["821-yilda", "873-yilda", "900-yilda", "750-yilda"],
-        correct: 1,
+        options: ["750-yilda", "873-yilda", "900-yilda", "821-yilda"],
+        correct: 1, // B
         exp: "Nishopur 873-yilda egallangan."
       },
       {
         q: "20. Safforiylarning yirik hukmdorlari kimlar bo'lgan?",
-        options: ["Tohir va Talha", "Ya'qub ibn Lays (873–879) va Amr ibn Lays (879–900)", "Ma'mun va Amin", "Nuh va Ahmad"],
-        correct: 1,
+        options: ["Tohir va Talha", "Nuh va Ahmad", "Ya'qub ibn Lays (873–879) va Amr ibn Lays (879–900)", "Ma'mun va Amin"],
+        correct: 2, // C
         exp: "Ya'qub ibn Lays va Amr ibn Lays edi."
       },
       {
         q: "21. IX–X asrlarda Turon hududida aholining etnik shakllanishida qaysi qabilalarning ta'siri kuchli bo'lgan?",
-        options: ["Qarluq va o'g'uzlarning", "Faqat arablarning", "Faqat xitoylarning", "Faqat rimliklarning"],
-        correct: 0,
+        options: ["Faqat arablarning", "Faqat xitoylarning", "Faqat rimliklarning", "Qarluq va o'g'uzlarning"],
+        correct: 3, // D
         exp: "Qarluq va o'g'uzlarning ta'siri kuchli bo'lgan."
       },
       {
         q: "22. Qarluqlar davlatining poytaxti Suyab shahri qaysi daryo yaqinida joylashgan edi?",
         options: ["Chu daryosidan shimolroqda", "Sirdaryo bo'yida", "Amudaryo quyi oqimida", "Zarafshonda"],
-        correct: 0,
+        correct: 0, // A
         exp: "Suyab Chu daryosidan shimolroqda joylashgan edi."
       },
       {
         q: "23. O'g'uzlar davlatining poytaxti Yangikent shahri qayerda joylashgan edi?",
-        options: ["Sirdaryo quyi oqimida", "Talas daryosida", "Yettisuvda", "Farg'ona vodiysida"],
-        correct: 0,
+        options: ["Talas daryosida", "Sirdaryo quyi oqimida", "Yettisuvda", "Farg'ona vodiysida"],
+        correct: 1, // B
         exp: "Yangikent Sirdaryo quyi oqimida joylashgan edi."
       },
       {
         q: "24. X asr o'rtalariga kelib qarluqlarning qaysi qismi musulmon bo'lgan?",
-        options: ["Kattagina qismi", "Faqat hukmdorlari", "Hech qaysisi", "Faqat oddiy askarlar"],
-        correct: 0,
+        options: ["Hech qaysisi", "Faqat oddiy askarlar", "Kattagina qismi", "Faqat hukmdorlari"],
+        correct: 2, // C
         exp: "Kattagina qismi musulmon bo'lgan."
       },
       {
-        q: "25. Qarluqlar o'troq aholiga chetdan qanday mahsulotlar olib chiqib sotgan?",
-        options: ["Jun va junli mahsulotlar (gilam, sholcha, namat)", "Faqat metall idishlar", "Faqat meva-sabzavot", "Faqat qurol-yarog'"],
-        correct: 0,
-        exp: "Jun va junli mahsulotlar sotgan."
+        q: "25. Qarluqlar chetga asosan qanday mahsulotlar olib chiqqan?",
+        options: ["Faqat metall idishlar", "Faqat meva-sabzavot", "Faqat qurol-yarog'", "Jun va junli mahsulotlar (gilam, sholcha, namat)"],
+        correct: 3, // D
+        exp: "Jun va junli mahsulotlar olib chiqqan."
       },
       {
         q: "26. O'g'uzlar qachondan boshlab islom dinini qabul qila boshlaganlar?",
-        options: ["VIII asrdan", "X asrdan boshlab", "XII asrdan", "VI asrdan"],
-        correct: 1,
+        options: ["X asrdan boshlab", "VIII asrdan", "XII asrdan", "VI asrdan"],
+        correct: 0, // A
         exp: "O'g'uzlar X asrdan boshlab islomni qabul qilganlar."
       },
       {
         q: "27. Tohiriylar davlati rasman qaysi xalifalikka qaram bo'lgan?",
-        options: ["Abbosiylar xalifaligiga", "Umaviylar xalifaligiga", "Fotimiylar xalifaligiga", "Usmonlilar xalifaligiga"],
-        correct: 0,
+        options: ["Fotimiylar xalifaligiga", "Abbosiylar xalifaligiga", "Umaviylar xalifaligiga", "Usmonlilar xalifaligiga"],
+        correct: 1, // B
         exp: "Abbosiylar xalifaligiga qaram bo'lgan."
       },
       {
         q: "28. 813-yilda Tohir ibn Husayn kimni Bag'dodni egallab taxtga o'tqazgan?",
-        options: ["Ma'munni", "Aminni", "Harun ar-Rashidni", "Mutasimni"],
-        correct: 0,
+        options: ["Aminni", "Harun ar-Rashidni", "Ma'munni", "Mutasimni"],
+        correct: 2, // C
         exp: "Ma'munni taxtga o'tqazgan."
       },
       {
         q: "29. Xuroson noibi Ma'mun Samarqand boshqarig'ini kimga topshirgan edi?",
-        options: ["Nuhga", "Ahmadga", "Yahyoga", "Ilyosga"],
-        correct: 0,
+        options: ["Ilyosga", "Ahmadga", "Yahyoga", "Nuhga"],
+        correct: 3, // D
         exp: "Samarqand Nuhga topshirilgan edi."
       },
       {
         q: "30. Farg'ona viloyati Ma'mun tomonidan kimga berilgan edi?",
         options: ["Ahmadga", "Nuhga", "Yahyoga", "Tohirga"],
-        correct: 0,
+        correct: 0, // A
         exp: "Ahmadga berilgan edi."
       },
       {
         q: "31. Shosh va Ustrushana viloyatlari kimga tegishli edi?",
-        options: ["Yahyoga", "Nuhga", "Ilyosga", "Tohirga"],
-        correct: 0,
+        options: ["Nuhga", "Tohirga", "Yahyoga", "Ilyosga"],
+        correct: 1, // B
         exp: "Yahyoga tegishli edi."
       },
       {
         q: "32. Hirot viloyati kimga tekkan edi?",
-        options: ["Ilyosga", "Nuhga", "Ahmadga", "Ya'qubga"],
-        correct: 0,
+        options: ["Nuhga", "Ahmadga", "Ilyosga", "Ya'qubga"],
+        correct: 2, // C
         exp: "Ilyosga tekkan edi."
       },
       {
-        q: "33. Safforiylar hukmronligi qachon tugatilib, hokimiyat kimlarning qo'liga o'tdi?",
-        options: ["Samoniylar qo'liga", "Somoniylar davriga o'tgan (900-yilda)", "Qoraxoniylarga", "G'aznaviylarga"],
-        correct: 1,
-        exp: "Safforiylar 900-yilda somoniylar tomonidan tugatilgan."
+        q: "33. Safforiylar sulolasining asoschisi Ya'qub ibn Lays xalifalikda qanday nom bilan mashhur bo'lgan?",
+        options: ["«Al-Bag'dodiy»", "«At-Turkiy»", "«Al-Xurosoniy»", "«As-Saffor» (misgar)"],
+        correct: 3, // D
+        exp: "U «As-Saffor» (misgar) deb atalgan."
       },
       {
         q: "34. Tohiriylar sulolasiga asos solingan yil qaysi?",
-        options: ["811-yil", "821-yil", "873-yil", "750-yil"],
-        correct: 1,
+        options: ["821-yil", "811-yil", "873-yil", "750-yil"],
+        correct: 0, // A
         exp: "Tohiriylar 821-yilda tuzilgan."
       },
       {
         q: "35. O'g'uzlarning bir qismi qipchoqlar zarbasidan so'ng qayerga borib o'rnashdi?",
-        options: ["Shimoliy Kavkaz dashtlariga", "Kichik Osiyoga", "Xitoy chegarasiga", "Hindistonga"],
-        correct: 0,
+        options: ["Kichik Osiyoga", "Shimoliy Kavkaz dashtlariga", "Xitoy chegarasiga", "Hindistonga"],
+        correct: 1, // B
         exp: "Shimoliy Kavkaz dashtlariga borib o'rnashgan."
       },
       {
         q: "36. Qarluqlar davlati hukmdorining unvoni qanday edi?",
-        options: ["Xoqon", "Yabg'u", "Sulton", "Ixshid"],
-        correct: 1,
+        options: ["Sulton", "Ixshid", "Yabg'u", "Xoqon"],
+        correct: 2, // C
         exp: "Hukmdor yabg'u deb atalgan."
       },
       {
         q: "37. X asrda qarluqlar Movarounnahrning qayerlariga kelib o'rnashgan?",
-        options: ["Shosh atrofi, Farg'ona va Zarafshon vodiylariga", "Faqat Xorazmga", "Faqat Qashqadaryoga", "Faqat Surxondaryoga"],
-        correct: 0,
+        options: ["Faqat Xorazmga", "Faqat Qashqadaryoga", "Faqat Surxondaryoga", "Shosh atrofi, Farg'ona va Zarafshon vodiylariga"],
+        correct: 3, // D
         exp: "Shosh atrofi, Farg'ona va Zarafshon vodiylariga kelib o'rnashgan."
       },
       {
         q: "38. Tohir ibn Husaynga berilgan «Zul yaminayn» unvoni nimani anglatadi?",
         options: ["«Ikki qo'lda kurashuvchi»", "«Buyuk sarkarda»", "«Adolatli hokim»", "«Sharq amiri»"],
-        correct: 0,
+        correct: 0, // A
         exp: "«Zul yaminayn» — «Ikki qo'lda kurashuvchi» degani."
       }
     ];
@@ -875,24 +921,28 @@
       const optBox = document.getElementById('q-options');
       optBox.innerHTML = '';
 
+      const optLetters = ['A', 'B', 'C', 'D'];
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = 'opt-btn';
-        btn.innerText = opt;
+        btn.innerText = `${optLetters[idx]}) ${opt}`;
         btn.onclick = () => selectOpt(idx);
         optBox.appendChild(btn);
       });
 
       document.getElementById('q-explanation').style.display = 'none';
       document.getElementById('sticky-bar').style.display = 'none';
+      answered = false;
     }
 
     function selectOpt(selectedIdx) {
+      if (answered) return;
+      answered = true;
       const q = testQuestions[tIdx];
       const buttons = document.querySelectorAll('.opt-btn');
 
       buttons.forEach((btn, idx) => {
-        btn.onclick = null;
+        btn.disabled = true;
         if(idx === q.correct) btn.classList.add('correct');
         else if(idx === selectedIdx) btn.classList.add('incorrect');
       });
@@ -905,10 +955,13 @@
       exp.innerText = "💡 Izoh: " + q.exp;
       exp.style.display = 'block';
       
-      document.getElementById('sticky-bar').style.display = 'flex';
+      if (activeTab === 'quiz') {
+        document.getElementById('sticky-bar').style.display = 'flex';
+      }
     }
 
     function nextTestQuestion() {
+      if (!answered) return;
       tIdx++;
       if (tIdx < testQuestions.length) {
         loadTestQuestion();
@@ -919,6 +972,7 @@
     }
 
     function showQuizResult() {
+      quizFinished = true;
       document.getElementById('quiz-body').style.display = 'none';
       document.getElementById('sticky-bar').style.display = 'none';
       document.getElementById('quiz-result').style.display = 'flex';
@@ -931,7 +985,7 @@
     }
 
     function restartTest() {
-      tIdx = 0; score = 0;
+      tIdx = 0; score = 0; quizFinished = false; answered = false;
       document.getElementById('quiz-body').style.display = 'block';
       document.getElementById('quiz-result').style.display = 'none';
       loadTestQuestion();

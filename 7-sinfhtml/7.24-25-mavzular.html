@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>24-25-mavzular. Somoniylar</title>
+  <title>7-sinf O'zbekiston tarixi — 24-25-mavzular. Somoniylar</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
@@ -63,7 +63,7 @@
     }
 
     .palace-header h1 {
-      font-size: 15.5px;
+      font-size: 14.5px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -86,10 +86,10 @@
 
     .tab-btn {
       flex: 1;
-      padding: 11px 4px;
+      padding: 10px 4px;
       border: none;
       background: transparent;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 800;
       color: #78350f;
       border-radius: 9px;
@@ -214,15 +214,15 @@
       box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
     }
 
-    .fc-q { font-size: 17.5px; font-weight: 800; line-height: 1.45; color: #291104; }
+    .fc-q { font-size: 17px; font-weight: 800; line-height: 1.45; color: #291104; }
     .fc-a {
-      font-size: 16px; font-weight: 700; color: #065f46;
+      font-size: 15.5px; font-weight: 700; color: #065f46;
       background: #ecfdf5; border: 1.5px solid #6ee7b7;
       border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.45; display: none;
     }
 
     /* TEST */
-    .q-title { font-size: 16.5px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
+    .q-title { font-size: 16px; font-weight: 800; text-align: left; color: #291104; line-height: 1.45; margin-bottom: 8px; }
     .options-grid { display: flex; flex-direction: column; gap: 10px; }
     
     .opt-btn {
@@ -230,7 +230,7 @@
       border: 1.5px solid #d97706;
       border-radius: 12px;
       padding: 13px 15px;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 600;
       color: #291104;
       cursor: pointer;
@@ -241,7 +241,7 @@
     }
 
     .opt-btn.correct { background: #d1fae5 !important; border-color: #059669 !important; color: #065f46 !important; font-weight: 700; }
-    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #fecaca !important; }
+    .opt-btn.incorrect { background: #fee2e2 !important; border-color: #dc2626 !important; color: #991b1b !important; }
     
     .exp-box {
       background: #fef3c7;
@@ -313,14 +313,14 @@
   <div class="app-card">
 
     <div class="palace-header">
-      <h1>24-25-mavzular. Somoniylar</h1>
-      <p>7-sinf O'zbekiston tarixi (O'rta asrlar)</p>
+      <h1>7-sinf O'zbekiston tarixi — 24-25-mavzular</h1>
+      <p>Somoniylar davlati</p>
     </div>
 
     <div class="tab-nav">
       <button class="tab-btn active" id="tab-btn-match" onclick="switchTab('match')">🧩 Moslash</button>
-      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob (36)</button>
-      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (36)</button>
+      <button class="tab-btn" id="tab-btn-cards" onclick="switchTab('cards')">🧠 Savol-Javob</button>
+      <button class="tab-btn" id="tab-btn-quiz" onclick="switchTab('quiz')">📝 Test (30)</button>
     </div>
 
     <!-- 1. MOSLASH BO'LIMI -->
@@ -342,7 +342,7 @@
         <div style="font-size: 50px;">📜</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Barcha bosqichlar yakunlandi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Somoniylar davriga oid barcha atamalarni muvaffaqiyatli mosladingiz. Endi 36 talik Savol-Javob qismiga o'tamizmi?
+          Somoniylar mavzusiga oid barcha atamalarni muvaffaqiyatli mosladingiz. Endi Savol-Javob qismiga o'tamizmi?
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('cards')">🧠 Savol-Javob qismiga o'tish ➔</button>
@@ -351,12 +351,12 @@
       </div>
     </div>
 
-    <!-- 2. SAVOL-JAVOB (36 TA SAVOL) -->
+    <!-- 2. SAVOL-JAVOB (35 TA SAVOL) -->
     <div id="tab-cards" class="tab-content">
       <div id="fc-play-box">
         <div class="header-bar">
-          <span class="topic-badge">24-25-mavzular Trenajyor</span>
-          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+          <span class="topic-badge">Somoniylar Trenajyor</span>
+          <span id="fc-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 35</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="fc-progress"></div></div>
 
@@ -373,9 +373,9 @@
 
       <div id="fc-finish-box" class="finish-state">
         <div style="font-size: 50px;">🏰</div>
-        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">36 ta savol tugadi!</h2>
+        <h2 style="font-size: 19px; font-weight: 800; color: #291104;">35 ta savol yakunlandi!</h2>
         <p style="font-size: 15px; color: var(--text-muted); max-width: 320px;">
-          Somoniylar mavzusining barcha jihatlarini to'la o'rganib chiqdingiz. Endi 36 talik Test sinoviga o'tamizmi?
+          Somoniylar mavzusi bo'yicha savol-javoblarni ko'rib chiqdingiz. Endi Test sinoviga o'tamizmi?
         </p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="switchTab('quiz')">📝 Test sinoviga o'tish ➔</button>
@@ -384,12 +384,12 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (36 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida teng 9 tadan taqsimlangan) -->
+    <!-- 3. TEST SINOVI (30 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
-          <span class="topic-badge">24-25-mavzular Test Sinovi</span>
-          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 36</span>
+          <span class="topic-badge">Somoniylar Test Sinovi</span>
+          <span id="q-counter" style="font-size: 13px; font-weight: 800; color: var(--text-muted);">1 / 30</span>
         </div>
         <div class="progress-track"><div class="progress-fill" id="q-progress"></div></div>
 
@@ -400,12 +400,11 @@
 
       <div id="quiz-result" class="finish-state">
         <div style="font-size: 50px;">🌟</div>
-        <div class="finish-badge" id="q-score">0/36</div>
+        <div class="finish-badge" id="q-score">0/30</div>
         <h2 style="font-size: 19px; font-weight: 800; color: #291104;">Sinov yakunlandi!</h2>
         <p id="q-feedback" style="font-size: 15px; color: var(--text-muted); max-width: 320px;"></p>
         <div style="width: 100%; margin-top: 8px; display:flex; flex-direction:column; gap:8px;">
           <button class="action-btn" onclick="restartTest()">Qaytadan ishlash 🔄</button>
-          <button class="action-btn" style="background: #fde68a; color: #78350f; box-shadow:none;" onclick="initMatch(); switchTab('match');">🧩 Boshidan boshlash</button>
         </div>
       </div>
     </div>
@@ -418,50 +417,58 @@
 
   <script>
     if (window.Telegram && window.Telegram.WebApp) {
-      Telegram.WebApp.ready();
-      Telegram.WebApp.expand();
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
     }
 
     function switchTab(tab) {
       ['match', 'cards', 'quiz'].forEach(t => {
-        document.getElementById(`tab-btn-${t}`).classList.remove('active');
-        document.getElementById(`tab-${t}`).classList.remove('active');
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
       });
-      document.getElementById(`tab-btn-${tab}`).classList.add('active');
-      document.getElementById(`tab-${tab}`).classList.add('active');
-      document.getElementById('sticky-bar').style.display = 'none';
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) {
+        stickyBar.style.display = (tab === 'quiz' && document.getElementById('q-explanation').style.display === 'block') ? 'flex' : 'none';
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 1. MOSLASH (4 BOSQICH: har birida 5 tadan, jami 20 ta) ---
+    // --- 1. MOSLASH (20 ta juftlik, 4 bosqich) ---
     const matchStages = [
       [
-        { id: 1, left: "Somonxudot", right: "Somoniylar shohanshohi Xurmazd IV davrida kelib chiqqan sulola asoschisi" },
-        { id: 2, left: "Nuh va Ahmad", right: "IX asr boshlarida Movarounnahrga kelib hukmronlik qilgan Somonxudotning nabiralari" },
-        { id: 3, left: "Nasr ibn Ahmad", right: "Samarqandni markazga aylantirib, butun Movarounnahrni birlashtirgan hukmdor" },
-        { id: 4, left: "Ismoil Somoniy", right: "888-yildagi aka-uka akasi Nasr ustidan g'alaba qozonib, butun Movarounnahrni birlashtirgan shaxs" },
-        { id: 5, left: "Buxoro shahri", right: "Ismoil Somoniy tomonidan birlashtirilgan yirik davlatning poytaxti" }
+        { id: 1, left: "Ismoil Somoniy", right: "Buxoroni poytaxtga aylantirib, Movarounnahr va Xurosonni birlashtirgan hukmdor" },
+        { id: 2, left: "Nasr ibn Ahmad", right: "Ahmad vafotidan keyin Samarqandni markazga aylantirgan somoniy hukmdor" },
+        { id: 3, left: "Amr ibn Lays", right: "Xalifa Mu'taz tomonidan Movarounnahr ustidan hukm yuritish huquqi berilgan safforiylar hukmdori" },
+        { id: 4, left: "Somonxudot", right: "Shajarasi sosoniy qo'mondoni Bahrom Chubingaga borib taqaladigan sulola asoschisi" },
+        { id: 5, left: "888-yil", right: "Aka-uka Nasr va Ismoil o'rtasida toj-u taxt uchun bo'lib o'tgan hal qiluvchi jang yili" }
       ],
       [
-        { id: 6, left: "Taroz shahrini zabt etish", right: "Ismoil Somoniyning dashtliklarga qarshi qaqshatqich zarba bergan yurishi" },
-        { id: 7, left: "Mu'tazid", right: "Safforiylar va somoniylarni to'qnashtirib, Ismoilga hukmdorlik yorlig'ini yuborgan xalifa" },
-        { id: 8, left: "Amir dargohi", right: "Somoniylar davlatida amir qarorgohi va saroy a'yonlari turar joyi" },
-        { id: 9, left: "Un-ta devon", right: "Somoniylar davlatini boshqargan markaziy boshqaruv devonlari tizimi" },
-        { id: 10, left: "Vazir devoni", right: "Somoniylar davlatida boshqaruv makkasi hisoblangan bosh vazirlik devoni" }
+        { id: 6, left: "«Hojib ul-hujob»", right: "Somoniylar saroyida yaxshi qurollangan maxsus sarbozlar boshlig'i" },
+        { id: 7, left: "Visoqboshi", right: "Somoniylar lashkarida to'rt kishidan iborat guruhga boshliq bo'lgan shaxs" },
+        { id: 8, left: "Devonlar", right: "Somoniylar davlatida moliya, soliq va boshqaruv ishlarini yurituvchi mahkamalar" },
+        { id: 9, left: "Alptegin", right: "Somoniylar saroyida xizmat qilib, yirik harbiy sarkarda darajasiga ko'tarilgan sobiq turkiy qul" },
+        { id: 10, left: "942-yil", right: "Nasr Ahmad tangasi va Somoniylar davridagi tangalar muomalada bo'lgan davr" }
       ],
       [
-        { id: 11, left: "Hojib ul-hujob (hojibi buzruk)", right: "Somoniylar saroyida eng oliy unvon bo'lgan bosh hojiblik lavozimi" },
-        { id: 12, left: "Gvardiya", right: "Ismoil Somoniy tuzgan yaxshi qurollangan maxsus tanish sarbozlar (saroy qo'shini)" },
-        { id: 13, left: "Haylboshi", right: "Kichik qo'shin boshlig'i lavozimi" },
-        { id: 14, left: "Barzikor (qo'shchilar)", right: "Yer egalari kadivarlarni ishlatishdan ko'ra, qishloq jamoasining kam yerli a'zolariga ijaraga bergan dehqonlar" },
-        { id: 15, left: "Alp-tegin", right: "Somoniylarning sobiq quli bo'lib, keyinchalik yirik harbiy sarkarda va G'aznaviylar davlati poydevorini qo'ygan shaxs" }
+        { id: 11, left: "Mulki sultoniy", right: "Somoniylar davrida bevosita davlat tasarrufidagi yerlar" },
+        { id: 12, left: "Mulk yerlari", right: "Hukmron sulola vakillari, mulkdor dehqon va aslzodalarning xususiy yerlari" },
+        { id: 13, left: "Vaqf yerlari", right: "Masjid, madrasa va xonaqohlarni saqlash uchun berilgan yerlar" },
+        { id: 14, left: "Mulki xos", right: "Oliy martabali din peshvolari va sayyidlar qo'lidagi yerlar" },
+        { id: 15, left: "«Iqto»", right: "Yirik mansabdorlarga davlat oldidagi xizmati uchun in'om etilgan yer-suv mulki" }
       ],
       [
-        { id: 16, left: "Mulki sultoniy", right: "Davlat tasarrufidagi yerlar" },
-        { id: 17, left: "Mulk yerlari", right: "Hukmron sulola vakillari, mulkdor dehqonlar va aslzodalarga tegishli yerlar" },
-        { id: 18, left: "Vaqf yerlari", right: "Masjid, madrasa va xonaqohlarga vaqtincha yoki abadiy foydalanish uchun berilgan yerlar" },
-        { id: 19, left: "Mulki xos", right: "Oliy martabali din peshvolari va sayyidlar qo'lidagi yerlar" },
-        { id: 20, left: "Iqto'", right: "Harbiy xizmat va boshqaruvdagi xizmatlari evaziga amirzodalarga ma'lum muddatga berilgan yer mulki" }
+        { id: 16, left: "Taroz shahri", right: "Ismoil Somoniy tomonidan 893-yilda shimoliy-sharqiy yurish davrida zabt etilgan shahar" },
+        { id: 17, left: "Buxoro", right: "Somoniylar davlati poytaxtiga aylantirilgan yirik shahar va madaniy markaz" },
+        { id: 18, left: "Qoraxoniylar", right: "X asr oxirida Somoniylar davlatiga zarba berib hokimiyatni egallagan kuch" },
+        { id: 19, left: "«Barzikor»", right: "O'rta asrlarda yerlarni ijaraga olib ishlovchi dehqonlar (qo'shchilar)" },
+        { id: 20, left: "Abu Bakr Narshaxiy", right: "«Buxoro tarixi» asarida Somoniylar saroyi va devonlari haqida ma'lumot yozib qoldirgan muarrix" }
       ]
     ];
 
@@ -471,8 +478,7 @@
 
     function initMatch() {
       currentMatchStage = 0;
-      document.getElementById('match-play-box').style.display = 'block';
-      document.getElementById('match-finish-box').style.display = 'none';
+      matchesRemaining = 5;
       loadMatchStage();
     }
 
@@ -480,9 +486,17 @@
       const pool = matchStages[currentMatchStage];
       matchesRemaining = pool.length;
       
-      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
-      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
-      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      const badge = document.getElementById('match-stage-badge');
+      const counter = document.getElementById('match-counter');
+      const prog = document.getElementById('match-progress');
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+
+      if (badge) badge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (prog) prog.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
       
       let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
       let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
@@ -492,8 +506,8 @@
 
       const colLeft = document.getElementById('match-col-left');
       const colRight = document.getElementById('match-col-right');
-      colLeft.innerHTML = '';
-      colRight.innerHTML = '';
+      if (colLeft) colLeft.innerHTML = '';
+      if (colRight) colRight.innerHTML = '';
 
       leftCards.forEach(c => {
         const btn = document.createElement('button');
@@ -501,7 +515,7 @@
         btn.innerText = c.text;
         btn.dataset.id = c.id;
         btn.onclick = () => onMatchClick(btn);
-        colLeft.appendChild(btn);
+        if (colLeft) colLeft.appendChild(btn);
       });
 
       rightCards.forEach(c => {
@@ -510,7 +524,7 @@
         btn.innerText = c.text;
         btn.dataset.id = c.id;
         btn.onclick = () => onMatchClick(btn);
-        colRight.appendChild(btn);
+        if (colRight) colRight.appendChild(btn);
       });
     }
 
@@ -527,7 +541,9 @@
           selectedMatchBtn.classList.remove('selected');
           selectedMatchBtn = null;
           matchesRemaining--;
-          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+          
+          const counter = document.getElementById('match-counter');
+          if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
 
           if (matchesRemaining === 0) {
             currentMatchStage++;
@@ -535,9 +551,12 @@
               if (currentMatchStage < matchStages.length) {
                 loadMatchStage();
               } else {
-                document.getElementById('match-progress').style.width = '100%';
-                document.getElementById('match-play-box').style.display = 'none';
-                document.getElementById('match-finish-box').style.display = 'flex';
+                const prog = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (prog) prog.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
               }
             }, 500);
           }
@@ -554,44 +573,43 @@
       }
     }
 
-    // --- 2. SAVOL-JAVOB (36 TA SAVOL) ---
+    // --- 2. SAVOL-JAVOB (35 TA SAVOL) ---
     const flashcards = [
-      { q: "1. IX asr boshlarida Movarounnahrda dastlab kimlar hukmronlik qilgan?", a: "Nuh va Ahmad." },
-      { q: "2. Somxudotlarning kelib chiqishi qaysi sosoniy shohanshohiga borib taqaladi?", a: "Xurmazd IV (579–590)." },
-      { q: "3. Nasr ibn Ahmad Samarqandni nima qilib belgilagan edi?", a: "Markazga aylantirgan." },
-      { q: "4. Nasr ibn Ahmad nomidan qaysi tangalar zarb etilgan?", a: "Kumush dirham." },
-      { q: "5. 888-yilda aka-uka Nasr va Ismoil o'rtasidagi kurashda kim g'olib chiqqan?", a: "Ismoil." },
-      { q: "6. Ismoil Somoniy dastlab qaysi shahrni zabt etib dashtliklarga zarba berdi?", a: "Taroz shahrini." },
-      { q: "7. Xalifa Mu'tazid safforiylar va somoniylarni to'qnashtirib kimga yorliq yuborgan?", a: "Ismoilga." },
-      { q: "8. Ismoil Somoniy butun Movarounnahr va Xurosonni o'z qo'l ostida birlashtirgach poytaxtni qayerga qildi?", a: "Buxoroga." },
-      { q: "9. Somoniylar mamlakatni boshqarishda dastlab qanday tizimga tayangan?", a: "Ixcham boshqaruv ma'muriyatiga (amir dargohi va devorlarga)." },
-      { q: "10. Somoniylar davrida davlat nima orqali idora etilgan?", a: "O'nta devor orqali." },
-      { q: "11. Somoniylar saroyida eng oliy unvon qanday atalgan?", a: "Hojib ul-hujob (hojibi buzruk)." },
-      { q: "12. Ismoil Somoniy tomonidan tuzilgan yaxshi qurollangan maxsus saroy qo'shini qanday atalgan?", a: "Gvardiya." },
-      { q: "13. Gvardiyada xizmat qilish necha bosqichdan iborat bo'lgan?", a: "Sakkiz bosqichdan." },
-      { q: "14. Kichik qo'shin boshlig'i qanday unvonda yuritilgan?", a: "Haylboshi." },
-      { q: "15. IX–X asrlarda kadivarlarni ishlatish o'rniga yerlarni ijaraga beruvchilar qanday atalgan?", a: "Barzikor yoki qo'shchilar." },
-      { q: "16. Somoniylar davrida davlat soliqlari nimalardan iborat bo'lgan?", a: "Xiroj va ushr." },
-      { q: "17. Mamlakatda iqtisodiy tanglik yuzaga kelganda aholidan nima olingan?", a: "Ikki marta soliq undirilgan." },
-      { q: "18. Ismoil Somoniy Farg'onaning qaysi shahrida tug'ilgan?", a: "849-yilda." },
-      { q: "19. Ismoil Somoniy necha yoshida otasidan ayrilgan?", a: "14 yoshida." },
-      { q: "20. Ismoil Somoniy xotirasiga atab Buxoroda qurilgan jahonga mashhur me'moriy obida qaysi?", a: "Ismoil Somoniy maqbarasi." },
-      { q: "21. Somoniylar xizmatida bo'lgan turkiy qullardan kimlar yetishib chiqqan?", a: "Samjuriy, Aptegin, Tosh, Foyiq." },
-      { q: "22. Alptegin somoniylarning sobiq quli bo'lib, keyinchalik qaysi shaharning hokimi bo'lgan?", a: "Nishopur." },
-      { q: "23. X asr oxirida Somoniylar davrida hokimiyat kimlarning qo'liga o'tdi?", a: "Qoraxoniylarning." },
-      { q: "24. Xuroson va G'azna hududlarida qaysi yangi sulola shakllandi?", a: "G'aznaviylar." },
-      { q: "25. Somoniylar davrida yer egaligi turlari qaysilar?", a: "Mulki sultoniy, mulk yerlari, vaqf yerlari, mulki xos, jamoa yerlari." },
-      { q: "26. Davlat tasarrufidagi yerlar qanday nomlangan?", a: "Mulki sultoniy." },
-      { q: "27. Masjid va madrasalarga berilgan yerlar qanday atalgan?", a: "Vaqf yerlari." },
-      { q: "28. Oliy martabali din peshvolari yerlari qanday atalgan?", a: "Mulki xos." },
-      { q: "29. Harbiy xizmat evaziga berilgan shartli yer egaligi qanday atalgan?", a: "Iqto' (muqto' / iqtodor)." },
-      { q: "30. Mahkama xodimlari kimlar orasidan tanlab olingan?", a: "Qur'on ilmlari va shariatni biluvchi, arab, fors, turk tillarini puxta egallagan aslzodalardan." },
-      { q: "31. Somoniylar davrida vazir devoni nimani boshqargan?", a: "Boshqaruv mahkamasini." },
-      { q: "32. Somoniylar davrida xazina ishlari qaysi devor orqali yuritilgan?", a: "Moliya (moliya / kirim-chiqim) devoni." },
-      { q: "33. Somoniylar tangalarida qaysi hukmdorning nomi tushirilgan?", a: "Ismoil Somoniy va Nasr ibn Ahmad." },
-      { q: "34. Somoniylar davrida qaysi turlar bo'yicha soliqlar alohida olingan?", a: "Yer egasidan xiroj va ushr." },
-      { q: "35. Somoniylar davrida davlat ishiga qabul qilishda qanday talablar qo'yilgan?", a: "Davlat tilini mukammal bilish, huquq, tarix va adabiyotdan xabardor bo'lish." },
-      { q: "36. Somoniylar poytaxti Buxoro shahrida qaysi asrda yuksak madaniyat qaror topgan?", a: "IX–X asrlarda." }
+      { q: "1. IX asr boshlarida Arab xalifaligining zaiflashib qolishiga qanday omillar sabab bo'lgan?", a: "O'zaro ichki nizolar." },
+      { q: "2. IX asrda Movarounnahr siyosiy hayotida yurtga avval kim boshchilik qilgan?", a: "Nuh." },
+      { q: "3. Nuhdan keyin Movarounnahrda kim hokimiyatni boshqargan?", a: "Ahmad." },
+      { q: "4. Ahmad vafotidan keyin uning qaysi o'g'li Samarqandni markazga aylantirgan?", a: "Nasr." },
+      { q: "5. Somonxudotlarning shajarasi qaysi sosoniy shohanshohining harbiy qo'mondoniga borib taqaladi?", a: "Xurmazd IV (579–590)." },
+      { q: "6. Xurmazd IV ning harbiy qo'mondoni bo'lgan Somonxudotlar ajdodi kim edi?", a: "Bahrom Chubin." },
+      { q: "7. Bahrom Chubin kelib chiqishi bo'yicha kim bo'lgan?", a: "O'g'iz turklaridan." },
+      { q: "8. Somonxudotlarning avlodlari dastlab qaysi shaharda yashagan?", a: "Balxda." },
+      { q: "9. Nasr va Ismoil o'rtasidagi toj-u taxt uchun kurash qachon hal qiluvchi bosqichga o'tgan?", a: "888-yilgi jangda Ismoil g'olib chiqishi bilan." },
+      { q: "10. Ismoil Somoniy shimoliy-sharqiy hududlarga yurish qilib qaysi shaharni zabt etgan?", a: "Taroz shahrini (893-yil)." },
+      { q: "11. Xalifa Mu'taz safforiylar hukmdori Amr ibn Laysga qanday huquq beruvchi farmon chiqargan?", a: "Xuroson bilan birga Movarounnahr ustidan hukm yuritish huquqini beruvchi farmon." },
+      { q: "12. Ismoil Somoniy safforiylar ustidan g'alaba qozonib qaysi shaharni poytaxtga aylantirdi?", a: "Buxoro shahrini." },
+      { q: "13. Somoniylar davrida dastlabki davlat boshqaruvi nimadan iborat edi?", a: "Ixcham boshqaruv ma'muriyati va devonlardan (vazirliklardan)." },
+      { q: "14. Somoniylar saroyida amir dargohi va boshqa xizmatchilar orasida qaysi tillarni bilish talab etilgan?", a: "Arab, fors va turk tillarini." },
+      { q: "15. Ismoil Somoniy saroyida yaxshi qurollangan maxsus sarbozlar boshlig'i qanday nomlangan?", a: "«Hojib ul-hujob» yoki «hojibi buzruk»." },
+      { q: "16. Somoniylar lashkarining saralangan qismlarida to'rt kishidan iborat guruh boshlig'i kim edi?", a: "Visoqboshi." },
+      { q: "17. X asr oxirida Somoniylar davlatiga qaysi kuch zarba berib uni qulatdi?", a: "Qoraxoniylar." },
+      { q: "18. Ismoil Somoniy qachon va qayerda tug'ilgan?", a: "849-yilda Farg'onada." },
+      { q: "19. Ismoil Somoniy butun Movarounnahr hukmini to'la o'z qo'liga qachon olgan?", a: "892-yilda." },
+      { q: "20. Somoniylar harbiy qismlari va ma'muriyatida kimlar xizmat qilgan?", a: "Turkiy qullar." },
+      { q: "21. Turkiy qullardan bo'lib, keyinchalik yirik harbiy sarkarda darajasiga ko'tarilgan shaxs kim?", a: "Alptegin." },
+      { q: "22. Somoniylar hukmronligi davrida yer egaligining nechta asosiy turi mavjud bo'lgan?", a: "Besh turi (Mulki sultoniy, Mulk yerlari, Vaqf yerlari, Mulki xos, Jamoa yerlari)." },
+      { q: "23. Bevosita davlat tasarrufidagi yerlar qanday atalgan?", a: "Mulki sultoniy." },
+      { q: "24. Hukmron sulola vakillari, mulkdor dehqonlarning xususiy yerlari nima deb atalgan?", a: "Mulk yerlari." },
+      { q: "25. Masjid, madrasa va xonaqohlarga berilgan yerlar qanday atalgan?", a: "Vaqf yerlari." },
+      { q: "26. Oliy martabali din peshvolari va sayyidlar qo'lidagi yerlar qanday atalgan?", a: "Mulki xos." },
+      { q: "27. Qishloq jamoalari tasarrufidagi yerlar qanday atalgan?", a: "Jamoa yerlari." },
+      { q: "28. X asrda yirik mansabdorlarga xizmati evaziga berilgan yer-suv mulki qanday atalgan?", a: "«Iqto»." },
+      { q: "29. Iqto egasi bo'lgan shaxs qanday nomlangan?", a: "«Muqto» yoki «iqtodor»." },
+      { q: "30. Somoniylar davrida qishloq ahliga yerlarni ijaraga olib ishlovchi dehqonlar kimlar deb atalgan?", a: "«Barzikor» yoki «qo'shchilar»." },
+      { q: "31. Ismoil Somoniyning maqbarasi qayerda joylashgan va qaysi asrga oid?", a: "Buxoroda, X asrga oid." },
+      { q: "32. Somoniylar davrida qaysi hukmdor nomi bilan kumush dirham zarb etilgan?", a: "Nasr." },
+      { q: "33. Somoniylar davrida Buxoroning Registon maydonida nimalar qurilgan edi?", a: "Saroy va maxsus mahkama binolari." },
+      { q: "34. Ismoil Somoniy qaysi yilda vafot etgan?", a: "907-yilda." },
+      { q: "35. Somoniylar davlatida xazina va soliq ishlarini yurituvchi idoralar qanday atalgan?", a: "Devonlar." }
     ];
 
     let fcIdx = 0;
@@ -630,232 +648,201 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (36 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida teng 9 tadan taqsimlangan) ---
-    const testQuestions = [
-      // 9 ta A (index 0)
+    // --- 3. TEST SINOVI (30 TA TEST) ---
+    const rawTestQuestions = [
       {
-        q: "1. IX asr boshlarida Movarounnahrda dastlab kimlar hukmronlik qilgan?",
-        options: ["Nuh va Ahmad", "Ismoil va Nasr", "Alptegin va Sabuktegin", "Qarluq va o'g'uzlar"],
-        correct: 0,
-        exp: "IX asr boshlarida Movarounnahrda Nuh va Ahmad hukmronlik qilgan."
+        q: "1. IX asr boshlarida Arab xalifaligining zaiflashib qolishiga nima sabab bo'lgan?",
+        options: ["O'zaro ichki nizolar va kurashlar", "Qit'alararo savdoning butunlay to'xtashi", "Tashqi iqtisodiy blokada", "Mintaqadagi kuchli zilzilalar"],
+        correctVal: "O'zaro ichki nizolar va kurashlar",
+        exp: "Darslikda xalifalikning zaiflashishiga o'zaro ichki nizolar sabab bo'lgani ko'rsatilgan."
       },
       {
-        q: "2. Ismoil Somoniy dastlab qaysi shahrni zabt etib dashtliklarga qaqshatqich zarba bergan?",
-        options: ["Taroz shahrini", "Suyabni", "Yangikentni", "Balxni"],
-        correct: 0,
-        exp: "Ismoil Somoniy Taroz shahrini zabt etgan."
+        q: "2. IX asrda Movarounnahr siyosiy hayotida yurtga avval kim boshchilik qilgan?",
+        options: ["Ismoil Somoniy", "Nuh", "Nasr", "Ahmad"],
+        correctVal: "Nuh",
+        exp: "Yurtga avval Nuh boshchilik qilgan."
       },
       {
-        q: "3. Somoniylar davrida davlat boshqaruvi nechta asosiy devor (vazirlik) orqali idora etilgan?",
-        options: ["O'nta devor", "Beshta devor", "O'n ikkita devor", "Uchta devor"],
-        correct: 0,
-        exp: "Davlat o'nta devor orqali idora etilgan."
+        q: "3. Nuhdan keyin Movarounnahrda hokimiyatni kim boshqargan?",
+        options: ["Ismoil", "Ahmad", "Nasr", "Yahyo"],
+        correctVal: "Ahmad",
+        exp: "Nuhdan so'ng yurtni Ahmad boshqargan."
       },
       {
-        q: "4. Somoniylar saroyida eng oliy unvon qanday atalgan?",
-        options: ["Hojib ul-hujob (hojibi buzruk)", "Vaxshunvar", "Ixshid", "Xudot"],
-        correct: 0,
-        exp: "Eng oliy unvon Hojib ul-hujob edi."
+        q: "4. Somonxudotlarning shajarasi qaysi sosoniy shohanshohining harbiy qo'mondoniga borib taqaladi?",
+        options: ["Xusrav I", "Xurmazd IV", "Shohpur II", "Ardashir I"],
+        correctVal: "Xurmazd IV",
+        exp: "Shajara sosoniy shohanshohi Xurmazd IV ning qo'mondoni Bahrom Chubingaga borib taqaladi."
       },
       {
-        q: "5. Ismoil Somoniy Farg'onaning qaysi shahrida tug'ilgan?",
-        options: ["849-yilda Farg'onada", "865-yilda Buxoroda", "821-yilda Samarqandda", "893-yilda Nishopurda"],
-        correct: 0,
-        exp: "Ismoil Somoniy 849-yilda Farg'onada tug'ilgan."
+        q: "5. Bahrom Chubin kelib chiqishi bo'yicha kim bo'lgan?",
+        options: ["O'g'iz turklaridan", "Eftaliylardan", "Xitoylik zodagondan", "Arab amiridan"],
+        correctVal: "O'g'iz turklaridan",
+        exp: "Bahrom Chubin o'g'iz turklaridan bo'lgan."
       },
       {
-        q: "6. Ismoil Somoniy otasidan necha yoshida ayrilgan?",
-        options: ["14 yoshida", "10 yoshida", "18 yoshida", "20 yoshida"],
-        correct: 0,
-        exp: "U 14 yoshida otasidan ayrilgan."
-      },
-      {
-        q: "7. Alptegin somoniylarning sobiq quli bo'lib, keyinchalik qaysi shaharning hokimi bo'lgan?",
-        options: ["Nishopur", "Buxoro", "Samarqand", "Marv"],
-        correct: 0,
-        exp: "Alptegin Nishopur hokimi bo'lgan."
-      },
-      {
-        q: "8. Davlat tasarrufidagi yerlar qanday nomlangan?",
-        options: ["Mulki sultoniy", "Mulk yerlari", "Vaqf yerlari", "Mulki xos"],
-        correct: 0,
-        exp: "Davlat tasarrufidagi yerlar mulki sultoniy deb atalgan."
-      },
-      {
-        q: "9. Somoniylar davrida vazir devoni nimani boshqargan?",
-        options: ["Boshqaruv mahkamasini", "Xazina ishlarini", "Harbiy qo'shinni", "Qozilikni"],
-        correct: 0,
-        exp: "Vazir devoni boshqaruv mahkamasini boshqargan."
-      },
-
-      // 9 ta B (index 1)
-      {
-        q: "10. Somxudotlarning kelib chiqishi qaysi sosoniy shohanshohiga borib taqaladi?",
-        options: ["Xusrav I", "Xurmazd IV (579–590)", "Peroz", "Ardashir"],
-        correct: 1,
-        exp: "Ularning shajarasi Xurmazd IV ga borib taqaladi."
-      },
-      {
-        q: "11. 888-yilda aka-uka Nasr va Ismoil o'rtasidagi kurashda kim g'olib chiqqan?",
-        options: ["Nasr", "Ismoil", "Ahmad", "Ilyos"],
-        correct: 1,
+        q: "6. Nasr va Ismoil o'rtasidagi kurashda 888-yilda kim g'olib chiqib Movarounnahrda hukmron bo'lgan?",
+        options: ["Nasr", "Ismoil", "Ahmad", "Nuh"],
+        correctVal: "Ismoil",
         exp: "888-yildagi jangda Ismoil g'olib chiqqan."
       },
       {
-        q: "12. Xalifa Mu'tazid safforiylar va somoniylarni to'qnashtirib kimga yorliq yuborgan?",
-        options: ["Amr ibn Laysga", "Ismoilga", "Nasrga", "Ya'qubga"],
-        correct: 1,
-        exp: "Xalifa Ismoilga hukmdorlik yorlig'ini yuborgan."
+        q: "7. Ismoil Somoniy shimoliy-sharqiy hududlarga yurish qilib qaysi shaharni zabt etgan?",
+        options: ["Taroz shahrini", "Toshkentni", "Farg'onani", "Qashqarni"],
+        correctVal: "Taroz shahrini",
+        exp: "Ismoil Somoniy 893-yilda Taroz shahrini zabt etgan."
       },
       {
-        q: "13. Ismoil Somoniy butun Movarounnahr va Xurosonni birlashtirgach poytaxtni qayerga qildi?",
-        options: ["Samarqandga", "Buxoroga", "Marvga", "Nishopurga"],
-        correct: 1,
-        exp: "Buxoro davlatning poytaxtiga aylandi."
+        q: "8. Xalifa Mu'taz safforiylar hukmdori Amr ibn Laysga qanday huquq bergan?",
+        options: ["Faqat Xorazmni boshqarish", "Xuroson bilan birga Movarounnahr ustidan hukm yuritish", "Faqat Samarqandni idora qilish", "Soliq yig'ish huquqini berish"],
+        correctVal: "Xuroson bilan birga Movarounnahr ustidan hukm yuritish",
+        exp: "Amr ibn Laysga Xuroson va Movarounnahr ustidan hukm yuritish huquqi berilgan."
       },
       {
-        q: "14. Ismoil Somoniy tomonidan tuzilgan yaxshi qurollangan maxsus saroy qo'shini qanday atalgan?",
-        options: ["Sipoh", "Gvardiya", "Chokar", "Tuman"],
-        correct: 1,
-        exp: "Bu maxsus qo'shin gvardiya deb atalgan."
+        q: "9. Somoniylar davlatining poytaxti qaysi shahar bo'lgan?",
+        options: ["Samarqand", "Buxoro", "Marv", "Gurganch"],
+        correctVal: "Buxoro",
+        exp: "Buxoro shahri Somoniylar davlatining poytaxtiga aylantirilgan."
       },
       {
-        q: "15. X asr oxirida Somoniylar davrida hokimiyat kimlarning qo'liga o'tdi?",
-        options: ["G'aznaviylarning", "Qoraxoniylarning", "Safforiylarning", "Tohiriylarning"],
-        correct: 1,
-        exp: "Hokimiyat qoraxoniylar qo'liga o'tgan."
+        q: "10. Somoniylar davrida davlatni boshqarishda moliya va boshqaruv ishlarini yurituvchi idoralar nima deb atalgan?",
+        options: ["Devonlar", "Kengashlar", "Mahkamalar", "Majlislar"],
+        correctVal: "Devonlar",
+        exp: "Boshqaruv devonlar orqali amalga oshirilgan."
       },
       {
-        q: "16. Masjid va madrasalarga berilgan yerlar qanday atalgan?",
+        q: "11. Somoniylar saroyida yaxshi qurollangan maxsus sarbozlar boshlig'i qanday nomlangan?",
+        options: ["Hojib ul-hujob", "Visoqboshi", "Muqto", "Barzikor"],
+        correctVal: "Hojib ul-hujob",
+        exp: "Sarbozlar boshlig'i «hojib ul-hujob» yoki «hojibi buzruk» deb yuritilgan."
+      },
+      {
+        q: "12. Somoniylar lashkarining saralangan qismlarida to'rt kishidan iborat guruh boshlig'i kim edi?",
+        options: ["Visoqboshi", "Amir", "Vazir", "Muqto"],
+        correctVal: "Visoqboshi",
+        exp: "To'rt kishidan iborat guruhga visoqboshi boshchilik qilgan."
+      },
+      {
+        q: "13. X asr oxirida Somoniylar davlatiga zarba berib uni qulatgan kuch kimlar edi?",
+        options: ["Qoraxoniylar", "Safforiylar", "Eftaliylar", "Mo'g'ullar"],
+        correctVal: "Qoraxoniylar",
+        exp: "X asr oxirida qoraxoniylar hokimiyatni egallagan."
+      },
+      {
+        q: "14. Ismoil Somoniy qaysi yilda va qayerda tug'ilgan?",
+        options: ["849-yilda Farg'onada", "865-yilda Buxoroda", "900-yilda Samarqandda", "813-yilda Marvda"],
+        correctVal: "849-yilda Farg'onada",
+        exp: "Ismoil Farg'onada 849-yilda tug'ilgan."
+      },
+      {
+        q: "15. Somoniylar harbiy qismlari va ma'muriyatida kimlar xizmat qilgan?",
+        options: ["Turkiy qullar", "Yevropalik yollanma askarlar", "Hindistonlik savdogarlar", "Xitoylik elchilar"],
+        correctVal: "Turkiy qullar",
+        exp: "Somoniylar harbiy qismlarida turkiy qullar xizmat qilgan."
+      },
+      {
+        q: "16. Turkiy qullardan bo'lib, keyinchalik yirik harbiy sarkarda darajasiga ko'tarilgan shaxs kim?",
+        options: ["Alptegin", "Abu Muslim", "G'urak", "Divashtich"],
+        correctVal: "Alptegin",
+        exp: "Alptegin sobiq turkiy qul bo'lib, yirik sarkarda darajasiga ko'tarilgan."
+      },
+      {
+        q: "17. Somoniylar hukmronligi davrida bevosita davlat tasarrufidagi yerlar qanday atalgan?",
         options: ["Mulki sultoniy", "Vaqf yerlari", "Mulki xos", "Jamoa yerlari"],
-        correct: 1,
-        exp: "Ular vaqf yerlari deb atalgan."
+        correctVal: "Mulki sultoniy",
+        exp: "Davlat tasarrufidagi yerlar mulki sultoniy deb atalgan."
       },
       {
-        q: "17. Harbiy xizmat evaziga berilgan shartli yer egaligi qanday atalgan?",
-        options: ["Mulk", "Iqto' (muqto' / iqtodor)", "Vaqf", "Xiroj"],
-        correct: 1,
-        exp: "Bu shartli yer iqto' deb atalgan."
+        q: "18. Masjid, madrasa va xonaqohlarni saqlash uchun berilgan yerlar qanday atalgan?",
+        options: ["Vaqf yerlari", "Mulk yerlari", "Jamoa yerlari", "Mulki xos"],
+        correctVal: "Vaqf yerlari",
+        exp: "Diniy muassasalar uchun vaqf yerlari berilgan."
       },
       {
-        q: "18. Somoniylar davrida davlat ishiga qabul qilishda qo'yilgan asosiy talablar qaysilar edi?",
-        options: ["Faqat badavlat bo'lish", "Davlat tilini mukammal bilish, huquq, tarix va adabiyotdan xabardor bo'lish", "Faqat harbiy unvonga ega bo'lish", "Faqat chet tilini bilish"],
-        correct: 1,
-        exp: "Til, huquq, tarix va adabiyotni bilish talab etilgan."
-      },
-
-      // 9 ta C (index 2)
-      {
-        q: "19. Nasr ibn Ahmad Samarqandni nima qilib belgilagan edi?",
-        options: ["Ibodatxona", "Chegara", "Markazga aylantirgan", "Qal'a"],
-        correct: 2,
-        exp: "Nasr Samarqandni markazga aylantirgan."
+        q: "19. X asrda yirik mansabdorlarga xizmati evaziga in'om etilgan yer-suv mulki nima deb atalgan?",
+        options: ["«Iqto»", "Xiroj", "Jiz'ya", "Rizq"],
+        correctVal: "«Iqto»",
+        exp: "Xizmat evaziga berilgan yer iqto deb atalgan."
       },
       {
-        q: "20. Ismoil Somoniy qaysi shahrida Ismoil Somoniy maqbarasi qurilgan?",
-        options: ["Samarqandda", "Nasafda", "Buxoroda. X asr.", "Xivada"],
-        correct: 2,
-        exp: "Maqbara Buxoroda qurilgan."
+        q: "20. Iqto egasi bo'lgan shaxs qanday nomlangan?",
+        options: ["Muqto yoki iqtodor", "Barzikor", "Visoqboshi", "Hojib"],
+        correctVal: "Muqto yoki iqtodor",
+        exp: "Iqto egasi muqto yoki iqtodor deb yuritilgan."
       },
       {
-        q: "21. Gvardiyada xizmat qilish necha bosqichdan iborat bo'lgan?",
-        options: ["4 ta", "6 ta", "Sakkiz bosqichdan", "10 ta"],
-        correct: 2,
-        exp: "Gvardiyada xizmat qilish sakkiz bosqichdan iborat bo'lgan."
+        q: "21. Ismoil Somoniy butun Movarounnahr hukmini to'la o'z qo'liga qachon olgan?",
+        options: ["892-yilda", "747-yilda", "999-yilda", "751-yilda"],
+        correctVal: "892-yilda",
+        exp: "Ismoil 892-yilda butun Movarounnahr hukmini o'z qo'liga olgan."
       },
       {
-        q: "22. IX–X asrlarda kadivarlarni ishlatish o'rniga yerlarni ijaraga beruvchilar qanday atalgan?",
-        options: ["Dehqon", "Amir", "Barzikor yoki qo'shchilar", "Qul"],
-        correct: 2,
-        exp: "Ular barzikor yoki qo'shchilar deb atalgan."
+        q: "22. Somoniylar davrida qishloq ahliga yerlarni ijaraga olib ishlovchi dehqonlar kimlar edi?",
+        options: ["Barzikor yoki qo'shchilar", "Vazir va dehqonlar", "Gvardiyachilar", "Sarbozlar"],
+        correctVal: "Barzikor yoki qo'shchilar",
+        exp: "Yerlarga ijarachi sifatida barzikor yoki qo'shchilar ishlov bergan."
       },
       {
-        q: "23. Xuroson va G'azna hududlarida qaysi yangi sulola shakllandi?",
-        options: ["Qoraxoniylar", "Tohiriylar", "G'aznaviylar", "Abbosiylar"],
-        correct: 2,
-        exp: "G'aznaviylar sulolasi shakllangan."
+        q: "23. Ismoil Somoniyning maqbarasi qayerda joylashgan?",
+        options: ["Buxoroda", "Samarqandda", "Xivada", "Toshkentda"],
+        correctVal: "Buxoroda",
+        exp: "Ismoil Somoniy maqbarasi Buxoroda joylashgan."
       },
       {
-        q: "24. Oliy martabali din peshvolari yerlari qanday atalgan?",
-        options: ["Mulk", "Vaqf", "Mulki xos", "Sultoniy"],
-        correct: 2,
-        exp: "Din peshvolari yerlari mulki xos deb atalgan."
+        q: "24. Somoniylar davrida qaysi hukmdor nomi bilan kumush dirham zarb etilgan?",
+        options: ["Nasr", "Alptegin", "Ma'mun", "Nuh"],
+        correctVal: "Nasr",
+        exp: "Nasr nomi bilan kumush dirham zarb etilgan."
       },
       {
-        q: "25. Mahkama xodimlari kimlar orasidan tanlab olingan?",
-        options: ["Faqat dehqonlar", "Faqat savdogarlar", "Qur'on ilmlari va shariatni biluvchi, arab, fors, turk tillarini puxta egallagan aslzodalardan", "Faqat chet elliklardan"],
-        correct: 2,
-        exp: "Ular tillarni va shariatni biluvchi aslzodalardan tanlangan."
+        q: "25. Somoniylar davrida Buxoroning Registon maydonida nimalar qurilgan edi?",
+        options: ["Saroy va maxsus mahkama binolari", "Katta bozor rastolari", "Diniy madrasalar", "Harbiy qurol ombori"],
+        correctVal: "Saroy va maxsus mahkama binolari",
+        exp: "Registonda saroy va mahkama binolari qurilgan."
       },
       {
-        q: "26. Somoniylar davrida xazina ishlari qaysi devor orqali yuritilgan?",
-        options: ["Vazir devoni", "Harbiy devor", "Moliya (moliya / kirim-chiqim) devoni", "Qozilik devoni"],
-        correct: 2,
-        exp: "Xazina ishlari moliya devori orqali yuritilgan."
+        q: "26. Ismoil Somoniy qaysi yilda vafot etgan?",
+        options: ["907-yilda", "893-yilda", "942-yilda", "999-yilda"],
+        correctVal: "907-yilda",
+        exp: "Ismoil Somoniy 907-yilda vafot etgan."
       },
       {
-        q: "27. Somoniylar davrida soliq turlari asosan nimalardan iborat bo'lgan?",
-        options: ["Faqat boj", "Faqat jon solig'i", "Xiroj va ushr", "Faqat zakot"],
-        correct: 2,
-        exp: "Soliqlar xiroj va ushrdan iborat bo'lgan."
-      },
-
-      // 9 ta D (index 3)
-      {
-        q: "28. Nasr ibn Ahmad nomidan qaysi tangalar zarb etilgan edi?",
-        options: ["Oltin tanga", "Mis chaqa", "Bronza medal", "Kumush dirham"],
-        correct: 3,
-        exp: "Uning nomidan kumush dirham zarb etilgan."
+        q: "27. Oliy martabali din peshvolari va sayyidlar qo'lidagi yerlar qanday atalgan?",
+        options: ["Mulki xos", "Mulki sultoniy", "Vaqf yerlari", "Jamoa yerlari"],
+        correctVal: "Mulki xos",
+        exp: "Din peshvolari qo'lidagi yerlar mulki xos deb atalgan."
       },
       {
-        q: "29. Kichik qo'shin boshlig'i qanday unvonda yuritilgan?",
-        options: ["Sarkarda", "Amir", "Sipohsolor", "Haylboshi"],
-        correct: 3,
-        exp: "Kichik qo'shin boshlig'i haylboshi deb yuritilgan."
+        q: "28. Qishloq jamoalari tasarrufidagi yerlar qanday atalgan?",
+        options: ["Jamoa yerlari", "Mulk yerlari", "Vaqf yerlari", "Mulki sultoniy"],
+        correctVal: "Jamoa yerlari",
+        exp: "Qishloq jamoalari tasarrufidagi yerlar jamoa yerlari bo'lgan."
       },
       {
-        q: "30. Mamlakatda iqtisodiy tanglik yuzaga kelganda aholidan nima qilingan?",
-        options: ["Soliqlar kechirilgan", "Yerlar taqsimlangan", "Yordam berilgan", "Ikki marta soliq undirilgan"],
-        correct: 3,
-        exp: "Aholidan ikki marta soliq undirilgan."
+        q: "29. Hukmron sulola vakillari va mulkdor dehqonlarning xususiy yerlari nima deb atalgan?",
+        options: ["Mulk yerlari", "Mulki xos", "Vaqf yerlari", "Mulki sultoniy"],
+        correctVal: "Mulk yerlari",
+        exp: "Xususiy yerlar mulk yerlari deb atalgan."
       },
       {
-        q: "31. Somoniylar davrida turkiy qullar qayerlarda xizmat qilgan?",
-        options: ["Faqat qishloqda yer haydagan", "Faqat chet elda", "Faqat savdoda", "Harbiy qismlar va saroy ma'muriyatida"],
-        correct: 3,
-        exp: "Ular harbiy qismlar va saroyda xizmat qilgan."
-      },
-      {
-        q: "32. Hukmron sulola vakillari va mulkdor dehqonlar yerlari qanday atalgan?",
-        options: ["Mulki sultoniy", "Vaqf yerlari", "Mulki xos", "Mulk yerlari"],
-        correct: 3,
-        exp: "Ular mulk yerlari deb atalgan."
-      },
-      {
-        q: "33. Somoniylar tangalarida qaysi hukmdorlarning ismlari tushirilgan?",
-        options: ["Faqat xalifaning", "Faqat Alpteginning", "Faqat Ismoilning", "Ismoil Somoniy va Nasr ibn Ahmad"],
-        correct: 3,
-        exp: "Ismoil Somoniy va Nasr ibn Ahmad ismlari tushirilgan."
-      },
-      {
-        q: "34. Somoniylar poytaxti Buxoro shahrida qaysi asrlarda yuksak madaniyat qaror topgan?",
-        options: ["VI–VII asrlarda", "XI–XII asrlarda", "XIII–XIV asrlarda", "IX–X asrlarda"],
-        correct: 3,
-        exp: "Buxoroda IX–X asrlarda yuksak madaniyat qaror topgan."
-      },
-      {
-        q: "35. Somoniylar davrida qaysi turlar bo'yicha soliqlar alohida olingan?",
-        options: ["Faqat uy solig'i", "Faqat yo'l solig'i", "Faqat suv solig'i", "Yer egasidan xiroj va ushr"],
-        correct: 3,
-        exp: "Yer egasidan xiroj va ushr alohida olingan."
-      },
-      {
-        q: "36. Somoniylar davlati qachon o'z taraqqiyotining eng yuqori cho'qqisiga chiqdi?",
-        options: ["IX asr boshida", "VIII asr oxirida", "XI asr boshida", "Ismoil Somoniy davrida (IX asr oxiri — X asr boshi)"],
-        correct: 3,
-        exp: "Ismoil Somoniy davrida eng yuqori cho'qqiga chiqqan."
+        q: "30. Somoniylar davrida lashkarning doimiy faoliyat ko'rsatuvchi saralangan qismlari qanday atalgan?",
+        options: ["Gvardiya", "Ko'chmanchilar", "Savdogarlar", "Dehqonlar"],
+        correctVal: "Gvardiya",
+        exp: "Doimiy faoliyat ko'rsatuvchi saralangan qismlar gvardiya deb atalgan."
       }
     ];
+
+    const testQuestions = rawTestQuestions.map(item => {
+      let opts = [...item.options];
+      opts.sort(() => 0.5 - Math.random());
+      let correctIdx = opts.indexOf(item.correctVal);
+      return {
+        q: item.q,
+        options: opts,
+        correct: correctIdx,
+        exp: item.exp
+      };
+    });
 
     let tIdx = 0, score = 0;
 
@@ -890,9 +877,7 @@
         else if(idx === selectedIdx) btn.classList.add('incorrect');
       });
 
-      if(selectedIdx === q.correct) {
-        score++;
-      }
+      if(selectedIdx === q.correct) score++;
 
       const exp = document.getElementById('q-explanation');
       exp.innerText = "💡 Izoh: " + q.exp;
@@ -917,9 +902,9 @@
       document.getElementById('quiz-result').style.display = 'flex';
       document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
       const fb = document.getElementById('q-feedback');
-      if(score >= 32) fb.innerText = "Mukammal natija! Somoniylar mavzusini to'laqonli o'zlashtiribsiz 🌟";
-      else if(score >= 25) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
-      else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
+      
+      const percent = Math.round((score / testQuestions.length) * 100);
+      fb.innerText = `Siz 30 ta savoldan ${score} tasiga to'g'ri javob berdingiz (${percent}%)`;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -931,9 +916,11 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    initMatch();
-    loadFlashcard();
-    loadTestQuestion();
+    window.onload = function() {
+      initMatch();
+      loadFlashcard();
+      loadTestQuestion();
+    };
   </script>
 </body>
 </html>

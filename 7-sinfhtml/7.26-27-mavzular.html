@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>26-27-mavzular. Somoniylar davrida ijtimoiy-iqtisodiy hayot</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
@@ -27,6 +27,7 @@
       background: radial-gradient(circle at top, #3b1d0e 0%, #110904 70%, #050201 100%);
       color: var(--text);
       min-height: 100vh;
+      min-height: -webkit-fill-available;
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
     }
@@ -417,19 +418,28 @@
   </div>
 
   <script>
-    if (window.Telegram && window.Telegram.WebApp) {
-      Telegram.WebApp.ready();
-      Telegram.WebApp.expand();
+    try {
+      if (window.Telegram && window.Telegram.WebApp) {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+      }
+    } catch (e) {
+      console.error("Telegram WebApp error:", e);
     }
 
     function switchTab(tab) {
       ['match', 'cards', 'quiz'].forEach(t => {
-        document.getElementById(`tab-btn-${t}`).classList.remove('active');
-        document.getElementById(`tab-${t}`).classList.remove('active');
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-${t}`);
+        if (btn) btn.classList.remove('active');
+        if (content) content.classList.remove('active');
       });
-      document.getElementById(`tab-btn-${tab}`).classList.add('active');
-      document.getElementById(`tab-${tab}`).classList.add('active');
-      document.getElementById('sticky-bar').style.display = 'none';
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      const activeContent = document.getElementById(`tab-${tab}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+      const stickyBar = document.getElementById('sticky-bar');
+      if (stickyBar) stickyBar.style.display = 'none';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -471,8 +481,10 @@
 
     function initMatch() {
       currentMatchStage = 0;
-      document.getElementById('match-play-box').style.display = 'block';
-      document.getElementById('match-finish-box').style.display = 'none';
+      const playBox = document.getElementById('match-play-box');
+      const finishBox = document.getElementById('match-finish-box');
+      if (playBox) playBox.style.display = 'block';
+      if (finishBox) finishBox.style.display = 'none';
       loadMatchStage();
     }
 
@@ -480,9 +492,12 @@
       const pool = matchStages[currentMatchStage];
       matchesRemaining = pool.length;
       
-      document.getElementById('match-stage-badge').innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
-      document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
-      document.getElementById('match-progress').style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
+      const badge = document.getElementById('match-stage-badge');
+      const counter = document.getElementById('match-counter');
+      const prog = document.getElementById('match-progress');
+      if (badge) badge.innerText = `Bosqich: ${currentMatchStage + 1} / ${matchStages.length}`;
+      if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+      if (prog) prog.style.width = `${((currentMatchStage) / matchStages.length) * 100}%`;
       
       let leftCards = pool.map(p => ({ id: p.id, text: p.left }));
       let rightCards = pool.map(p => ({ id: p.id, text: p.right }));
@@ -492,8 +507,8 @@
 
       const colLeft = document.getElementById('match-col-left');
       const colRight = document.getElementById('match-col-right');
-      colLeft.innerHTML = '';
-      colRight.innerHTML = '';
+      if (colLeft) colLeft.innerHTML = '';
+      if (colRight) colRight.innerHTML = '';
 
       leftCards.forEach(c => {
         const btn = document.createElement('button');
@@ -501,7 +516,7 @@
         btn.innerText = c.text;
         btn.dataset.id = c.id;
         btn.onclick = () => onMatchClick(btn);
-        colLeft.appendChild(btn);
+        if (colLeft) colLeft.appendChild(btn);
       });
 
       rightCards.forEach(c => {
@@ -510,7 +525,7 @@
         btn.innerText = c.text;
         btn.dataset.id = c.id;
         btn.onclick = () => onMatchClick(btn);
-        colRight.appendChild(btn);
+        if (colRight) colRight.appendChild(btn);
       });
     }
 
@@ -527,7 +542,8 @@
           selectedMatchBtn.classList.remove('selected');
           selectedMatchBtn = null;
           matchesRemaining--;
-          document.getElementById('match-counter').innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
+          const counter = document.getElementById('match-counter');
+          if (counter) counter.innerText = `Qoldi: ${matchesRemaining} ta juftlik`;
 
           if (matchesRemaining === 0) {
             currentMatchStage++;
@@ -535,9 +551,12 @@
               if (currentMatchStage < matchStages.length) {
                 loadMatchStage();
               } else {
-                document.getElementById('match-progress').style.width = '100%';
-                document.getElementById('match-play-box').style.display = 'none';
-                document.getElementById('match-finish-box').style.display = 'flex';
+                const prog = document.getElementById('match-progress');
+                const playBox = document.getElementById('match-play-box');
+                const finishBox = document.getElementById('match-finish-box');
+                if (prog) prog.style.width = '100%';
+                if (playBox) playBox.style.display = 'none';
+                if (finishBox) finishBox.style.display = 'flex';
               }
             }, 500);
           }
@@ -557,7 +576,7 @@
     // --- 2. SAVOL-JAVOB (38 TA SAVOL) ---
     const flashcards = [
       { q: "1. Somoniylar davrida qaysi vodiylarda dehqonchilik yuksak darajada olib borilgan?", a: "Farg'ona, Qashqadaryo, Zarafshon, Choch, Xorazm va Xuroson." },
-      { q: "2. Somoniylar davrida qaysi ekinlar yetishtirilgan?", a: "Bug'doid, arpa, sholi, paxta, tariq, zig'ir, kunjut, kanop, no'xot, mosh, yasmiq, beda." },
+      { q: "2. Somoniylar davrida qaysi ekinlar yetishtirilgan?", a: "Bug'doy, arpa, sholi, paxta, tariq, zig'ir, kunjut, kanop, no'xot, mosh, yasmiq, beda." },
       { q: "3. Poliz ekinlari orasida ayniqsa nimalar mashhur bo'lgan?", a: "Buxoro qovunlari va qovoq, tarvuz, sabzavotlardan baqlajon, sabzi, piyoz." },
       { q: "4. Dehqonchilik solig'i — xirojdan xazinaga tushadigan daromad nimaning kattagina qismini qoplar edi?", a: "Davlat kirim-chiqimining kattagina qismini." },
       { q: "5. Farg'ona viloyatining poytaxti qaysi shahar edi?", a: "Axsikent." },
@@ -632,7 +651,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida teng va butunlay aralashtirilgan) ---
+    // --- 3. TEST SINOVI (38 TA TEST) ---
     const testQuestions = [
       {
         q: "1. Somoniylar davrida qaysi vodiylarda dehqonchilik ishlari yuksak darajada amalga oshirilgan?",
@@ -926,7 +945,7 @@
       document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
       const fb = document.getElementById('q-feedback');
       if(score >= 34) fb.innerText = "Mukammal natija! Somoniylar davrida ijtimoiy-iqtisodiy hayot mavzusini to'laqonli o'zlashtiribsiz 🌟";
-      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      else if(score >= 25) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
       else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

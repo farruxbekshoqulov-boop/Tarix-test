@@ -384,7 +384,7 @@
       </div>
     </div>
 
-    <!-- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida teng va butunlay aralashtirilgan) -->
+    <!-- 3. TEST SINOVI (38 TA TEST) -->
     <div id="tab-quiz" class="tab-content">
       <div id="quiz-body">
         <div class="header-bar">
@@ -557,9 +557,9 @@
     // --- 2. SAVOL-JAVOB (38 TA SAVOL) ---
     const flashcards = [
       { q: "1. Somoniylar davrida qaysi vodiylarda dehqonchilik yuksak darajada olib borilgan?", a: "Farg'ona, Qashqadaryo, Zarafshon, Choch, Xorazm va Xuroson." },
-      { q: "2. Somoniylar davrida qaysi ekinlar yetishtirilgan?", a: "Bug'doy, arpa, sholi, paxta, tariq, zig'ir, kunjut, kanop, no'xot, mosh, yasmiq, beda." },
+      { q: "2. Somoniylar davrida qaysi ekinlar yetishtirilgan?", a: "Bug'doid, arpa, sholi, paxta, tariq, zig'ir, kunjut, kanop, no'xot, mosh, yasmiq, beda." },
       { q: "3. Poliz ekinlari orasida ayniqsa nimalar mashhur bo'lgan?", a: "Buxoro qovunlari va qovoq, tarvuz, sabzavotlardan baqlajon, sabzi, piyoz." },
-     { q: "4. Dehqonchilik solig'i — xirojdan xazinaga tushadigan daromad nimaning kattagina qismini qoplar edi?", a: "Davlat kirim-chiqimining kattagina qismini." }
+      { q: "4. Dehqonchilik solig'i — xirojdan xazinaga tushadigan daromad nimaning kattagina qismini qoplar edi?", a: "Davlat kirim-chiqimining kattagina qismini." },
       { q: "5. Farg'ona viloyatining poytaxti qaysi shahar edi?", a: "Axsikent." },
       { q: "6. Axsikent shahri qancha masofaga cho'zilgan edi?", a: "3 farsang masofaga (atrofidagi bog'lar bilan yana 2 farsang)." },
       { q: "7. Farsax (farsang) taxminan necha kmga teng masofa?", a: "Taxminan 6 km ga (yoki 12 000 qadamga)." },
@@ -632,7 +632,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida muvozanatli va butunlay aralashtirilgan) ---
+    // --- 3. TEST SINOVI (38 TA TEST - To'g'ri javoblar A, B, C, D o'rtasida teng va butunlay aralashtirilgan) ---
     const testQuestions = [
       {
         q: "1. Somoniylar davrida qaysi vodiylarda dehqonchilik ishlari yuksak darajada amalga oshirilgan?",
@@ -653,7 +653,7 @@
         exp: "Axsikent 3 farsang masofaga cho'zilgan edi."
       },
       {
-        q: "4. Farsax (farsang) taxminan necha kilometrga teng masofa o'lchov birligi?",
+        q: "4. Farsax (farsang) taxminan necha kmga teng masofa o'lchov birligi?",
         options: ["Taxminan 3 km", "Taxminan 10 km", "Taxminan 6 km ga (yoki 12 000 qadamga)", "Taxminan 20 km"],
         correct: 2,
         exp: "Farsax taxminan 6 km ga teng."
@@ -849,6 +849,18 @@
         options: ["Barzikor yoki qo'shchilar", "Kadivarlar", "Qullar", "Dehqonlar"],
         correct: 0,
         exp: "Ular barzikor yoki qo'shchilar deb atalgan."
+      },
+      {
+        q: "37. Somoniylar davrida shaharlarning umumiy qiyofasida qanday o'zgarish yuz berdi?",
+        options: ["Faqat xom g'ishtli uylar ko'paydi", "Katta-katta gumbazli toq-u ravoqli va peshtoqli imoratlar qad ko'tardi", "Binolar faqat yog'ochdan qurildi", "Imoratlar past va bir qavatli bo'ldi"],
+        correct: 1,
+        exp: "Katta-katta gumbazli toq-u ravoqli va peshtoqli imoratlar, masjid va madrasalar qurildi."
+      },
+      {
+        q: "38. Somoniylar davrida tashqi savdoda xavfsizlik va tartibni ta'minlashda nimalar muhim o'rin tutgan?",
+        options: ["Karvonsaroylar va rastalar", "Faqat harbiy qal'alar", "Faqat chegara postlari", "Dengiz kemalari"],
+        correct: 0,
+        exp: "Karvonsaroylar va orasta bozorlar savdogarlarga xizmat ko'rsatib, savdoda muhim o'rin tutgan."
       }
     ];
 
@@ -863,10 +875,11 @@
       const optBox = document.getElementById('q-options');
       optBox.innerHTML = '';
 
+      const optLetters = ['A', 'B', 'C', 'D'];
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = 'opt-btn';
-        btn.innerText = opt;
+        btn.innerText = `${optLetters[idx]}) ${opt}`;
         btn.onclick = () => selectOpt(idx);
         optBox.appendChild(btn);
       });
@@ -912,8 +925,8 @@
       document.getElementById('quiz-result').style.display = 'flex';
       document.getElementById('q-score').innerText = `${score}/${testQuestions.length}`;
       const fb = document.getElementById('q-feedback');
-      if(score >= 32) fb.innerText = "Mukammal natija! Somoniylar davrida ijtimoiy-iqtisodiy hayot mavzusini to'laqonli o'zlashtiribsiz 🌟";
-      else if(score >= 25) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
+      if(score >= 34) fb.innerText = "Mukammal natija! Somoniylar davrida ijtimoiy-iqtisodiy hayot mavzusini to'laqonli o'zlashtiribsiz 🌟";
+      else if(score >= 26) fb.innerText = "Yaxshi natija! Xatolar ustida ishlab, yana bir bor takrorlang 👍";
       else fb.innerText = "Mavzu darsligini qayta o'qib chiqish tavsiya etiladi 📚";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
